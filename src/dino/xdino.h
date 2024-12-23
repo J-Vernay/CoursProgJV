@@ -96,7 +96,13 @@ void XDino_Draw(DinoDrawCall drawCall);
 /// @name API clavier/souris/manette, à appeler à l'intérieur de `Dino_GameUpdate()`.
 /// @{
 
-constexpr int32_t DinoGamepad_KEYBOARD = INT32_MAX;
+enum class DinoGamepadIdx : int32_t {
+    Gamepad1,
+    Gamepad2,
+    Gamepad3,
+    Gamepad4,
+    Keyboard,
+};
 
 /// Structure contenant l'état d'une manette (ou du clavier utilisé comme manette).
 struct DinoGamepad {
@@ -123,10 +129,10 @@ struct DinoGamepad {
 };
 
 /// Récupère l'état de la manette concernée.
-/// @param idx Quelle manette regarder, ou le clavier avec `DinoGamepad_KEYBOARD`.
+/// @param idx Quelle manette regarder, ou le clavier avec `DinoGamepadIdx::Keyboard`.
 /// @param outGamepad Où sont stockées les valeurs récupérées.
 /// @return `true` quand réussit, `false` si non-disponible.
-bool XDino_GetGamepad(int32_t idx, DinoGamepad& outGamepad);
+bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad);
 
 /// @}
 

@@ -15,7 +15,7 @@ void Dino_GameInit()
 void Dino_GameUpdate(double deltaTime)
 {
     DinoGamepad gamepad{};
-    bool bSuccess = XDino_GetGamepad(DinoGamepad_KEYBOARD, gamepad);
+    bool bSuccess = XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad);
     if (!bSuccess)
         DINO_CRITICAL("Cannot read keyboard state");
 

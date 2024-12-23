@@ -160,13 +160,10 @@ void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
 
 #pragma region Public API
 
-bool XDino_GetGamepad(int32_t idx, DinoGamepad& outGamepad)
+bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
 {
     outGamepad = {};
-    if (idx < 0)
-        return false;
-
-    if (idx == DinoGamepad_KEYBOARD) {
+    if (idx == DinoGamepadIdx::Keyboard) {
         outGamepad.dpad_up = GetAsyncKeyState(VK_UP);
         outGamepad.dpad_left = GetAsyncKeyState(VK_LEFT);
         outGamepad.dpad_right = GetAsyncKeyState(VK_RIGHT);
@@ -203,41 +200,41 @@ bool XDino_GetGamepad(int32_t idx, DinoGamepad& outGamepad)
         return true;
     }
 
-    if (idx < XUSER_MAX_COUNT) {
-        XINPUT_STATE state;
-        if (XInputGetState(idx, &state) != ERROR_SUCCESS)
-            return false;
-        outGamepad.dpad_up = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP;
-        outGamepad.dpad_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT;
-        outGamepad.dpad_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT;
-        outGamepad.dpad_down = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN;
-        outGamepad.btn_up = state.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
-        outGamepad.btn_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_X;
-        outGamepad.btn_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_B;
-        outGamepad.btn_down = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-        outGamepad.start = state.Gamepad.wButtons & XINPUT_GAMEPAD_START;
-        outGamepad.select = state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK;
-        outGamepad.shoulder_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB;
-        outGamepad.shoulder_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB;
+    int32_t idxNumber = static_cast<int32_t>(idx);
+    if (idxNumber < 0 || idxNumber >= XUSER_MAX_COUNT)
+        return false;
 
-        SHORT x, y;
-        x = state.Gamepad.sThumbLX;
-        y = state.Gamepad.sThumbLY;
-        if (x <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || x >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-            outGamepad.stick_left_x = x / 32768.f;
-        if (y <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || y >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-            outGamepad.stick_left_y = y / 32768.f;
-        x = state.Gamepad.sThumbRX;
-        y = state.Gamepad.sThumbRY;
-        if (x <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || x >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
-            outGamepad.stick_right_x = x / 32768.f;
-        if (y <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || y >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
-            outGamepad.stick_right_y = y / 32768.f;
+    XINPUT_STATE state;
+    if (XInputGetState(idxNumber, &state) != ERROR_SUCCESS)
+        return false;
+    outGamepad.dpad_up = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP;
+    outGamepad.dpad_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT;
+    outGamepad.dpad_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT;
+    outGamepad.dpad_down = state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN;
+    outGamepad.btn_up = state.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
+    outGamepad.btn_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_X;
+    outGamepad.btn_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_B;
+    outGamepad.btn_down = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+    outGamepad.start = state.Gamepad.wButtons & XINPUT_GAMEPAD_START;
+    outGamepad.select = state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK;
+    outGamepad.shoulder_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB;
+    outGamepad.shoulder_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB;
 
-        return true;
-    }
+    SHORT x, y;
+    x = state.Gamepad.sThumbLX;
+    y = state.Gamepad.sThumbLY;
+    if (x <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || x >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+        outGamepad.stick_left_x = x / 32768.f;
+    if (y <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || y >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+        outGamepad.stick_left_y = y / 32768.f;
+    x = state.Gamepad.sThumbRX;
+    y = state.Gamepad.sThumbRY;
+    if (x <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || x >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+        outGamepad.stick_right_x = x / 32768.f;
+    if (y <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || y >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+        outGamepad.stick_right_y = y / 32768.f;
 
-    return false;
+    return true;
 }
 
 #pragma endregion
