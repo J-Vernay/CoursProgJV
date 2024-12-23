@@ -1,0 +1,13 @@
+---
+BasedOnStyle: Microsoft
+
+ColumnLimit: 120
+
+AccessModifierOffset: -4
+AlignArrayOfStructures: Left
+PointerAlignment: Left
+BreakBeforeBraces: Stroustrup
+AllowShortEnumsOnASingleLine: True
+AllowShortCaseLabelsOnASingleLine: True
+AlignAfterOpenBracket: BlockIndent
+BinPackArguments: False
