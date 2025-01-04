@@ -21,7 +21,7 @@ void Dino_GameInit();
 /// Appelé au début d'une frame, pour mettre à jour la logique de jeu.
 /// Peut appeler `XDino_GetGamepad()`.
 /// @param deltaTime Temps en seconde depuis la dernière mise à jour.
-void Dino_GameUpdate(double deltaTime);
+void Dino_GameUpdate(float deltaTime);
 
 /// Appelé après la logique de jeu, pour dessiner la prochaine frame.
 /// Peut appeler `XDino_Draw()`.
@@ -37,8 +37,8 @@ void Dino_GameShut();
 
 /// Représente une coordonnée 2D en pixels.
 struct DinoVec2 {
-    int32_t x;
-    int32_t y;
+    float x;
+    float y;
 };
 
 /// Représente une couleur de pixels, utilisée pour moduler l'affichage d'une texture.
@@ -62,11 +62,11 @@ constexpr DinoColor DinoColor_INVISIBLE{0xFF, 0xFF, 0xFF, 0x00};
 /// Représente un des sommets d'un triangle envoyé à la carte graphique.
 struct DinoVertex {
     /// Position à l'écran (décalée suivant `XDino_SetTransform()`)
-    DinoVec2 pos;
+    DinoVec2 pos{};
     /// Coordonnée X du pixel correspondant dans la texture mise avec `XDino_BindTexture()`.
-    uint16_t u;
+    uint16_t u = 0;
     /// Coordonnée Y du pixel correspondant dans la texture mise avec `XDino_BindTexture()`.
-    uint16_t v;
+    uint16_t v = 0;
     /// Couleur utilisée pour moduler la texture (par défaut, pas de modulation).
     DinoColor color = DinoColor_WHITE;
 };
@@ -78,7 +78,7 @@ struct DinoDrawCall {
     /// Nom de la texture à utiliser, ou vide pour une texture complètement blanche et opaque.
     std::string textureName;
     /// Décalage en pixels depuis l'angle en haut à gauche.
-    DinoVec2 translation = DinoVec2{0, 0};
+    DinoVec2 translation = DinoVec2{0.0f, 0.0f};
     /// Rotation en degrés.
     double rotation = 0.0;
     /// Mise à l'échelle.
@@ -87,6 +87,9 @@ struct DinoDrawCall {
 
 /// Taille de la fenêtre de rendu.
 DinoVec2 XDino_GetWindowSize();
+
+/// Pour indiquer la couleur d'arrière-plan.
+void XDino_SetClearColor(DinoColor color);
 
 /// Transfère les triangles à dessiner à la carte graphique.
 void XDino_Draw(DinoDrawCall drawCall);
@@ -102,6 +105,14 @@ enum class DinoGamepadIdx : int32_t {
     Gamepad3,
     Gamepad4,
     Keyboard,
+};
+
+constexpr DinoGamepadIdx DinoGamepadIdx_ALL[] = {
+    DinoGamepadIdx::Gamepad1,
+    DinoGamepadIdx::Gamepad2,
+    DinoGamepadIdx::Gamepad3,
+    DinoGamepadIdx::Gamepad4,
+    DinoGamepadIdx::Keyboard,
 };
 
 /// Structure contenant l'état d'une manette (ou du clavier utilisé comme manette).

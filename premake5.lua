@@ -1,4 +1,5 @@
 workspace "CoursProgJV"
+
   -- Les plateformes correspondent à quel type de PC ou console.
   platforms { "x64-windows" }
 
@@ -52,7 +53,29 @@ workspace "CoursProgJV"
     optimize "On"
   filter {}
 
+project "Dino_Documentation"
+
+  -- Projet qui n'implique pas la compilation (ici, c'est la documentation).
+  kind "Utility"
+  -- Inclut tous les fichiers qui sont dans le dossier docs.
+  files { "docs/*", "docs/cours/**", "docs/images/**", "README.md", "assets/CREDITS.md" }
+
+  filter 'files:docs/Doxyfile'
+    buildcommands {
+      "{CHDIR} %[docs]%",
+      "%[%{!wks.location}../tools/doxygen.exe]"
+    }
+    buildoutputs { "docs/html/index.html" }
+  filter {}
+
+  -- On change la date de dernière modification du fichier, de telle sorte
+  -- que l'on relance toujours le prebuild quand on veut build ce projet.
+  postbuildcommands {
+    "{TOUCH} %[docs/Doxyfile]"
+  }
+
 project "Dino_External"
+
   -- Compilation des bibliothèques tierces.
   kind "StaticLib"
   -- Compile tous les fichiers qui sont dans le dossier (et sous-dossiers) external
@@ -60,6 +83,7 @@ project "Dino_External"
 
 -- Remplacer le nom du projet avec son propre prénom + nom.
 project "Dino_JulienVernay"
+
   -- On fait une application graphique (en opposition à une application console = purement texte)
   kind "WindowedApp"
   -- Compile tous les fichiers qui sont directement dans le dossier src
@@ -75,7 +99,5 @@ project "Dino_JulienVernay"
   filter {}
 
   postbuildcommands {
-    "{COPYDIR} %[assets] %[%{prj.location}/assets]",
-    "{CHDIR} %[docs]",
-    "%[%{!wks.location}../tools/doxygen.exe]"
+    "{COPYDIR} %[assets] %[%{prj.location}/assets]"
   }

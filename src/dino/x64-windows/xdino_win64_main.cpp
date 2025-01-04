@@ -20,7 +20,7 @@ constexpr int XDino_INIT_HEIGHT = 480;
 HINSTANCE gXDino_hInstance = nullptr;
 HWND gXDino_hWindow = nullptr;
 int64_t gXDino_lastUpdateTick = 0;
-double gXDino_tickPeriod = 1.0;
+float gXDino_tickPeriod = 1.0;
 
 // Déclaration des fonctions qui se trouvent plus bas dans le fichier.
 void XDino_Win64_CreateWindow();
@@ -35,8 +35,6 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
     XDino_Win64_CreateWindow();
     ShowWindow(gXDino_hWindow, SW_SHOWNORMAL);
     UpdateWindow(gXDino_hWindow);
-
-    Dino_GameInit();
 
     // Puis on a la boucle principale d'événement, qui traite les messages envoyés par le système d'exploitation.
     MSG msg;
@@ -89,7 +87,7 @@ void XDino_Win64_CreateWindow()
         nullptr,
         gXDino_hInstance,
         nullptr
-        );
+    );
     // gXDino_hWindow is set by XDino_Win64_HandleEvent, called immediately by CreateWindowExW.
     if (gXDino_hWindow == nullptr)
         DINO_CRITICAL("CreateWindowEx failed");
@@ -104,7 +102,7 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 
         LARGE_INTEGER freq;
         QueryPerformanceFrequency(&freq);
-        gXDino_tickPeriod = static_cast<double>(freq.QuadPart);
+        gXDino_tickPeriod = static_cast<float>(freq.QuadPart);
 
         LARGE_INTEGER curTime;
         QueryPerformanceCounter(&curTime);
@@ -115,6 +113,9 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         int32_t width = windowRect.right - windowRect.left;
         int32_t height = windowRect.bottom - windowRect.top;
         XDino_Win64_CreateRenderer(gXDino_hWindow, width, height);
+
+        Dino_GameInit();
+
         return 0;
     }
     // L'utilisateur a demandé à détruire la fenêtre.
@@ -134,7 +135,7 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         QueryPerformanceCounter(&curTime);
         int64_t tickCount = curTime.QuadPart - gXDino_lastUpdateTick;
         gXDino_lastUpdateTick = curTime.QuadPart;
-        Dino_GameUpdate(static_cast<double>(tickCount) / gXDino_tickPeriod);
+        Dino_GameUpdate(static_cast<float>(tickCount) / gXDino_tickPeriod);
         XDino_Win64_BeginDraw();
         Dino_GameDraw();
         XDino_Win64_EndDraw();
@@ -180,16 +181,20 @@ bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
         float x, y, hypot;
 
         x = static_cast<float>(outGamepad.dpad_right) - static_cast<float>(outGamepad.dpad_left);
-        y = static_cast<float>(outGamepad.dpad_right) - static_cast<float>(outGamepad.dpad_left);
+        y = static_cast<float>(outGamepad.dpad_down) - static_cast<float>(outGamepad.dpad_up);
         hypot = std::hypot(x, y);
-        outGamepad.stick_left_x = x / hypot;
-        outGamepad.stick_left_y = y / hypot;
+        if (hypot > 0) {
+            outGamepad.stick_left_x = x / hypot;
+            outGamepad.stick_left_y = y / hypot;
+        }
 
         x = static_cast<float>(outGamepad.btn_right) - static_cast<float>(outGamepad.btn_left);
-        y = static_cast<float>(outGamepad.btn_right) - static_cast<float>(outGamepad.btn_left);
+        y = static_cast<float>(outGamepad.btn_down) - static_cast<float>(outGamepad.btn_up);
         hypot = std::hypot(x, y);
-        outGamepad.stick_right_x = x / hypot;
-        outGamepad.stick_right_y = y / hypot;
+        if (hypot > 0) {
+            outGamepad.stick_right_x = x / hypot;
+            outGamepad.stick_right_y = y / hypot;
+        }
 
         POINT p;
         if (GetCursorPos(&p) && ScreenToClient(gXDino_hWindow, &p)) {
@@ -224,15 +229,15 @@ bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
     x = state.Gamepad.sThumbLX;
     y = state.Gamepad.sThumbLY;
     if (x <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || x >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-        outGamepad.stick_left_x = x / 32768.f;
+        outGamepad.stick_left_x = static_cast<float>(x) / 32768.f;
     if (y <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || y >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-        outGamepad.stick_left_y = y / 32768.f;
+        outGamepad.stick_left_y = static_cast<float>(y) / -32768.f;
     x = state.Gamepad.sThumbRX;
     y = state.Gamepad.sThumbRY;
     if (x <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || x >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
-        outGamepad.stick_right_x = x / 32768.f;
+        outGamepad.stick_right_x = static_cast<float>(x) / 32768.f;
     if (y <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || y >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
-        outGamepad.stick_right_y = y / 32768.f;
+        outGamepad.stick_right_y = static_cast<float>(y) / -32768.f;
 
     return true;
 }
