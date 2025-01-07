@@ -7,6 +7,74 @@
 #include <format>
 
 // Variables globales.
+float lastDeltaTime = 0;
+
+DinoVec2 dinoPos;
+
+void Dino_GameInit()
+{
+    DinoVec2 rdrSize = XDino_GetWindowSize();
+    dinoPos = {rdrSize.x / 2, rdrSize.y / 2};
+}
+
+void Dino_GameUpdate(float deltaTime)
+{
+    lastDeltaTime = deltaTime;
+
+    DinoGamepad gamepad{};
+    bool bSuccess = XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad);
+    if (bSuccess) {
+        float speed = 300;
+        if (gamepad.btn_right)
+            speed *= 2;
+        dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
+        dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+    }
+}
+
+void Dino_GameDraw()
+{
+    DinoVec2 rdrSize = XDino_GetWindowSize();
+
+    DinoDrawCall bg;
+    bg.textureName = "terrain.png";
+    bg.vertices.emplace_back(DinoVec2{0, 0}, 16, 0, DinoColor_WHITE);
+    bg.vertices.emplace_back(DinoVec2{rdrSize.x, 0}, 32, 0, DinoColor_WHITE);
+    bg.vertices.emplace_back(DinoVec2{0, rdrSize.y}, 16, 16, DinoColor_WHITE);
+    bg.vertices.emplace_back(DinoVec2{rdrSize.x, 0}, 32, 0, DinoColor_WHITE);
+    bg.vertices.emplace_back(DinoVec2{0, rdrSize.y}, 16, 16, DinoColor_WHITE);
+    bg.vertices.emplace_back(rdrSize, 32, 16, DinoColor_WHITE);
+    XDino_Draw(bg);
+
+    DinoDrawCall dino;
+    dino.textureName = "dinosaurs.png";
+    dino.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{+12, +12}, 24, 24, DinoColor_WHITE);
+    dino.scale = 2;
+    dino.translation = dinoPos;
+    XDino_Draw(dino);
+
+    // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
+    {
+        std::string text = std::format("dTime={:04.1f}ms", lastDeltaTime * 1000.0);
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
+        drawCall.scale = 2;
+        XDino_Draw(drawCall);
+    }
+}
+
+void Dino_GameShut()
+{
+
+}
+
+#if 0
+
+// Variables globales.
 double lastDeltaTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
@@ -133,3 +201,5 @@ void Dino_GameShut()
 {
 
 }
+
+#endif
