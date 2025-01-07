@@ -10,6 +10,7 @@
 float lastDeltaTime = 0;
 
 DinoVec2 dinoPos;
+bool bDinoLeft = false;
 
 void Dino_GameInit()
 {
@@ -29,6 +30,10 @@ void Dino_GameUpdate(float deltaTime)
             speed *= 2;
         dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
         dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+        if (gamepad.stick_left_x < 0)
+            bDinoLeft = true;
+        if (gamepad.stick_left_x > 0)
+            bDinoLeft = false;
     }
 }
 
@@ -48,12 +53,22 @@ void Dino_GameDraw()
 
     DinoDrawCall dino;
     dino.textureName = "dinosaurs.png";
-    dino.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);
-    dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
-    dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
-    dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
-    dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
-    dino.vertices.emplace_back(DinoVec2{+12, +12}, 24, 24, DinoColor_WHITE);
+    if (bDinoLeft) {
+        dino.vertices.emplace_back(DinoVec2{-12, -12}, 24, 0, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{+12, -12}, 0, 0, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{-12, +12}, 24, 24, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{+12, -12}, 0, 0, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{-12, +12}, 24, 24, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{+12, +12}, 0, 24, DinoColor_WHITE);
+    }
+    else {
+        dino.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
+        dino.vertices.emplace_back(DinoVec2{+12, +12}, 24, 24, DinoColor_WHITE);
+    }
     dino.scale = 2;
     dino.translation = dinoPos;
     XDino_Draw(dino);
