@@ -19,8 +19,8 @@ constexpr int XDino_INIT_HEIGHT = 480;
 
 HINSTANCE gXDino_hInstance = nullptr;
 HWND gXDino_hWindow = nullptr;
-int64_t gXDino_lastUpdateTick = 0;
-float gXDino_tickPeriod = 1.0;
+int64_t gXDino_tickStart = 0;
+double gXDino_tickPeriod = 1.0;
 
 // Déclaration des fonctions qui se trouvent plus bas dans le fichier.
 void XDino_Win64_CreateWindow();
@@ -102,11 +102,11 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 
         LARGE_INTEGER freq;
         QueryPerformanceFrequency(&freq);
-        gXDino_tickPeriod = static_cast<float>(freq.QuadPart);
+        gXDino_tickPeriod = static_cast<double>(freq.QuadPart);
 
         LARGE_INTEGER curTime;
         QueryPerformanceCounter(&curTime);
-        gXDino_lastUpdateTick = curTime.QuadPart;
+        gXDino_tickStart = curTime.QuadPart;
 
         RECT windowRect;
         GetClientRect(gXDino_hWindow, &windowRect);
@@ -133,11 +133,10 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
     if (uMsg == WM_PAINT) {
         LARGE_INTEGER curTime;
         QueryPerformanceCounter(&curTime);
-        int64_t tickCount = curTime.QuadPart - gXDino_lastUpdateTick;
-        gXDino_lastUpdateTick = curTime.QuadPart;
-        Dino_GameUpdate(static_cast<float>(tickCount) / gXDino_tickPeriod);
+        int64_t tickCount = curTime.QuadPart - gXDino_tickStart;
+        double timeSinceStart = static_cast<double>(tickCount) / gXDino_tickPeriod;
         XDino_Win64_BeginDraw();
-        Dino_GameDraw();
+        Dino_GameFrame(timeSinceStart);
         XDino_Win64_EndDraw();
         return 0;
     }

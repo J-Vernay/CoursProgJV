@@ -18,14 +18,11 @@
 /// Appelé au tout début, pour initialiser la logique de jeu.
 void Dino_GameInit();
 
-/// Appelé au début d'une frame, pour mettre à jour la logique de jeu.
-/// Peut appeler `XDino_GetGamepad()`.
-/// @param deltaTime Temps en seconde depuis la dernière mise à jour.
-void Dino_GameUpdate(float deltaTime);
-
-/// Appelé après la logique de jeu, pour dessiner la prochaine frame.
-/// Peut appeler `XDino_Draw()`.
-void Dino_GameDraw();
+/// Appelé pour générer chaque frame. Doit lireles entrées de jeu
+/// avec `XDino_GetGamepad()`, mettre à jour la logique du jeu,
+/// et donner les commandes de dessins avec `XDino_Draw()`.
+/// @param timeSinceStart Temps en secondes depuis le lancement du jeu.
+void Dino_GameFrame(double timeSinceStart);
 
 /// Appelé quand l'utilisateur demande à quitter le jeu (touche ECHAP).
 void Dino_GameShut();

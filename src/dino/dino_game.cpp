@@ -7,7 +7,7 @@
 #include <format>
 
 // Variables globales.
-double lastDeltaTime = 0;
+double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
 DinoVec2 circlePos = {};
@@ -28,9 +28,14 @@ void Dino_GameInit()
     polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
 }
 
-void Dino_GameUpdate(float deltaTime)
+void Dino_GameFrame(double timeSinceStart)
 {
-    lastDeltaTime = deltaTime;
+    // Prendre en compte le temps qui passe.
+
+    float deltaTime = static_cast<float>(timeSinceStart - lastTime);
+    lastTime = timeSinceStart;
+
+    // Gestion des entrées et mise à jour de la logique de jeu.
 
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
@@ -50,10 +55,9 @@ void Dino_GameUpdate(float deltaTime)
         circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
         circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
     }
-}
 
-void Dino_GameDraw()
-{
+    // Affichage
+
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
@@ -121,7 +125,7 @@ void Dino_GameDraw()
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
-        std::string text = std::format("dTime={:04.1f}ms", lastDeltaTime * 1000.0);
+        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         drawCall.scale = 2;
         XDino_Draw(drawCall);
