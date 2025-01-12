@@ -24,21 +24,30 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    // Gestion des entrées et mise à jour de la logique de jeu.
+    // Gestion des entrées.
+
+    bool bDinoRunning = false;
+    DinoVec2 bDinoMove{};
 
     DinoGamepad gamepad{};
     bool bSuccess = XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad);
     if (bSuccess) {
-        float speed = 300;
-        if (gamepad.btn_right)
-            speed *= 2;
-        dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
-        dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
-        if (gamepad.stick_left_x < 0)
-            bDinoLeft = true;
-        if (gamepad.stick_left_x > 0)
-            bDinoLeft = false;
+        bDinoRunning = gamepad.btn_right;
+        bDinoMove.x = gamepad.stick_left_x;
+        bDinoMove.y = gamepad.stick_left_y;
     }
+
+    // Logique de jeu.
+
+    float speed = 200;
+    if (bDinoRunning)
+        speed *= 2;
+    dinoPos.x += bDinoMove.x * speed * deltaTime;
+    dinoPos.y += bDinoMove.y * speed * deltaTime;
+    if (bDinoMove.x < 0)
+        bDinoLeft = true;
+    if (bDinoMove.x > 0)
+        bDinoLeft = false;
 
     // Affichage
 
@@ -56,22 +65,39 @@ void Dino_GameFrame(double timeSinceStart)
 
     DinoDrawCall dino;
     dino.textureName = "dinosaurs.png";
+    dino.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
+    dino.vertices.emplace_back(DinoVec2{+12, +12}, 24, 24, DinoColor_WHITE);
+    // Mode miroir si on va à gauche.
     if (bDinoLeft) {
-        dino.vertices.emplace_back(DinoVec2{-12, -12}, 24, 0, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{+12, -12}, 0, 0, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{-12, +12}, 24, 24, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{+12, -12}, 0, 0, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{-12, +12}, 24, 24, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{+12, +12}, 0, 24, DinoColor_WHITE);
+        for (DinoVertex& vertex : dino.vertices)
+            vertex.u = 24 - vertex.u;
+    }
+
+    // Animation
+    if (bDinoMove.x == 0 && bDinoMove.y == 0) {
+        // Animation sur place
+        int64_t idxFrame = static_cast<int64_t>(timeSinceStart * 8) % 4;
+        for (DinoVertex& vertex : dino.vertices)
+            vertex.u += static_cast<uint16_t>(24 * idxFrame);
+    }
+    else if (bDinoRunning) {
+        // Animation de course
+        int64_t idxFrame = static_cast<int64_t>(timeSinceStart * 16) % 6;
+        for (DinoVertex& vertex : dino.vertices)
+            vertex.u += static_cast<uint16_t>(432 + 24 * idxFrame);
+
     }
     else {
-        dino.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
-        dino.vertices.emplace_back(DinoVec2{+12, +12}, 24, 24, DinoColor_WHITE);
+        // Animation de marche
+        int64_t idxFrame = static_cast<int64_t>(timeSinceStart * 8) % 6;
+        for (DinoVertex& vertex : dino.vertices)
+            vertex.u += static_cast<uint16_t>(96 + 24 * idxFrame);
     }
+
     dino.scale = 2;
     dino.translation = dinoPos;
     XDino_Draw(dino);
