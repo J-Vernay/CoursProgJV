@@ -221,8 +221,8 @@ bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
     outGamepad.btn_down = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
     outGamepad.start = state.Gamepad.wButtons & XINPUT_GAMEPAD_START;
     outGamepad.select = state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK;
-    outGamepad.shoulder_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB;
-    outGamepad.shoulder_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB;
+    outGamepad.shoulder_left = state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER;
+    outGamepad.shoulder_right = state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER;
 
     SHORT x, y;
     x = state.Gamepad.sThumbLX;
