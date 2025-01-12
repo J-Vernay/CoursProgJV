@@ -21,19 +21,18 @@ Des indications sont données pour accélérer le développement sur les aspects
 4. Le dinosaure peut se prendre des dégâts (= immobilisation 3 secondes + animation).
 5. 4 dinosaures sont affichables et individuellement déplaçables.
 
-Les images de dinosaures sont dans la spritesheet `dinosaurs.png`.
+Les images de dinosaures sont dans la spritesheet `dinosaurs.png`, disposées sur une grille
+de **24x24 pixels**.
 
 ![Texture des dinosaures](@ref dinosaurs.png)
-
-Chaque sprite fait une taille de **24x24 pixels**.
 
 Les animations consistent à enchaîner en boucle différents sprites.
 Dans la spritesheet, ces sprites correspondent à des positions U :
 
-- **U=(0, 24, 48, 72)** pour l'animation quand le dinosaure reste sur place.
-- **U=(96, 120, 144, 168, 192, 216)** pour l'animation de marche.
-- **U=(336, 360, 384)** pour l'animation de dégâts.
-- **U=(432, 456, 480, 504, 528, 552)** pour l'animation de course.
+- **U=(0, 24, 48, 72)** pour l'animation quand le dinosaure reste sur place. (8 images par seconde)
+- **U=(96, 120, 144, 168, 192, 216)** pour l'animation de marche. (8 images par seconde)
+- **U=(336, 360, 384)** pour l'animation de dégâts. (8 images par seconde)
+- **U=(432, 456, 480, 504, 528, 552)** pour l'animation de course. (16 images par seconde)
 
 Les dinosaures de différentes couleurs correspondent à des positions V :
 
