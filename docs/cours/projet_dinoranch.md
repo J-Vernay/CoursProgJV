@@ -55,7 +55,7 @@ Les images du terrain sont dans le tileset `terrain.png`.
 ![Texture du terrain](@ref terrain.png)
 
 Les tuiles du tileset font une taille de **16x16 pixels**.
-Le terrain de **320x320** pixels** correspond donc à un carré de 20 tuiles de large.
+Le terrain de **320x320 pixels** correspond donc à un carré de 20 tuiles de large.
 Les arbres font une taille de **48x72 pixels**.
 
 La spritesheet est composée de :
