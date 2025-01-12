@@ -10,6 +10,8 @@
 double lastTime = 0;
 DinoVec2 dinoPos;
 bool bDinoLeft = false;
+bool bDinoDamage = false;
+double dinoDamageStart = 0;
 
 void Dino_GameInit()
 {
@@ -35,13 +37,23 @@ void Dino_GameFrame(double timeSinceStart)
         bDinoRunning = gamepad.btn_right;
         bDinoMove.x = gamepad.stick_left_x;
         bDinoMove.y = gamepad.stick_left_y;
+        if (gamepad.shoulder_left) {
+            bDinoDamage = true;
+            dinoDamageStart = timeSinceStart;
+        }
     }
 
     // Logique de jeu.
 
+    if (bDinoDamage && timeSinceStart - dinoDamageStart > 3)
+        bDinoDamage = false;
+
     float speed = 200;
     if (bDinoRunning)
         speed *= 2;
+    if (bDinoDamage)
+        speed = 0;
+
     dinoPos.x += bDinoMove.x * speed * deltaTime;
     dinoPos.y += bDinoMove.y * speed * deltaTime;
     if (bDinoMove.x < 0)
@@ -78,7 +90,13 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     // Animation
-    if (bDinoMove.x == 0 && bDinoMove.y == 0) {
+    if (bDinoDamage) {
+        // Animation de dégât
+        int64_t idxFrame = static_cast<int64_t>(timeSinceStart * 8) % 3;
+        for (DinoVertex& vertex : dino.vertices)
+            vertex.u += static_cast<uint16_t>(336 + 24 * idxFrame);
+    }
+    else if (bDinoMove.x == 0 && bDinoMove.y == 0) {
         // Animation sur place
         int64_t idxFrame = static_cast<int64_t>(timeSinceStart * 8) % 4;
         for (DinoVertex& vertex : dino.vertices)
