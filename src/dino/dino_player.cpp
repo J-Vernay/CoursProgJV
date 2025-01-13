@@ -33,7 +33,7 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
     )
         bDinoDamage = false;
 
-    float speed = 200;
+    float speed = 120;
     if (bDinoRunning)
         speed *= 2;
     if (bDinoDamage)
@@ -94,7 +94,6 @@ void DinoPlayer::Draw(double timeSinceStart, float deltaTime)
     for (DinoVertex& vertex : dino.vertices)
         vertex.v += 24 * idxPlayer;
 
-    dino.scale = 2;
     dino.translation = dinoPos;
     XDino_Draw(dino);
 }

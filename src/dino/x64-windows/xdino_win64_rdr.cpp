@@ -32,8 +32,10 @@ constexpr size_t XDino_VERTEX_BUFFER_COUNT = 60000;
 // Ici, les variables globales ne sont utilisées que dans ce fichier, ce qui
 // limite le problème de modification inattendue depuis l'autre bout du programme.
 
-float gXDino_width = 0;
-float gXDino_height = 0;
+float gXDino_width = 1;
+float gXDino_height = 1;
+float gXDino_rdrWidth = 1;
+float gXDino_rdrHeight = 1;
 
 ID3D11Device* gXDino_device = nullptr;
 ID3D11DeviceContext* gXDino_context = nullptr;
@@ -162,7 +164,7 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
     swapchainDesc.BufferDesc.Height = height;
     swapchainDesc.BufferDesc.RefreshRate.Numerator = 1;
     swapchainDesc.BufferDesc.RefreshRate.Denominator = 60; // 60 fps
-    swapchainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    swapchainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
     swapchainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     swapchainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
     swapchainDesc.SampleDesc.Count = 1;
@@ -438,11 +440,18 @@ void XDino_Win64_EndDraw()
     gXDino_context->VSSetShader(gXDino_vertexShader, nullptr, 0);
     gXDino_context->VSSetConstantBuffers(0, 1, &gXDino_constantBuffer);
 
+    float width = gXDino_width;
+    float height = gXDino_rdrHeight * gXDino_width / gXDino_rdrWidth;
+    if (height > gXDino_height) {
+        width = gXDino_rdrWidth * gXDino_height / gXDino_rdrHeight;
+        height = gXDino_height;
+    }
+
     D3D11_VIEWPORT viewport = {};
-    viewport.TopLeftX = 0;
-    viewport.TopLeftY = 0;
-    viewport.Width = gXDino_width;
-    viewport.Height = gXDino_height;
+    viewport.TopLeftX = (gXDino_width - width) / 2;
+    viewport.TopLeftY = (gXDino_height - height) / 2;
+    viewport.Width = width;
+    viewport.Height = height;
     viewport.MinDepth = 0.0f;
     viewport.MaxDepth = 1.0f;
     gXDino_context->RSSetViewports(1, &viewport);
@@ -472,8 +481,8 @@ void XDino_Win64_EndDraw()
 
         double rotationRadians = drawCall.rotation * (std::numbers::pi / 180.0);
         XDino_Win64_CBuffer cbuffer{};
-        cbuffer.half_vp_size_x = gXDino_width / 2.f;
-        cbuffer.half_vp_size_y = gXDino_height / 2.f;
+        cbuffer.half_vp_size_x = gXDino_rdrWidth / 2.f;
+        cbuffer.half_vp_size_y = gXDino_rdrHeight / 2.f;
         cbuffer.tex_size_x = static_cast<float>(texture.texWidth);
         cbuffer.tex_size_y = static_cast<float>(texture.texHeight);
         cbuffer.offset_x = static_cast<float>(drawCall.translation.x);
@@ -545,6 +554,21 @@ DinoVec2 XDino_GetWindowSize()
 void XDino_SetClearColor(DinoColor color)
 {
     gXDino_clearColor = color;
+}
+
+DinoVec2 XDino_GetRenderSize()
+{
+    return {gXDino_rdrWidth, gXDino_rdrHeight};
+}
+
+void XDino_SetRenderSize(DinoVec2 renderSize)
+{
+    if (renderSize.x < 1)
+        renderSize.x = 1;
+    if (renderSize.y < 1)
+        renderSize.y = 1;
+    gXDino_rdrWidth = renderSize.x;
+    gXDino_rdrHeight = renderSize.y;
 }
 
 void XDino_Draw(DinoDrawCall drawCall)

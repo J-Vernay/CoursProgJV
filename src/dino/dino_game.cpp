@@ -16,8 +16,8 @@ std::vector<DinoPlayer> dinos;
 
 void Dino_GameInit()
 {
-    DinoVec2 rdrSize = XDino_GetWindowSize();
-
+    DinoVec2 rdrSize = {320, 240};
+    XDino_SetRenderSize(rdrSize);
     dinos.emplace_back().Init({rdrSize.x * 0.25f, rdrSize.y * 0.25f}, DinoGamepadIdx::Keyboard, 0);
     dinos.emplace_back().Init({rdrSize.x * 0.75f, rdrSize.y * 0.25f}, DinoGamepadIdx::Gamepad1, 1);
     dinos.emplace_back().Init({rdrSize.x * 0.25f, rdrSize.y * 0.75f}, DinoGamepadIdx::Gamepad2, 2);
@@ -38,7 +38,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Affichage
 
-    DinoVec2 rdrSize = XDino_GetWindowSize();
+    DinoVec2 rdrSize = XDino_GetRenderSize();
 
     DinoDrawCall bg;
     bg.textureName = "terrain.png";
@@ -57,7 +57,6 @@ void Dino_GameFrame(double timeSinceStart)
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
-        drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
 }
