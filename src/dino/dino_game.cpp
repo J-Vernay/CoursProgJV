@@ -19,6 +19,7 @@ constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une secon
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
+    XDino_SetRenderSize(windowSize);
     circlePos = {windowSize.x / 2, windowSize.y / 2};
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
@@ -69,6 +70,11 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
+    // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
+
+    DinoVec2 windowSize = XDino_GetWindowSize();
+    XDino_SetRenderSize(windowSize);
+
     // Dessin de la texture centrale qu'on peut bouger.
     {
         constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
@@ -76,9 +82,8 @@ void Dino_GameFrame(double timeSinceStart)
         constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
         constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
 
-        DinoVec2 size = XDino_GetWindowSize();
-        float quarterWidth = size.x / 4;
-        float quarterHeight = size.y / 4;
+        float quarterWidth = windowSize.x / 4;
+        float quarterHeight = windowSize.y / 4;
 
         DinoDrawCall drawCall;
         drawCall.vertices.resize(6);
@@ -95,7 +100,7 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.vertices[5].pos = {quarterWidth, quarterHeight};
         drawCall.vertices[5].color = ORANGE;
 
-        drawCall.translation = {size.x / 2, size.y / 2};
+        drawCall.translation = {windowSize.x / 2, windowSize.y / 2};
         drawCall.rotation = rotation;
         drawCall.scale = scale;
 

@@ -82,8 +82,14 @@ struct DinoDrawCall {
     double scale = 1.0;
 };
 
-/// Taille de la fenêtre de rendu.
+/// Taille de la fenêtre sur l'écran. Attention, différent de la résolution du rendu !
 DinoVec2 XDino_GetWindowSize();
+
+/// Taille du rendu. Attention, différent de la résolution affichée à l'écran !
+DinoVec2 XDino_GetRenderSize();
+
+/// Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille.
+void XDino_SetRenderSize(DinoVec2 renderSize);
 
 /// Pour indiquer la couleur d'arrière-plan.
 void XDino_SetClearColor(DinoColor color);
