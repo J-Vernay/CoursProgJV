@@ -6,7 +6,10 @@ class DinoPlayer {
 public:
     void Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_);
     void Update(double timeSinceStart, float deltaTime);
-    void Draw(double timeSinceStart, float deltaTime);
+
+    static const std::string drawCallTextureName;
+
+    void Draw(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall);
 
 private:
     DinoVec2 dinoPos{};
