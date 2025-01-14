@@ -1,0 +1,5 @@
+<map id="XDino_Win64_EndDraw" name="XDino_Win64_EndDraw">
+<area shape="rect" id="Node000001" title="Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique." alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__rdr_8cpp.html#af0297fec7b8843bff04ad8b0e7477845" title="Spécifique à la plateforme. Charge une texture." alt="" coords="212,5,399,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,16,196,16,196,21,164,21"/>
+</map>
