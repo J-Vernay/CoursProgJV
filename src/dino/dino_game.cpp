@@ -50,10 +50,7 @@ void Dino_GameFrame(double timeSinceStart)
     bg.vertices.emplace_back(rdrSize, 32, 16, DinoColor_WHITE);
     XDino_Draw(bg);
 
-    DinoDrawCall drawDinos;
-    drawDinos.textureName = DinoPlayer::drawCallTextureName;
-    for (DinoPlayer& dino : dinos)
-        dino.Draw(timeSinceStart, deltaTime, drawDinos);
+    DinoDrawCall drawDinos = DinoPlayer::DrawCallDinos(dinos, timeSinceStart, deltaTime);
     XDino_Draw(drawDinos);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.

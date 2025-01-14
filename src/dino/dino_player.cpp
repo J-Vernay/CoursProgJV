@@ -1,7 +1,6 @@
-#include <span>
 #include <dino/dino_player.h>
 
-const std::string DinoPlayer::drawCallTextureName = "dinosaurs.png";
+#include <algorithm>
 
 void DinoPlayer::Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_)
 {
@@ -49,7 +48,7 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
         bDinoLeft = false;
 }
 
-void DinoPlayer::Draw(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall)
+void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall) const
 {
     drawCall.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);
     drawCall.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
@@ -102,4 +101,24 @@ void DinoPlayer::Draw(double timeSinceStart, float deltaTime, DinoDrawCall& draw
     // Couleur de dinosaure
     for (DinoVertex& vertex : vertices)
         vertex.v += 24 * idxPlayer;
+}
+
+DinoDrawCall DinoPlayer::DrawCallDinos(std::span<DinoPlayer const> dinos, double timeSinceStart, float deltaTime)
+{
+    std::vector<DinoPlayer const*> tmpDinos;
+    tmpDinos.reserve(dinos.size());
+    for (DinoPlayer const& dino : dinos)
+        tmpDinos.push_back(&dino);
+
+    std::sort(tmpDinos.begin(),
+              tmpDinos.end(),
+              [](DinoPlayer const* a, DinoPlayer const* b) {
+                  return a->dinoPos.y < b->dinoPos.y;
+              });
+
+    DinoDrawCall drawDinos;
+    drawDinos.textureName = "dinosaurs.png";
+    for (DinoPlayer const* pDino : tmpDinos)
+        pDino->_AddDrawCall(timeSinceStart, deltaTime, drawDinos);
+    return drawDinos;
 }
