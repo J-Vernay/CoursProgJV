@@ -17,7 +17,6 @@ jobs:
         with:
           doxyfile-path: ./Doxyfile
           working-directory: ./docs
-          additional-packages: font-fira-code
           
       - name: Pages Deployment
         uses: peaceiris/actions-gh-pages@v4
