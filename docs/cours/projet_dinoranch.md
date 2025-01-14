@@ -20,6 +20,8 @@ Des indications sont données pour accélérer le développement sur les aspects
 3. L'affichage du dinosaure est animé suivant ses déplacements.
 4. Le dinosaure peut se prendre des dégâts (= immobilisation 3 secondes + animation).
 5. 4 dinosaures sont affichables et individuellement déplaçables.
+6. Tous les dinosaures sont affichés avec un seul draw call.
+7. Les dinosaures peuvent être devant les autres et être affichés suivant lequel est devant.
 
 Les images de dinosaures sont dans la spritesheet `dinosaurs.png`, disposées sur une grille
 de **24x24 pixels**.
@@ -59,6 +61,7 @@ Le terrain de **320x320 pixels** correspond donc à un carré de 20 tuiles de la
 Les arbres font une taille de **48x72 pixels**.
 
 La spritesheet est composée de :
+
 - **UV = (0,0)** pour la couleur de l'océan
 - **UV = (16,0)** pour la couleur du terrain
 - **UV = (0,16)** pour la tuile du coin en haut à gauche
