@@ -45,7 +45,7 @@ Les dinosaures de différentes couleurs correspondent à des positions V :
 
 ### F2. Le terrain
 
-1. L'océan est affiché sur toute la fenêtre, et une zone centrale de terrain de **320x320 pixels**.
+1. L'océan est affiché sur toute la fenêtre, et une zone centrale de terrain de **256x192 pixels**.
 2. La frontière terrain/océan est dessinée avec le tileset et animée.
 4. Des fleurs sont positionnées sur le terrain aléatoirement à chaque début de partie.
 5. Le terrain peut avoir quatre saisons différentes.
@@ -57,7 +57,7 @@ Les images du terrain sont dans le tileset `terrain.png`.
 ![Texture du terrain](@ref terrain.png)
 
 Les tuiles du tileset font une taille de **16x16 pixels**.
-Le terrain de **320x320 pixels** correspond donc à un carré de 20 tuiles de large.
+Le terrain de **256x192 pixels** correspond donc à **16x12 tuiles**.
 Les arbres font une taille de **48x72 pixels**.
 
 La spritesheet est composée de :
