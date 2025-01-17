@@ -80,7 +80,10 @@ void Dino_GameFrame(double timeSinceStart)
     terrain.vertices.emplace_back(DinoVec2{16 * (tileCountX - 1), 16}, 32, 0, DinoColor_WHITE);
     terrain.vertices.emplace_back(DinoVec2{16, 16 * (tileCountY - 1)}, 16, 16, DinoColor_WHITE);
     terrain.vertices.emplace_back(DinoVec2{16 * (tileCountX - 1), 16 * (tileCountY - 1)}, 32, 16, DinoColor_WHITE);
-    terrain.translation = {48, 48};
+
+    // Grille centrée
+    terrain.translation.x = (rdrSize.x - (tileCountX * 16)) / 2;
+    terrain.translation.y = (rdrSize.y - (tileCountY * 16)) / 2;
 
     XDino_Draw(terrain);
 
