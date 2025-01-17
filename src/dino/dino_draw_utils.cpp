@@ -199,3 +199,22 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
 
     return drawCall;
 }
+
+
+void Dino_AddDraw_Rect(DinoDrawCall& drawCall, DinoVec2 topLeft, DinoVec2 size, DinoVec2 topLeftUV, DinoColor color)
+{
+    float x = topLeft.x;
+    float y = topLeft.y;
+    float xw = x + size.x;
+    float yh = y + size.y;
+    uint16_t u = static_cast<uint16_t>(topLeftUV.x);
+    uint16_t v = static_cast<uint16_t>(topLeftUV.y);
+    uint16_t uw = static_cast<uint16_t>(topLeftUV.x + size.x);
+    uint16_t vh = static_cast<uint16_t>(topLeftUV.y + size.y);
+    drawCall.vertices.emplace_back(DinoVec2{x, y}, u, v, color);
+    drawCall.vertices.emplace_back(DinoVec2{xw, y}, uw, v, color);
+    drawCall.vertices.emplace_back(DinoVec2{x, yh}, u, vh, color);
+    drawCall.vertices.emplace_back(DinoVec2{xw, y}, uw, v, color);
+    drawCall.vertices.emplace_back(DinoVec2{x, yh}, u, vh, color);
+    drawCall.vertices.emplace_back(DinoVec2{xw, yh}, uw, vh, color);
+}

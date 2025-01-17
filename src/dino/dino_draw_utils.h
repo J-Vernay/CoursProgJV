@@ -33,3 +33,19 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = D
 /// @param color Couleur du trait.
 DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
                                           DinoColor color = DinoColor_WHITE);
+
+/// @}
+
+/// @name Fonctions AddDraw
+/// Ces fonctions ne font que rajouter des vertices dans un DinoDrawCall déjà existant.
+/// @{
+
+/// Ajoute le dessin d'un rectangle au drawcall donné.
+/// @param topLeft Coordonnées en haut à gauche à l'écran.
+/// @param size Nombre de pixels de largeur et hauteur.
+/// @param topLeftUV Coordonnées en haut à gauche sur la texture d'origine.
+/// @param color Couleur qui module le sprite, WHITE pour le laisser tel quel.
+void Dino_AddDraw_Rect(DinoDrawCall& drawCall, DinoVec2 topLeft, DinoVec2 size, DinoVec2 topLeftUV,
+                       DinoColor color = DinoColor_WHITE);
+
+/// @}
