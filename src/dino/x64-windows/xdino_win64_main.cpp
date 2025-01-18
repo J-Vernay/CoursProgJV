@@ -24,7 +24,7 @@ int64_t gXDino_tickStart = 0;
 double gXDino_tickPeriod = 1.0;
 
 std::random_device gXDino_randomDevice;
-std::mt19937 gXDino_rng(gXDino_randomDevice);
+std::mt19937 gXDino_rng(gXDino_randomDevice());
 
 // Déclaration des fonctions qui se trouvent plus bas dans le fichier.
 void XDino_Win64_CreateWindow();
