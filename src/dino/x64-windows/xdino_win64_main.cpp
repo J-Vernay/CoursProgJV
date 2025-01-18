@@ -8,6 +8,7 @@
 // Expose la bibliothèque standard.
 #include <cmath>
 #include <cstdio>
+#include <random>
 
 #include <Windows.h>
 #include <Xinput.h>
@@ -21,6 +22,9 @@ HINSTANCE gXDino_hInstance = nullptr;
 HWND gXDino_hWindow = nullptr;
 int64_t gXDino_tickStart = 0;
 double gXDino_tickPeriod = 1.0;
+
+std::random_device gXDino_randomDevice;
+std::mt19937 gXDino_rng(gXDino_randomDevice);
 
 // Déclaration des fonctions qui se trouvent plus bas dans le fichier.
 void XDino_Win64_CreateWindow();
@@ -239,6 +243,18 @@ bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
         outGamepad.stick_right_y = static_cast<float>(y) / -32768.f;
 
     return true;
+}
+
+uint32_t XDino_RandomUint32(uint32_t min, uint32_t max)
+{
+    std::uniform_int_distribution<uint32_t> distribution(min, max);
+    return distribution(gXDino_rng);
+}
+
+int32_t XDino_RandomInt32(int32_t min, int32_t max)
+{
+    std::uniform_int_distribution<int32_t> distribution(min, max);
+    return distribution(gXDino_rng);
 }
 
 #pragma endregion

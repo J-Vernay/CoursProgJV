@@ -150,6 +150,17 @@ bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad);
 
 /// @}
 
+/// @name API utilitaires
+/// @{
+
+/// Génère un entier 32-bit non-signé pseudo-aléatoire entre 'min' et 'max' inclus.
+uint32_t XDino_RandomUint32(uint32_t min, uint32_t max);
+
+/// Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus.
+int32_t XDino_RandomInt32(int32_t min, int32_t max);
+
+/// @}
+
 
 /// Détail d'implémentation, ne pas appeler directement. Il faut utiliser `DINO_CRITICAL`.
 void _impl_XDino_Critical(char const* pFunc, int line, char const* msg);
