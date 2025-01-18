@@ -14,4 +14,5 @@ public:
 private:
     DinoDrawCall m_drawCallOcean;
     DinoDrawCall m_drawCallTerrain;
+    DinoDrawCall m_drawCallFlowers;
 };
