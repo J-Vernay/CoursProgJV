@@ -95,3 +95,11 @@ void DinoTerrain::Draw(double timeSinceStart, float deltaTime) const
 
     XDino_Draw(m_drawCallFlowers);
 }
+
+DinoVec2 DinoTerrain::GenerateRandomSpawn() const
+{
+    DinoVec2 pos;
+    pos.x = m_spawnOffset.x + XDino_RandomFloat(0, m_spawnSize.x);
+    pos.y = m_spawnOffset.y + XDino_RandomFloat(0, m_spawnSize.y);
+    return pos;
+}

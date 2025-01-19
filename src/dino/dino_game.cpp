@@ -1,6 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "dino_animal.h"
+
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 
@@ -16,6 +18,9 @@ double lastTime = 0;
 std::vector<DinoPlayer> g_Dinos;
 DinoTerrain g_Terrain;
 
+std::vector<DinoAnimal> g_Animals;
+double g_AnimalSpawnTime = 0;
+
 void Dino_GameInit()
 {
     DinoVec2 rdrSize = {480, 360};
@@ -27,14 +32,6 @@ void Dino_GameInit()
 
     g_Terrain.Init(24, 16);
 }
-
-struct DinoAnimal {
-    DinoVec2 pos;
-    int32_t kind;
-};
-
-std::vector<DinoAnimal> g_Animals;
-double g_AnimalSpawnTime = 0;
 
 void Dino_GameFrame(double timeSinceStart)
 {
@@ -50,24 +47,22 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoPlayer& dino : g_Dinos)
         dino.Update(timeSinceStart, deltaTime);
 
+    if (timeSinceStart - g_AnimalSpawnTime >= 1) {
+        g_AnimalSpawnTime = timeSinceStart;
+        DinoVec2 spawnPos = g_Terrain.GenerateRandomSpawn();
+        g_Animals.emplace_back().InitRandom(spawnPos);
+    }
+    for (DinoAnimal& animal : g_Animals)
+        animal.Update(timeSinceStart, deltaTime);
+
     // Affichage
 
     g_Terrain.Draw(timeSinceStart, deltaTime);
 
-    if (timeSinceStart - g_AnimalSpawnTime >= 1) {
-        g_AnimalSpawnTime = timeSinceStart;
-        DinoAnimal animal;
-        DinoVec2 spawnOffset = g_Terrain.GetSpawnOffset();
-        DinoVec2 spawnSize = g_Terrain.GetSpawnSize();
-        animal.pos.x = spawnOffset.x + XDino_RandomFloat(0, spawnSize.x) - 16;
-        animal.pos.y = spawnOffset.y + XDino_RandomFloat(0, spawnSize.y) - 32;
-        animal.kind = XDino_RandomInt32(0, 7);
-        g_Animals.push_back(animal);
-    }
     DinoDrawCall drawAnimals;
     drawAnimals.textureName = "animals.png";
     for (DinoAnimal animal : g_Animals)
-        Dino_AddDraw_Rect(drawAnimals, animal.pos, {32, 32}, {animal.kind * 128.f, 0});
+        animal.AddDrawCall(timeSinceStart, deltaTime, drawAnimals);
     XDino_Draw(drawAnimals);
 
     DinoDrawCall drawDinos = DinoPlayer::DrawCallDinos(g_Dinos, timeSinceStart, deltaTime);
