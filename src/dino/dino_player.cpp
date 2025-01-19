@@ -49,6 +49,8 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
         bDinoLeft = false;
 
     m_lassoPoints.push_back(dinoPos);
+    if (m_lassoPoints.size() > 120)
+        m_lassoPoints.erase(m_lassoPoints.begin());
 }
 
 void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall) const
