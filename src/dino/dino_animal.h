@@ -6,7 +6,7 @@
 class DinoAnimal {
 public:
     /// Initialise l'animal avec un type au hasard.
-    void InitRandom(DinoVec2 pos);
+    void InitRandom(DinoVec2 pos, double timeSinceStart);
 
     /// Met à jour les déplacements du joueur.
     void Update(double timeSinceStart, float deltaTime);
@@ -19,6 +19,7 @@ public:
     void AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall) const;
 
 private:
+    double m_timeStart;
     DinoVec2 m_pos;
     DinoVec2 m_dir;
     int32_t m_kind;

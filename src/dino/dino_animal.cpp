@@ -3,11 +3,12 @@
 
 const std::string DinoAnimal::TEXTURE_NAME = "animals.png";
 
-void DinoAnimal::InitRandom(DinoVec2 pos)
+void DinoAnimal::InitRandom(DinoVec2 pos, double timeSinceStart)
 {
     m_pos = {pos.x - 16, pos.y - 32};
     m_kind = XDino_RandomInt32(0, 7);
     m_dir = XDino_RandomUnitVec2();
+    m_timeStart = timeSinceStart;
 }
 
 void DinoAnimal::Update(double timeSinceStart, float deltaTime)
@@ -50,10 +51,16 @@ void DinoAnimal::AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCal
     u1 += 128 * m_kind;
     u2 += 128 * m_kind;
 
-    drawCall.vertices.emplace_back(DinoVec2{m_pos.x, m_pos.y}, u1, v1);
-    drawCall.vertices.emplace_back(DinoVec2{m_pos.x + 32, m_pos.y}, u2, v1);
-    drawCall.vertices.emplace_back(DinoVec2{m_pos.x, m_pos.y + 32}, u1, v2);
-    drawCall.vertices.emplace_back(DinoVec2{m_pos.x + 32, m_pos.y}, u2, v1);
-    drawCall.vertices.emplace_back(DinoVec2{m_pos.x, m_pos.y + 32}, u1, v2);
-    drawCall.vertices.emplace_back(DinoVec2{m_pos.x + 32, m_pos.y + 32}, u2, v2);
+    DinoColor color = DinoColor_WHITE;
+    double elapsedTime = timeSinceStart - m_timeStart;
+    if (elapsedTime < 1) {
+        color.a = static_cast<uint8_t>(UINT8_MAX * elapsedTime);
+    }
+
+    drawCall.vertices.emplace_back(DinoVec2{m_pos.x, m_pos.y}, u1, v1, color);
+    drawCall.vertices.emplace_back(DinoVec2{m_pos.x + 32, m_pos.y}, u2, v1, color);
+    drawCall.vertices.emplace_back(DinoVec2{m_pos.x, m_pos.y + 32}, u1, v2, color);
+    drawCall.vertices.emplace_back(DinoVec2{m_pos.x + 32, m_pos.y}, u2, v1, color);
+    drawCall.vertices.emplace_back(DinoVec2{m_pos.x, m_pos.y + 32}, u1, v2, color);
+    drawCall.vertices.emplace_back(DinoVec2{m_pos.x + 32, m_pos.y + 32}, u2, v2, color);
 }

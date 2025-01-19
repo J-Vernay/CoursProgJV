@@ -50,7 +50,7 @@ void Dino_GameFrame(double timeSinceStart)
     if (timeSinceStart - g_AnimalSpawnTime >= 1) {
         g_AnimalSpawnTime = timeSinceStart;
         DinoVec2 spawnPos = g_Terrain.GenerateRandomSpawn();
-        g_Animals.emplace_back().InitRandom(spawnPos);
+        g_Animals.emplace_back().InitRandom(spawnPos, timeSinceStart);
     }
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
