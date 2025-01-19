@@ -25,10 +25,10 @@ void Dino_GameInit()
 {
     DinoVec2 rdrSize = {480, 360};
     XDino_SetRenderSize(rdrSize);
-    g_Dinos.emplace_back().Init({rdrSize.x * 0.25f, rdrSize.y * 0.25f}, DinoGamepadIdx::Keyboard, 0);
-    g_Dinos.emplace_back().Init({rdrSize.x * 0.75f, rdrSize.y * 0.25f}, DinoGamepadIdx::Gamepad1, 1);
-    g_Dinos.emplace_back().Init({rdrSize.x * 0.25f, rdrSize.y * 0.75f}, DinoGamepadIdx::Gamepad2, 2);
-    g_Dinos.emplace_back().Init({rdrSize.x * 0.75f, rdrSize.y * 0.75f}, DinoGamepadIdx::Gamepad3, 3);
+    g_Dinos.emplace_back().Init({rdrSize.x * 0.25f, rdrSize.y * 0.25f}, DinoGamepadIdx::Keyboard, 0, DinoColor_BLUE);
+    g_Dinos.emplace_back().Init({rdrSize.x * 0.75f, rdrSize.y * 0.25f}, DinoGamepadIdx::Gamepad1, 1, DinoColor_RED);
+    g_Dinos.emplace_back().Init({rdrSize.x * 0.25f, rdrSize.y * 0.75f}, DinoGamepadIdx::Gamepad2, 2, DinoColor_YELLOW);
+    g_Dinos.emplace_back().Init({rdrSize.x * 0.75f, rdrSize.y * 0.75f}, DinoGamepadIdx::Gamepad3, 3, DinoColor_GREEN);
 
     g_Terrain.Init(24, 16);
 }
@@ -61,9 +61,12 @@ void Dino_GameFrame(double timeSinceStart)
 
     DinoDrawCall drawAnimals;
     drawAnimals.textureName = "animals.png";
-    for (DinoAnimal animal : g_Animals)
+    for (DinoAnimal const& animal : g_Animals)
         animal.AddDrawCall(timeSinceStart, deltaTime, drawAnimals);
     XDino_Draw(drawAnimals);
+
+    for (DinoPlayer const& player : g_Dinos)
+        XDino_Draw(player.DrawCallLasso());
 
     DinoDrawCall drawDinos = DinoPlayer::DrawCallDinos(g_Dinos, timeSinceStart, deltaTime);
     XDino_Draw(drawDinos);
