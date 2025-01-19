@@ -7,6 +7,15 @@ void DinoTerrain::Init(int32_t tileCountX, int32_t tileCountY)
 {
     DinoVec2 rdrSize = XDino_GetRenderSize();
 
+    DinoVec2 terrainSize, terrainOffset;
+    terrainSize.x = tileCountX * 16.f;
+    terrainSize.y = tileCountY * 16.f;
+    terrainOffset.x = 0.5f * (rdrSize.x - terrainSize.x);
+    terrainOffset.y = 0.5f * (rdrSize.y - terrainSize.y);
+
+    m_spawnOffset = {terrainOffset.x + 16.f, terrainOffset.y + 16.f};
+    m_spawnSize = {terrainSize.x - 32.f, terrainSize.y - 32.f};
+
     // Océan, draw call séparé car il doit représenter tout l'écran, alors que le m_drawCallTerrain peut être translaté.
     m_drawCallOcean.textureName = "terrain.png";
     m_drawCallOcean.vertices.emplace_back(DinoVec2{0, 0}, 0, 0, DinoColor_WHITE);
@@ -50,8 +59,7 @@ void DinoTerrain::Init(int32_t tileCountX, int32_t tileCountY)
                                             DinoColor_WHITE);
 
     // Grille centrée
-    m_drawCallTerrain.translation.x = (rdrSize.x - (tileCountX * 16)) / 2;
-    m_drawCallTerrain.translation.y = (rdrSize.y - (tileCountY * 16)) / 2;
+    m_drawCallTerrain.translation = terrainOffset;
 
     // Fleurs, draw call séparé pour pouvoir gérer l'animation du terrain différemment des fleurs.
 
@@ -59,18 +67,18 @@ void DinoTerrain::Init(int32_t tileCountX, int32_t tileCountY)
     m_drawCallFlowers.textureName = "terrain.png";
     for (int32_t y = 1; y < tileCountY - 1; ++y) {
         for (int32_t x = 1; x < tileCountX - 1; ++x) {
-            // 3 chances sur 20 de générer une fleur.
-            int32_t flowerKind = XDino_RandomInt32(0, 9);
+            // 3 chances sur 30 de générer une fleur.
+            int32_t flowerKind = XDino_RandomInt32(0, 29);
             if (flowerKind >= 3)
                 continue;
             Dino_AddDraw_Rect(m_drawCallFlowers, {16.f * x, 16.f * y}, {16, 16}, {32 + 16.f * flowerKind, 0});
         }
     }
     // On garde les mêmes coordonnées
-    m_drawCallFlowers.translation = m_drawCallTerrain.translation;
+    m_drawCallFlowers.translation = terrainOffset;
 }
 
-void DinoTerrain::Draw(double timeSinceStart, float deltaTime)
+void DinoTerrain::Draw(double timeSinceStart, float deltaTime) const
 {
     XDino_Draw(m_drawCallOcean);
 
