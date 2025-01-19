@@ -162,6 +162,9 @@ int32_t XDino_RandomInt32(int32_t min, int32_t max);
 /// Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus.
 float XDino_RandomFloat(float min, float max);
 
+/// Génère un vecteur unitaire dans une direction aléatoire.
+DinoVec2 XDino_RandomUnitVec2();
+
 /// @}
 
 

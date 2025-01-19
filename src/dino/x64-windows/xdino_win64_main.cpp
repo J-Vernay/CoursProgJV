@@ -263,4 +263,12 @@ float XDino_RandomFloat(float min, float max)
     return distribution(gXDino_rng);
 }
 
+DinoVec2 XDino_RandomUnitVec2()
+{
+    // On choisit un angle entre 0 et 2*PI radians.
+    std::uniform_real_distribution<float> distribution(0, 6.28318530718f);
+    float angle = distribution(gXDino_rng);
+    return { cosf(angle), sinf(angle) };
+}
+
 #pragma endregion
