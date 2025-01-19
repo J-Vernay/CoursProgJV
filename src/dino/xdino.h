@@ -159,6 +159,9 @@ uint32_t XDino_RandomUint32(uint32_t min, uint32_t max);
 /// Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus.
 int32_t XDino_RandomInt32(int32_t min, int32_t max);
 
+/// Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus.
+float XDino_RandomFloat(float min, float max);
+
 /// @}
 
 

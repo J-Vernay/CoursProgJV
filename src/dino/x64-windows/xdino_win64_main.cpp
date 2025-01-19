@@ -257,4 +257,10 @@ int32_t XDino_RandomInt32(int32_t min, int32_t max)
     return distribution(gXDino_rng);
 }
 
+float XDino_RandomFloat(float min, float max)
+{
+    std::uniform_real_distribution<float> distribution(min, max);
+    return distribution(gXDino_rng);
+}
+
 #pragma endregion
