@@ -133,9 +133,9 @@ struct DinoGamepad {
     bool btn_right : 1; ///< Si clavier : D
     bool btn_down : 1; ///< Si clavier : S
     bool start : 1; ///< Si clavier : ESPACE ou ENTREE
-    bool select : 1; ///< Si clavier : CTRL ou SHIFT
-    bool shoulder_left : 1; ///< Si clavier : Clic gauche
-    bool shoulder_right : 1; ///< Si clavier : Clic droit
+    bool select : 1; ///< Si clavier : SHIFT
+    bool shoulder_left : 1; ///< Si clavier : CTRL
+    bool shoulder_right : 1; ///< Si clavier : ALT
 
     float stick_left_x; ///< Entre -1 et 1. Si clavier : dérivé de 'dpad'
     float stick_left_y; ///< Entre -1 et 1. Si clavier : dérivdé de 'dpad'

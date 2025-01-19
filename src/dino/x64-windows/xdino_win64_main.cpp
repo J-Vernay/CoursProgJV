@@ -177,9 +177,9 @@ bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
         outGamepad.btn_right = GetAsyncKeyState('D');
         outGamepad.btn_down = GetAsyncKeyState('S');
         outGamepad.start = GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE);
-        outGamepad.select = GetAsyncKeyState(VK_CONTROL) || GetAsyncKeyState(VK_SHIFT);
-        outGamepad.shoulder_left = GetAsyncKeyState(VK_LBUTTON);
-        outGamepad.shoulder_right = GetAsyncKeyState(VK_RBUTTON);
+        outGamepad.select = GetAsyncKeyState(VK_SHIFT);
+        outGamepad.shoulder_left = GetAsyncKeyState(VK_CONTROL);
+        outGamepad.shoulder_right = GetAsyncKeyState(VK_MENU);
 
         float x, y, hypot;
 
