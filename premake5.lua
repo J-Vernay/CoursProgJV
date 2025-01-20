@@ -6,7 +6,7 @@ workspace "CoursProgJV"
   -- Les configurations changent la manière dont les fichiers C++ sont compilés,
   -- par exemple en changeant l'état du préprocesseur, en demandant des optimisations,
   -- ou l'ajout de checks de debug.
-  configurations { "Debug", "Release" }
+  configurations { "Debug", "Profile", "Release" }
 
   -- Quels standards utiliser pour les langages de programmation.
   cdialect "C17"
@@ -32,24 +32,28 @@ workspace "CoursProgJV"
   -- Particularités pour Windows 64-bits
   filter "platforms:x64-windows"
     architecture "x86_64"
-    defines { "_CRT_SECURE_NO_WARNINGS" }
+    defines { "_CRT_SECURE_NO_WARNINGS", "XDINO_X64_WINDOWS=1" }
     flags { "NoIncrementalLink" }
     editandcontinue "Off"
   filter {}
 
   -- Particularités quand on veut se mettre en débogage
   filter "configurations:Debug"
-    -- Vérifie pendant l'exécution que tous les accès de pointeur soient bons, crash dès qu'il y a une erreur.
-    -- Permet de se rendre compte des manipulations invalides qui entraineraient des corruptions mémoire.
-    -- sanitize "Address"
+    defines { "XDINO_DEBUG=1"}
   filter {}
 
-  -- Particularités quand on veut se mettre en configuration de performance
-  filter "configurations:Release"
+  -- Particularités quand on veut se mettre en configuration de performance mais avoir les outils de debug
+  filter "configurations:Profile"
     -- Active la macro standard NDEBUG, qui désactive les assert()
-    defines { "NDEBUG" }
+    defines { "NDEBUG", "XDINO_PROFILE=1" }
     -- Le compilateur va optimiser le code assembleur, pour le rendre plus rapide,
     -- mais sera plus difficile à déboguer vu que la correspondance C++/Assembleur est brisée.
+    optimize "On"
+  filter {}
+
+  -- Particularités quand on veut faire l'exe final, optimisé et sans outils de debug.
+  filter "configurations:Release"
+    defines { "NDEBUG", "XDINO_RELEASE=1" }
     optimize "On"
   filter {}
 
@@ -99,5 +103,15 @@ project "Dino_JulienVernay"
   filter {}
 
   postbuildcommands {
-    "{COPYDIR} %[assets] %[%{prj.location}/assets]"
+    "{COPYDIR} %[assets] %[%{prj.location}/assets]",
   }
+
+  -- Autoriser PIX quand on est sur Windows en mode "Profile"
+  filter { "platforms:x64-windows", "configurations:Profile" }
+    defines { "USE_PIX" }
+    includedirs { "external/pix/Include/WinPixEventRuntime" }
+    links { "external/pix/bin/x64/WinPixEventRuntime.lib"}
+    postbuildcommands {
+      "{COPYFILE} %[external/pix/bin/x64/WinPixEventRuntime.dll] %[%{prj.location}]"
+    }
+  filter {}

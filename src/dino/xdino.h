@@ -171,6 +171,33 @@ DinoVec2 XDino_RandomUnitVec2();
 
 /// @}
 
+/// @name API de profiling
+/// Permet d'avoir des événements sur la timeline de PIX.
+/// @{
 
-/// Détail d'implémentation, ne pas appeler directement. Il faut utiliser `DINO_CRITICAL`.
+#ifdef USE_PIX
+
+/// Commence un intervalle de profiling visible sur PIX.
+/// Les intervalles de profiling peuvent être l'un dans l'autre.
+/// @param color DinoColor indicating the color shown with PIX.
+/// @param msg Null-terminated C-string.
+void XDino_ProfileBegin(DinoColor color, char const* msg);
+
+/// Finit un intervalle de profiling.
+void XDino_ProfileEnd();
+
+#else
+
+// Quand USE_PIX n'est pas utilisé, on remplace les fonctions par "ne fait rien"
+#define XDino_ProfileBegin(...) (void)0
+#define XDino_ProfileEnd() (void)0
+
+#endif
+
+/// @}
+
+
+/// Détail d'implémentation, .
+
+/// Ne pas appeler directement, il faut utiliser `DINO_CRITICAL`.
 void _impl_XDino_Critical(char const* pFunc, int line, char const* msg);
