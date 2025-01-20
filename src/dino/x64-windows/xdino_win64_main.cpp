@@ -12,6 +12,7 @@
 
 #include <Windows.h>
 #include <Xinput.h>
+#include <pix3.h>
 
 
 // Déclaration des constantes.
@@ -135,6 +136,7 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
     }
     // Le système d'exploitation demande à redessiner la fenêtre.
     if (uMsg == WM_PAINT) {
+        XDino_ProfileBegin(DinoColor_BLACK, "Frame");
         LARGE_INTEGER curTime;
         QueryPerformanceCounter(&curTime);
         int64_t tickCount = curTime.QuadPart - gXDino_tickStart;
@@ -142,6 +144,7 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         XDino_Win64_BeginDraw();
         Dino_GameFrame(timeSinceStart);
         XDino_Win64_EndDraw();
+        XDino_ProfileEnd();
         return 0;
     }
     // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
@@ -159,6 +162,18 @@ void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
     snprintf(buffer, sizeof(buffer), "%s\n%s (line %d)", msg, pFunc, line);
     MessageBoxA(gXDino_hWindow, buffer, "Error", MB_SYSTEMMODAL | MB_SETFOREGROUND | MB_ICONERROR | MB_OK);
 }
+
+#ifdef USE_PIX
+void XDino_ProfileBegin(DinoColor color, char const* msg)
+{
+    PIXBeginEvent(PIX_COLOR(color.r, color.g, color.b), msg);
+}
+
+void XDino_ProfileEnd()
+{
+    PIXEndEvent();
+}
+#endif
 
 #pragma endregion
 
@@ -268,7 +283,7 @@ DinoVec2 XDino_RandomUnitVec2()
     // On choisit un angle entre 0 et 2*PI radians.
     std::uniform_real_distribution<float> distribution(0, 6.28318530718f);
     float angle = distribution(gXDino_rng);
-    return { cosf(angle), sinf(angle) };
+    return {cosf(angle), sinf(angle)};
 }
 
 #pragma endregion

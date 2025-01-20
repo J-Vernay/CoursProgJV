@@ -427,6 +427,8 @@ void XDino_Win64_BeginDraw()
 
 void XDino_Win64_EndDraw()
 {
+    XDino_ProfileBegin(DinoColor_GREY, "XDino_Win64_EndDraw");
+
     DinoColor color = gXDino_clearColor;
     float clearColor[4] = {color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f};
     gXDino_context->ClearRenderTargetView(gXDino_rtv, clearColor);
@@ -504,7 +506,11 @@ void XDino_Win64_EndDraw()
         gXDino_context->Draw(static_cast<UINT>(drawCall.vertices.size()), 0);
     }
 
+    XDino_ProfileEnd();
+
+    XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, "SwapchainPresent");
     gXDino_swapchain->Present(1, 0);
+    XDino_ProfileEnd();
 }
 
 void XDino_Win64_DestroyRenderer()
