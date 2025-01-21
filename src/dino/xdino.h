@@ -179,8 +179,8 @@ DinoVec2 XDino_RandomUnitVec2();
 
 /// Commence un intervalle de profiling visible sur PIX.
 /// Les intervalles de profiling peuvent être l'un dans l'autre.
-/// @param color DinoColor indicating the color shown with PIX.
-/// @param msg Null-terminated C-string.
+/// @param color DinoColor qui indique la couleur sur PIX.
+/// @param msg Chaine de caractère C terminée par 0.
 void XDino_ProfileBegin(DinoColor color, char const* msg);
 
 /// Finit un intervalle de profiling.
