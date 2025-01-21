@@ -35,6 +35,8 @@ void Dino_GameInit()
 
 void Dino_GameFrame(double timeSinceStart)
 {
+    XDino_ProfileBegin(DinoColor_RED, "Dino_GameFrame");
+
     DinoVec2 rdrSize = XDino_GetRenderSize();
 
     // Prendre en compte le temps qui passe.
@@ -77,6 +79,8 @@ void Dino_GameFrame(double timeSinceStart)
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         XDino_Draw(drawCall);
     }
+
+    XDino_ProfileEnd();
 }
 
 void Dino_GameShut()
