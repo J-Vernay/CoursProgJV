@@ -53,6 +53,19 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
         m_lassoPoints.erase(m_lassoPoints.begin());
 }
 
+std::span<DinoVec2 const> DinoPlayer::GetLasso() const
+{
+    return m_lassoPoints;
+}
+
+void DinoPlayer::EraseLasso(size_t idxBegin, size_t idxEnd)
+{
+    if (idxBegin <= idxEnd && idxEnd <= m_lassoPoints.size())
+        m_lassoPoints.erase(m_lassoPoints.begin() + idxBegin, m_lassoPoints.begin() + idxEnd);
+    else
+        DINO_CRITICAL("Logic error in indices in EraseLasso()");
+}
+
 void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall) const
 {
     drawCall.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);

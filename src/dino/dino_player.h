@@ -16,6 +16,14 @@ public:
     /// Construit un DinoDrawCall pour l'affichage d'un lasso.
     DinoDrawCall DrawCallLasso() const;
 
+    /// Permet de récupérer le lasso du joueur.
+    std::span<DinoVec2 const> GetLasso() const;
+
+    /// Permet de réduire le lasso du joueur.
+    /// @param idxBegin Indice du premier élément à supprimer.
+    /// @param idxEnd Indice après le dernier élément supprimé ("past-the-end").
+    void EraseLasso(size_t idxBegin, size_t idxEnd);
+
     /// Construit un DinoDrawCall pour l'affichage de tous les dinosaures d'un coup.
     static DinoDrawCall DrawCallDinos(std::span<DinoPlayer const> dinos, double timeSinceStart, float deltaTime);
 

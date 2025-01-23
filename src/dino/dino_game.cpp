@@ -1,8 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "dino_animal.h"
-
+#include <dino/dino_animal.h>
+#include <dino/dino_geometry.h>
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 
@@ -56,6 +56,28 @@ void Dino_GameFrame(double timeSinceStart)
     }
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
+
+    // Lassos
+
+    for (DinoPlayer& dino : g_Dinos) {
+        std::span<DinoVec2 const> lassoPoints = dino.GetLasso();
+        size_t lassoSize = lassoPoints.size();
+        if (lassoSize < 4)
+            continue;
+        // On n'a besoin de regarder que le dernier segment qui a été rajouté.
+        DinoVec2 C = lassoPoints[lassoSize - 2];
+        DinoVec2 D = lassoPoints[lassoSize - 1];
+        for (size_t i = 0; i < lassoSize - 3; ++i) {
+            DinoVec2 A = lassoPoints[i];
+            DinoVec2 B = lassoPoints[i + 1];
+            if (Dino_IntersectSegment(A, B, C, D)) {
+                dino.EraseLasso(i + 1, lassoSize - 1);
+                // À partir d'ici, "lassoPoints" est invalide!
+                break;
+            }
+        }
+
+    }
 
     // Affichage
 
