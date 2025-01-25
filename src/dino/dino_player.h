@@ -16,6 +16,9 @@ public:
     /// Récupère la position actuelle du joueur.
     DinoVec2 GetPos() const;
 
+    /// Force la position du joueur.
+    void SetPos(DinoVec2 pos);
+
     /// Construit un DinoDrawCall pour l'affichage de tous les dinosaures d'un coup.
     static DinoDrawCall DrawCallDinos(std::span<DinoPlayer const> dinos, double timeSinceStart, float deltaTime);
 

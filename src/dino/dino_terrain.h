@@ -13,6 +13,8 @@ public:
 
     DinoVec2 GenerateRandomSpawn() const;
 
+    DinoVec2 ClampPos(DinoVec2 pos) const;
+
 private:
     // Position in pixels
     DinoVec2 m_spawnOffset;

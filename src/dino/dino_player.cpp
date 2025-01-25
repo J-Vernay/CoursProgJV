@@ -48,20 +48,24 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
         bDinoLeft = false;
 }
 
-/// Récupère la position actuelle du joueur.
 DinoVec2 DinoPlayer::GetPos() const
 {
     return dinoPos;
 }
 
+void DinoPlayer::SetPos(DinoVec2 pos)
+{
+    dinoPos = pos;
+}
+
 void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall) const
 {
-    drawCall.vertices.emplace_back(DinoVec2{-12, -12}, 0, 0, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{+12, -12}, 24, 0, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{-12, +12}, 0, 24, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{+12, +12}, 24, 24, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{-12, -20}, 0, 0, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{+12, -20}, 24, 0, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{-12, +4}, 0, 24, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{+12, -20}, 24, 0, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{-12, +4}, 0, 24, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{+12, +4}, 24, 24, DinoColor_WHITE);
 
     std::span<DinoVertex> vertices = {drawCall.vertices.end() - 6, drawCall.vertices.end()};
 

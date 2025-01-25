@@ -59,6 +59,10 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (size_t idxPlayer = 0; idxPlayer < g_PlayerCount; ++idxPlayer) {
         g_Dinos[idxPlayer].Update(timeSinceStart, deltaTime);
+        DinoVec2 dinoPos = g_Dinos[idxPlayer].GetPos();
+        dinoPos = g_Terrain.ClampPos(dinoPos);
+        g_Dinos[idxPlayer].SetPos(dinoPos);
+
         g_Lassos[idxPlayer].Update(g_Dinos[idxPlayer].GetPos());
         g_Lassos[idxPlayer].ApplyCollisionSelf();
     }

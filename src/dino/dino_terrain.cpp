@@ -103,3 +103,16 @@ DinoVec2 DinoTerrain::GenerateRandomSpawn() const
     pos.y = m_spawnOffset.y + XDino_RandomFloat(0, m_spawnSize.y);
     return pos;
 }
+
+DinoVec2 DinoTerrain::ClampPos(DinoVec2 pos) const
+{
+    if (pos.x < m_spawnOffset.x)
+        pos.x = m_spawnOffset.x;
+    if (pos.x > m_spawnOffset.x + m_spawnSize.x)
+        pos.x = m_spawnOffset.x + m_spawnSize.x;
+    if (pos.y < m_spawnOffset.y)
+        pos.y = m_spawnOffset.y;
+    if (pos.y > m_spawnOffset.y + m_spawnSize.y)
+        pos.y = m_spawnOffset.y + m_spawnSize.y;
+    return pos;
+}
