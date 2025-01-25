@@ -128,7 +128,7 @@ des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit s
 3. Les suites de points sont tronquées à une longueur maximale.
 4. Quand deux segments se coupent et sont du même joueur, la boucle
    est retirée du lasso (mais la partie avant la boucle existe toujours).
-5. Quand un joueur passe par dessus le lasso d'un autre joueur, le lasso est détruit jusqu'à l'intersection
+5. Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.
 
 ### F5. Scoring et chronomètre
 
@@ -139,13 +139,15 @@ des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit s
 ### F6. Interactions
 
 1. Les dinosaures ne peuvent pas sortir des limites du terrain.
-2. Quand les dinosaures et animaux (entre eux) sont en collision
+2. Les animaux ne peuvent pas sortir des limites du terrain. Quand ils atteignent le bord
+   du terrain, ils prennent une nouvelle direction aléatoirement.
+3. Quand les dinosaures et animaux sont en collision
    (distance entre les centres des sprites > 16 pixels), ils se repoussent.
-3. Plus le chronomètre est bas, et plus les animaux apparaissent vite.
-4. Quand un dinosaure est dans une boucle de lasso,
+4. Plus le chronomètre est bas, et plus les animaux apparaissent vite.
+5. Quand un dinosaure est dans une boucle de lasso,
    il se prend des dégâts (= immobilisation 3 secondes + animation).
-5. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
-6. Quand les animaux disparaissent, des points sont crédités au dinosaure.
+6. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
+7. Quand les animaux disparaissent, des points sont crédités au dinosaure.
 
 ### F7. Menu
 
