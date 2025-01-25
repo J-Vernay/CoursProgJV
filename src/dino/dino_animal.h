@@ -8,8 +8,17 @@ public:
     /// Initialise l'animal avec un type au hasard.
     void InitRandom(DinoVec2 pos, double timeSinceStart);
 
-    /// Met à jour les déplacements du joueur.
+    /// Met à jour les déplacements du animal.
     void Update(double timeSinceStart, float deltaTime);
+
+    /// Récupère la position actuelle de l'animal.
+    DinoVec2 GetPos() const;
+
+    /// Force la position de l'animal.
+    void SetPos(DinoVec2 pos);
+
+    /// Force l'animal à prendre une nouvelle direction aléatoire.
+    void SetRandomDir();
 
     /// Nom de la texture qui contient les animaux.
     static const std::string TEXTURE_NAME;

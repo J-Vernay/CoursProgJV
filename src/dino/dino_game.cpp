@@ -62,10 +62,12 @@ void Dino_GameFrame(double timeSinceStart)
         DinoVec2 dinoPos = g_Dinos[idxPlayer].GetPos();
         dinoPos = g_Terrain.ClampPos(dinoPos);
         g_Dinos[idxPlayer].SetPos(dinoPos);
-
         g_Lassos[idxPlayer].Update(g_Dinos[idxPlayer].GetPos());
-        g_Lassos[idxPlayer].ApplyCollisionSelf();
     }
+
+    for (DinoLasso& lasso : g_Lassos)
+        lasso.ApplyCollisionSelf();
+
     for (DinoLasso const& lasso1 : g_Lassos)
         for (DinoLasso& lasso2 : g_Lassos)
             if (&lasso1 != &lasso2)
@@ -76,8 +78,16 @@ void Dino_GameFrame(double timeSinceStart)
         DinoVec2 spawnPos = g_Terrain.GenerateRandomSpawn();
         g_Animals.emplace_back().InitRandom(spawnPos, timeSinceStart);
     }
-    for (DinoAnimal& animal : g_Animals)
+
+    for (DinoAnimal& animal : g_Animals) {
         animal.Update(timeSinceStart, deltaTime);
+        DinoVec2 posBefore = animal.GetPos();
+        DinoVec2 posAfter = g_Terrain.ClampPos(posBefore);
+        if (posAfter.x != posBefore.x || posAfter.y != posBefore.y) {
+            animal.SetPos(posAfter);
+            animal.SetRandomDir();
+        }
+    }
 
     // Affichage
 
