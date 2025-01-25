@@ -128,8 +128,7 @@ des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit s
 3. Les suites de points sont tronquées à une longueur maximale.
 4. Quand deux segments se coupent et sont du même joueur, la boucle
    est retirée du lasso (mais la partie avant la boucle existe toujours).
-5. Quand deux segments se coupent et sont de joueurs différents,
-   les parties des lassos derrière l'intersection sont retirées.
+5. Quand un joueur passe par dessus le lasso d'un autre joueur, le lasso est détruit jusqu'à l'intersection
 
 ### F5. Scoring et chronomètre
 
