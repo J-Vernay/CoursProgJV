@@ -8,21 +8,13 @@
 class DinoPlayer {
 public:
     /// Crée le DinoPlayer associé à un joueur.
-    void Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_, DinoColor lassoColor);
+    void Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_);
 
     /// Met à jour les déplacements du joueur.
     void Update(double timeSinceStart, float deltaTime);
 
-    /// Construit un DinoDrawCall pour l'affichage d'un lasso.
-    DinoDrawCall DrawCallLasso() const;
-
-    /// Permet de récupérer le lasso du joueur.
-    std::span<DinoVec2 const> GetLasso() const;
-
-    /// Permet de réduire le lasso du joueur.
-    /// @param idxBegin Indice du premier élément à supprimer.
-    /// @param idxEnd Indice après le dernier élément supprimé ("past-the-end").
-    void EraseLasso(size_t idxBegin, size_t idxEnd);
+    /// Récupère la position actuelle du joueur.
+    DinoVec2 GetPos() const;
 
     /// Construit un DinoDrawCall pour l'affichage de tous les dinosaures d'un coup.
     static DinoDrawCall DrawCallDinos(std::span<DinoPlayer const> dinos, double timeSinceStart, float deltaTime);
@@ -36,9 +28,6 @@ private:
     double dinoDamageStart = 0;
     DinoGamepadIdx idxGamepad{};
     int32_t idxPlayer{};
-
-    std::vector<DinoVec2> m_lassoPoints;
-    DinoColor m_lassoColor;
 
     /// Ajoute les vertices concernant le joueur actuel au `drawCall` donné.
     /// Gère les animations grâce au temps qui passe.

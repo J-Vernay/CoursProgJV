@@ -4,12 +4,11 @@
 
 #include <algorithm>
 
-void DinoPlayer::Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_, DinoColor lassoColor)
+void DinoPlayer::Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_)
 {
     dinoPos = initPos;
     idxGamepad = idxGamepad_;
     idxPlayer = idxPlayer_;
-    m_lassoColor = lassoColor;
     if (idxPlayer < 0 || idxPlayer > 4)
         DINO_CRITICAL("Only players indices [0...3] are accepted");
 }
@@ -47,23 +46,12 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
         bDinoLeft = true;
     if (dinoMove.x > 0)
         bDinoLeft = false;
-
-    m_lassoPoints.push_back(dinoPos);
-    if (m_lassoPoints.size() > 120)
-        m_lassoPoints.erase(m_lassoPoints.begin());
 }
 
-std::span<DinoVec2 const> DinoPlayer::GetLasso() const
+/// Récupère la position actuelle du joueur.
+DinoVec2 DinoPlayer::GetPos() const
 {
-    return m_lassoPoints;
-}
-
-void DinoPlayer::EraseLasso(size_t idxBegin, size_t idxEnd)
-{
-    if (idxBegin <= idxEnd && idxEnd <= m_lassoPoints.size())
-        m_lassoPoints.erase(m_lassoPoints.begin() + idxBegin, m_lassoPoints.begin() + idxEnd);
-    else
-        DINO_CRITICAL("Logic error in indices in EraseLasso()");
+    return dinoPos;
 }
 
 void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall) const
@@ -119,11 +107,6 @@ void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCa
     // Couleur de dinosaure
     for (DinoVertex& vertex : vertices)
         vertex.v += 24 * idxPlayer;
-}
-
-DinoDrawCall DinoPlayer::DrawCallLasso() const
-{
-    return Dino_CreateDrawCall_Polyline(m_lassoPoints, 4, m_lassoColor);
 }
 
 DinoDrawCall DinoPlayer::DrawCallDinos(std::span<DinoPlayer const> dinos, double timeSinceStart, float deltaTime)
