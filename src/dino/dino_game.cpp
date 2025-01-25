@@ -57,6 +57,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Mise à jour
 
+    XDino_ProfileBegin(DinoColor_BLUE, "Players logic");
     for (size_t idxPlayer = 0; idxPlayer < g_PlayerCount; ++idxPlayer) {
         g_Dinos[idxPlayer].Update(timeSinceStart, deltaTime);
         DinoVec2 dinoPos = g_Dinos[idxPlayer].GetPos();
@@ -64,7 +65,9 @@ void Dino_GameFrame(double timeSinceStart)
         g_Dinos[idxPlayer].SetPos(dinoPos);
         g_Lassos[idxPlayer].Update(g_Dinos[idxPlayer].GetPos());
     }
+    XDino_ProfileEnd();
 
+    XDino_ProfileBegin(DinoColor_YELLOW, "Lassos logic");
     for (DinoLasso& lasso : g_Lassos)
         lasso.ApplyCollisionSelf();
 
@@ -72,8 +75,10 @@ void Dino_GameFrame(double timeSinceStart)
         for (DinoLasso& lasso2 : g_Lassos)
             if (&lasso1 != &lasso2)
                 lasso1.ApplyCollisionTo(lasso2);
+    XDino_ProfileEnd();
 
-    if (timeSinceStart - g_AnimalSpawnTime >= 1) {
+    XDino_ProfileBegin(DinoColor_GREEN, "Animals logic");
+    if (timeSinceStart - g_AnimalSpawnTime >= 0.01) {
         g_AnimalSpawnTime = timeSinceStart;
         DinoVec2 spawnPos = g_Terrain.GenerateRandomSpawn();
         g_Animals.emplace_back().InitRandom(spawnPos, timeSinceStart);
@@ -88,9 +93,11 @@ void Dino_GameFrame(double timeSinceStart)
             animal.SetRandomDir();
         }
     }
+    XDino_ProfileEnd();
 
     // Affichage
 
+    XDino_ProfileBegin(DinoColor_GREY, "Draw call emission");
     g_Terrain.Draw(timeSinceStart, deltaTime);
 
     DinoDrawCall drawAnimals;
@@ -111,6 +118,7 @@ void Dino_GameFrame(double timeSinceStart)
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         XDino_Draw(drawCall);
     }
+    XDino_ProfileEnd();
 
     XDino_ProfileEnd();
 }

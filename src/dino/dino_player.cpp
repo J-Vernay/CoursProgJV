@@ -18,7 +18,9 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
     // Gestion des entrées.
 
     DinoGamepad gamepad{};
+    XDino_ProfileBegin(DinoColor_BLACK, "GetGamepad");
     bool bSuccess = XDino_GetGamepad(idxGamepad, gamepad);
+    XDino_ProfileEnd();
     if (bSuccess) {
         bDinoRunning = gamepad.btn_right;
         dinoMove.x = gamepad.stick_left_x;
