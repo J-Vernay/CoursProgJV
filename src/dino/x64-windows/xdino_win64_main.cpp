@@ -12,8 +12,10 @@
 
 #include <Windows.h>
 #include <Xinput.h>
-#include <pix3.h>
 
+#ifdef USE_PIX
+#include <pix3.h>
+#endif
 
 // Déclaration des constantes.
 constexpr int XDino_INIT_WIDTH = 640;
