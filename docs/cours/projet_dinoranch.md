@@ -128,24 +128,24 @@ des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit s
    est retirée du lasso (mais la partie avant la boucle existe toujours).
 4. Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.
 
-### F5. Scoring et chronomètre
-
-1. Un chronomètre de 3 minutes s'affiche en haut de l'écran et décroit.
-2. Le score des dinosaures s'affichent aux coins de l'écran.
-3. Les dinosaures peuvent gagner des points : un "+100" s'affiche au-dessus d'eux un court instant.
-
-### F6. Interactions
+### F5. Interactions
 
 1. Les dinosaures ne peuvent pas sortir des limites du terrain.
 2. Les animaux ne peuvent pas sortir des limites du terrain. Quand ils atteignent le bord
    du terrain, ils prennent une nouvelle direction aléatoirement.
 3. Quand les dinosaures sont en collision (distance < 16 pixels), ils se repoussent.
 4. Les animaux se repoussent entre eux, et aussi les animaux et les dinosaures entre eux.
-5. Plus le chronomètre est bas, et plus les animaux apparaissent vite.
-6. Quand un dinosaure est dans une boucle de lasso,
+5. Quand un dinosaure est dans une boucle de lasso,
    il se prend des dégâts (= immobilisation 3 secondes + animation).
-7. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
-8. Quand les animaux disparaissent, des points sont crédités au dinosaure.
+6. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
+
+### F6. Scoring et chronomètre
+
+1. Un chronomètre de 3 minutes s'affiche en haut de l'écran et décroit.
+2. Plus le chronomètre est bas, et plus les animaux apparaissent vite.
+3. Le score des dinosaures s'affichent aux coins de l'écran.
+4. Les dinosaures peuvent gagner des points : un "+100" s'affiche au-dessus d'eux un court instant.
+5. Quand les animaux disparaissent, des points sont crédités au dinosaure.
 
 ### F7. Menu
 
