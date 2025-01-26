@@ -1,0 +1,29 @@
+<map id="xdino_win64_main.cpp" name="xdino_win64_main.cpp">
+<area shape="rect" id="Node000001" title="Implémentation de la fenêtre et des événements sur Windows." alt="" coords="416,5,567,31"/>
+<area shape="rect" id="Node000002" href="$xdino_8h.html" title="API d&#39;interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu." alt="" coords="76,87,166,112"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="416,34,304,54,179,82,170,84,168,79,178,76,303,48,415,28"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__rdr_8h.html" title="Fonctions internes à XDino, pour le rendu graphique sur Windows. Ces fonctions communiquent avec la c..." alt="" coords="190,79,348,120"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="458,34,340,76,338,71,456,29"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="340,168,425,193"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="470,34,440,53,414,81,397,117,388,153,383,152,392,115,409,77,437,49,467,29"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="423,87,480,112"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="488,33,467,74,462,71,483,30"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="505,87,561,112"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="500,30,522,71,517,74,496,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="585,87,649,112"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="512,29,586,76,584,80,509,34"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="674,87,742,112"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="528,29,662,76,666,78,664,83,660,82,527,34"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="766,87,820,112"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="567,29,658,48,755,76,758,77,756,82,754,82,657,53,566,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,168,69,193"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="110,115,63,159,59,155,106,111"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="92,168,150,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="124,113,124,152,118,152,118,113"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="174,168,228,193"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="135,111,180,155,176,158,131,114"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="254,122,223,158,219,154,250,118"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="252,168,313,193"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="275,120,280,152,275,153,270,121"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="299,118,354,156,351,161,295,122"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="xdino_win64_rdr.h" name="xdino_win64_rdr.h">
+<area shape="rect" id="Node000001" title="Fonctions internes à XDino, pour le rendu graphique sur Windows. Ces fonctions communiquent avec la c..." alt="" coords="103,5,227,31"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__main_8cpp.html" title="Implémentation de la fenêtre et des événements sur Windows." alt="" coords="5,79,157,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,43,97,81,93,77,138,39"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__rdr_8cpp.html" title="Implémentation du rendu graphique sur Windows." alt="" coords="181,79,320,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,39,238,77,234,81,189,43"/>
+</map>

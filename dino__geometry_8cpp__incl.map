@@ -1,0 +1,13 @@
+<map id="dino_geometry.cpp" name="dino_geometry.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="56,5,186,31"/>
+<area shape="rect" id="Node000002" href="$dino__geometry_8h.html" title=" " alt="" coords="49,79,193,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,31,124,63,118,63,118,31"/>
+<area shape="rect" id="Node000003" href="$xdino_8h.html" title="API d&#39;interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu." alt="" coords="76,153,166,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,105,124,137,118,137,118,105"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,226,69,252"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="108,181,64,218,61,214,105,177"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="92,226,150,252"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="124,179,124,211,118,211,118,179"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="174,226,228,252"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="136,177,178,214,175,218,133,181"/>
+</map>
