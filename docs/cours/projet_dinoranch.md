@@ -141,13 +141,13 @@ des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit s
 1. Les dinosaures ne peuvent pas sortir des limites du terrain.
 2. Les animaux ne peuvent pas sortir des limites du terrain. Quand ils atteignent le bord
    du terrain, ils prennent une nouvelle direction aléatoirement.
-3. Quand les dinosaures et animaux sont en collision
-   (distance entre les centres des sprites > 16 pixels), ils se repoussent.
-4. Plus le chronomètre est bas, et plus les animaux apparaissent vite.
-5. Quand un dinosaure est dans une boucle de lasso,
+3. Quand les dinosaures sont en collision (distance < 16 pixels), ils se repoussent.
+4. Les animaux se repoussent entre eux, et aussi les animaux et les dinosaures entre eux.
+5. Plus le chronomètre est bas, et plus les animaux apparaissent vite.
+6. Quand un dinosaure est dans une boucle de lasso,
    il se prend des dégâts (= immobilisation 3 secondes + animation).
-6. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
-7. Quand les animaux disparaissent, des points sont crédités au dinosaure.
+7. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
+8. Quand les animaux disparaissent, des points sont crédités au dinosaure.
 
 ### F7. Menu
 
