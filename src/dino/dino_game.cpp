@@ -67,18 +67,8 @@ void Dino_GameFrame(double timeSinceStart)
     }
     XDino_ProfileEnd();
 
-    XDino_ProfileBegin(DinoColor_YELLOW, "Lassos logic");
-    for (DinoLasso& lasso : g_Lassos)
-        lasso.ApplyCollisionSelf();
-
-    for (DinoLasso const& lasso1 : g_Lassos)
-        for (DinoLasso& lasso2 : g_Lassos)
-            if (&lasso1 != &lasso2)
-                lasso1.ApplyCollisionTo(lasso2);
-    XDino_ProfileEnd();
-
     XDino_ProfileBegin(DinoColor_GREEN, "Animals logic");
-    if (timeSinceStart - g_AnimalSpawnTime >= 0.01) {
+    if (timeSinceStart - g_AnimalSpawnTime >= 1) {
         g_AnimalSpawnTime = timeSinceStart;
         DinoVec2 spawnPos = g_Terrain.GenerateRandomSpawn();
         g_Animals.emplace_back().InitRandom(spawnPos, timeSinceStart);
@@ -86,6 +76,63 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (DinoAnimal& animal : g_Animals) {
         animal.Update(timeSinceStart, deltaTime);
+    }
+    XDino_ProfileEnd();
+
+    XDino_ProfileBegin(DinoColor_YELLOW, std::format("Physics animals= {}", g_Animals.size()).c_str());
+
+    for (DinoPlayer& dino1 : g_Dinos) {
+        for (DinoPlayer& dino2 : g_Dinos) {
+            if (&dino1 == &dino2)
+                continue;
+            DinoVec2 pos1 = dino1.GetPos();
+            DinoVec2 pos2 = dino2.GetPos();
+            DinoVec2 vec = {pos2.x - pos1.x, pos2.y - pos1.y};
+            float dist = std::hypot(vec.x, vec.y);
+            if (0 < dist && dist < 16) {
+                float f = (16 - dist) / (2 * dist);
+                dino1.SetPos({pos1.x - f * vec.x, pos1.y - f * vec.y});
+                dino2.SetPos({pos2.x + f * vec.x, pos2.y + f * vec.y});
+            }
+        }
+    }
+
+    for (DinoAnimal& animal1 : g_Animals) {
+        for (DinoPlayer& dino2 : g_Dinos) {
+            DinoVec2 pos1 = animal1.GetPos();
+            DinoVec2 pos2 = dino2.GetPos();
+            DinoVec2 vec = {pos2.x - pos1.x, pos2.y - pos1.y};
+            float dist = std::hypot(vec.x, vec.y);
+            if (0 < dist && dist < 16) {
+                float f = (16 - dist) / (2 * dist);
+                animal1.SetPos({pos1.x - f * vec.x, pos1.y - f * vec.y});
+                dino2.SetPos({pos2.x + f * vec.x, pos2.y + f * vec.y});
+            }
+        }
+    }
+
+    for (DinoAnimal& animal1 : g_Animals) {
+        for (DinoAnimal& animal2 : g_Animals) {
+            if (&animal1 == &animal2)
+                continue;
+            DinoVec2 pos1 = animal1.GetPos();
+            DinoVec2 pos2 = animal2.GetPos();
+            DinoVec2 vec = {pos2.x - pos1.x, pos2.y - pos1.y};
+            float dist = std::hypot(vec.x, vec.y);
+            if (0 < dist && dist < 16) {
+                float f = (16 - dist) / (2 * dist);
+                animal1.SetPos({pos1.x - f * vec.x, pos1.y - f * vec.y});
+                animal2.SetPos({pos2.x + f * vec.x, pos2.y + f * vec.y});
+            }
+        }
+    }
+
+    for (DinoPlayer& dino : g_Dinos) {
+        DinoVec2 dinoPos = dino.GetPos();
+        dinoPos = g_Terrain.ClampPos(dinoPos);
+        dino.SetPos(dinoPos);
+    }
+    for (DinoAnimal& animal : g_Animals) {
         DinoVec2 posBefore = animal.GetPos();
         DinoVec2 posAfter = g_Terrain.ClampPos(posBefore);
         if (posAfter.x != posBefore.x || posAfter.y != posBefore.y) {
@@ -95,19 +142,31 @@ void Dino_GameFrame(double timeSinceStart)
     }
     XDino_ProfileEnd();
 
+    XDino_ProfileBegin(DinoColor_YELLOW, "Lassos logic");
+    for (size_t idxPlayer = 0; idxPlayer < g_PlayerCount; ++idxPlayer) {
+        g_Lassos[idxPlayer].Update(g_Dinos[idxPlayer].GetPos());
+        g_Lassos[idxPlayer].ApplyCollisionSelf();
+    }
+
+    for (DinoLasso const& lasso1 : g_Lassos)
+        for (DinoLasso& lasso2 : g_Lassos)
+            if (&lasso1 != &lasso2)
+                lasso1.ApplyCollisionTo(lasso2);
+    XDino_ProfileEnd();
+
     // Affichage
 
     XDino_ProfileBegin(DinoColor_GREY, "Draw call emission");
     g_Terrain.Draw(timeSinceStart, deltaTime);
+
+    for (DinoLasso const& lasso : g_Lassos)
+        lasso.Draw();
 
     DinoDrawCall drawAnimals;
     drawAnimals.textureName = "animals.png";
     for (DinoAnimal const& animal : g_Animals)
         animal.AddDrawCall(timeSinceStart, deltaTime, drawAnimals);
     XDino_Draw(drawAnimals);
-
-    for (DinoLasso const& lasso : g_Lassos)
-        lasso.Draw();
 
     DinoDrawCall drawDinos = DinoPlayer::DrawCallDinos(g_Dinos, timeSinceStart, deltaTime);
     XDino_Draw(drawDinos);
