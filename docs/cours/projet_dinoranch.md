@@ -123,12 +123,10 @@ des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit s
 
 1. Des suites de points dessinées correspondant aux positions passées
    des dinosaures, aux couleurs des dinosaures.
-2. Les suites de points ne grandissent que quand la touche `btn_down` est pressée,
-   et sont vidées quand la touche est relâchée.
-3. Les suites de points sont tronquées à une longueur maximale.
-4. Quand deux segments se coupent et sont du même joueur, la boucle
+2. Les suites de points sont tronquées à une longueur maximale.
+3. Quand deux segments se coupent et sont du même joueur, la boucle
    est retirée du lasso (mais la partie avant la boucle existe toujours).
-5. Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.
+4. Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.
 
 ### F5. Scoring et chronomètre
 
