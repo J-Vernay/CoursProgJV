@@ -6,7 +6,7 @@
 
 void DinoPlayer::Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_)
 {
-    dinoPos = initPos;
+    m_pos = initPos;
     idxGamepad = idxGamepad_;
     idxPlayer = idxPlayer_;
     if (idxPlayer < 0 || idxPlayer > 4)
@@ -42,22 +42,12 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
     if (bDinoDamage)
         speed = 0;
 
-    dinoPos.x += dinoMove.x * speed * deltaTime;
-    dinoPos.y += dinoMove.y * speed * deltaTime;
+    m_pos.x += dinoMove.x * speed * deltaTime;
+    m_pos.y += dinoMove.y * speed * deltaTime;
     if (dinoMove.x < 0)
         bDinoLeft = true;
     if (dinoMove.x > 0)
         bDinoLeft = false;
-}
-
-DinoVec2 DinoPlayer::GetPos() const
-{
-    return dinoPos;
-}
-
-void DinoPlayer::SetPos(DinoVec2 pos)
-{
-    dinoPos = pos;
 }
 
 void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCall& drawCall) const
@@ -73,8 +63,8 @@ void DinoPlayer::_AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCa
 
     // Appliquer la position
     for (DinoVertex& vertex : vertices) {
-        vertex.pos.x += dinoPos.x;
-        vertex.pos.y += dinoPos.y;
+        vertex.pos.x += m_pos.x;
+        vertex.pos.y += m_pos.y;
     }
 
     // Mode miroir si on va à gauche.
@@ -125,7 +115,7 @@ DinoDrawCall DinoPlayer::DrawCallDinos(std::span<DinoPlayer const> dinos, double
     std::sort(tmpDinos.begin(),
               tmpDinos.end(),
               [](DinoPlayer const* a, DinoPlayer const* b) {
-                  return a->dinoPos.y < b->dinoPos.y;
+                  return a->m_pos.y < b->m_pos.y;
               });
 
     DinoDrawCall drawDinos;

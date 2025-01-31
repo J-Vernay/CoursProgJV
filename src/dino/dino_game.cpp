@@ -58,13 +58,8 @@ void Dino_GameFrame(double timeSinceStart)
     // Mise à jour
 
     XDino_ProfileBegin(DinoColor_BLUE, "Players logic");
-    for (size_t idxPlayer = 0; idxPlayer < g_PlayerCount; ++idxPlayer) {
+    for (size_t idxPlayer = 0; idxPlayer < g_PlayerCount; ++idxPlayer)
         g_Dinos[idxPlayer].Update(timeSinceStart, deltaTime);
-        DinoVec2 dinoPos = g_Dinos[idxPlayer].GetPos();
-        dinoPos = g_Terrain.ClampPos(dinoPos);
-        g_Dinos[idxPlayer].SetPos(dinoPos);
-        g_Lassos[idxPlayer].Update(g_Dinos[idxPlayer].GetPos());
-    }
     XDino_ProfileEnd();
 
     XDino_ProfileBegin(DinoColor_GREEN, "Animals logic");
@@ -81,64 +76,27 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_ProfileBegin(DinoColor_YELLOW, std::format("Physics animals= {}", g_Animals.size()).c_str());
 
-    for (DinoPlayer& dino1 : g_Dinos) {
-        for (DinoPlayer& dino2 : g_Dinos) {
-            if (&dino1 == &dino2)
-                continue;
-            DinoVec2 pos1 = dino1.GetPos();
-            DinoVec2 pos2 = dino2.GetPos();
-            DinoVec2 vec = {pos2.x - pos1.x, pos2.y - pos1.y};
-            float dist = std::hypot(vec.x, vec.y);
-            if (0 < dist && dist < 16) {
-                float f = (16 - dist) / (2 * dist);
-                dino1.SetPos({pos1.x - f * vec.x, pos1.y - f * vec.y});
-                dino2.SetPos({pos2.x + f * vec.x, pos2.y + f * vec.y});
-            }
-        }
-    }
+    for (DinoPlayer& dino1 : g_Dinos)
+        for (DinoPlayer& dino2 : g_Dinos)
+            DinoEntity::ResolveCollision(dino1, dino2);
 
-    for (DinoAnimal& animal1 : g_Animals) {
-        for (DinoPlayer& dino2 : g_Dinos) {
-            DinoVec2 pos1 = animal1.GetPos();
-            DinoVec2 pos2 = dino2.GetPos();
-            DinoVec2 vec = {pos2.x - pos1.x, pos2.y - pos1.y};
-            float dist = std::hypot(vec.x, vec.y);
-            if (0 < dist && dist < 16) {
-                float f = (16 - dist) / (2 * dist);
-                animal1.SetPos({pos1.x - f * vec.x, pos1.y - f * vec.y});
-                dino2.SetPos({pos2.x + f * vec.x, pos2.y + f * vec.y});
-            }
-        }
-    }
+    for (DinoAnimal& animal1 : g_Animals)
+        for (DinoPlayer& dino2 : g_Dinos)
+            DinoEntity::ResolveCollision(animal1, dino2);
 
-    for (DinoAnimal& animal1 : g_Animals) {
-        for (DinoAnimal& animal2 : g_Animals) {
-            if (&animal1 == &animal2)
-                continue;
-            DinoVec2 pos1 = animal1.GetPos();
-            DinoVec2 pos2 = animal2.GetPos();
-            DinoVec2 vec = {pos2.x - pos1.x, pos2.y - pos1.y};
-            float dist = std::hypot(vec.x, vec.y);
-            if (0 < dist && dist < 16) {
-                float f = (16 - dist) / (2 * dist);
-                animal1.SetPos({pos1.x - f * vec.x, pos1.y - f * vec.y});
-                animal2.SetPos({pos2.x + f * vec.x, pos2.y + f * vec.y});
-            }
-        }
-    }
+    for (DinoAnimal& animal1 : g_Animals)
+        for (DinoAnimal& animal2 : g_Animals)
+            DinoEntity::ResolveCollision(animal1, animal2);
 
-    for (DinoPlayer& dino : g_Dinos) {
-        DinoVec2 dinoPos = dino.GetPos();
-        dinoPos = g_Terrain.ClampPos(dinoPos);
-        dino.SetPos(dinoPos);
-    }
+    for (DinoPlayer& dino : g_Dinos)
+        dino.ClampToTerrain(g_Terrain);
+
     for (DinoAnimal& animal : g_Animals) {
         DinoVec2 posBefore = animal.GetPos();
-        DinoVec2 posAfter = g_Terrain.ClampPos(posBefore);
-        if (posAfter.x != posBefore.x || posAfter.y != posBefore.y) {
-            animal.SetPos(posAfter);
+        animal.ClampToTerrain(g_Terrain);
+        DinoVec2 posAfter = animal.GetPos();
+        if (posAfter.x != posBefore.x || posAfter.y != posBefore.y)
             animal.SetRandomDir();
-        }
     }
     XDino_ProfileEnd();
 

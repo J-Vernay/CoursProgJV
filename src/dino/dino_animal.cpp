@@ -65,16 +65,6 @@ void DinoAnimal::AddDrawCall(double timeSinceStart, float deltaTime, DinoDrawCal
     drawCall.vertices.emplace_back(DinoVec2{m_pos.x + 16, m_pos.y}, u2, v2, color);
 }
 
-DinoVec2 DinoAnimal::GetPos() const
-{
-    return m_pos;
-}
-
-void DinoAnimal::SetPos(DinoVec2 pos)
-{
-    m_pos = pos;
-}
-
 void DinoAnimal::SetRandomDir()
 {
     m_dir = XDino_RandomUnitVec2();

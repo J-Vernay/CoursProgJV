@@ -1,11 +1,12 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_entity.h>
 
 #include <span>
 
 /// Représente l'avatar d'un joueur dans le monde.
-class DinoPlayer {
+class DinoPlayer : public DinoEntity {
 public:
     /// Crée le DinoPlayer associé à un joueur.
     void Init(DinoVec2 initPos, DinoGamepadIdx idxGamepad_, int32_t idxPlayer_);
@@ -13,17 +14,10 @@ public:
     /// Met à jour les déplacements du joueur.
     void Update(double timeSinceStart, float deltaTime);
 
-    /// Récupère la position actuelle du joueur.
-    DinoVec2 GetPos() const;
-
-    /// Force la position du joueur.
-    void SetPos(DinoVec2 pos);
-
     /// Construit un DinoDrawCall pour l'affichage de tous les dinosaures d'un coup.
     static DinoDrawCall DrawCallDinos(std::span<DinoPlayer const> dinos, double timeSinceStart, float deltaTime);
 
 private:
-    DinoVec2 dinoPos{};
     DinoVec2 dinoMove{};
     bool bDinoLeft = false;
     bool bDinoRunning = false;

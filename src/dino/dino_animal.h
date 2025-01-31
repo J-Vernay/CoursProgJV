@@ -1,21 +1,16 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_entity.h>
 
 // Représente un animal.
-class DinoAnimal {
+class DinoAnimal : public DinoEntity {
 public:
     /// Initialise l'animal avec un type au hasard.
     void InitRandom(DinoVec2 pos, double timeSinceStart);
 
     /// Met à jour les déplacements du animal.
     void Update(double timeSinceStart, float deltaTime);
-
-    /// Récupère la position actuelle de l'animal.
-    DinoVec2 GetPos() const;
-
-    /// Force la position de l'animal.
-    void SetPos(DinoVec2 pos);
 
     /// Force l'animal à prendre une nouvelle direction aléatoire.
     void SetRandomDir();
@@ -29,7 +24,6 @@ public:
 
 private:
     double m_timeStart;
-    DinoVec2 m_pos;
     DinoVec2 m_dir;
     int32_t m_kind;
 };
