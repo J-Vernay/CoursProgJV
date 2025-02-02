@@ -20,8 +20,7 @@ Des indications sont données pour accélérer le développement sur les aspects
 3. L'affichage du dinosaure est animé suivant ses déplacements.
 4. Le dinosaure peut se prendre des dégâts (= immobilisation 3 secondes + animation).
 5. 4 dinosaures sont affichables et individuellement déplaçables.
-6. Tous les dinosaures sont affichés avec un seul draw call.
-7. Les dinosaures peuvent être devant les autres et être affichés suivant lequel est devant.
+6. Les dinosaures peuvent être devant les autres et être affichés suivant lequel est devant.
 
 Les images de dinosaures sont dans la spritesheet `dinosaurs.png`, disposées sur une grille
 de **24x24 pixels**.
@@ -47,9 +46,9 @@ Les dinosaures de différentes couleurs correspondent à des positions V :
 
 1. L'océan est affiché sur toute la fenêtre, et une zone centrale de terrain de **256x192 pixels**.
 2. La frontière terrain/océan est dessinée avec le tileset et animée.
-4. Des fleurs sont positionnées sur le terrain aléatoirement à chaque début de partie.
-5. Le terrain peut avoir quatre saisons différentes.
-6. Des arbres sont positionnés sur le terrain aléatoirement à chaque début de partie.
+3. Des fleurs sont positionnées sur le terrain aléatoirement à chaque début de partie.
+4. Le terrain peut avoir quatre saisons différentes.
+5. Des arbres sont positionnés sur le terrain aléatoirement à chaque début de partie.
    Les dinosaures peuvent être devant et derrière les arbres.
 
 Les images du terrain sont dans le tileset `terrain.png`.
@@ -88,9 +87,10 @@ Pour obtenir les saisons, il faut ajouter dans l'ordre **U += (0, 80, 160, 240)*
 
 1. Des animaux apparaissent au hasard sur le terrain (1 par seconde).
 2. Les animaux se déplacent aléatoirement et sont correctement animés.
-3. Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.
-4. Les animaux se déplacent suivant le concept de boïds (uniquement en suivant la même espèce).
-5. De plus, les cochons ont tendance à s'approcher des joueurs, les moutons ont tendance à s'éloigner,
+3. Les dinosaures et les animaux sont affichés les uns derrière les autres, suivant leur position verticale.
+4. Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.
+5. Les animaux se déplacent suivant le concept de boïds (uniquement en suivant la même espèce).
+6. De plus, les cochons ont tendance à s'approcher des joueurs, les moutons ont tendance à s'éloigner,
    les vaches bougent lentement et les autruches bougent rapidement.
 
 Les images d'animaux sont dans la spritesheet `animals.png`.

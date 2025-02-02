@@ -1,49 +1,52 @@
 /// @file xdino_win64_main.cpp
 /// @brief Implémentation de la fenêtre et des événements sur Windows.
 
-// Expose le reste de notre programme.
+// COMMENTAIRE
 #include <dino/xdino.h>
 #include <dino/x64-windows/xdino_win64_rdr.h>
 
-// Expose la bibliothèque standard.
+// COMMENTAIRE
 #include <cmath>
 #include <cstdio>
 #include <random>
 
+// COMMENTAIRE
 #include <Windows.h>
 #include <Xinput.h>
 
+// COMMENTAIRE
 #ifdef USE_PIX
 #include <pix3.h>
 #endif
 
-// Déclaration des constantes.
+// COMMENTAIRE
 constexpr int XDino_INIT_WIDTH = 640;
 constexpr int XDino_INIT_HEIGHT = 480;
 
+// COMMENTAIRE
 HINSTANCE gXDino_hInstance = nullptr;
 HWND gXDino_hWindow = nullptr;
 int64_t gXDino_tickStart = 0;
 double gXDino_tickPeriod = 1.0;
-
 std::random_device gXDino_randomDevice;
 std::mt19937 gXDino_rng(gXDino_randomDevice());
 
-// Déclaration des fonctions qui se trouvent plus bas dans le fichier.
+// COMMENTAIRE
 void XDino_Win64_CreateWindow();
 void XDino_Win64_CreateRenderer();
 void XDino_Win64_DestroyWindow();
 LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-// Fonction d'entrée du programme, appelé par le système d'exploitation.
+// COMMENTAIRE
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
+    // COMMENTAIRE
     gXDino_hInstance = hInst;
     XDino_Win64_CreateWindow();
     ShowWindow(gXDino_hWindow, SW_SHOWNORMAL);
     UpdateWindow(gXDino_hWindow);
 
-    // Puis on a la boucle principale d'événement, qui traite les messages envoyés par le système d'exploitation.
+    // COMMENTAIRE
     MSG msg;
     BOOL fGotMessage;
     while ((fGotMessage = GetMessageW(&msg, nullptr, 0, 0))) {
@@ -53,6 +56,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
         DispatchMessageW(&msg);
     }
 
+    // COMMENTAIRE
     Dino_GameShut();
     XDino_Win64_DestroyRenderer();
     XDino_Win64_DestroyWindow();
@@ -62,7 +66,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
 
 #pragma region Window and events implementation
 
-/// Crée la fenêtre graphique principale de rendu.
+// COMMENTAIRE
 void XDino_Win64_CreateWindow()
 {
     WNDCLASSEXW wcx{};
@@ -100,11 +104,11 @@ void XDino_Win64_CreateWindow()
         DINO_CRITICAL("CreateWindowEx failed");
 }
 
-/// Gère les événements qu'envoie le système d'exploitation.
+// COMMENTAIRE
 LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    // La fenêtre vient d'être construite.
     if (uMsg == WM_CREATE) {
+        // COMMENTAIRE
         gXDino_hWindow = hWnd;
 
         LARGE_INTEGER freq;
@@ -125,19 +129,18 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 
         return 0;
     }
-    // L'utilisateur a demandé à détruire la fenêtre.
     if (uMsg == WM_DESTROY) {
-        // On notifie le système d'exploitation qu'on veut arrêter. GetMessageW retournera FALSE.
+        // COMMENTAIRE
         PostQuitMessage(0);
         return 0;
     }
-    // L'utilisateur redimensionne la fenêtre.
     if (uMsg == WM_SIZE) {
+        // COMMENTAIRE
         XDino_Win64_ResizeRenderer(LOWORD(lParam), HIWORD(lParam));
         return 0;
     }
-    // Le système d'exploitation demande à redessiner la fenêtre.
     if (uMsg == WM_PAINT) {
+        // COMMENTAIRE
         XDino_ProfileBegin(DinoColor_BLACK, "Frame");
         LARGE_INTEGER curTime;
         QueryPerformanceCounter(&curTime);
@@ -149,7 +152,7 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         XDino_ProfileEnd();
         return 0;
     }
-    // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
+    // COMMENTAIRE
     return DefWindowProcW(hWnd, uMsg, wParam, lParam);
 }
 
@@ -158,6 +161,7 @@ void XDino_Win64_DestroyWindow()
     gXDino_hWindow = nullptr;
 }
 
+// COMMENTAIRE
 void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
 {
     char buffer[8192];
@@ -181,6 +185,7 @@ void XDino_ProfileEnd()
 
 #pragma region Public API
 
+// COMMENTAIRE
 bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
 {
     outGamepad = {};
