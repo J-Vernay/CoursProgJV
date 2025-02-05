@@ -278,11 +278,6 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
 
-e) En utilisant PIX, et en instrumentant le code, évaluez le coût en millisecondes des lassos.
-Peut-on réduire le temps consommé ?
-
-> ...
-
 ## 7. Interactions
 
 a) Implémentez la fonctionnalité F5.1 .
@@ -326,4 +321,56 @@ j) Comment détecter qu'une position est à l'intérieur d'un contour fermé dé
 k) Implémentez F5.5 et F5.6 via une logique commune, comme mentionné par (g).
 
 > ...
+
+## 8. Profiling
+
+a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
+
+b) Prenez une capture PIX. ( https://devblogs.microsoft.com/pix/download/ )
+
+* Dans **File > Settings > PDB Search Paths**, ajoutez `srv*c:\symcache*https://msdl.microsoft.com/download/symbols` .
+* Dans **Connect > Local Machine > Attach**, cherchez le nom de l'exécutable (`Dino_PrenomNom.exe`), et clique dessus.
+* Décochez la case **For GPU Capture**, puis appuyez sur le bouton **Attach**.
+* Dans **Start Timing Capture**, cochez **CPU Samples** avec **8k / sec**, puis appuyez sur l'icône de chronomètre.
+* Jouez pendant quelques secondes.
+* Recliquez sur l'icône de chronomètre.
+* Allez dans l'onglet en haut **Timing 1.wpix**, puis dans l'onglet **Timeline**
+
+c) En haut à droite de la fenêtre, vous pouvez voir **Loading symbols**.
+Cette étape télécharge la première fois environ 250 MiB de données dans le dossier `C:\symcache`.
+Dépendamment de la connexion, cela peut prendre plusieurs minutes.
+
+En utilisant Everything, quel type de fichiers se trouvent dans `C:\symcache` ? Quel est leur rôle ?
+
+> ...
+
+d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez **Items to show = Sampled functions**.
+
+Quelle part représente `Dino_GameFrame` relativement à `WinMain` ? Quelle autre fonction prend du temps ?
+
+> ...
+
+e) Zoomez sur la timeline (`Ctrl + Molette souris`), jusqu'à voir les frames individuellement.
+Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations de la question précédente.
+
+f) Double-cliquez sur un rectangle **Frame**, puis cliquez en bas à gauche sur **Graph Duration in Metrics View**.
+Quelle est le temps moyen d'une frame ? Le temps minimum ? Le temps maximum ?
+
+> ...
+
+g) Les rectangles dans la timeline PIX sont créés dans le code par des appels à XDino_ProfileBegin()
+et XDino_ProfileEnd() . Ces appels de fonctions peuvent être imbriqués. Utilisez ces fonctions
+pour avoir une meilleure idée des performances du code, et répondre aux questions suivantes :
+
+**Temps passé en moyenne pour...**
+
+> **Lire les entrées claviers/manette :** ...
+> 
+> **Le calcul des DinoDrawCall :** ...
+> 
+> **La logique de jeu (excluant lire les entrées et drawcalls):** ...
+> 
+> **Résoudre les collisions :** ...
+>
+> **Calculer les intersections de lasso :** ...
 
