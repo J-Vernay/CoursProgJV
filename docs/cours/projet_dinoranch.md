@@ -141,11 +141,22 @@ des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit s
 
 ### F6. Scoring et chronomètre
 
-1. Un chronomètre de 3 minutes s'affiche en haut de l'écran et décroit.
-2. Plus le chronomètre est bas, et plus les animaux apparaissent vite.
-3. Le score des dinosaures s'affichent aux coins de l'écran.
-4. Les dinosaures peuvent gagner des points : un "+100" s'affiche au-dessus d'eux un court instant.
-5. Quand les animaux disparaissent, des points sont crédités au dinosaure.
+Un chronomètre de 3 minutes est affiché en haut de l'écran (centré horizontalement) et décroit.
+Plus le chronomètre est bas, plus les animaux apparaissent vite.
+
+Quand le lasso fait une boucle, le score donné au joueur dépend des animaux :
+pour chaque type d'animaux (vache, autruche, cochon et mouton), le premier animal de ce type
+rapporte 10 points, puis 20 points, puis 30 points, etc. Par exemple, faire une boucle de lasso
+contenant 4 vaches et 2 autruches rapporte **(10 + 20 + 30 + 40) + (10 + 20) = 130 points** au joueur.
+
+Quand les animaux disparaissent, une petite notification contenant le texte `+10`, `+20`, etc, apparaît
+à leur emplacement, avec le texte colorié suivant le joueur qui a fermé la boucle.
+
+Sur le côté gauche de l'écran, le score des 4 joueurs est affiché, chacun suivant la couleur du dinosaure.
+
+> **CONSEIL:** Pour pouvoir positionner le texte précisément, modifiez Dino_CreateDrawCall_Text()
+> pour prendre un DinoVec2 en paramètre de sortie (pointeur vers non-const) dans lequel sera stockée
+> la taille en pixels du bloc de texte.
 
 ### F7. Menu
 
