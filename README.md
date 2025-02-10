@@ -2,6 +2,13 @@
 
 [Voir les crédits et licences du support de cours](assets/CREDITS.md)
 
+## Logiciels
+
+- Téléchargez et installez **Microsoft PIX on Windows**, un logiciel qui permet de
+  mesurer le temps d'exécution d'un programme : https://devblogs.microsoft.com/pix/download/
+- Téléchargez et installez **Everything**, un logiciel qui permet de
+  chercher parmi tous les fichiers de son ordinateur : https://www.voidtools.com/downloads/
+
 ## Préparation
 
 D'abord, modifiez le fichier `premake5.lua` pour remplacer la ligne
@@ -45,3 +52,6 @@ Vérifiez que les entrées clavier/souris/manette fonctionnent bien :
 Une fois ceci vérifié, c'est bon, l'environnement de développement
 est opérationnel ! 😎
 
+* [Suivre le sujet de travaux dirigés](docs/cours/travaux_diriges.md)
+
+* [Prendre connaissance du projet du cours](docs/cours/projet_dinoranch.md)
