@@ -24,8 +24,9 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color = DinoColo
 /// @param text Caractères à afficher.
 /// @param color Couleur du texte.
 /// @param colorBackground Couleur du rectangle affiché derrière le texte.
+/// @param pOutSize Si non-NULL, récupère la taille en pixels du texte.
 DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = DinoColor_WHITE,
-                                      DinoColor colorBackground = DinoColor_INVISIBLE);
+                                      DinoColor colorBackground = DinoColor_INVISIBLE, DinoVec2* pOutSize = nullptr);
 
 /// Produit un dessin contenant une liste de segments, tous reliés.
 /// @param points Liste de points par lesquels la polyligne passe.
@@ -33,3 +34,5 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = D
 /// @param color Couleur du trait.
 DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
                                           DinoColor color = DinoColor_WHITE);
+
+/// @}

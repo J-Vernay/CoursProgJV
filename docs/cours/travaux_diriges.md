@@ -101,6 +101,14 @@ Donnez un exemple de différence dans le code.
 
 > ...
 
+i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
+sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
+`pOutSize` pour récupérer la taille en pixels du rectangle de texte
+et le positionner correctement contre le bas de l'écran grâce à `translation`.
+
+> ...
+
+
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
 a) Implémentez la fonctionnalité F1.1 .

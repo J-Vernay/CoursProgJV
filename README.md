@@ -11,7 +11,21 @@
 
 ## Préparation
 
-D'abord, modifiez le fichier `premake5.lua` pour remplacer la ligne
+Avant tout, écrivez un message "Bonjour" dans le fil de discussion https://github.com/J-Vernay/CoursProgJV/issues/1 . 👋
+
+Cloner avec Git le dépôt GitHub.
+
+```
+git clone https://github.com/J-Vernay/CoursProgJV.git
+```
+
+Créez une branche de développement qui vous sera propre, avec votre NOM_Prenom.
+
+```
+git checkout -b NOM_Prenom
+```
+
+Modifiez le fichier `premake5.lua` pour remplacer la ligne
 `project "Dino_JulienVernay"` avec votre propre nom.
 
 Ensuite, double-cliquez sur `SetupWorkspace.bat` pour initialiser le dépôt.

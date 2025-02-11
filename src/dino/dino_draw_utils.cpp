@@ -18,7 +18,8 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, DinoColor colorBackground)
+DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, DinoColor colorBackground,
+                                      DinoVec2* pOutSize)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = "monogram-bitmap.png";
@@ -78,11 +79,11 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, Di
     }
     xMax = std::max(xMax, x);
 
+    float width = static_cast<float>(xMax);
+    float height = static_cast<float>(y + QUAD_HEIGHT);
+
     if (colorBackground.a > 0) {
         // Les 6 premiers points ont été laissés libres pour le fond.
-        float width = static_cast<float>(xMax);
-        float height = static_cast<float>(y + QUAD_HEIGHT);
-
         drawCall.vertices[0] = {{0, 0}, 0, 0, colorBackground};
         drawCall.vertices[1] = {{width, 0}, 0, 0, colorBackground};
         drawCall.vertices[2] = {{0, height}, 0, 0, colorBackground};
@@ -90,6 +91,9 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, Di
         drawCall.vertices[4] = {{0, height}, 0, 0, colorBackground};
         drawCall.vertices[5] = {{width, height}, 0, 0, colorBackground};
     }
+    if (pOutSize != nullptr)
+        *pOutSize = {width, height};
+
     return drawCall;
 }
 
