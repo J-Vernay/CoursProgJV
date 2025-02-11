@@ -47,9 +47,7 @@ Les dinosaures de différentes couleurs correspondent à des positions V :
 1. L'océan est affiché sur toute la fenêtre, et une zone centrale de terrain de **256x192 pixels**.
 2. La frontière terrain/océan est dessinée avec le tileset et animée.
 3. Des fleurs sont positionnées sur le terrain aléatoirement à chaque début de partie.
-4. Le terrain peut avoir quatre saisons différentes.
-5. Des arbres sont positionnés sur le terrain aléatoirement à chaque début de partie.
-   Les dinosaures peuvent être devant et derrière les arbres.
+4. Le terrain peut avoir au hasard une des quatre saisons.
 
 Les images du terrain sont dans le tileset `terrain.png`.
 
@@ -89,9 +87,6 @@ Pour obtenir les saisons, il faut ajouter dans l'ordre **U += (0, 80, 160, 240)*
 2. Les animaux se déplacent aléatoirement et sont correctement animés.
 3. Les dinosaures et les animaux sont affichés les uns derrière les autres, suivant leur position verticale.
 4. Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.
-5. Les animaux se déplacent suivant le concept de boïds (uniquement en suivant la même espèce).
-6. De plus, les cochons ont tendance à s'approcher des joueurs, les moutons ont tendance à s'éloigner,
-   les vaches bougent lentement et les autruches bougent rapidement.
 
 Les images d'animaux sont dans la spritesheet `animals.png`.
 
@@ -114,10 +109,6 @@ Les différents animaux correspondent à des décalage de positions U :
 - **U += 256 ou 384** pour les deux types de vache.
 - **U += 512 ou 640** pour les deux types de mouton.
 - **U += 768 ou 896** pour les deux types d'autruche.
-
-La simulation de boïds (bird-oïds) est un moyen simple de créer des essaims d'oiseaux, bancs de poisson
-et mouvements de foule, [cf. Wikipédia](https://fr.wikipedia.org/wiki/Boids). Dans le cas
-des animaux, on veut que chaque espèce (cochon, vache, mouton, autruche) soit simulée indépendamment.
 
 ### F4. Lasso
 
@@ -158,17 +149,23 @@ Sur le côté gauche de l'écran, le score des 4 joueurs est affiché, chacun su
 > pour prendre un DinoVec2 en paramètre de sortie (pointeur vers non-const) dans lequel sera stockée
 > la taille en pixels du bloc de texte.
 
-### F7. Menu
+### F7. Lobby et flow du jeu
 
-1. Sur l'écran principal, le titre du jeu est affiché,
-   ainsi que le texte "Appuyez sur le bouton START ou la touche ESPACE pour commencer."
-   Le jeu se lance une fois START ou ESPACE appuyé.
-2. À la fin du chronomètre, un écran de classement s'affiche avec les scores des joueurs,
-   et le texte "Appuyez sur le bouton START ou la touche ESPACE pour recommencer."
-3. Quand un joueur appuie sur START ou ESPACE sur l'écran principal,
-   une ligne de texte s'affiche, indiquant "CLAVIER" ou "MANETTE 1...4".
-   Les joueurs peuvent choisir leurs dinosaures avec `dpad`.
-   Quand tous les joueurs appuient une seconde fois sur START ou ESPACE,
-   le jeu se lance.
+Quand le programme est lancé, un terrain vide est affiché avec une saison aléatoire "le lobby".
+Du texte est affiché en haut de l'écran, centré, pour expliquer le gameplay.
+Quand on détecte un input sur le stick gauche (correspond aux flèches sur le clavier),
+un joueur apparaît, correspondant à la manette/clavier de l'input.
+Les joueurs ont un lasso et peuvent interagir entre eux.
+Quatre arbres sont sur le terrain, chacun représentant une saison.
+Quand un des joueurs entourent un arbre, le terrain change pour la saison correspondante,
+et la partie se lance. En partie, on ne peut plus ajouter de nouveaux joueurs.
+Quand le chronomètre est à zéro, la partie est terminée, et les joueurs
+sont de nouveau dans le lobby. Le score de la partie précédente est toujours affiché,
+jusqu'à qu'une nouvelle partie soit relancée.
 
+> **CONSEIL** : Rapatriez les variables globales et la logique de jeu de `dino_game.cpp`
+> à une classe dédiée (on l'appelle souvent une scène). Découpez la logique de jeu en plusieurs étapes.
+> Identifiez quelles étapes doivent être exécutées pendant le lobby, et quelles étapes
+> doivent être exécutées pendant la partie. Identifiez quels changements dans les variables membres
+> doivent être réalisées quand on transitionne du lobby à la partie et de la partie au lobby.
 
