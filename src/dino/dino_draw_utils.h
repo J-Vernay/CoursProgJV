@@ -15,9 +15,9 @@
 
 /// Produit un dessin de cercle avec la couleur spécifiée.
 /// La position (0,0) correspond au centre du cercle, qu'il faut décaler grâce à `translation`.
-/// @param radius Rayon du cercle, en pixels.
+/// @param scale Rayon du cercle, en pixels.
 /// @param color Couleur du cercle.
-DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color = DinoColor_WHITE);
+DinoDrawCall Dino_CreateDrawCall_Dino(float scale, DinoColor color = DinoColor_WHITE);
 
 /// Produit un dessin contenant du texte, avec éventuellement une couleur de fond.
 /// La position (0,0) correspond au coin en haut à gauche, qu'il faut décaler grâce à `translation`.

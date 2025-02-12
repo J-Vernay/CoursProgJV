@@ -1,20 +1,21 @@
 ﻿#include <dino/dino_draw_utils.h>
 
-DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
+DinoDrawCall Dino_CreateDrawCall_Dino(float scale, DinoColor color)
 {
     DinoDrawCall drawCall;
-    drawCall.textureName = "monogram-bitmap.png";
+    drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
     drawCall.vertices.reserve(6);
-    DinoVec2 posA = {-radius, -radius};
-    DinoVec2 posB = {radius, -radius};
-    DinoVec2 posC = {-radius, radius};
-    DinoVec2 posD = {radius, radius};
-    drawCall.vertices.emplace_back(posA, 72, 0, color);
-    drawCall.vertices.emplace_back(posB, 96, 0, color);
-    drawCall.vertices.emplace_back(posC, 72, 24, color);
-    drawCall.vertices.emplace_back(posB, 96, 0, color);
-    drawCall.vertices.emplace_back(posC, 72, 24, color);
-    drawCall.vertices.emplace_back(posD, 96, 24, color);
+
+    DinoVec2 posA = {-scale, -scale};
+    DinoVec2 posB = {scale, -scale};
+    DinoVec2 posC = {-scale, scale};
+    DinoVec2 posD = {scale, scale};
+    drawCall.vertices.emplace_back(posA, 0, 0); // J'ai mis le premier dinosaure bleu
+    drawCall.vertices.emplace_back(posB, 24, 0);
+    drawCall.vertices.emplace_back(posC, 0, 24);
+    drawCall.vertices.emplace_back(posB, 24, 0);
+    drawCall.vertices.emplace_back(posC, 0, 24);
+    drawCall.vertices.emplace_back(posD, 24, 24);
     return drawCall;
 }
 

@@ -10,17 +10,19 @@
 double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
-DinoVec2 circlePos = {};
+DinoVec2 playerPos = {};
 std::vector<DinoVec2> polyline;
 
 // Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
+
+bool isRight = true;
 
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    circlePos = {windowSize.x / 2, windowSize.y / 2};
+    playerPos = {windowSize.x / 2, windowSize.y / 2};
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
@@ -44,17 +46,18 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        if (gamepad.btn_down && !gamepad.btn_up)
-            scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            rotation -= 90.0 * deltaTime;
+        float playerSpeed = speed;
 
-        circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        if (gamepad.btn_right && !gamepad.btn_left) {
+            playerSpeed *= 2.f;
+        }
+
+        playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
+        playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
+
+        if (gamepad.stick_left_x != 0) {
+            isRight = gamepad.stick_left_x > 0;
+        }
     }
 
     // Affichage
@@ -121,10 +124,35 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
-    // Dessin du cercle que l'on peut bouger.
+    // Dessin du dinosaure que l'on peut bouger.
     {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Circle(20);
-        drawCall.translation = circlePos;
+        DinoDrawCall drawCall;
+        drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
+        drawCall.vertices.reserve(6);
+
+        DinoVec2 posA = {0, 0};
+        DinoVec2 posB = {24, 0};
+        DinoVec2 posC = {0, 24};
+        DinoVec2 posD = {24, 24};
+        if (isRight) {
+            drawCall.vertices.emplace_back(posA, 0, 0); // J'ai mis le premier dinosaure bleu
+            drawCall.vertices.emplace_back(posB, 24, 0);
+            drawCall.vertices.emplace_back(posC, 0, 24);
+            drawCall.vertices.emplace_back(posB, 24, 0);
+            drawCall.vertices.emplace_back(posC, 0, 24);
+            drawCall.vertices.emplace_back(posD, 24, 24);
+        }
+        else {
+            drawCall.vertices.emplace_back(posA, 24, 0);
+            drawCall.vertices.emplace_back(posB, 0, 0);
+            drawCall.vertices.emplace_back(posC, 24, 24);
+            drawCall.vertices.emplace_back(posB, 0, 0);
+            drawCall.vertices.emplace_back(posC, 24, 24);
+            drawCall.vertices.emplace_back(posD, 0, 24);
+        }
+
+        drawCall.scale = 3;
+        drawCall.translation = playerPos;
         XDino_Draw(drawCall);
     }
 
