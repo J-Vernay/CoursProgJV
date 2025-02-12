@@ -67,7 +67,7 @@ project "Dino_Documentation"
   filter 'files:docs/Doxyfile'
     buildcommands {
       "{CHDIR} %[docs]%",
-      "%[%{!wks.location}../tools/doxygen.exe]"
+      "doxygen.exe"
     }
     buildoutputs { "docs/html/index.html" }
   filter {}

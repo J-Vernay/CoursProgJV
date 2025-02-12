@@ -8,6 +8,8 @@
   mesurer le temps d'exécution d'un programme : https://devblogs.microsoft.com/pix/download/
 - Téléchargez et installez **Everything**, un logiciel qui permet de
   chercher parmi tous les fichiers de son ordinateur : https://www.voidtools.com/downloads/
+- Téléchargez et installez **Doxygen**, un logiciel qui permet de documenter le code :
+  https://www.doxygen.nl/download.html
 
 ## Préparation
 
