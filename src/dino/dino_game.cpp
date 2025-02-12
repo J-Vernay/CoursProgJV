@@ -9,7 +9,7 @@
 
 // Variables globales.
 double lastTime = 0;
-Player player;
+DinoPlayer player;
 
 void Dino_GameInit()
 {

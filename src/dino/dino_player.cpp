@@ -3,6 +3,7 @@
 
 constexpr float WALK_SPEED = 50.f;
 constexpr float RUN_SPEED = 100.f;
+constexpr float HIT_TIME = 1.5f;
 
 const Animation animations[] = {
     {8, {0, 1, 2, 3}},
@@ -11,22 +12,30 @@ const Animation animations[] = {
     {16, {17, 18, 19, 20, 21, 22}}
 };
 
-void Player::init(DinoVec2 startPosition)
+void DinoPlayer::init(DinoVec2 startPosition)
 {
     this->position = startPosition;
 }
 
-void Player::update(float deltaTime)
+void DinoPlayer::update(float deltaTime)
 {
     DinoGamepad gamepad;
     XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad);
 
-    updateMovement(deltaTime, gamepad);
+    if (gamepad.btn_down) {
+        hit();
+    }
+
+    updateHit(deltaTime);
+    
+    if (canMove()) {
+        updateMovement(deltaTime, gamepad);
+    }
     updateAnimator(gamepad);
     updateAnimation(deltaTime);
 }
 
-void Player::draw() const
+void DinoPlayer::draw() const
 {
     DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(animations[animatorState.animationId].frames[animatorState.frame] * 24, 0, 24, 24, direction);
     drawCall.textureName = "dinosaurs.png";
@@ -35,7 +44,18 @@ void Player::draw() const
     XDino_Draw(drawCall);
 }
 
-void Player::updateMovement(float deltaTime, DinoGamepad gamepad)
+void DinoPlayer::hit()
+{
+    hitTimer = HIT_TIME;
+}
+
+void DinoPlayer::updateHit(float deltaTime)
+{
+    if (hitTimer <= 0) return;
+    hitTimer -= deltaTime;
+}
+
+void DinoPlayer::updateMovement(float deltaTime, DinoGamepad gamepad)
 {
     float speed = gamepad.btn_right ? RUN_SPEED : WALK_SPEED;
 
@@ -47,8 +67,13 @@ void Player::updateMovement(float deltaTime, DinoGamepad gamepad)
     }
 }
 
-void Player::updateAnimator(DinoGamepad gamepad)
+void DinoPlayer::updateAnimator(DinoGamepad gamepad)
 {
+    if (hitTimer > 0) {
+        setAnimation(HIT);
+        return;
+    }
+    
     if (abs(gamepad.stick_left_x) + abs(gamepad.stick_left_y) < 0.1f) {
         setAnimation(IDLE);
         return;
@@ -57,7 +82,7 @@ void Player::updateAnimator(DinoGamepad gamepad)
     setAnimation(gamepad.btn_right ? RUN : WALK);
 }
 
-void Player::updateAnimation(float deltaTime)
+void DinoPlayer::updateAnimation(float deltaTime)
 {
     animatorState.timer += deltaTime;
 
@@ -66,10 +91,15 @@ void Player::updateAnimation(float deltaTime)
     animatorState.timer = 0;
 }
 
-void Player::setAnimation(AnimationId animation)
+void DinoPlayer::setAnimation(AnimationId animation)
 {
     if (animatorState.animationId == animation)
         return;
     animatorState.animationId = animation;
     animatorState.frame = 0;
+}
+
+bool DinoPlayer::canMove()
+{
+    return hitTimer <= 0;
 }
