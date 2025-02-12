@@ -13,19 +13,19 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Déclare une API d'interaction entre le moteur XDino et le jeu, comportant des fonctions pour du rendu graphique, de la prise d'inputs et autre fonctions utilitaires.
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : Implémente des fonctions liés à la création de la fenêtre et le polling des inputs, en plus de la fonction d'entrée du programme.
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` : Implémente des fonctions étant liées au rendu graphique via Direct3D 11.
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Implémente la logique de jeu.
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Implémente une fonction permettant de détecter si deux segments s'intersectent entre eux.
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Implémente des fonctions utilitaires permettant de déssiner à l'écran différents éléments, comme du texte, des cercles et des lignes.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Utilitaire permettant de configurer la solution du projet.
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 
