@@ -99,11 +99,13 @@ au bout d'une seconde ?
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé est défini par un ensemble de 3 coordonnées (vertices), ainsi qu'une texture,
+> qui est une image qui peut être appliquée suivant des UVs 
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> Un appel fait a la carte graphique pour dessiner l'ensemble des objets pouvant etre présents a l'ecran 
+> selon leurs positions et états a un temps donné
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
