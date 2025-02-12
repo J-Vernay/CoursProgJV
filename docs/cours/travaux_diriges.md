@@ -100,7 +100,7 @@ f) Par quoi est définit un triangle texturé ?
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> Un draw call est un appel de rendu pour la carte graphique, en passant une structure de données pour représenter ce qui doit être dessiné à l'écran.
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
