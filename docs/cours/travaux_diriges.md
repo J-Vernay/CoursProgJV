@@ -157,7 +157,12 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On appelle ces fonctions des fonctions membres.
+> Les modificateurs de visibilité permettent de contrôler l'accès des variables membres et donc
+> de limiter la modification d'un type de données uniquement aux fonctions membres.
+> L'intérêt est de pouvoir faire en sorte qu'un programmeur puisse mettre à disposition de ses collègues uniquement
+> ce qui est sensé modifier un type de donnée d'une manière contrôlée, et éviter qu'un programmeur qui ne connait
+> pas précisément le fonctionnement d'un type de donnée ne crée des bugs en accédant d'une manière non prévue à ce dernier.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
