@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino:  Fichier source de dino_draw_utils.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2bb994ae3c35c8ddd14b20e4aa61abb8.html">dino</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">dino_draw_utils.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="dino__draw__utils_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="xdino_8h.html">dino/xdino.h</a>&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;string_view&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;span&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><a class="code hl_struct" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a> <a class="code hl_function" href="dino__draw__utils_8h.html#ac37b780cb2908366424683a1270a27be">Dino_CreateDrawCall_Circle</a>(<span class="keywordtype">float</span> radius, <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> color = <a class="code hl_variable" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><a class="code hl_struct" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a> <a class="code hl_function" href="dino__draw__utils_8h.html#a75841cac67ad1e5d995666d7c2052bb3">Dino_CreateDrawCall_Text</a>(std::string_view text, <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> color = <a class="code hl_variable" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                                      <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> colorBackground = <a class="code hl_variable" href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">DinoColor_INVISIBLE</a>, <a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a>* pOutSize = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><a class="code hl_struct" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a> <a class="code hl_function" href="dino__draw__utils_8h.html#ab40a1e4df193e9001e0a2f9467776c02">Dino_CreateDrawCall_Polyline</a>(std::span&lt;DinoVec2 const&gt; points, <span class="keywordtype">float</span> width,</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                          <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> color = <a class="code hl_variable" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="ttc" id="adino__draw__utils_8h_html_a75841cac67ad1e5d995666d7c2052bb3"><div class="ttname"><a href="dino__draw__utils_8h.html#a75841cac67ad1e5d995666d7c2052bb3">Dino_CreateDrawCall_Text</a></div><div class="ttdeci">DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color=DinoColor_WHITE, DinoColor colorBackground=DinoColor_INVISIBLE, DinoVec2 *pOutSize=nullptr)</div><div class="ttdoc">Produit un dessin contenant du texte, avec éventuellement une couleur de fond. La position (0,...</div><div class="ttdef"><b>Definition</b> <a href="dino__draw__utils_8cpp_source.html#l00021">dino_draw_utils.cpp:21</a></div></div>
+<div class="ttc" id="adino__draw__utils_8h_html_ab40a1e4df193e9001e0a2f9467776c02"><div class="ttname"><a href="dino__draw__utils_8h.html#ab40a1e4df193e9001e0a2f9467776c02">Dino_CreateDrawCall_Polyline</a></div><div class="ttdeci">DinoDrawCall Dino_CreateDrawCall_Polyline(std::span&lt; DinoVec2 const &gt; points, float width, DinoColor color=DinoColor_WHITE)</div><div class="ttdoc">Produit un dessin contenant une liste de segments, tous reliés.</div><div class="ttdef"><b>Definition</b> <a href="dino__draw__utils_8cpp_source.html#l00100">dino_draw_utils.cpp:100</a></div></div>
+<div class="ttc" id="adino__draw__utils_8h_html_ac37b780cb2908366424683a1270a27be"><div class="ttname"><a href="dino__draw__utils_8h.html#ac37b780cb2908366424683a1270a27be">Dino_CreateDrawCall_Circle</a></div><div class="ttdeci">DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color=DinoColor_WHITE)</div><div class="ttdoc">Produit un dessin de cercle avec la couleur spécifiée. La position (0,0) correspond au centre du cerc...</div><div class="ttdef"><b>Definition</b> <a href="dino__draw__utils_8cpp_source.html#l00003">dino_draw_utils.cpp:3</a></div></div>
+<div class="ttc" id="axdino_8h_html"><div class="ttname"><a href="xdino_8h.html">xdino.h</a></div><div class="ttdoc">API d'interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu.</div></div>
+<div class="ttc" id="axdino_8h_html_a0cbdf5c8996c3f409b9505e8e277aaf7"><div class="ttname"><a href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a></div><div class="ttdeci">constexpr DinoColor DinoColor_WHITE</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00053">xdino.h:53</a></div></div>
+<div class="ttc" id="axdino_8h_html_a93188dac74427f4871d050d62876b29d"><div class="ttname"><a href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">DinoColor_INVISIBLE</a></div><div class="ttdeci">constexpr DinoColor DinoColor_INVISIBLE</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00057">xdino.h:57</a></div></div>
+<div class="ttc" id="axdino_8h_html_structDinoDrawCall"><div class="ttname"><a href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a></div><div class="ttdoc">Représente une demande de dessin à la carte graphique.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00076">xdino.h:76</a></div></div>
+<div class="ttc" id="axdino_8h_html_structDinoVec2"><div class="ttname"><a href="xdino_8h.html#structDinoVec2">DinoVec2</a></div><div class="ttdoc">Représente une coordonnée 2D en pixels.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00036">xdino.h:36</a></div></div>
+<div class="ttc" id="axdino_8h_html_unionDinoColor"><div class="ttname"><a href="xdino_8h.html#unionDinoColor">DinoColor</a></div><div class="ttdoc">Représente une couleur de pixels, utilisée pour moduler l'affichage d'une texture.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00042">xdino.h:42</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

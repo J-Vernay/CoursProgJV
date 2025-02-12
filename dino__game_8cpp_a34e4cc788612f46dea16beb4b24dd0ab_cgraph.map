@@ -1,0 +1,7 @@
+<map id="Dino_GameInit" name="Dino_GameInit">
+<area shape="rect" id="Node000001" title="Appelé au tout début, pour initialiser la logique de jeu." alt="" coords="5,31,113,56"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__rdr_8cpp.html#a8fb3a63e6442dd880092baee74243dd3" title="Taille de la fenêtre sur l&#39;écran. Attention, différent de la résolution du rendu !" alt="" coords="161,5,316,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,33,145,29,145,34,113,39"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__rdr_8cpp.html#a57ea716600a49f61ffff0bd33bd78a7d" title="Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille." alt="" coords="164,55,313,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="113,48,149,53,148,58,113,53"/>
+</map>

@@ -1,0 +1,1516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Référence du fichier xdino.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2bb994ae3c35c8ddd14b20e4aa61abb8.html">dino</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier xdino.h</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>API d'interaction entre le moteur de jeu "XDino" et la logique de jeu.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Graphe des dépendances par inclusion de xdino.h:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h__incl.svg" width="234" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier :</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h__dep__incl.svg" width="100%" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div>
+<p><a href="xdino_8h_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:structDinoVec2" id="r_structDinoVec2"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a></td></tr>
+<tr class="memdesc:structDinoVec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente une coordonnée 2D en pixels.  <a href="xdino_8h.html#structDinoVec2">Plus de détails...</a><br /></td></tr>
+<tr class="separator:structDinoVec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:unionDinoColor" id="r_unionDinoColor"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a></td></tr>
+<tr class="memdesc:unionDinoColor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente une couleur de pixels, utilisée pour moduler l'affichage d'une texture.  <a href="xdino_8h.html#unionDinoColor">Plus de détails...</a><br /></td></tr>
+<tr class="separator:unionDinoColor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structDinoVertex" id="r_structDinoVertex"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a></td></tr>
+<tr class="memdesc:structDinoVertex"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente un des sommets d'un triangle envoyé à la carte graphique.  <a href="xdino_8h.html#structDinoVertex">Plus de détails...</a><br /></td></tr>
+<tr class="separator:structDinoVertex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structDinoDrawCall" id="r_structDinoDrawCall"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a></td></tr>
+<tr class="memdesc:structDinoDrawCall"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente une demande de dessin à la carte graphique.  <a href="xdino_8h.html#structDinoDrawCall">Plus de détails...</a><br /></td></tr>
+<tr class="separator:structDinoDrawCall"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structDinoGamepad" id="r_structDinoGamepad"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#structDinoGamepad">DinoGamepad</a></td></tr>
+<tr class="memdesc:structDinoGamepad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure contenant l'état d'une manette (ou du clavier utilisé comme manette).  <a href="xdino_8h.html#structDinoGamepad">Plus de détails...</a><br /></td></tr>
+<tr class="separator:structDinoGamepad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structDinoColor_8____unnamed1____" id="r_structDinoColor_8____unnamed1____"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#structDinoColor_8____unnamed1____">DinoColor.__unnamed1__</a></td></tr>
+<tr class="separator:structDinoColor_8____unnamed1____"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae72f81db667ba4b51b14226770f73594" id="r_ae72f81db667ba4b51b14226770f73594"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#ae72f81db667ba4b51b14226770f73594">DINO_CRITICAL</a>(msg)&#160;&#160;&#160;(<a class="el" href="xdino__win64__main_8cpp.html#ac7336d7a0cef47c62cd1ea2a321be2d3">_impl_XDino_Critical</a>(__func__, __LINE__, msg), __debugbreak())</td></tr>
+<tr class="memdesc:ae72f81db667ba4b51b14226770f73594"><td class="mdescLeft">&#160;</td><td class="mdescRight">À appeler en cas d'erreur critique (= affiche une popup et ferme le jeu)  <br /></td></tr>
+<tr class="separator:ae72f81db667ba4b51b14226770f73594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:ac7336d7a0cef47c62cd1ea2a321be2d3" id="r_ac7336d7a0cef47c62cd1ea2a321be2d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#ac7336d7a0cef47c62cd1ea2a321be2d3">_impl_XDino_Critical</a> (char const *pFunc, int line, char const *msg)</td></tr>
+<tr class="memdesc:ac7336d7a0cef47c62cd1ea2a321be2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détail d'implémentation, .  <br /></td></tr>
+<tr class="separator:ac7336d7a0cef47c62cd1ea2a321be2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Fonctions qui doivent être implémentées par la logique de jeu.</div></td></tr>
+<tr class="memitem:a34e4cc788612f46dea16beb4b24dd0ab" id="r_a34e4cc788612f46dea16beb4b24dd0ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a34e4cc788612f46dea16beb4b24dd0ab">Dino_GameInit</a> ()</td></tr>
+<tr class="memdesc:a34e4cc788612f46dea16beb4b24dd0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appelé au tout début, pour initialiser la logique de jeu.  <br /></td></tr>
+<tr class="separator:a34e4cc788612f46dea16beb4b24dd0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7b7408f18b3729af2f6e7f405f238e7" id="r_ac7b7408f18b3729af2f6e7f405f238e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#ac7b7408f18b3729af2f6e7f405f238e7">Dino_GameFrame</a> (double timeSinceStart)</td></tr>
+<tr class="memdesc:ac7b7408f18b3729af2f6e7f405f238e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appelé pour générer chaque frame. Doit lireles entrées de jeu avec <code><a class="el" href="xdino_8h.html#a68646c879bb2deb348cfa0ae2fc53b92" title="Récupère l&#39;état de la manette concernée.">XDino_GetGamepad()</a></code>, mettre à jour la logique du jeu, et donner les commandes de dessins avec <code><a class="el" href="xdino_8h.html#af6f41148f29d2c60fc4f9e51449436fa" title="Transfère les triangles à dessiner à la carte graphique.">XDino_Draw()</a></code>.  <br /></td></tr>
+<tr class="separator:ac7b7408f18b3729af2f6e7f405f238e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5be2c6012bb9e2650a622d88c610fd6" id="r_af5be2c6012bb9e2650a622d88c610fd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#af5be2c6012bb9e2650a622d88c610fd6">Dino_GameShut</a> ()</td></tr>
+<tr class="memdesc:af5be2c6012bb9e2650a622d88c610fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appelé quand l'utilisateur demande à quitter le jeu (touche ECHAP).  <br /></td></tr>
+<tr class="separator:af5be2c6012bb9e2650a622d88c610fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">API utilitaires</div></td></tr>
+<tr class="memitem:afe24d415c32e02761cd69c10d8949075" id="r_afe24d415c32e02761cd69c10d8949075"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#afe24d415c32e02761cd69c10d8949075">XDino_RandomUint32</a> (uint32_t min, uint32_t max)</td></tr>
+<tr class="memdesc:afe24d415c32e02761cd69c10d8949075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un entier 32-bit non-signé pseudo-aléatoire entre 'min' et 'max' inclus.  <br /></td></tr>
+<tr class="separator:afe24d415c32e02761cd69c10d8949075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09a4d6e92b29b1c57f37cff0bba039a0" id="r_a09a4d6e92b29b1c57f37cff0bba039a0"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a09a4d6e92b29b1c57f37cff0bba039a0">XDino_RandomInt32</a> (int32_t min, int32_t max)</td></tr>
+<tr class="memdesc:a09a4d6e92b29b1c57f37cff0bba039a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus.  <br /></td></tr>
+<tr class="separator:a09a4d6e92b29b1c57f37cff0bba039a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e6d69578bed3d312e872e26a21c9435" id="r_a2e6d69578bed3d312e872e26a21c9435"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a2e6d69578bed3d312e872e26a21c9435">XDino_RandomFloat</a> (float min, float max)</td></tr>
+<tr class="memdesc:a2e6d69578bed3d312e872e26a21c9435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus.  <br /></td></tr>
+<tr class="separator:a2e6d69578bed3d312e872e26a21c9435"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a633e7eb91888670d439d5cc124a36e7d" id="r_a633e7eb91888670d439d5cc124a36e7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a633e7eb91888670d439d5cc124a36e7d">XDino_RandomUnitVec2</a> ()</td></tr>
+<tr class="memdesc:a633e7eb91888670d439d5cc124a36e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un vecteur unitaire dans une direction aléatoire.  <br /></td></tr>
+<tr class="separator:a633e7eb91888670d439d5cc124a36e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">API de profiling</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Permet d'avoir des événements sur la timeline de PIX. </p>
+</div></td></tr>
+<tr class="memitem:ab579fc5249712eea9dab54bbad4808f0" id="r_ab579fc5249712eea9dab54bbad4808f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#ab579fc5249712eea9dab54bbad4808f0">XDino_ProfileBegin</a> (<a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> color, char const *msg)</td></tr>
+<tr class="memdesc:ab579fc5249712eea9dab54bbad4808f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l'un dans l'autre.  <br /></td></tr>
+<tr class="separator:ab579fc5249712eea9dab54bbad4808f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a847ecb99f82286c5ba044e4e50d6ca2c" id="r_a847ecb99f82286c5ba044e4e50d6ca2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a847ecb99f82286c5ba044e4e50d6ca2c">XDino_ProfileEnd</a> ()</td></tr>
+<tr class="memdesc:a847ecb99f82286c5ba044e4e50d6ca2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finit un intervalle de profiling.  <br /></td></tr>
+<tr class="separator:a847ecb99f82286c5ba044e4e50d6ca2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">API clavier/souris/manette, à appeler à l'intérieur de &lt;tt&gt;Dino_GameUpdate()&lt;/tt&gt;.</h2></td></tr>
+<tr class="memitem:ae25e331a93ed90f8e35cac957cd0b2c0" id="r_ae25e331a93ed90f8e35cac957cd0b2c0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> : int32_t { <br />
+&#160;&#160;<a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab">Gamepad1</a>
+, <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec">Gamepad2</a>
+, <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304">Gamepad3</a>
+, <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9">Gamepad4</a>
+, <br />
+&#160;&#160;<a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">Keyboard</a>
+<br />
+ }</td></tr>
+<tr class="separator:ae25e331a93ed90f8e35cac957cd0b2c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631d358f2de291da38e0fe933d6a5c85" id="r_a631d358f2de291da38e0fe933d6a5c85"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a631d358f2de291da38e0fe933d6a5c85">DinoGamepadIdx_ALL</a> []</td></tr>
+<tr class="separator:a631d358f2de291da38e0fe933d6a5c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68646c879bb2deb348cfa0ae2fc53b92" id="r_a68646c879bb2deb348cfa0ae2fc53b92"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a68646c879bb2deb348cfa0ae2fc53b92">XDino_GetGamepad</a> (<a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> idx, <a class="el" href="xdino_8h.html#structDinoGamepad">DinoGamepad</a> &amp;outGamepad)</td></tr>
+<tr class="memdesc:a68646c879bb2deb348cfa0ae2fc53b92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Récupère l'état de la manette concernée.  <br /></td></tr>
+<tr class="separator:a68646c879bb2deb348cfa0ae2fc53b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">API graphique, à appeler à l'intérieur de &lt;tt&gt;Dino_GameDraw()&lt;/tt&gt;.</h2></td></tr>
+<tr class="memitem:a0cbdf5c8996c3f409b9505e8e277aaf7" id="r_a0cbdf5c8996c3f409b9505e8e277aaf7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a> {0xFF, 0xFF, 0xFF, 0xFF}</td></tr>
+<tr class="separator:a0cbdf5c8996c3f409b9505e8e277aaf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d6ec0f401e24873eea2e55dbe5a3ff9" id="r_a3d6ec0f401e24873eea2e55dbe5a3ff9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a3d6ec0f401e24873eea2e55dbe5a3ff9">DinoColor_GREY</a> {0x80, 0x80, 0x80, 0xFF}</td></tr>
+<tr class="separator:a3d6ec0f401e24873eea2e55dbe5a3ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a289347d3145bcc1ada68d75b75ba58c9" id="r_a289347d3145bcc1ada68d75b75ba58c9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a289347d3145bcc1ada68d75b75ba58c9">DinoColor_BLACK</a> {0x00, 0x00, 0x00, 0xFF}</td></tr>
+<tr class="separator:a289347d3145bcc1ada68d75b75ba58c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae61e4fce79f41d23dc826ef73e40c19a" id="r_ae61e4fce79f41d23dc826ef73e40c19a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#ae61e4fce79f41d23dc826ef73e40c19a">DinoColor_TRANSPARENT</a> {0xFF, 0xFF, 0xFF, 0x80}</td></tr>
+<tr class="separator:ae61e4fce79f41d23dc826ef73e40c19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93188dac74427f4871d050d62876b29d" id="r_a93188dac74427f4871d050d62876b29d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">DinoColor_INVISIBLE</a> {0xFF, 0xFF, 0xFF, 0x00}</td></tr>
+<tr class="separator:a93188dac74427f4871d050d62876b29d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b3e9eb2c4f8790e442bc2dbc5c6b9f7" id="r_a1b3e9eb2c4f8790e442bc2dbc5c6b9f7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a1b3e9eb2c4f8790e442bc2dbc5c6b9f7">DinoColor_BLUE</a> {0x4D, 0x92, 0xBC, 0xFF}</td></tr>
+<tr class="separator:a1b3e9eb2c4f8790e442bc2dbc5c6b9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43d3801d1a03c930499cd939692d786e" id="r_a43d3801d1a03c930499cd939692d786e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a43d3801d1a03c930499cd939692d786e">DinoColor_RED</a> {0xBC, 0x4D, 0x4F, 0xFF}</td></tr>
+<tr class="separator:a43d3801d1a03c930499cd939692d786e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8139914fa51566caf3d7e059af7d125" id="r_ab8139914fa51566caf3d7e059af7d125"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#ab8139914fa51566caf3d7e059af7d125">DinoColor_YELLOW</a> {0xFD, 0xC7, 0x60, 0xFF}</td></tr>
+<tr class="separator:ab8139914fa51566caf3d7e059af7d125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7af8819cdc2d1e8d809ab6168bc09166" id="r_a7af8819cdc2d1e8d809ab6168bc09166"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a7af8819cdc2d1e8d809ab6168bc09166">DinoColor_GREEN</a> {0x88, 0xA0, 0x43, 0xFF}</td></tr>
+<tr class="separator:a7af8819cdc2d1e8d809ab6168bc09166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb3a63e6442dd880092baee74243dd3" id="r_a8fb3a63e6442dd880092baee74243dd3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a8fb3a63e6442dd880092baee74243dd3">XDino_GetWindowSize</a> ()</td></tr>
+<tr class="memdesc:a8fb3a63e6442dd880092baee74243dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Taille de la fenêtre sur l'écran. Attention, différent de la résolution du rendu !  <br /></td></tr>
+<tr class="separator:a8fb3a63e6442dd880092baee74243dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ded9317bd5f35f70b1473c729e56d1a" id="r_a4ded9317bd5f35f70b1473c729e56d1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a4ded9317bd5f35f70b1473c729e56d1a">XDino_GetRenderSize</a> ()</td></tr>
+<tr class="memdesc:a4ded9317bd5f35f70b1473c729e56d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Taille du rendu. Attention, différent de la résolution affichée à l'écran !  <br /></td></tr>
+<tr class="separator:a4ded9317bd5f35f70b1473c729e56d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57ea716600a49f61ffff0bd33bd78a7d" id="r_a57ea716600a49f61ffff0bd33bd78a7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#a57ea716600a49f61ffff0bd33bd78a7d">XDino_SetRenderSize</a> (<a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> renderSize)</td></tr>
+<tr class="memdesc:a57ea716600a49f61ffff0bd33bd78a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille.  <br /></td></tr>
+<tr class="separator:a57ea716600a49f61ffff0bd33bd78a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abded2f43911a4a13d4742539b59797e0" id="r_abded2f43911a4a13d4742539b59797e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#abded2f43911a4a13d4742539b59797e0">XDino_SetClearColor</a> (<a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> color)</td></tr>
+<tr class="memdesc:abded2f43911a4a13d4742539b59797e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pour indiquer la couleur d'arrière-plan.  <br /></td></tr>
+<tr class="separator:abded2f43911a4a13d4742539b59797e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6f41148f29d2c60fc4f9e51449436fa" id="r_af6f41148f29d2c60fc4f9e51449436fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino_8h.html#af6f41148f29d2c60fc4f9e51449436fa">XDino_Draw</a> (<a class="el" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a> drawCall)</td></tr>
+<tr class="memdesc:af6f41148f29d2c60fc4f9e51449436fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfère les triangles à dessiner à la carte graphique.  <br /></td></tr>
+<tr class="separator:af6f41148f29d2c60fc4f9e51449436fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>API d'interaction entre le moteur de jeu "XDino" et la logique de jeu. </p>
+<dl class="section author"><dt>Auteur</dt><dd>Julien Vernay </dd></dl>
+
+<p class="definition">Définition dans le fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+</div><hr/><h2 class="groupheader">Documentation des classes</h2>
+<a name="structDinoVec2" id="structDinoVec2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structDinoVec2">&#9670;&#160;</a></span>DinoVec2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct DinoVec2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>Représente une coordonnée 2D en pixels. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00036">36</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+</div><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Graphe de collaboration de DinoVec2:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structDinoVec2__coll__graph.svg" width="80" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<table class="fieldtable">
+<tr><th colspan="3">Membres de classe</th></tr>
+<tr><td class="fieldtype">
+<a id="ac82f66ffa9a47fc4e107b6ba10d2254e" name="ac82f66ffa9a47fc4e107b6ba10d2254e"></a>float</td>
+<td class="fieldname">
+x</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="abb311146ea82c7137cbc18fcbdfcc036" name="abb311146ea82c7137cbc18fcbdfcc036"></a><a class="el" href="xdino_8h.html#ac82f66ffa9a47fc4e107b6ba10d2254e">float</a></td>
+<td class="fieldname">
+y</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="unionDinoColor" id="unionDinoColor"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#unionDinoColor">&#9670;&#160;</a></span>DinoColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">union DinoColor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>Représente une couleur de pixels, utilisée pour moduler l'affichage d'une texture. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00042">42</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+</div><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Graphe de collaboration de DinoColor:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="unionDinoColor__coll__graph.svg" width="80" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<table class="fieldtable">
+<tr><th colspan="3">Membres de classe</th></tr>
+<tr><td class="fieldtype">
+<a id="afdd856eeff51b31f410e9496f4c33dee" name="afdd856eeff51b31f410e9496f4c33dee"></a>struct <a class="el" href="xdino_8h.html#structDinoColor_8____unnamed1____">DinoColor.__unnamed1__</a></td>
+<td class="fieldname">
+__unnamed__</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a0c79a4de2b8deca82ccde8cf18039984" name="a0c79a4de2b8deca82ccde8cf18039984"></a>uint32_t</td>
+<td class="fieldname">
+rgba</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structDinoVertex" id="structDinoVertex"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structDinoVertex">&#9670;&#160;</a></span>DinoVertex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct DinoVertex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>Représente un des sommets d'un triangle envoyé à la carte graphique. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00064">64</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+</div><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Graphe de collaboration de DinoVertex:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structDinoVertex__coll__graph.svg" width="174" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<table class="fieldtable">
+<tr><th colspan="3">Membres de classe</th></tr>
+<tr><td class="fieldtype">
+<a id="a0cbbf650ffce89d01bb405e97e7378f5" name="a0cbbf650ffce89d01bb405e97e7378f5"></a><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a></td>
+<td class="fieldname">
+pos {}</td>
+<td class="fielddoc">
+Position à l'écran (décalée suivant <code>XDino_SetTransform()</code>) </td></tr>
+<tr><td class="fieldtype">
+<a id="ab1e47711c13f7a5bcd381aa5996d7fe2" name="ab1e47711c13f7a5bcd381aa5996d7fe2"></a>uint16_t</td>
+<td class="fieldname">
+u = 0</td>
+<td class="fielddoc">
+Coordonnée X du pixel correspondant dans la texture mise avec <code>XDino_BindTexture()</code>. </td></tr>
+<tr><td class="fieldtype">
+<a id="aaed9eedb63b05d95c3d0a288a6ee87d0" name="aaed9eedb63b05d95c3d0a288a6ee87d0"></a>uint16_t</td>
+<td class="fieldname">
+v = 0</td>
+<td class="fielddoc">
+Coordonnée Y du pixel correspondant dans la texture mise avec <code>XDino_BindTexture()</code>. </td></tr>
+<tr><td class="fieldtype">
+<a id="a0ef4c66b111f5f62923dcf3fbfe00130" name="a0ef4c66b111f5f62923dcf3fbfe00130"></a><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a></td>
+<td class="fieldname">
+color = <a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a></td>
+<td class="fielddoc">
+Couleur utilisée pour moduler la texture (par défaut, pas de modulation). </td></tr>
+</table>
+
+</div>
+</div>
+<a name="structDinoDrawCall" id="structDinoDrawCall"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structDinoDrawCall">&#9670;&#160;</a></span>DinoDrawCall</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct DinoDrawCall</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>Représente une demande de dessin à la carte graphique. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00076">76</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+</div><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Graphe de collaboration de DinoDrawCall:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structDinoDrawCall__coll__graph.svg" width="131" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<table class="fieldtable">
+<tr><th colspan="3">Membres de classe</th></tr>
+<tr><td class="fieldtype">
+<a id="a0a735e1f4c13a47d5af5f047018d84ad" name="a0a735e1f4c13a47d5af5f047018d84ad"></a>vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt;</td>
+<td class="fieldname">
+vertices</td>
+<td class="fielddoc">
+Sommets des triangles à envoyer à la carte graphique. </td></tr>
+<tr><td class="fieldtype">
+<a id="a68ce502c39ff890b21efeeec7e1b4907" name="a68ce502c39ff890b21efeeec7e1b4907"></a>string</td>
+<td class="fieldname">
+textureName</td>
+<td class="fielddoc">
+Nom de la texture à utiliser, ou vide pour une texture complètement blanche et opaque. </td></tr>
+<tr><td class="fieldtype">
+<a id="aeb4d6e016bd75b441e9f60f7350b60ce" name="aeb4d6e016bd75b441e9f60f7350b60ce"></a><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a></td>
+<td class="fieldname">
+translation = <a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>{0.0f, 0.0f}</td>
+<td class="fielddoc">
+Décalage en pixels depuis l'angle en haut à gauche. </td></tr>
+<tr><td class="fieldtype">
+<a id="a086142c8f60d7ce99c3d9aba0c5a1c85" name="a086142c8f60d7ce99c3d9aba0c5a1c85"></a>double</td>
+<td class="fieldname">
+rotation = 0.0</td>
+<td class="fielddoc">
+Rotation en degrés. </td></tr>
+<tr><td class="fieldtype">
+<a id="ae1e2c3f1246534b117fd0d28b40fe25f" name="ae1e2c3f1246534b117fd0d28b40fe25f"></a>double</td>
+<td class="fieldname">
+scale = 1.0</td>
+<td class="fielddoc">
+Mise à l'échelle. </td></tr>
+</table>
+
+</div>
+</div>
+<a name="structDinoGamepad" id="structDinoGamepad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structDinoGamepad">&#9670;&#160;</a></span>DinoGamepad</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct DinoGamepad</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>Structure contenant l'état d'une manette (ou du clavier utilisé comme manette). </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00126">126</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+</div><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Graphe de collaboration de DinoGamepad:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structDinoGamepad__coll__graph.svg" width="108" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<table class="fieldtable">
+<tr><th colspan="3">Membres de classe</th></tr>
+<tr><td class="fieldtype">
+<a id="ae8f6895a97795d2f871f447f222ecb8c" name="ae8f6895a97795d2f871f447f222ecb8c"></a>bool</td>
+<td class="fieldname">
+dpad_up: 1</td>
+<td class="fielddoc">
+Si clavier : Flèche du haut. </td></tr>
+<tr><td class="fieldtype">
+<a id="ab3f2fbf44d464753d0c9cea2ada1ba34" name="ab3f2fbf44d464753d0c9cea2ada1ba34"></a>bool</td>
+<td class="fieldname">
+dpad_left: 1</td>
+<td class="fielddoc">
+Si clavier : Flèche gauche. </td></tr>
+<tr><td class="fieldtype">
+<a id="a09346b67c8a776942a161c7bbb7b21d3" name="a09346b67c8a776942a161c7bbb7b21d3"></a>bool</td>
+<td class="fieldname">
+dpad_right: 1</td>
+<td class="fielddoc">
+Si clavier : Flèche droite. </td></tr>
+<tr><td class="fieldtype">
+<a id="a999458b1b81234a920711e6223057193" name="a999458b1b81234a920711e6223057193"></a>bool</td>
+<td class="fieldname">
+dpad_down: 1</td>
+<td class="fielddoc">
+Si clavier : Flèche du bas. </td></tr>
+<tr><td class="fieldtype">
+<a id="a757c774b402277a01602e48daf0fd724" name="a757c774b402277a01602e48daf0fd724"></a>bool</td>
+<td class="fieldname">
+btn_up: 1</td>
+<td class="fielddoc">
+Si clavier : Z ou W. </td></tr>
+<tr><td class="fieldtype">
+<a id="a7e29774181e395f2cec3b976d0538e8c" name="a7e29774181e395f2cec3b976d0538e8c"></a>bool</td>
+<td class="fieldname">
+btn_left: 1</td>
+<td class="fielddoc">
+Si clavier : Q ou A. </td></tr>
+<tr><td class="fieldtype">
+<a id="a16fd2a19b3812bdeda3eddd7a51a5e9e" name="a16fd2a19b3812bdeda3eddd7a51a5e9e"></a>bool</td>
+<td class="fieldname">
+btn_right: 1</td>
+<td class="fielddoc">
+Si clavier : D. </td></tr>
+<tr><td class="fieldtype">
+<a id="a0a65f8b03568e5d13ad9477464a77bc6" name="a0a65f8b03568e5d13ad9477464a77bc6"></a>bool</td>
+<td class="fieldname">
+btn_down: 1</td>
+<td class="fielddoc">
+Si clavier : S. </td></tr>
+<tr><td class="fieldtype">
+<a id="ac725e856d310901f99f7cfbff36e100c" name="ac725e856d310901f99f7cfbff36e100c"></a>bool</td>
+<td class="fieldname">
+start: 1</td>
+<td class="fielddoc">
+Si clavier : ESPACE ou ENTREE. </td></tr>
+<tr><td class="fieldtype">
+<a id="a61f7d6f6d88b9eb5ae07c6f2bd4a87c5" name="a61f7d6f6d88b9eb5ae07c6f2bd4a87c5"></a>bool</td>
+<td class="fieldname">
+select: 1</td>
+<td class="fielddoc">
+Si clavier : SHIFT. </td></tr>
+<tr><td class="fieldtype">
+<a id="a6ea620672513e369f4f0ee0070825d29" name="a6ea620672513e369f4f0ee0070825d29"></a>bool</td>
+<td class="fieldname">
+shoulder_left: 1</td>
+<td class="fielddoc">
+Si clavier : CTRL. </td></tr>
+<tr><td class="fieldtype">
+<a id="a21bfb5e03e6be550f53b515b6d4fc58d" name="a21bfb5e03e6be550f53b515b6d4fc58d"></a>bool</td>
+<td class="fieldname">
+shoulder_right: 1</td>
+<td class="fielddoc">
+Si clavier : ALT. </td></tr>
+<tr><td class="fieldtype">
+<a id="a2b9913616540d5b4e8543b959285aa9e" name="a2b9913616540d5b4e8543b959285aa9e"></a>float</td>
+<td class="fieldname">
+stick_left_x</td>
+<td class="fielddoc">
+Entre -1 et 1. Si clavier : dérivé de 'dpad'. </td></tr>
+<tr><td class="fieldtype">
+<a id="ad80a6949b45365d63b3862f933b5d564" name="ad80a6949b45365d63b3862f933b5d564"></a>float</td>
+<td class="fieldname">
+stick_left_y</td>
+<td class="fielddoc">
+Entre -1 et 1. Si clavier : dérivdé de 'dpad'. </td></tr>
+<tr><td class="fieldtype">
+<a id="a3472d2d5f1a42c19cdfb8defbbd46a80" name="a3472d2d5f1a42c19cdfb8defbbd46a80"></a>float</td>
+<td class="fieldname">
+stick_right_x</td>
+<td class="fielddoc">
+Entre -1 et 1. Si clavier : dérivé de 'btn'. </td></tr>
+<tr><td class="fieldtype">
+<a id="a5b09673eed3acb0308baece1136979cc" name="a5b09673eed3acb0308baece1136979cc"></a>float</td>
+<td class="fieldname">
+stick_right_y</td>
+<td class="fielddoc">
+Entre -1 et 1. Si clavier : dérivé de 'btn'. </td></tr>
+<tr><td class="fieldtype">
+<a id="a2d8f90cf6d81dfad6248897667f8ba7c" name="a2d8f90cf6d81dfad6248897667f8ba7c"></a>int32_t</td>
+<td class="fieldname">
+mouse_x</td>
+<td class="fielddoc">
+Si clavier : position en pixels. </td></tr>
+<tr><td class="fieldtype">
+<a id="a502324cbd76f6f735a0d604bb192846e" name="a502324cbd76f6f735a0d604bb192846e"></a>int32_t</td>
+<td class="fieldname">
+mouse_y</td>
+<td class="fielddoc">
+Si clavier : position en pixels. </td></tr>
+</table>
+
+</div>
+</div>
+<a name="structDinoColor_8____unnamed1____" id="structDinoColor_8____unnamed1____"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structDinoColor_8____unnamed1____">&#9670;&#160;</a></span>DinoColor.__unnamed1__</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct DinoColor.__unnamed1__</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock">
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00043">43</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+</div><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Graphe de collaboration de DinoColor.__unnamed1__:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structDinoColor_8____unnamed1______coll__graph.svg" width="171" height="136"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<table class="fieldtable">
+<tr><th colspan="3">Membres de classe</th></tr>
+<tr><td class="fieldtype">
+<a id="a4b43b0aee35624cd95b910189b3dc231" name="a4b43b0aee35624cd95b910189b3dc231"></a>uint8_t</td>
+<td class="fieldname">
+r</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ab2f5ff47436671b6e533d8dc3614845d" name="ab2f5ff47436671b6e533d8dc3614845d"></a>uint8_t</td>
+<td class="fieldname">
+g</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a92eb5ffee6ae2fec3ad71c777531578f" name="a92eb5ffee6ae2fec3ad71c777531578f"></a>uint8_t</td>
+<td class="fieldname">
+b</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a0cc175b9c0f1b6a831c399e269772661" name="a0cc175b9c0f1b6a831c399e269772661"></a>uint8_t</td>
+<td class="fieldname">
+a</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des macros</h2>
+<a id="ae72f81db667ba4b51b14226770f73594" name="ae72f81db667ba4b51b14226770f73594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae72f81db667ba4b51b14226770f73594">&#9670;&#160;</a></span>DINO_CRITICAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DINO_CRITICAL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">msg</td><td>)</td>
+          <td>&#160;&#160;&#160;(<a class="el" href="xdino__win64__main_8cpp.html#ac7336d7a0cef47c62cd1ea2a321be2d3">_impl_XDino_Critical</a>(__func__, __LINE__, msg), __debugbreak())</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>À appeler en cas d'erreur critique (= affiche une popup et ferme le jeu) </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00013">13</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation du type de l'énumération</h2>
+<a id="ae25e331a93ed90f8e35cac957cd0b2c0" name="ae25e331a93ed90f8e35cac957cd0b2c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae25e331a93ed90f8e35cac957cd0b2c0">&#9670;&#160;</a></span>DinoGamepadIdx</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> : int32_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Valeurs énumérées</th></tr><tr><td class="fieldname"><a id="ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab" name="ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab"></a>Gamepad1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec" name="ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec"></a>Gamepad2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304" name="ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304"></a>Gamepad3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9" name="ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9"></a>Gamepad4&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e" name="ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e"></a>Keyboard&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00109">109</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a34e4cc788612f46dea16beb4b24dd0ab" name="a34e4cc788612f46dea16beb4b24dd0ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34e4cc788612f46dea16beb4b24dd0ab">&#9670;&#160;</a></span>Dino_GameInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GameInit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Appelé au tout début, pour initialiser la logique de jeu. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00019">19</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="dino__game_8cpp_source.html#l00013">circlePos</a>, <a class="el" href="dino__game_8cpp_source.html#l00014">polyline</a>, <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00561">XDino_GetWindowSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00576">XDino_SetRenderSize()</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h_a34e4cc788612f46dea16beb4b24dd0ab_cgraph.svg" width="322" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_a34e4cc788612f46dea16beb4b24dd0ab_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ac7b7408f18b3729af2f6e7f405f238e7" name="ac7b7408f18b3729af2f6e7f405f238e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7b7408f18b3729af2f6e7f405f238e7">&#9670;&#160;</a></span>Dino_GameFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GameFrame </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>timeSinceStart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Appelé pour générer chaque frame. Doit lireles entrées de jeu avec <code><a class="el" href="xdino_8h.html#a68646c879bb2deb348cfa0ae2fc53b92" title="Récupère l&#39;état de la manette concernée.">XDino_GetGamepad()</a></code>, mettre à jour la logique du jeu, et donner les commandes de dessins avec <code><a class="el" href="xdino_8h.html#af6f41148f29d2c60fc4f9e51449436fa" title="Transfère les triangles à dessiner à la carte graphique.">XDino_Draw()</a></code>. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeSinceStart</td><td>Temps en secondes depuis le lancement du jeu. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00032">32</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="dino__game_8cpp_source.html#l00017">CIRCLE_SPEED</a>, <a class="el" href="dino__game_8cpp_source.html#l00013">circlePos</a>, <a class="el" href="dino__draw__utils_8cpp_source.html#l00003">Dino_CreateDrawCall_Circle()</a>, <a class="el" href="dino__draw__utils_8cpp_source.html#l00100">Dino_CreateDrawCall_Polyline()</a>, <a class="el" href="dino__draw__utils_8cpp_source.html#l00021">Dino_CreateDrawCall_Text()</a>, <a class="el" href="xdino_8h_source.html#l00054">DinoColor_GREY</a>, <a class="el" href="xdino_8h_source.html#l00053">DinoColor_WHITE</a>, <a class="el" href="xdino_8h_source.html#l00117">DinoGamepadIdx_ALL</a>, <a class="el" href="dino__game_8cpp_source.html#l00010">lastTime</a>, <a class="el" href="dino__game_8cpp_source.html#l00014">polyline</a>, <a class="el" href="dino__game_8cpp_source.html#l00011">rotation</a>, <a class="el" href="xdino_8h_source.html#l00084">DinoDrawCall::rotation</a>, <a class="el" href="dino__game_8cpp_source.html#l00012">scale</a>, <a class="el" href="xdino_8h_source.html#l00086">DinoDrawCall::scale</a>, <a class="el" href="xdino_8h_source.html#l00080">DinoDrawCall::textureName</a>, <a class="el" href="xdino_8h_source.html#l00082">DinoDrawCall::translation</a>, <a class="el" href="xdino_8h_source.html#l00078">DinoDrawCall::vertices</a>, <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00586">XDino_Draw()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00189">XDino_GetGamepad()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00561">XDino_GetWindowSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00566">XDino_SetClearColor()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00576">XDino_SetRenderSize()</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h_ac7b7408f18b3729af2f6e7f405f238e7_cgraph.svg" width="362" height="414"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_ac7b7408f18b3729af2f6e7f405f238e7_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="af5be2c6012bb9e2650a622d88c610fd6" name="af5be2c6012bb9e2650a622d88c610fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5be2c6012bb9e2650a622d88c610fd6">&#9670;&#160;</a></span>Dino_GameShut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GameShut </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Appelé quand l'utilisateur demande à quitter le jeu (touche ECHAP). </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00141">141</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">WinMain()</a>.</p>
+<div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h_af5be2c6012bb9e2650a622d88c610fd6_icgraph.svg" width="247" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8fb3a63e6442dd880092baee74243dd3" name="a8fb3a63e6442dd880092baee74243dd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fb3a63e6442dd880092baee74243dd3">&#9670;&#160;</a></span>XDino_GetWindowSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> XDino_GetWindowSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Taille de la fenêtre sur l'écran. Attention, différent de la résolution du rendu ! </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00561">561</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00037">gXDino_height</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00036">gXDino_width</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>, et <a class="el" href="dino__game_8cpp_source.html#l00019">Dino_GameInit()</a>.</p>
+<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_a8fb3a63e6442dd880092baee74243dd3_icgraph.svg" width="100%" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a4ded9317bd5f35f70b1473c729e56d1a" name="a4ded9317bd5f35f70b1473c729e56d1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ded9317bd5f35f70b1473c729e56d1a">&#9670;&#160;</a></span>XDino_GetRenderSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> XDino_GetRenderSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Taille du rendu. Attention, différent de la résolution affichée à l'écran ! </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00571">571</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00039">gXDino_rdrHeight</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00038">gXDino_rdrWidth</a>.</p>
+
+</div>
+</div>
+<a id="a57ea716600a49f61ffff0bd33bd78a7d" name="a57ea716600a49f61ffff0bd33bd78a7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57ea716600a49f61ffff0bd33bd78a7d">&#9670;&#160;</a></span>XDino_SetRenderSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_SetRenderSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td>
+          <td class="paramname"><em>renderSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00576">576</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00039">gXDino_rdrHeight</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00038">gXDino_rdrWidth</a>, <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>, et <a class="el" href="dino__game_8cpp_source.html#l00019">Dino_GameInit()</a>.</p>
+<div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_a57ea716600a49f61ffff0bd33bd78a7d_icgraph.svg" width="100%" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="abded2f43911a4a13d4742539b59797e0" name="abded2f43911a4a13d4742539b59797e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abded2f43911a4a13d4742539b59797e0">&#9670;&#160;</a></span>XDino_SetClearColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_SetClearColor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pour indiquer la couleur d'arrière-plan. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00566">566</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00052">gXDino_clearColor</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>.</p>
+<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_abded2f43911a4a13d4742539b59797e0_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="af6f41148f29d2c60fc4f9e51449436fa" name="af6f41148f29d2c60fc4f9e51449436fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6f41148f29d2c60fc4f9e51449436fa">&#9670;&#160;</a></span>XDino_Draw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Draw </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a>&#160;</td>
+          <td class="paramname"><em>drawCall</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transfère les triangles à dessiner à la carte graphique. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00586">586</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00064">gXDino_drawCalls</a>, et <a class="el" href="xdino_8h_source.html#l00078">DinoDrawCall::vertices</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>.</p>
+<div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_af6f41148f29d2c60fc4f9e51449436fa_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a68646c879bb2deb348cfa0ae2fc53b92" name="a68646c879bb2deb348cfa0ae2fc53b92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68646c879bb2deb348cfa0ae2fc53b92">&#9670;&#160;</a></span>XDino_GetGamepad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XDino_GetGamepad </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a>&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoGamepad">DinoGamepad</a> &amp;&#160;</td>
+          <td class="paramname"><em>outGamepad</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Récupère l'état de la manette concernée. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">idx</td><td>Quelle manette regarder, ou le clavier avec <code><a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">DinoGamepadIdx::Keyboard</a></code>. </td></tr>
+    <tr><td class="paramname">outGamepad</td><td>Où sont stockées les valeurs récupérées. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd><code>true</code> quand réussit, <code>false</code> si non-disponible. </dd></dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00189">189</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00134">DinoGamepad::btn_down</a>, <a class="el" href="xdino_8h_source.html#l00132">DinoGamepad::btn_left</a>, <a class="el" href="xdino_8h_source.html#l00133">DinoGamepad::btn_right</a>, <a class="el" href="xdino_8h_source.html#l00131">DinoGamepad::btn_up</a>, <a class="el" href="xdino_8h_source.html#l00130">DinoGamepad::dpad_down</a>, <a class="el" href="xdino_8h_source.html#l00128">DinoGamepad::dpad_left</a>, <a class="el" href="xdino_8h_source.html#l00129">DinoGamepad::dpad_right</a>, <a class="el" href="xdino_8h_source.html#l00127">DinoGamepad::dpad_up</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>, <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">Keyboard</a>, <a class="el" href="xdino_8h_source.html#l00145">DinoGamepad::mouse_x</a>, <a class="el" href="xdino_8h_source.html#l00146">DinoGamepad::mouse_y</a>, <a class="el" href="xdino_8h_source.html#l00136">DinoGamepad::select</a>, <a class="el" href="xdino_8h_source.html#l00137">DinoGamepad::shoulder_left</a>, <a class="el" href="xdino_8h_source.html#l00138">DinoGamepad::shoulder_right</a>, <a class="el" href="xdino_8h_source.html#l00135">DinoGamepad::start</a>, <a class="el" href="xdino_8h_source.html#l00140">DinoGamepad::stick_left_x</a>, <a class="el" href="xdino_8h_source.html#l00141">DinoGamepad::stick_left_y</a>, <a class="el" href="xdino_8h_source.html#l00142">DinoGamepad::stick_right_x</a>, et <a class="el" href="xdino_8h_source.html#l00143">DinoGamepad::stick_right_y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>.</p>
+<div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_a68646c879bb2deb348cfa0ae2fc53b92_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="afe24d415c32e02761cd69c10d8949075" name="afe24d415c32e02761cd69c10d8949075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe24d415c32e02761cd69c10d8949075">&#9670;&#160;</a></span>XDino_RandomUint32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t XDino_RandomUint32 </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un entier 32-bit non-signé pseudo-aléatoire entre 'min' et 'max' inclus. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00270">270</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-18-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h_afe24d415c32e02761cd69c10d8949075_cgraph.svg" width="296" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a09a4d6e92b29b1c57f37cff0bba039a0" name="a09a4d6e92b29b1c57f37cff0bba039a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09a4d6e92b29b1c57f37cff0bba039a0">&#9670;&#160;</a></span>XDino_RandomInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t XDino_RandomInt32 </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00276">276</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h_a09a4d6e92b29b1c57f37cff0bba039a0_cgraph.svg" width="288" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a2e6d69578bed3d312e872e26a21c9435" name="a2e6d69578bed3d312e872e26a21c9435"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e6d69578bed3d312e872e26a21c9435">&#9670;&#160;</a></span>XDino_RandomFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float XDino_RandomFloat </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00282">282</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h_a2e6d69578bed3d312e872e26a21c9435_cgraph.svg" width="288" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a633e7eb91888670d439d5cc124a36e7d" name="a633e7eb91888670d439d5cc124a36e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a633e7eb91888670d439d5cc124a36e7d">&#9670;&#160;</a></span>XDino_RandomUnitVec2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> XDino_RandomUnitVec2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un vecteur unitaire dans une direction aléatoire. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00288">288</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino_8h_a633e7eb91888670d439d5cc124a36e7d_cgraph.svg" width="312" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ab579fc5249712eea9dab54bbad4808f0" name="ab579fc5249712eea9dab54bbad4808f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab579fc5249712eea9dab54bbad4808f0">&#9670;&#160;</a></span>XDino_ProfileBegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_ProfileBegin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l'un dans l'autre. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">color</td><td><a class="el" href="xdino_8h.html#unionDinoColor" title="Représente une couleur de pixels, utilisée pour moduler l&#39;affichage d&#39;une texture.">DinoColor</a> qui indique la couleur sur PIX. </td></tr>
+    <tr><td class="paramname">msg</td><td>Chaine de caractère C terminée par 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00173">173</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00429">XDino_Win64_EndDraw()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_ab579fc5249712eea9dab54bbad4808f0_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a847ecb99f82286c5ba044e4e50d6ca2c" name="a847ecb99f82286c5ba044e4e50d6ca2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a847ecb99f82286c5ba044e4e50d6ca2c">&#9670;&#160;</a></span>XDino_ProfileEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_ProfileEnd </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finit un intervalle de profiling. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00178">178</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00429">XDino_Win64_EndDraw()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-23" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino_8h_a847ecb99f82286c5ba044e4e50d6ca2c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ac7336d7a0cef47c62cd1ea2a321be2d3" name="ac7336d7a0cef47c62cd1ea2a321be2d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7336d7a0cef47c62cd1ea2a321be2d3">&#9670;&#160;</a></span>_impl_XDino_Critical()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _impl_XDino_Critical </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>pFunc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détail d'implémentation, . </p>
+<p>Ne pas appeler directement, il faut utiliser <code>DINO_CRITICAL</code>. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00165">165</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a0cbdf5c8996c3f409b9505e8e277aaf7" name="a0cbdf5c8996c3f409b9505e8e277aaf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cbdf5c8996c3f409b9505e8e277aaf7">&#9670;&#160;</a></span>DinoColor_WHITE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_WHITE {0xFF, 0xFF, 0xFF, 0xFF}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00053">53</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>.</p>
+
+</div>
+</div>
+<a id="a3d6ec0f401e24873eea2e55dbe5a3ff9" name="a3d6ec0f401e24873eea2e55dbe5a3ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d6ec0f401e24873eea2e55dbe5a3ff9">&#9670;&#160;</a></span>DinoColor_GREY</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_GREY {0x80, 0x80, 0x80, 0xFF}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00054">54</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00429">XDino_Win64_EndDraw()</a>.</p>
+
+</div>
+</div>
+<a id="a289347d3145bcc1ada68d75b75ba58c9" name="a289347d3145bcc1ada68d75b75ba58c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a289347d3145bcc1ada68d75b75ba58c9">&#9670;&#160;</a></span>DinoColor_BLACK</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_BLACK {0x00, 0x00, 0x00, 0xFF}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00055">55</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="ae61e4fce79f41d23dc826ef73e40c19a" name="ae61e4fce79f41d23dc826ef73e40c19a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae61e4fce79f41d23dc826ef73e40c19a">&#9670;&#160;</a></span>DinoColor_TRANSPARENT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_TRANSPARENT {0xFF, 0xFF, 0xFF, 0x80}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00056">56</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<a id="a93188dac74427f4871d050d62876b29d" name="a93188dac74427f4871d050d62876b29d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93188dac74427f4871d050d62876b29d">&#9670;&#160;</a></span>DinoColor_INVISIBLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_INVISIBLE {0xFF, 0xFF, 0xFF, 0x00}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00057">57</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<a id="a1b3e9eb2c4f8790e442bc2dbc5c6b9f7" name="a1b3e9eb2c4f8790e442bc2dbc5c6b9f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b3e9eb2c4f8790e442bc2dbc5c6b9f7">&#9670;&#160;</a></span>DinoColor_BLUE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_BLUE {0x4D, 0x92, 0xBC, 0xFF}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00058">58</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<a id="a43d3801d1a03c930499cd939692d786e" name="a43d3801d1a03c930499cd939692d786e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43d3801d1a03c930499cd939692d786e">&#9670;&#160;</a></span>DinoColor_RED</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_RED {0xBC, 0x4D, 0x4F, 0xFF}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00059">59</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<a id="ab8139914fa51566caf3d7e059af7d125" name="ab8139914fa51566caf3d7e059af7d125"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8139914fa51566caf3d7e059af7d125">&#9670;&#160;</a></span>DinoColor_YELLOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_YELLOW {0xFD, 0xC7, 0x60, 0xFF}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00060">60</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<a id="a7af8819cdc2d1e8d809ab6168bc09166" name="a7af8819cdc2d1e8d809ab6168bc09166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7af8819cdc2d1e8d809ab6168bc09166">&#9670;&#160;</a></span>DinoColor_GREEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> DinoColor_GREEN {0x88, 0xA0, 0x43, 0xFF}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00061">61</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+</div>
+</div>
+<a id="a631d358f2de291da38e0fe933d6a5c85" name="a631d358f2de291da38e0fe933d6a5c85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a631d358f2de291da38e0fe933d6a5c85">&#9670;&#160;</a></span>DinoGamepadIdx_ALL</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> DinoGamepadIdx_ALL[]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Valeur initiale :</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab">DinoGamepadIdx::Gamepad1</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec">DinoGamepadIdx::Gamepad2</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304">DinoGamepadIdx::Gamepad3</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9">DinoGamepadIdx::Gamepad4</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">DinoGamepadIdx::Keyboard</a>,</div>
+<div class="line">}</div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab">DinoGamepadIdx::Gamepad1</a></div><div class="ttdeci">@ Gamepad1</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9">DinoGamepadIdx::Gamepad4</a></div><div class="ttdeci">@ Gamepad4</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">DinoGamepadIdx::Keyboard</a></div><div class="ttdeci">@ Keyboard</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304">DinoGamepadIdx::Gamepad3</a></div><div class="ttdeci">@ Gamepad3</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec">DinoGamepadIdx::Gamepad2</a></div><div class="ttdeci">@ Gamepad2</div></div>
+</div><!-- fragment -->
+<p class="definition">Définition à la ligne <a class="el" href="xdino_8h_source.html#l00117">117</a> du fichier <a class="el" href="xdino_8h_source.html">xdino.h</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

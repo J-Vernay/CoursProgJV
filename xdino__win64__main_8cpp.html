@@ -1,0 +1,867 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Référence du fichier xdino_win64_main.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2bb994ae3c35c8ddd14b20e4aa61abb8.html">dino</a></li><li class="navelem"><a class="el" href="dir_43d36a8877b182ff7b3d4649e28e2e39.html">x64-windows</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier xdino_win64_main.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Implémentation de la fenêtre et des événements sur Windows.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;<a class="el" href="xdino_8h_source.html">dino/xdino.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="xdino__win64__rdr_8h_source.html">dino/x64-windows/xdino_win64_rdr.h</a>&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
+<code>#include &lt;random&gt;</code><br />
+<code>#include &lt;Windows.h&gt;</code><br />
+<code>#include &lt;Xinput.h&gt;</code><br />
+<code>#include &lt;pix3.h&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Graphe des dépendances par inclusion de xdino_win64_main.cpp:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp__incl.svg" width="100%" height="449"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div>
+<p><a href="xdino__win64__main_8cpp_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a1b0e3dee2e25c778c218958184a43ab1" id="r_a1b0e3dee2e25c778c218958184a43ab1"><td class="memItemLeft" align="right" valign="top">std::mt19937&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng</a> (<a class="el" href="xdino__win64__main_8cpp.html#a8bf2671466ca006c19b2d43042f1ce32">gXDino_randomDevice</a>())</td></tr>
+<tr class="separator:a1b0e3dee2e25c778c218958184a43ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7202590da16f97f4cef692deb9001e27" id="r_a7202590da16f97f4cef692deb9001e27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27">XDino_Win64_CreateWindow</a> ()</td></tr>
+<tr class="separator:a7202590da16f97f4cef692deb9001e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f03a33705fae3997a21af54ca15a039" id="r_a5f03a33705fae3997a21af54ca15a039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a5f03a33705fae3997a21af54ca15a039">XDino_Win64_CreateRenderer</a> ()</td></tr>
+<tr class="separator:a5f03a33705fae3997a21af54ca15a039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a782c99a514da9425987b481ccc596104" id="r_a782c99a514da9425987b481ccc596104"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a782c99a514da9425987b481ccc596104">XDino_Win64_DestroyWindow</a> ()</td></tr>
+<tr class="separator:a782c99a514da9425987b481ccc596104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa07de294d5b620ee39644b9661f0665" id="r_afa07de294d5b620ee39644b9661f0665"><td class="memItemLeft" align="right" valign="top">LRESULT CALLBACK&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665">XDino_Win64_HandleEvent</a> (HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)</td></tr>
+<tr class="separator:afa07de294d5b620ee39644b9661f0665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0e1ecfaa9e7f124f36e8666a1cb66f9" id="r_aa0e1ecfaa9e7f124f36e8666a1cb66f9"><td class="memItemLeft" align="right" valign="top">int APIENTRY&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9">WinMain</a> (HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)</td></tr>
+<tr class="separator:aa0e1ecfaa9e7f124f36e8666a1cb66f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7336d7a0cef47c62cd1ea2a321be2d3" id="r_ac7336d7a0cef47c62cd1ea2a321be2d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#ac7336d7a0cef47c62cd1ea2a321be2d3">_impl_XDino_Critical</a> (char const *pFunc, int line, char const *msg)</td></tr>
+<tr class="memdesc:ac7336d7a0cef47c62cd1ea2a321be2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détail d'implémentation, .  <br /></td></tr>
+<tr class="separator:ac7336d7a0cef47c62cd1ea2a321be2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab579fc5249712eea9dab54bbad4808f0" id="r_ab579fc5249712eea9dab54bbad4808f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#ab579fc5249712eea9dab54bbad4808f0">XDino_ProfileBegin</a> (<a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> color, char const *msg)</td></tr>
+<tr class="memdesc:ab579fc5249712eea9dab54bbad4808f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l'un dans l'autre.  <br /></td></tr>
+<tr class="separator:ab579fc5249712eea9dab54bbad4808f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a847ecb99f82286c5ba044e4e50d6ca2c" id="r_a847ecb99f82286c5ba044e4e50d6ca2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a847ecb99f82286c5ba044e4e50d6ca2c">XDino_ProfileEnd</a> ()</td></tr>
+<tr class="memdesc:a847ecb99f82286c5ba044e4e50d6ca2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finit un intervalle de profiling.  <br /></td></tr>
+<tr class="separator:a847ecb99f82286c5ba044e4e50d6ca2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68646c879bb2deb348cfa0ae2fc53b92" id="r_a68646c879bb2deb348cfa0ae2fc53b92"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a68646c879bb2deb348cfa0ae2fc53b92">XDino_GetGamepad</a> (<a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> idx, <a class="el" href="xdino_8h.html#structDinoGamepad">DinoGamepad</a> &amp;outGamepad)</td></tr>
+<tr class="memdesc:a68646c879bb2deb348cfa0ae2fc53b92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Récupère l'état de la manette concernée.  <br /></td></tr>
+<tr class="separator:a68646c879bb2deb348cfa0ae2fc53b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe24d415c32e02761cd69c10d8949075" id="r_afe24d415c32e02761cd69c10d8949075"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#afe24d415c32e02761cd69c10d8949075">XDino_RandomUint32</a> (uint32_t min, uint32_t max)</td></tr>
+<tr class="memdesc:afe24d415c32e02761cd69c10d8949075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un entier 32-bit non-signé pseudo-aléatoire entre 'min' et 'max' inclus.  <br /></td></tr>
+<tr class="separator:afe24d415c32e02761cd69c10d8949075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09a4d6e92b29b1c57f37cff0bba039a0" id="r_a09a4d6e92b29b1c57f37cff0bba039a0"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a09a4d6e92b29b1c57f37cff0bba039a0">XDino_RandomInt32</a> (int32_t min, int32_t max)</td></tr>
+<tr class="memdesc:a09a4d6e92b29b1c57f37cff0bba039a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus.  <br /></td></tr>
+<tr class="separator:a09a4d6e92b29b1c57f37cff0bba039a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e6d69578bed3d312e872e26a21c9435" id="r_a2e6d69578bed3d312e872e26a21c9435"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a2e6d69578bed3d312e872e26a21c9435">XDino_RandomFloat</a> (float min, float max)</td></tr>
+<tr class="memdesc:a2e6d69578bed3d312e872e26a21c9435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus.  <br /></td></tr>
+<tr class="separator:a2e6d69578bed3d312e872e26a21c9435"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a633e7eb91888670d439d5cc124a36e7d" id="r_a633e7eb91888670d439d5cc124a36e7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a633e7eb91888670d439d5cc124a36e7d">XDino_RandomUnitVec2</a> ()</td></tr>
+<tr class="memdesc:a633e7eb91888670d439d5cc124a36e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génère un vecteur unitaire dans une direction aléatoire.  <br /></td></tr>
+<tr class="separator:a633e7eb91888670d439d5cc124a36e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a3819abab637e4cdef694b636d52228ee" id="r_a3819abab637e4cdef694b636d52228ee"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a3819abab637e4cdef694b636d52228ee">XDino_INIT_WIDTH</a> = 640</td></tr>
+<tr class="separator:a3819abab637e4cdef694b636d52228ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc202208e2fcba9effc057148a0f71fd" id="r_afc202208e2fcba9effc057148a0f71fd"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#afc202208e2fcba9effc057148a0f71fd">XDino_INIT_HEIGHT</a> = 480</td></tr>
+<tr class="separator:afc202208e2fcba9effc057148a0f71fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16958eb078e997cf61831d9c2a99d8cf" id="r_a16958eb078e997cf61831d9c2a99d8cf"><td class="memItemLeft" align="right" valign="top">HINSTANCE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a16958eb078e997cf61831d9c2a99d8cf">gXDino_hInstance</a> = nullptr</td></tr>
+<tr class="separator:a16958eb078e997cf61831d9c2a99d8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3da9ac26be6485abbc2300a8744be62d" id="r_a3da9ac26be6485abbc2300a8744be62d"><td class="memItemLeft" align="right" valign="top">HWND&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a3da9ac26be6485abbc2300a8744be62d">gXDino_hWindow</a> = nullptr</td></tr>
+<tr class="separator:a3da9ac26be6485abbc2300a8744be62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7db1a9ba0bf7501ed61d3360c32a202" id="r_aa7db1a9ba0bf7501ed61d3360c32a202"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#aa7db1a9ba0bf7501ed61d3360c32a202">gXDino_tickStart</a> = 0</td></tr>
+<tr class="separator:aa7db1a9ba0bf7501ed61d3360c32a202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d5f6b5f1f47fbb631c8f03d64f045fa" id="r_a9d5f6b5f1f47fbb631c8f03d64f045fa"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a9d5f6b5f1f47fbb631c8f03d64f045fa">gXDino_tickPeriod</a> = 1.0</td></tr>
+<tr class="separator:a9d5f6b5f1f47fbb631c8f03d64f045fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bf2671466ca006c19b2d43042f1ce32" id="r_a8bf2671466ca006c19b2d43042f1ce32"><td class="memItemLeft" align="right" valign="top">std::random_device&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__main_8cpp.html#a8bf2671466ca006c19b2d43042f1ce32">gXDino_randomDevice</a></td></tr>
+<tr class="separator:a8bf2671466ca006c19b2d43042f1ce32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Implémentation de la fenêtre et des événements sur Windows. </p>
+
+<p class="definition">Définition dans le fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+</div><h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a1b0e3dee2e25c778c218958184a43ab1" name="a1b0e3dee2e25c778c218958184a43ab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b0e3dee2e25c778c218958184a43ab1">&#9670;&#160;</a></span>gXDino_rng()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::mt19937 gXDino_rng </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino__win64__main_8cpp.html#a8bf2671466ca006c19b2d43042f1ce32">gXDino_randomDevice</a>()&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00282">XDino_RandomFloat()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00276">XDino_RandomInt32()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00270">XDino_RandomUint32()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00288">XDino_RandomUnitVec2()</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a1b0e3dee2e25c778c218958184a43ab1_icgraph.svg" width="312" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a7202590da16f97f4cef692deb9001e27" name="a7202590da16f97f4cef692deb9001e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7202590da16f97f4cef692deb9001e27">&#9670;&#160;</a></span>XDino_Win64_CreateWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_CreateWindow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00070">70</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00027">gXDino_hInstance</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00024">XDino_INIT_HEIGHT</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00023">XDino_INIT_WIDTH</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">WinMain()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a7202590da16f97f4cef692deb9001e27_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a7202590da16f97f4cef692deb9001e27_icgraph.svg" width="320" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a5f03a33705fae3997a21af54ca15a039" name="a5f03a33705fae3997a21af54ca15a039"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f03a33705fae3997a21af54ca15a039">&#9670;&#160;</a></span>XDino_Win64_CreateRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_CreateRenderer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a5f03a33705fae3997a21af54ca15a039_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a782c99a514da9425987b481ccc596104" name="a782c99a514da9425987b481ccc596104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a782c99a514da9425987b481ccc596104">&#9670;&#160;</a></span>XDino_Win64_DestroyWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_DestroyWindow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00159">159</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">WinMain()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a782c99a514da9425987b481ccc596104_icgraph.svg" width="327" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="afa07de294d5b620ee39644b9661f0665" name="afa07de294d5b620ee39644b9661f0665"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa07de294d5b620ee39644b9661f0665">&#9670;&#160;</a></span>XDino_Win64_HandleEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">LRESULT CALLBACK XDino_Win64_HandleEvent </td>
+          <td>(</td>
+          <td class="paramtype">HWND&#160;</td>
+          <td class="paramname"><em>hWnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&#160;</td>
+          <td class="paramname"><em>uMsg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">WPARAM&#160;</td>
+          <td class="paramname"><em>wParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LPARAM&#160;</td>
+          <td class="paramname"><em>lParam</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">108</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>, <a class="el" href="dino__game_8cpp_source.html#l00019">Dino_GameInit()</a>, <a class="el" href="xdino_8h_source.html#l00055">DinoColor_BLACK</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00030">gXDino_tickPeriod</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00029">gXDino_tickStart</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00173">XDino_ProfileBegin()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00178">XDino_ProfileEnd()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00424">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__main_8cpp.html#a5f03a33705fae3997a21af54ca15a039">XDino_Win64_CreateRenderer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00429">XDino_Win64_EndDraw()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00334">XDino_Win64_ResizeRenderer()</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00070">XDino_Win64_CreateWindow()</a>.</p>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_afa07de294d5b620ee39644b9661f0665_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_afa07de294d5b620ee39644b9661f0665_icgraph.svg" width="550" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa0e1ecfaa9e7f124f36e8666a1cb66f9" name="aa0e1ecfaa9e7f124f36e8666a1cb66f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0e1ecfaa9e7f124f36e8666a1cb66f9">&#9670;&#160;</a></span>WinMain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int APIENTRY WinMain </td>
+          <td>(</td>
+          <td class="paramtype">HINSTANCE&#160;</td>
+          <td class="paramname"><em>hInst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">HINSTANCE&#160;</td>
+          <td class="paramname"><em>hInstPrev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">PSTR&#160;</td>
+          <td class="paramname"><em>cmdline</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cmdshow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">41</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="dino__game_8cpp_source.html#l00141">Dino_GameShut()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00027">gXDino_hInstance</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00070">XDino_Win64_CreateWindow()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00522">XDino_Win64_DestroyRenderer()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00159">XDino_Win64_DestroyWindow()</a>.</p>
+<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_aa0e1ecfaa9e7f124f36e8666a1cb66f9_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ac7336d7a0cef47c62cd1ea2a321be2d3" name="ac7336d7a0cef47c62cd1ea2a321be2d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7336d7a0cef47c62cd1ea2a321be2d3">&#9670;&#160;</a></span>_impl_XDino_Critical()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _impl_XDino_Critical </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>pFunc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détail d'implémentation, . </p>
+<p>Ne pas appeler directement, il faut utiliser <code>DINO_CRITICAL</code>. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00165">165</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>.</p>
+
+</div>
+</div>
+<a id="ab579fc5249712eea9dab54bbad4808f0" name="ab579fc5249712eea9dab54bbad4808f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab579fc5249712eea9dab54bbad4808f0">&#9670;&#160;</a></span>XDino_ProfileBegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_ProfileBegin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l'un dans l'autre. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">color</td><td><a class="el" href="xdino_8h.html#unionDinoColor" title="Représente une couleur de pixels, utilisée pour moduler l&#39;affichage d&#39;une texture.">DinoColor</a> qui indique la couleur sur PIX. </td></tr>
+    <tr><td class="paramname">msg</td><td>Chaine de caractère C terminée par 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00173">173</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00429">XDino_Win64_EndDraw()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_ab579fc5249712eea9dab54bbad4808f0_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a847ecb99f82286c5ba044e4e50d6ca2c" name="a847ecb99f82286c5ba044e4e50d6ca2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a847ecb99f82286c5ba044e4e50d6ca2c">&#9670;&#160;</a></span>XDino_ProfileEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_ProfileEnd </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finit un intervalle de profiling. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00178">178</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00429">XDino_Win64_EndDraw()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a847ecb99f82286c5ba044e4e50d6ca2c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a68646c879bb2deb348cfa0ae2fc53b92" name="a68646c879bb2deb348cfa0ae2fc53b92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68646c879bb2deb348cfa0ae2fc53b92">&#9670;&#160;</a></span>XDino_GetGamepad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XDino_GetGamepad </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a>&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoGamepad">DinoGamepad</a> &amp;&#160;</td>
+          <td class="paramname"><em>outGamepad</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Récupère l'état de la manette concernée. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">idx</td><td>Quelle manette regarder, ou le clavier avec <code><a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">DinoGamepadIdx::Keyboard</a></code>. </td></tr>
+    <tr><td class="paramname">outGamepad</td><td>Où sont stockées les valeurs récupérées. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd><code>true</code> quand réussit, <code>false</code> si non-disponible. </dd></dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00189">189</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00134">DinoGamepad::btn_down</a>, <a class="el" href="xdino_8h_source.html#l00132">DinoGamepad::btn_left</a>, <a class="el" href="xdino_8h_source.html#l00133">DinoGamepad::btn_right</a>, <a class="el" href="xdino_8h_source.html#l00131">DinoGamepad::btn_up</a>, <a class="el" href="xdino_8h_source.html#l00130">DinoGamepad::dpad_down</a>, <a class="el" href="xdino_8h_source.html#l00128">DinoGamepad::dpad_left</a>, <a class="el" href="xdino_8h_source.html#l00129">DinoGamepad::dpad_right</a>, <a class="el" href="xdino_8h_source.html#l00127">DinoGamepad::dpad_up</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">gXDino_hWindow</a>, <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">Keyboard</a>, <a class="el" href="xdino_8h_source.html#l00145">DinoGamepad::mouse_x</a>, <a class="el" href="xdino_8h_source.html#l00146">DinoGamepad::mouse_y</a>, <a class="el" href="xdino_8h_source.html#l00136">DinoGamepad::select</a>, <a class="el" href="xdino_8h_source.html#l00137">DinoGamepad::shoulder_left</a>, <a class="el" href="xdino_8h_source.html#l00138">DinoGamepad::shoulder_right</a>, <a class="el" href="xdino_8h_source.html#l00135">DinoGamepad::start</a>, <a class="el" href="xdino_8h_source.html#l00140">DinoGamepad::stick_left_x</a>, <a class="el" href="xdino_8h_source.html#l00141">DinoGamepad::stick_left_y</a>, <a class="el" href="xdino_8h_source.html#l00142">DinoGamepad::stick_right_x</a>, et <a class="el" href="xdino_8h_source.html#l00143">DinoGamepad::stick_right_y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00032">Dino_GameFrame()</a>.</p>
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a68646c879bb2deb348cfa0ae2fc53b92_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="afe24d415c32e02761cd69c10d8949075" name="afe24d415c32e02761cd69c10d8949075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe24d415c32e02761cd69c10d8949075">&#9670;&#160;</a></span>XDino_RandomUint32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t XDino_RandomUint32 </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un entier 32-bit non-signé pseudo-aléatoire entre 'min' et 'max' inclus. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00270">270</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_afe24d415c32e02761cd69c10d8949075_cgraph.svg" width="296" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a09a4d6e92b29b1c57f37cff0bba039a0" name="a09a4d6e92b29b1c57f37cff0bba039a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09a4d6e92b29b1c57f37cff0bba039a0">&#9670;&#160;</a></span>XDino_RandomInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t XDino_RandomInt32 </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00276">276</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a09a4d6e92b29b1c57f37cff0bba039a0_cgraph.svg" width="288" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a2e6d69578bed3d312e872e26a21c9435" name="a2e6d69578bed3d312e872e26a21c9435"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e6d69578bed3d312e872e26a21c9435">&#9670;&#160;</a></span>XDino_RandomFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float XDino_RandomFloat </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00282">282</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a2e6d69578bed3d312e872e26a21c9435_cgraph.svg" width="288" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a633e7eb91888670d439d5cc124a36e7d" name="a633e7eb91888670d439d5cc124a36e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a633e7eb91888670d439d5cc124a36e7d">&#9670;&#160;</a></span>XDino_RandomUnitVec2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> XDino_RandomUnitVec2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Génère un vecteur unitaire dans une direction aléatoire. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00288">288</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1">gXDino_rng()</a>.</p>
+<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__main_8cpp_a633e7eb91888670d439d5cc124a36e7d_cgraph.svg" width="312" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a3819abab637e4cdef694b636d52228ee" name="a3819abab637e4cdef694b636d52228ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3819abab637e4cdef694b636d52228ee">&#9670;&#160;</a></span>XDino_INIT_WIDTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int XDino_INIT_WIDTH = 640</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00023">23</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00070">XDino_Win64_CreateWindow()</a>.</p>
+
+</div>
+</div>
+<a id="afc202208e2fcba9effc057148a0f71fd" name="afc202208e2fcba9effc057148a0f71fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc202208e2fcba9effc057148a0f71fd">&#9670;&#160;</a></span>XDino_INIT_HEIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int XDino_INIT_HEIGHT = 480</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00024">24</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00070">XDino_Win64_CreateWindow()</a>.</p>
+
+</div>
+</div>
+<a id="a16958eb078e997cf61831d9c2a99d8cf" name="a16958eb078e997cf61831d9c2a99d8cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16958eb078e997cf61831d9c2a99d8cf">&#9670;&#160;</a></span>gXDino_hInstance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HINSTANCE gXDino_hInstance = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00027">27</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">WinMain()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00070">XDino_Win64_CreateWindow()</a>.</p>
+
+</div>
+</div>
+<a id="a3da9ac26be6485abbc2300a8744be62d" name="a3da9ac26be6485abbc2300a8744be62d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3da9ac26be6485abbc2300a8744be62d">&#9670;&#160;</a></span>gXDino_hWindow</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HWND gXDino_hWindow = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00028">28</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00165">_impl_XDino_Critical()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">WinMain()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00189">XDino_GetGamepad()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00070">XDino_Win64_CreateWindow()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00159">XDino_Win64_DestroyWindow()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="aa7db1a9ba0bf7501ed61d3360c32a202" name="aa7db1a9ba0bf7501ed61d3360c32a202"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7db1a9ba0bf7501ed61d3360c32a202">&#9670;&#160;</a></span>gXDino_tickStart</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t gXDino_tickStart = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00029">29</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="a9d5f6b5f1f47fbb631c8f03d64f045fa" name="a9d5f6b5f1f47fbb631c8f03d64f045fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d5f6b5f1f47fbb631c8f03d64f045fa">&#9670;&#160;</a></span>gXDino_tickPeriod</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gXDino_tickPeriod = 1.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00030">30</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+
+</div>
+</div>
+<a id="a8bf2671466ca006c19b2d43042f1ce32" name="a8bf2671466ca006c19b2d43042f1ce32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bf2671466ca006c19b2d43042f1ce32">&#9670;&#160;</a></span>gXDino_randomDevice</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::random_device gXDino_randomDevice</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__main_8cpp_source.html#l00031">31</a> du fichier <a class="el" href="xdino__win64__main_8cpp_source.html">xdino_win64_main.cpp</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

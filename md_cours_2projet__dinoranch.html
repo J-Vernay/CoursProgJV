@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Projet DinoRanch</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div><div class="header">
+  <div class="headertitle"><div class="title">Projet DinoRanch</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table des matières</h3>
+<ul><li class="level1"><a href="#autotoc_md5">Fonctionnalités</a><ul><li class="level2"><a href="#autotoc_md6">F1. Les dinosaures</a></li>
+<li class="level2"><a href="#autotoc_md7">F2. Le terrain</a></li>
+<li class="level2"><a href="#autotoc_md8">F3. Les animaux</a></li>
+<li class="level2"><a href="#autotoc_md9">F4. Lasso</a></li>
+<li class="level2"><a href="#autotoc_md10">F5. Interactions</a></li>
+<li class="level2"><a href="#autotoc_md11">F6. Scoring et chronomètre</a></li>
+<li class="level2"><a href="#autotoc_md12">F7. Lobby et flow du jeu</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md4"></a> DinoRanch est un projet de jeu 2D d'arcade de 1 à 4 joueurs en local. Le jeu est en vue du dessus. Les joueurs incarnent chacun un dinosaure. Les dinosaures doivent capturer des animaux en tournant autour. Les animaux capturés donnent des points. Plus la prise est grosse, plus il y a de points. La partie s'arrête quand le chronomètre arrive à sa fin, et les points sont décomptés.</p>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Fonctionnalités</h1>
+<p>Chaque fonctionnalité est détaillée par des étapes de plus en plus difficiles. Des indications sont données pour accélérer le développement sur les aspects non-programmation.</p>
+<h2><a class="anchor" id="autotoc_md6"></a>
+F1. Les dinosaures</h2>
+<ol type="1">
+<li>Un dinosaure est affiché et peut être déplacé (directions + bouton de course <code>btn_right</code>).</li>
+<li>L'affichage du dinosaure est mis en miroir s'il se déplace vers la gauche (= échanger les positions U).</li>
+<li>L'affichage du dinosaure est animé suivant ses déplacements.</li>
+<li>Le dinosaure peut se prendre des dégâts (= immobilisation 3 secondes + animation).</li>
+<li>4 dinosaures sont affichables et individuellement déplaçables.</li>
+<li>Les dinosaures peuvent être devant les autres et être affichés suivant lequel est devant.</li>
+</ol>
+<p>Les images de dinosaures sont dans la spritesheet <code>dinosaurs.png</code>, disposées sur une grille de <b>24x24 pixels</b>.</p>
+<div class="image">
+<img src="dinosaurs.png" alt=""/>
+<div class="caption">
+Texture des dinosaures</div></div>
+    <p>Les animations consistent à enchaîner en boucle différents sprites. Dans la spritesheet, ces sprites correspondent à des positions U :</p>
+<ul>
+<li><b>U=(0, 24, 48, 72)</b> pour l'animation quand le dinosaure reste sur place. (8 images par seconde)</li>
+<li><b>U=(96, 120, 144, 168, 192, 216)</b> pour l'animation de marche. (8 images par seconde)</li>
+<li><b>U=(336, 360, 384)</b> pour l'animation de dégâts. (8 images par seconde)</li>
+<li><b>U=(432, 456, 480, 504, 528, 552)</b> pour l'animation de course. (16 images par seconde)</li>
+</ul>
+<p>Les dinosaures de différentes couleurs correspondent à des positions V :</p>
+<ul>
+<li><b>V=0</b> pour le dinosaure bleu</li>
+<li><b>V=24</b> pour le dinosaure rouge</li>
+<li><b>V=48</b> pour le dinosaure jaune</li>
+<li><b>V=72</b> pour le dinosaure vert</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md7"></a>
+F2. Le terrain</h2>
+<ol type="1">
+<li>L'océan est affiché sur toute la fenêtre, et une zone centrale de terrain de <b>256x192 pixels</b>.</li>
+<li>La frontière terrain/océan est dessinée avec le tileset et animée.</li>
+<li>Des fleurs sont positionnées sur le terrain aléatoirement à chaque début de partie.</li>
+<li>Le terrain peut avoir au hasard une des quatre saisons.</li>
+</ol>
+<p>Les images du terrain sont dans le tileset <code>terrain.png</code>.</p>
+<div class="image">
+<img src="terrain.png" alt=""/>
+<div class="caption">
+Texture du terrain</div></div>
+    <p>Les tuiles du tileset font une taille de <b>16x16 pixels</b>. Le terrain de <b>256x192 pixels</b> correspond donc à <b>16x12 tuiles</b>. Les arbres font une taille de <b>48x72 pixels</b>.</p>
+<p>La spritesheet est composée de :</p>
+<ul>
+<li><b>UV = (0,0)</b> pour la couleur de l'océan</li>
+<li><b>UV = (16,0)</b> pour la couleur du terrain</li>
+<li><b>UV = (0,16)</b> pour la tuile du coin en haut à gauche</li>
+<li><b>UV = (32,16)</b> pour la tuile du coin en haut à droite</li>
+<li><b>UV = (0,48)</b> pour la tuile du coin en bas à gauche</li>
+<li><b>UV = (32,48)</b> pour la tuile du coin en bas à droite</li>
+<li><b>UV = (16,16)</b> pour la tuile à répéter sur la frontière en haut</li>
+<li><b>UV = (0,32)</b> pour la tuile à répéter sur la frontière à gauche</li>
+<li><b>UV = (32,32)</b> pour la tuile à répéter sur la frontière à droite</li>
+<li><b>UV = (16,48)</b> pour la tuile à répéter sur la frontière en bas</li>
+<li><b>UV = (32,0)</b> pour la fleur 1</li>
+<li><b>UV = (48,0)</b> pour la fleur 2</li>
+<li><b>UV = (64,0)</b> pour la fleur 3</li>
+<li><b>UV = (de 48,16 à 80,64)</b> pour l'arbre 1</li>
+<li><b>UV = (de 48,64 à 80,112)</b> pour l'arbre 2</li>
+<li><b>UV = (de 48,112 à 80,160)</b> pour l'arbre 3</li>
+<li><b>UV = (de 48,160 à 80,208)</b> pour l'arbre 4</li>
+</ul>
+<p>Pour obtenir les animations des tuiles de terrain, il faut ajouter dans l'ordre <b>V += (0, 48, 96, 144)</b>.</p>
+<p>Pour obtenir les saisons, il faut ajouter dans l'ordre <b>U += (0, 80, 160, 240)</b>.</p>
+<h2><a class="anchor" id="autotoc_md8"></a>
+F3. Les animaux</h2>
+<ol type="1">
+<li>Des animaux apparaissent au hasard sur le terrain (1 par seconde).</li>
+<li>Les animaux se déplacent aléatoirement et sont correctement animés.</li>
+<li>Les dinosaures et les animaux sont affichés les uns derrière les autres, suivant leur position verticale.</li>
+<li>Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.</li>
+</ol>
+<p>Les images d'animaux sont dans la spritesheet <code>animals.png</code>.</p>
+<div class="image">
+<img src="animals.png" alt=""/>
+<div class="caption">
+Texture des animaux</div></div>
+    <p>Chaque sprite fait une taille de <b>32x32 pixels</b>.</p>
+<p>Les animations consistent à enchaîner en boucle 4 sprites, suivant les positions <b>U=(0, 32, 64, 96)</b>.</p>
+<p>Les différentes animations correspondent à des positions V :</p>
+<ul>
+<li><b>V = 0</b> pour marcher sur le côté (à mettre en miroir pour aller vers la droite)</li>
+<li><b>V = 32</b> pour marcher vers le bas</li>
+<li><b>V = 64</b> pour marcher vers le haut</li>
+</ul>
+<p>Les différents animaux correspondent à des décalage de positions U :</p>
+<ul>
+<li><b>U += 0 ou 128</b> pour les deux types de cochon.</li>
+<li><b>U += 256 ou 384</b> pour les deux types de vache.</li>
+<li><b>U += 512 ou 640</b> pour les deux types de mouton.</li>
+<li><b>U += 768 ou 896</b> pour les deux types d'autruche.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md9"></a>
+F4. Lasso</h2>
+<ol type="1">
+<li>Des suites de points dessinées correspondant aux positions passées des dinosaures, aux couleurs des dinosaures.</li>
+<li>Les suites de points sont tronquées à une longueur maximale.</li>
+<li>Quand deux segments se coupent et sont du même joueur, la boucle est retirée du lasso (mais la partie avant la boucle existe toujours).</li>
+<li>Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.</li>
+</ol>
+<h2><a class="anchor" id="autotoc_md10"></a>
+F5. Interactions</h2>
+<ol type="1">
+<li>Les dinosaures ne peuvent pas sortir des limites du terrain.</li>
+<li>Les animaux ne peuvent pas sortir des limites du terrain. Quand ils atteignent le bord du terrain, ils prennent une nouvelle direction aléatoirement.</li>
+<li>Quand les dinosaures sont en collision (distance &lt; 16 pixels), ils se repoussent.</li>
+<li>Les animaux se repoussent entre eux, et aussi les animaux et les dinosaures entre eux.</li>
+<li>Quand un dinosaure est dans une boucle de lasso, il se prend des dégâts (= immobilisation 3 secondes + animation).</li>
+<li>Quand des animaux sont dans une boucle de lasso, ils disparaissent.</li>
+</ol>
+<h2><a class="anchor" id="autotoc_md11"></a>
+F6. Scoring et chronomètre</h2>
+<p>Un chronomètre de 3 minutes est affiché en haut de l'écran (centré horizontalement) et décroit. Plus le chronomètre est bas, plus les animaux apparaissent vite.</p>
+<p>Quand le lasso fait une boucle, le score donné au joueur dépend des animaux : pour chaque type d'animaux (vache, autruche, cochon et mouton), le premier animal de ce type rapporte 10 points, puis 20 points, puis 30 points, etc. Par exemple, faire une boucle de lasso contenant 4 vaches et 2 autruches rapporte **(10 + 20 + 30 + 40) + (10 + 20) = 130 points** au joueur.</p>
+<p>Quand les animaux disparaissent, une petite notification contenant le texte <code>+10</code>, <code>+20</code>, etc, apparaît à leur emplacement, avec le texte colorié suivant le joueur qui a fermé la boucle.</p>
+<p>Sur le côté gauche de l'écran, le score des 4 joueurs est affiché, chacun suivant la couleur du dinosaure.</p>
+<h2><a class="anchor" id="autotoc_md12"></a>
+F7. Lobby et flow du jeu</h2>
+<p>Quand le programme est lancé, un terrain vide est affiché avec une saison aléatoire "le lobby". Du texte est affiché en haut de l'écran, centré, pour expliquer le gameplay. Quand on détecte un input sur le stick gauche (correspond aux flèches sur le clavier), un joueur apparaît, correspondant à la manette/clavier de l'input. Les joueurs ont un lasso et peuvent interagir entre eux. Quatre arbres sont sur le terrain, chacun représentant une saison. Quand un des joueurs entourent un arbre, le terrain change pour la saison correspondante, et la partie se lance. En partie, on ne peut plus ajouter de nouveaux joueurs. Quand le chronomètre est à zéro, la partie est terminée, et les joueurs sont de nouveau dans le lobby. Le score de la partie précédente est toujours affiché, jusqu'à qu'une nouvelle partie soit relancée.</p>
+<blockquote class="doxtable">
+<p>&zwj;<b>CONSEIL</b> : Rapatriez les variables globales et la logique de jeu de <code><a class="el" href="dino__game_8cpp.html" title="Implémentation des fonctions principales de la logique de jeu.">dino_game.cpp</a></code> à une classe dédiée (on l'appelle souvent une scène). Découpez la logique de jeu en plusieurs étapes. Identifiez quelles étapes doivent être exécutées pendant le lobby, et quelles étapes doivent être exécutées pendant la partie. Identifiez quels changements dans les variables membres doivent être réalisées quand on transitionne du lobby à la partie et de la partie au lobby. </p>
+</blockquote>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>
