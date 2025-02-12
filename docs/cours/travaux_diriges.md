@@ -189,7 +189,9 @@ f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affic
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
-> ...
+> On peut implémenter une fonction `static` accessible publiquement dans `DinoPlayer` qui compare internement les
+> positions verticales de deux instances de `DinoPlayer`. Ainsi on obtient une comparaison sans exposer publiquement la
+> position de `DinoPlayer`.
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 

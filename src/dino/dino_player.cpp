@@ -49,6 +49,11 @@ void DinoPlayer::hit()
     hitTimer = HIT_TIME;
 }
 
+bool DinoPlayer::compareHeight(const DinoPlayer& first, const DinoPlayer& second)
+{
+    return first.position.y < second.position.y;
+}
+
 void DinoPlayer::updateHit(float deltaTime)
 {
     if (hitTimer <= 0)
@@ -56,7 +61,7 @@ void DinoPlayer::updateHit(float deltaTime)
     hitTimer -= deltaTime;
 }
 
-void DinoPlayer::updateMovement(float deltaTime, DinoGamepad gamepad)
+void DinoPlayer::updateMovement(float deltaTime, const DinoGamepad& gamepad)
 {
     float speed = gamepad.btn_right ? RUN_SPEED : WALK_SPEED;
 
@@ -68,7 +73,7 @@ void DinoPlayer::updateMovement(float deltaTime, DinoGamepad gamepad)
     }
 }
 
-void DinoPlayer::updateAnimator(DinoGamepad gamepad)
+void DinoPlayer::updateAnimator(const DinoGamepad& gamepad)
 {
     if (hitTimer > 0) {
         setAnimation(HIT);

@@ -1,6 +1,7 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include <algorithm>
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
@@ -61,6 +62,7 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
+    std::sort(players.begin(), players.end(), DinoPlayer::compareHeight);
     for (DinoPlayer& player : players) {
         player.draw();
     }

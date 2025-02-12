@@ -37,10 +37,12 @@ public:
     /// Frappe le joueur et l'immobilise.
     void hit();
 
+    static bool compareHeight(const DinoPlayer& first, const DinoPlayer& second);
+
 private:
     void updateHit(float deltaTime);
-    void updateMovement(float deltaTime, DinoGamepad gamepad);
-    void updateAnimator(DinoGamepad gamepad);
+    void updateMovement(float deltaTime, const DinoGamepad& gamepad);
+    void updateAnimator(const DinoGamepad& gamepad);
     void updateAnimation(float deltaTime);
     void setAnimation(AnimationId animation);
 
