@@ -136,6 +136,15 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
+    {
+        std::string text = "GUEROULT Matys";
+        DinoVec2 size = {};
+        DinoVec2 renderSize = XDino_GetRenderSize();
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &size);
+        drawCall.scale = 2;
+        drawCall.translation = {renderSize.x - size.x * static_cast<float>(drawCall.scale), renderSize.y - size.y * static_cast<float>(drawCall.scale)};
+        XDino_Draw(drawCall);
+    }
 }
 
 void Dino_GameShut()
