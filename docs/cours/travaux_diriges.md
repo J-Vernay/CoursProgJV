@@ -54,6 +54,7 @@ des `// COMMENTAIRE`.
 // L'utilisateur redimensionne la fenêtre. X
 // On ajuste le moteur de rendu en conséquence. X
 
+
 // Expose les fonctions de la base de code.
 
 // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.

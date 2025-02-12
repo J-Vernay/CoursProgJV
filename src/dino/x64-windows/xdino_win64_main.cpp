@@ -56,7 +56,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
         DispatchMessageW(&msg);
     }
 
-    // 
+    // On notifie le système d'exploitation qu'on veut arrêter. 
     Dino_GameShut();
     XDino_Win64_DestroyRenderer();
     XDino_Win64_DestroyWindow();
@@ -104,11 +104,11 @@ void XDino_Win64_CreateWindow()
         DINO_CRITICAL("CreateWindowEx failed");
 }
 
-// COMMENTAIRE
+// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
 LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if (uMsg == WM_CREATE) {
-        // COMMENTAIRE
+        // on initialise des variables globales et le moteur de rendu.
         gXDino_hWindow = hWnd;
 
         LARGE_INTEGER freq;
@@ -140,13 +140,14 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         return 0;
     }
     if (uMsg == WM_PAINT) {
-        // COMMENTAIRE
+        // On demande à la logique de jeu de dessiner une frame.
         XDino_ProfileBegin(DinoColor_BLACK, "Frame");
         LARGE_INTEGER curTime;
         QueryPerformanceCounter(&curTime);
         int64_t tickCount = curTime.QuadPart - gXDino_tickStart;
         double timeSinceStart = static_cast<double>(tickCount) / gXDino_tickPeriod;
         XDino_Win64_BeginDraw();
+        Dino_GameFrame(timeSinceStart);
         Dino_GameFrame(timeSinceStart);
         XDino_Win64_EndDraw();
         XDino_ProfileEnd();
