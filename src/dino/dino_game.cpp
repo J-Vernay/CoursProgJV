@@ -14,6 +14,9 @@ double scale = 1.0;
 DinoVec2 playerPos = {};
 std::vector<DinoVec2> polyline;
 bool goingRight;
+bool idle;
+bool walking;
+bool running;
 
 // Constantes.
 constexpr float Dino_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
@@ -61,7 +64,21 @@ void Dino_GameFrame(double timeSinceStart)
 
         playerPos.x += gamepad.stick_left_x * speed * deltaTime;
         playerPos.y += gamepad.stick_left_y * speed * deltaTime;
-        goingRight = gamepad.stick_left_x >= 0;
+        if (gamepad.stick_left_x != 0)
+            goingRight = gamepad.stick_left_x > 0;
+
+        idle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
+        if (!idle) {
+            if (gamepad.btn_right)
+                running = true;
+            else {
+                walking = true;
+            }
+        }
+        else {
+            walking = false;
+            running = false;
+        }
     }
 
     // Affichage
@@ -151,12 +168,29 @@ void Dino_GameFrame(double timeSinceStart)
         DinoVec2 posD = {radiusX, radiusY};
         DinoColor color = DinoColor_WHITE;
 
-        drawCall.vertices.emplace_back(posA, 0, 0, color);
-        drawCall.vertices.emplace_back(posB, 24, 0, color);
-        drawCall.vertices.emplace_back(posC, 0, 24, color);
-        drawCall.vertices.emplace_back(posB, 24, 0, color);
-        drawCall.vertices.emplace_back(posC, 0, 24, color);
-        drawCall.vertices.emplace_back(posD, 24, 24, color);
+        float secondsPerSprite;
+        if (running)
+            secondsPerSprite = 0.0625;
+        else {
+
+            secondsPerSprite = 0.125;
+        }
+
+        int animationIndex = int(timeSinceStart / secondsPerSprite) % 4 * 24;
+
+        if (!idle) {
+            if (walking)
+                animationIndex += 96;
+
+            else
+                animationIndex += 432;
+        }
+        drawCall.vertices.emplace_back(posA, animationIndex,        0, color);
+        drawCall.vertices.emplace_back(posB, animationIndex + 24,   0, color);
+        drawCall.vertices.emplace_back(posC, animationIndex,        24, color);
+        drawCall.vertices.emplace_back(posB, animationIndex + 24,   0, color);
+        drawCall.vertices.emplace_back(posC, animationIndex,        24, color);
+        drawCall.vertices.emplace_back(posD, animationIndex + 24,   24, color);
         drawCall.translation = playerPos;
         XDino_Draw(drawCall);
     }
