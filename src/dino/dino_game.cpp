@@ -136,6 +136,16 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
+    // Afficher le nom et le prénom en bas à droite de l'écran
+    {
+        std::string text = "Antoine VOLLET";
+        DinoVec2 textSize;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.scale = 2;
+        drawCall.translation.x = windowSize.x - textSize.x * 2;
+        drawCall.translation.y = windowSize.y - textSize.y * 2;
+        XDino_Draw(drawCall);
+    }
 }
 
 void Dino_GameShut()
