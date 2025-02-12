@@ -136,6 +136,23 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
+    //Prénom
+    {
+        std::string text = "Thomas Druesne";
+        DinoVec2 textSize;
+
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.scale = 2;
+        // Placer en bas a droite dans le coin en utilisant le parametre de retour poutsize
+        
+        
+        drawCall.translation.x = windowSize.x - 2 * textSize.x;
+        drawCall.translation.y = windowSize.y - 2 * textSize.y;
+
+        // Afficher le texte
+        XDino_Draw(drawCall);
+    }
+
 }
 
 void Dino_GameShut()

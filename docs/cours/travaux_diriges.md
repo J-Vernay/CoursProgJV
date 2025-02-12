@@ -5,7 +5,8 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous
+venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -13,21 +14,27 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Définit l'API qui va faire le lien entre le moteur de jeu XDino et la logique du jeu en gérant l'affichage
+> graphique, les entrées utilisateurs etc.
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : Gère la création et gestion de fenêtres sous Windows, la boucle d'événements, le rendu et les
+> entrés utilisateurs.
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` : Gère le rendu graphique sous Windows en utilisant Direct 3D 11.
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Gère l'initialisation et les updates par frame du jeu, ainsi que sa fermeture.
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Implémente une fonction permettant de vérifier si deux segments se croisent.
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Implémente des fonctions permettant de générer des commandes de dessin pour des cercles, du
+> texte et des polylignes.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Sert à configurer et automatiser le processus de compilation du projet C++ en définissant les
+> plateformes cibles, les configurations de compilation, les dépendances externes et les paramètres spécifiques pour
+> chaque environnement.
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place
+des `// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -79,33 +86,35 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 6 pixels (300 px/s * 0.02 s)
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> 50 000 px/s
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> environ (170, 130)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> 3 sommets, 3 coordonnées UV, 1 texture
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> Une communication entre le CPU et le GPU
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> Debug : ajoute des informations de débogage, Profile : optimise pour la performance + debug avec PIX, Release : Build
+> final
+> Exemple : `USE_PIX` est définis et va interagir avec des fonctions que si on est en configuration Profile.
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
@@ -113,7 +122,6 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 > ...
-
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -213,7 +221,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -229,7 +238,8 @@ Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droit
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire
+dans `dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
@@ -297,7 +307,8 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 ## 7. Interactions
 
@@ -386,11 +397,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
