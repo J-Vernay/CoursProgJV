@@ -13,19 +13,19 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Contient toutes les fonctions du moteur de jeu qui sont spécifiques à la plateforme (PS5, Xbox, PC, etc)
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : L'implémentation du moteur de jeu pour la plateforme PC (Windows)
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` : La partie rendu pour la plateforme
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Contient la logique de jeu.
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Fonctions pour gérer des collisions.
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Fonctions d'aide au rendu graphique, commune à toutes les plateformes.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Configure la compilation du projet, comment on passe des fichiers sources à l'exécutable.
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 

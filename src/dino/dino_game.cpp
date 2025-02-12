@@ -106,16 +106,16 @@ void Dino_GameFrame(double timeSinceStart)
 
         drawCall.vertices[0].u = 0;
         drawCall.vertices[0].v = 0;
-        drawCall.vertices[1].u = 96;
+        drawCall.vertices[1].u = 48;
         drawCall.vertices[1].v = 0;
         drawCall.vertices[2].u = 0;
-        drawCall.vertices[2].v = 96;
-        drawCall.vertices[3].u = 96;
+        drawCall.vertices[2].v = 48;
+        drawCall.vertices[3].u = 48;
         drawCall.vertices[3].v = 0;
         drawCall.vertices[4].u = 0;
-        drawCall.vertices[4].v = 96;
-        drawCall.vertices[5].u = 96;
-        drawCall.vertices[5].v = 96;
+        drawCall.vertices[4].v = 48;
+        drawCall.vertices[5].u = 48;
+        drawCall.vertices[5].v = 48;
         drawCall.textureName = "monogram-bitmap.png";
 
         XDino_Draw(drawCall);
@@ -132,6 +132,17 @@ void Dino_GameFrame(double timeSinceStart)
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
+        drawCall.scale = 2;
+        XDino_Draw(drawCall);
+    }
+
+    // Prénom.
+    {
+        std::string text = "Julien Vernay";
+        DinoVec2 textSize;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.translation.x = windowSize.x - 2 * textSize.x;
+        drawCall.translation.y = windowSize.y - 2 * textSize.y;
         drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
