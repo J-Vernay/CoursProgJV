@@ -91,7 +91,7 @@ c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-> en commencant à la bonne coordonée en x on a la bonne animation, en augmentant de 24 on a le sprite suivant
+> en commencant à la bonne coordonnée en x on a la bonne animation, en augmentant de 24 on a le sprite suivant
 
 d) Implémentez la fonctionnalité F1.4 .
 
