@@ -141,13 +141,15 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> En inversant les u des uv quand le dino va à gauche.
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-> ...
+> On garde trois booléens qui décrivent l'état du dino. Ensuite on set une variable 'u' à la valeur de base de
+> l'animation de départ par exemple 96 pour l'anim de marche. Dernièrement, on utilise la formule timeSinceStart/(
+> 1/framesPerSecond) % numberOfFrames * 24.
 
 d) Implémentez la fonctionnalité F1.4 .
 
@@ -156,7 +158,7 @@ d) Implémentez la fonctionnalité F1.4 .
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper et en avoir plusieurs instances ?
 
-> ...
+> Il faut les regrouper en une struct qui pourra ensuite être instanciée.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -175,7 +177,10 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> ...
+> La syntaxe est la suivante:
+> ```cpp
+> for(type obj : list) { }
+> ```
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
