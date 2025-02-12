@@ -10,7 +10,7 @@
 double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
-DinoVec2 circlePos = {};
+DinoVec2 dinoPos = {};
 std::vector<DinoVec2> polyline;
 
 // Constantes.
@@ -20,7 +20,7 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    circlePos = {windowSize.x / 2, windowSize.y / 2};
+    dinoPos = {windowSize.x / 2, windowSize.y / 2};
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
@@ -53,8 +53,10 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.btn_right && !gamepad.btn_left)
             rotation -= 90.0 * deltaTime;
 
-        circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        float speed = CIRCLE_SPEED * (gamepad.btn_right ? 2.0f : 1.0f);
+
+        dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
+        dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
     }
 
     // Affichage
@@ -123,8 +125,10 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du cercle que l'on peut bouger.
     {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Circle(20);
-        drawCall.translation = circlePos;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(0, 0, 24, 24);
+        drawCall.textureName = "dinosaurs.png";
+        drawCall.translation = dinoPos;
+        drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
 
@@ -142,7 +146,8 @@ void Dino_GameFrame(double timeSinceStart)
         DinoVec2 renderSize = XDino_GetRenderSize();
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &size);
         drawCall.scale = 2;
-        drawCall.translation = {renderSize.x - size.x * static_cast<float>(drawCall.scale), renderSize.y - size.y * static_cast<float>(drawCall.scale)};
+        drawCall.translation = {renderSize.x - size.x * static_cast<float>(drawCall.scale),
+                                renderSize.y - size.y * static_cast<float>(drawCall.scale)};
         XDino_Draw(drawCall);
     }
 }

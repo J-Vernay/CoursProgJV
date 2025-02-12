@@ -35,4 +35,13 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = D
 DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
                                           DinoColor color = DinoColor_WHITE);
 
+/// Produit un dessin contenant une sprite depuis une spritesheet.
+/// La position (0,0) correspond au coin en haut à gauche, qu'il faut décaler grâce à `translation`.
+/// Il faut indiquer la texture à utiliser grâce à `textureName`.
+/// @param u Position U en haut à gauche de la sprite, en pixels.
+/// @param v Position V en haut à gauche de la sprite, en pixels.
+/// @param width Largeur de la sprite, en pixels.
+/// @param height Hauteur de la sprite, en pixels.
+DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height);
+
 /// @}
