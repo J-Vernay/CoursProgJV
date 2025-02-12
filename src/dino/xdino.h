@@ -36,6 +36,7 @@ void Dino_GameShut();
 struct DinoVec2 {
     float x;
     float y;
+    DinoVec2& operator=(float x);
 };
 
 /// Représente une couleur de pixels, utilisée pour moduler l'affichage d'une texture.

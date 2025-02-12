@@ -5,7 +5,8 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous
+venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -13,107 +14,67 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Fonctions du moteur du jeu qui sont spécifiques à la plateforme (PC, PS5, Xbox)
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : L'implémentation du moteur pour la plateforme PC
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` :  La partie rendu pour la plateforme PC
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Contient toute la logique de jeu
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Fonction pour gérer les collisions
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Fonctions d'aide au rendu graphique, commune à toutes les plateformes
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Configure la compilation du projet, fichiers sources jusqu'à l'éxecutable
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des
+`// COMMENTAIRE`.
 
 ```cpp
-// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
 
-// Déclaration des fonctions qui sont définies plus bas dans le fichier.
 
-// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-// Tourne en boucle tant que le programme continue.
-
-// Définition des constantes.
-
-// Quand le programme se termine, on libère les ressources associés au programme.
-
-// La fenêtre graphique vient d'être construite,
-// on initialise des variables globales et le moteur de rendu.
-
-// Gère les événements que nous communique le système d'exploitation.
-
-// Initialisation de la fenêtre graphique.
-
-// L'utilisateur redimensionne la fenêtre.
-// On ajuste le moteur de rendu en conséquence.
-
-// Expose les fonctions de la base de code.
-
-// Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
-
-// Expose les fonctions de la bibliothèque tierce PIX.
-
-// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
-
-// Le système d'exploitation demande à redessiner la fenêtre.
-// On demande à la logique de jeu de dessiner une frame.
-
-// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
-
-// L'utilisateur a demandé à détruire la fenêtre.
-// On notifie le système d'exploitation qu'on veut arrêter.
-
-// Expose les fonctions de la bibliothèque standard.
-
-// Variables globales, accédées dans ce fichier.
-
-// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu.
-
-// Expose les fonctions du système d'exploitation Windows.
 ```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 300*20/1000 = 6 pixels
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> downleft et racine carré de (-300^2 + 400^2) *1000/10 = 50 000 pixels
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> racine de a^2 + a^2 = 100 -> 100/racine de 2 = 70.71px -> (170,130)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> vertex texture translation rotation scale
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> C'est une demande au GPU d'afficher un triangle
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> Debug = littéralement ce qui a été écrit sans opti /
+> Profile = comme profiler, pour voir les performances /
+> Release = optimisé et plus proche du rendu final
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
-> ...
-
+> c'est fait dans dino_game
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -213,7 +174,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -229,7 +191,8 @@ Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droit
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans
+`dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
@@ -297,7 +260,8 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 ## 7. Interactions
 
@@ -386,11 +350,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...

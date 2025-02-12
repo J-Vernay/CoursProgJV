@@ -135,6 +135,16 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
+    // nom et prénom
+    {
+        std::string text = "Pharrell Bastien";
+        DinoVec2 textSize;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.scale = 2;
+        drawCall.translation = {windowSize.x - textSize.x * 2, windowSize.y - textSize.y * 2};
+
+        XDino_Draw(drawCall);
+    }
 
 }
 
