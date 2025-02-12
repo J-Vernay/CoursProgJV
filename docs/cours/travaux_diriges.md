@@ -112,7 +112,7 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
-> ...
+> Done!
 
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
@@ -125,13 +125,13 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> En inversant l'ordre d'affichage des uv
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-> ...
+> Taille du sprite * position
 
 d) Implémentez la fonctionnalité F1.4 .
 
@@ -140,7 +140,7 @@ d) Implémentez la fonctionnalité F1.4 .
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper et en avoir plusieurs instances ?
 
-> ...
+> en créant une class regroupant les éléments d'un dino pour pouvoir en créer X dans le programme 
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -150,7 +150,7 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> public, protected, private
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -159,13 +159,13 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> ...
+> foreach 
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
-> ...
+> créer une fonction public qui modifie la valeur privée
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
