@@ -18,6 +18,9 @@ struct DinoPlayer {
     bool isIdle = false;
     bool isWalking = false;
     bool isRunning = false;
+
+    void UpdatePlayer(float deltaTime);
+    void DrawPlayer(double timeSinceStart);
 };
 
 DinoPlayer dinoPlayer;
@@ -27,7 +30,7 @@ std::vector<DinoVec2> polyline;
 // Constantes.
 constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 
-void UpdatePlayer(float deltaTime)
+void DinoPlayer::UpdatePlayer(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
     dinoPlayer.isIdle = false;
@@ -64,7 +67,7 @@ void UpdatePlayer(float deltaTime)
     }
 }
 
-void DrawPlayer(double timeSinceStart)
+void DinoPlayer::DrawPlayer(double timeSinceStart)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
@@ -133,14 +136,14 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    UpdatePlayer(deltaTime);
+    dinoPlayer.UpdatePlayer(deltaTime);
 
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
-    DrawPlayer(timeSinceStart);
+    dinoPlayer.DrawPlayer(timeSinceStart);
     XDino_SetClearColor(CLEAR_COLOR);
 
     // Dessin de la "polyligne" 
