@@ -47,7 +47,6 @@ des `// COMMENTAIRE`.
 // Définition des constantes.
 
 // Quand le programme se termine, on libère les ressources associés au programme.
-
 // La fenêtre graphique vient d'être construite,
 // on initialise des variables globales et le moteur de rendu.
 
@@ -86,40 +85,51 @@ des `// COMMENTAIRE`.
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> La distance parcourue est de 6 pixels.
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Le cercle s'est déplacé en diagonale gauche-bas. Si l'on calcule la magnitude du vecteur d (-300, 400) on obtient 500
+> pixels. En effet, en 10 ms, le cercle s'est déplacé de 500 pixels ce qui signifie qu'il se déplace à une vitesse de
+> 50000 pixels par seconde.
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> Vu que la direction indiqué n'est pas plus précise on part du principe que la vitesse de déplacement est de 100 pixels
+> par seconde avec comme direction (1, 1) c'est-à-dire en haut à droite. Alors, le vecteur normalisé (1, 1) donne le
+> vecteur suivant (0.707, 0.707).
+> On peut donc multiplier notre vecteur de déplacement (0.707, 0.707) par la vitesse qui était de 100 pixels par
+> seconde.
+> Donc le déplacement au bout d'une seconde est le suivant: (0.707, 0.707) * 100 = (70.7, 70.7). Donc le cercle est à la
+> position (170.7, 270.7).
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé est défini par 3 sommets (vertices) qui ont chacun une position, une couleur et des coordonnées UV
+> qui permettent d'afficher une texture.
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> Toutes les informations nécessaires afin de dessiner un élément sur la fenêtre.
+> Se compose des vertices, de la position, de la rotation, de l'échelle ou de la texture.
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> Pour le développement on se sert de Debug, il correspond à une version du programme sans optimisation pour tester
+> rapidement. Au contraire, Release est une version optimisée pour la performance. Profile est une version intermédiaire
+> qui a les optimisation avec en plus Microsoft Pix pour faire des optimisations.
+> Dans notre code, on utilise le préprocesseur USE_PIX pour activer ou nom le profiling avec Microsoft Pix.
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
-
-> ...
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
