@@ -86,7 +86,7 @@ project "Dino_External"
   files { "external/**.cpp", "external/**.h" }
 
 -- Remplacer le nom du projet avec son propre prénom + nom.
-project "Dino_JulienVernay"
+project "Dino_EnzoDufour"
 
   -- On fait une application graphique (en opposition à une application console = purement texte)
   kind "WindowedApp"

@@ -1,29 +1,29 @@
 /// @file xdino_win64_main.cpp
 /// @brief Implémentation de la fenêtre et des événements sur Windows.
 
-// COMMENTAIRE
+// Expose les fonctions de la base de code.
 #include <dino/xdino.h>
 #include <dino/x64-windows/xdino_win64_rdr.h>
 
-// COMMENTAIRE
+// Expose les fonctions de la bibliothèque standard.
 #include <cmath>
 #include <cstdio>
 #include <random>
 
-// COMMENTAIRE
+// Expose les fonctions du système d'exploitation Windows.
 #include <Windows.h>
 #include <Xinput.h>
 
-// COMMENTAIRE
+// Expose les fonctions de la bibliothèque tierce PIX.
 #ifdef USE_PIX
 #include <pix3.h>
 #endif
 
-// COMMENTAIRE
+// Définition des constantes.
 constexpr int XDino_INIT_WIDTH = 640;
 constexpr int XDino_INIT_HEIGHT = 480;
 
-// COMMENTAIRE
+// Variables globales, accédées dans ce fichier.
 HINSTANCE gXDino_hInstance = nullptr;
 HWND gXDino_hWindow = nullptr;
 int64_t gXDino_tickStart = 0;
@@ -31,22 +31,23 @@ double gXDino_tickPeriod = 1.0;
 std::random_device gXDino_randomDevice;
 std::mt19937 gXDino_rng(gXDino_randomDevice());
 
-// COMMENTAIRE
+// Déclaration des fonctions qui sont définies plus bas dans le fichier.
 void XDino_Win64_CreateWindow();
 void XDino_Win64_CreateRenderer();
 void XDino_Win64_DestroyWindow();
 LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-// COMMENTAIRE
+// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-    // COMMENTAIRE
+    // Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu.
     gXDino_hInstance = hInst;
     XDino_Win64_CreateWindow();
     ShowWindow(gXDino_hWindow, SW_SHOWNORMAL);
     UpdateWindow(gXDino_hWindow);
 
-    // COMMENTAIRE
+    // Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
+    // Tourne en boucle tant que le programme continue.
     MSG msg;
     BOOL fGotMessage;
     while ((fGotMessage = GetMessageW(&msg, nullptr, 0, 0))) {
@@ -56,7 +57,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
         DispatchMessageW(&msg);
     }
 
-    // COMMENTAIRE
+    // Quand le programme se termine, on libère les ressources associés au programme.
     Dino_GameShut();
     XDino_Win64_DestroyRenderer();
     XDino_Win64_DestroyWindow();
@@ -66,7 +67,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
 
 #pragma region Window and events implementation
 
-// COMMENTAIRE
+// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu.
 void XDino_Win64_CreateWindow()
 {
     WNDCLASSEXW wcx{};
@@ -104,11 +105,11 @@ void XDino_Win64_CreateWindow()
         DINO_CRITICAL("CreateWindowEx failed");
 }
 
-// COMMENTAIRE
+// Gère les événements que nous communique le système d'exploitation.
 LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if (uMsg == WM_CREATE) {
-        // COMMENTAIRE
+        // Initialisation de la fenêtre graphique.
         gXDino_hWindow = hWnd;
 
         LARGE_INTEGER freq;
@@ -130,17 +131,20 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         return 0;
     }
     if (uMsg == WM_DESTROY) {
-        // COMMENTAIRE
+        // L'utilisateur a demandé à détruire la fenêtre.
+        // On notifie le système d'exploitation qu'on veut arrêter.
         PostQuitMessage(0);
         return 0;
     }
     if (uMsg == WM_SIZE) {
-        // COMMENTAIRE
+        // L'utilisateur redimensionne la fenêtre.
+        // On ajuste le moteur de rendu en conséquence.
         XDino_Win64_ResizeRenderer(LOWORD(lParam), HIWORD(lParam));
         return 0;
     }
     if (uMsg == WM_PAINT) {
-        // COMMENTAIRE
+        // La fenêtre graphique vient d'être construite,
+        // on initialise des variables globales et le moteur de rendu.
         XDino_ProfileBegin(DinoColor_BLACK, "Frame");
         LARGE_INTEGER curTime;
         QueryPerformanceCounter(&curTime);
@@ -152,7 +156,7 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         XDino_ProfileEnd();
         return 0;
     }
-    // COMMENTAIRE
+    // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
     return DefWindowProcW(hWnd, uMsg, wParam, lParam);
 }
 
@@ -161,7 +165,7 @@ void XDino_Win64_DestroyWindow()
     gXDino_hWindow = nullptr;
 }
 
-// COMMENTAIRE
+// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
 void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
 {
     char buffer[8192];
@@ -185,7 +189,7 @@ void XDino_ProfileEnd()
 
 #pragma region Public API
 
-// COMMENTAIRE
+// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
 bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
 {
     outGamepad = {};

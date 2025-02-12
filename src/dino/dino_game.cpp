@@ -135,6 +135,16 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
+    // NOM Prénom
+    {
+        std::string text = "DUFOUR Enzo";
+        DinoVec2 textSize;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.scale = 2;
+        drawCall.translation.x = windowSize.x - 2 * textSize.x;
+        drawCall.translation.y = windowSize.y - 2 * textSize.y;
+        XDino_Draw(drawCall);
+    }
 
 }
 
