@@ -92,7 +92,7 @@ void DrawPlayer(double timeSinceStart)
     }
 
     if (dinoPlayer.isMirror) {
-        drawCall.vertices.emplace_back(posA, animationIndex + 24, 0);
+        drawCall.vertices.emplace_back(posA, animationIndex + 24, 0); // J'ai mis le premier dinosaure bleu
         drawCall.vertices.emplace_back(posB, animationIndex, 0);
         drawCall.vertices.emplace_back(posC, animationIndex + 24, 24);
         drawCall.vertices.emplace_back(posB, animationIndex, 0);
@@ -100,7 +100,7 @@ void DrawPlayer(double timeSinceStart)
         drawCall.vertices.emplace_back(posD, animationIndex, 24);
     }
     else {
-        drawCall.vertices.emplace_back(posA, animationIndex, 0); // J'ai mis le premier dinosaure bleu
+        drawCall.vertices.emplace_back(posA, animationIndex, 0);
         drawCall.vertices.emplace_back(posB, animationIndex + 24, 0);
         drawCall.vertices.emplace_back(posC, animationIndex, 24);
         drawCall.vertices.emplace_back(posB, animationIndex + 24, 0);
