@@ -92,7 +92,7 @@ e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-hau
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> Le cercle est à la position (170.71, 129.28) au bout d'une seconde.
 
 f) Par quoi est définit un triangle texturé ?
 
