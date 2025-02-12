@@ -255,7 +255,7 @@ f) Quels sont les liens entre :
 > **Fichiers `.obj` et `.lib` :** les fichiers `.lib` contiennent un ou plusieurs fichiers `.obj`, prêts à être linkés
 > statiquement avec d'autres fichiers `.obj`.
 >
-> **Fichiers `.obj` et `.dll` :** les fichiers `.dll` contiennent un ou plusieurs fichiers `.obj` linkés entre eux,
+> **Fichiers `.obj` et `.dll` :** les fichiers `.dll` contiennent un ou plusieurs fichiers `.obj`,
 > exposant des fonctions provenant des `.obj` à un linkage dynamique avec un processus.
 >
 > **Fichiers `.obj` et `.exe` :** les fichiers `.obj` sont linkés entre eux pour produire un fichier `.exe`.
@@ -265,7 +265,10 @@ f) Quels sont les liens entre :
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Le préprocesseur execute toutes les instructions préprocesseur se trouvant dans le code source à compiler, remplaçant
+> les macros par leur valeur définie, et vérifiant les conditions, incluant ou non du code en fonction de leur résultat.
+> Cela permet d'avoir un code source changeant en fonction du contexte de la compilation, sans avoir à maintenir
+> plusieurs code source différents.
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
