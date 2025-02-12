@@ -13,99 +13,99 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Contient les déclaration des fonctionnaltiés du moteur spécifique à la plateforme
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : Implémentation du moteur pour PC
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` : Implémentation du rendu graphique
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Implémentation des fonctions principales de la logique de jeu
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Vérifie les intersections sur un segment (collision)
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Fonctions pour dessiner des primitives de rendu (toute plateforme)
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Renseigne les informations de l'application pour la compilation 
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 
 ```cpp
-// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
+// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes. //OK
 
-// Déclaration des fonctions qui sont définies plus bas dans le fichier.
+// Déclaration des fonctions qui sont définies plus bas dans le fichier. //OK
 
-// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-// Tourne en boucle tant que le programme continue.
+// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit. //OK
+// Tourne en boucle tant que le programme continue. //OK
 
-// Définition des constantes.
+// Définition des constantes. //OK
 
-// Quand le programme se termine, on libère les ressources associés au programme.
+// Quand le programme se termine, on libère les ressources associés au programme. //OK
 
-// La fenêtre graphique vient d'être construite,
-// on initialise des variables globales et le moteur de rendu.
+// La fenêtre graphique vient d'être construite, //OK
+// on initialise des variables globales et le moteur de rendu. //OK
 
-// Gère les événements que nous communique le système d'exploitation.
+// Gère les événements que nous communique le système d'exploitation. //OK
 
-// Initialisation de la fenêtre graphique.
+// Initialisation de la fenêtre graphique. //OK
 
-// L'utilisateur redimensionne la fenêtre.
-// On ajuste le moteur de rendu en conséquence.
+// L'utilisateur redimensionne la fenêtre. //OK
+// On ajuste le moteur de rendu en conséquence. //OK
 
-// Expose les fonctions de la base de code.
+// Expose les fonctions de la base de code. //Ok
 
-// Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
+// Délègue les autres événéments à l'implémentation par défaut du système d'exploitation. //OK
 
-// Expose les fonctions de la bibliothèque tierce PIX.
+// Expose les fonctions de la bibliothèque tierce PIX. //OK
 
-// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
+// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows. //OK
 
-// Le système d'exploitation demande à redessiner la fenêtre.
-// On demande à la logique de jeu de dessiner une frame.
+// Le système d'exploitation demande à redessiner la fenêtre. //OK
+// On demande à la logique de jeu de dessiner une frame. //OK
 
-// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
+// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur. //OK
 
-// L'utilisateur a demandé à détruire la fenêtre.
-// On notifie le système d'exploitation qu'on veut arrêter.
+// L'utilisateur a demandé à détruire la fenêtre. //OK
+// On notifie le système d'exploitation qu'on veut arrêter. //OK
 
-// Expose les fonctions de la bibliothèque standard.
+// Expose les fonctions de la bibliothèque standard. //OK
 
-// Variables globales, accédées dans ce fichier.
+// Variables globales, accédées dans ce fichier. //OK
 
-// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu.
+// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu. //OK
 
-// Expose les fonctions du système d'exploitation Windows.
+// Expose les fonctions du système d'exploitation Windows. //OK
 ```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 6 px/sec
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> 50 000 px/s
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> (170 ; 130)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> 3 Vertices, une texture, une translation, une rotation et une scale
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> Une demande d'affichage du CPU au GPU par rapport à une liste de point, leur position et une texture
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> Débug : Pas d'optimisation facile à débuguer mais plus lent, Release : Optimisé mais compliqué à débuguer, Profile : Optimisé + PIX
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
