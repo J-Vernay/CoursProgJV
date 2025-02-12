@@ -140,7 +140,7 @@ void Dino_GameFrame(double timeSinceStart)
     {
         std::string text = std::format("FARIN Pix", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_RED);
-        drawCall.scale =1;
+        drawCall.scale = 1;
         drawCall.rotation = 180;
         drawCall.translation = {windowSize.x, windowSize.y};
         XDino_Draw(drawCall);
