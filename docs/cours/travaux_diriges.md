@@ -147,7 +147,7 @@ c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-    -  
+    -  on affiche la frame à partir d'un index qu on fait loop via une division euclidenne et des calculs 
 
 d) Implémentez la fonctionnalité F1.4 .
 
@@ -167,7 +167,7 @@ Quel outil permet de limiter la modification d'un type de données à ce genre d
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
 > ...
-
+   
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
 

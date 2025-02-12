@@ -19,9 +19,14 @@ struct DinoPlayer {
     bool isIdle;
     bool isWalking;
     bool isRunning;
+    void UpdatePlayer(float time);
+    void DrawPlayer(float time);
 };
 
 DinoPlayer player;
+DinoPlayer player1;
+DinoPlayer player2;
+DinoPlayer player3;
 
 
 // Constantes.
@@ -32,20 +37,15 @@ void Dino_GameInit()
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
     player.playerPos = {windowSize.x / 2, windowSize.y / 2};
-
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
+    player1.playerPos = {windowSize.x / 2 - 100, windowSize.y / 2};
+    player2.playerPos = {windowSize.x / 2, windowSize.y / 2 - 100};
+    player3.playerPos = {windowSize.x / 2 - 100, windowSize.y / 2 - 100};
 }
 
-void UpdatePlayer(float time)
+void DinoPlayer::UpdatePlayer(float deltaTime)
 {
-    float deltaTime = static_cast<float>(time - lastTime);
-    lastTime = time;
     float speed;
-    bool bMiror = player.g_bMiror;
+    bool bMiror = this->g_bMiror;
     // Gestion des entrées et mise à jour de la logique de jeu.
 
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
@@ -53,37 +53,41 @@ void UpdatePlayer(float time)
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
         if (gamepad.stick_left_x < 0) {
             bMiror = true;
-            player.isIdle = false;
-            player.isWalking = true;
+            this->isIdle = false;
+            this->isWalking = true;
         }
         else if (gamepad.stick_left_x > 0) {
             bMiror = false;
-            player.isIdle = false;
-            player.isWalking = true;
+            this->isIdle = false;
+            this->isWalking = true;
+        }
+        else if (gamepad.stick_left_y != 0) {
+            this->isIdle = false;
+            this->isWalking = true;
         }
         else {
-            player.isIdle = true;
-            player.isWalking = false;
+            this->isIdle = true;
+            this->isWalking = false;
         }
         if (!bSuccess)
             continue;
 
-        if (gamepad.btn_right && !gamepad.btn_left) {
+        if (gamepad.btn_right) {
             speed = CIRCLE_SPEED * 2;
-            player.isRunning = true;
+            this->isRunning = true;
         }
         else {
             speed = CIRCLE_SPEED;
-            player.isRunning = false;
+            this->isRunning = false;
         }
 
-        player.playerPos.x += gamepad.stick_left_x * speed * deltaTime;
-        player.playerPos.y += gamepad.stick_left_y * speed * deltaTime;
-        player.g_bMiror = bMiror;
+        this->playerPos.x += gamepad.stick_left_x * speed * deltaTime;
+        this->playerPos.y += gamepad.stick_left_y * speed * deltaTime;
+        this->g_bMiror = bMiror;
     }
 }
 
-void DrawPlayer(float time)
+void DinoPlayer::DrawPlayer(float time)
 {
     DinoDrawCall drawcall;
     drawcall.textureName = "dinosaurs.png";
@@ -94,36 +98,36 @@ void DrawPlayer(float time)
     DinoVec2 posD = {24, 24};
 
     int u = 0;
-    if (player.isIdle) {
+    if (this->isIdle) {
         int idxFrame = int(time * 8) % 4;
         u = 0 + 24 * idxFrame;
     }
-    if (player.isWalking) {
+    if (this->isWalking) {
         int idxFrame = int(time * 8) % 6;
         u = 96 + 24 * idxFrame;
     }
-    if (player.isIdle) {
+    if (this->isRunning) {
         int idxFrame = int(time * 16) % 6;
         u = 432 + 24 * idxFrame;
     }
 
-    if (player.g_bMiror) {
-        drawcall.vertices.emplace_back(posA, 24, 0);
-        drawcall.vertices.emplace_back(posB, 0, 0);
-        drawcall.vertices.emplace_back(posC, 24, 24);
-        drawcall.vertices.emplace_back(posB, 0, 0);
-        drawcall.vertices.emplace_back(posC, 24, 24);
-        drawcall.vertices.emplace_back(posD, 0, 24);
+    if (this->g_bMiror) {
+        drawcall.vertices.emplace_back(posA, 24 + u, 0);
+        drawcall.vertices.emplace_back(posB, 0 + u, 0);
+        drawcall.vertices.emplace_back(posC, 24 + u, 24);
+        drawcall.vertices.emplace_back(posB, 0 + u, 0);
+        drawcall.vertices.emplace_back(posC, 24 + u, 24);
+        drawcall.vertices.emplace_back(posD, 0 + u, 24);
     }
     else {
-        drawcall.vertices.emplace_back(posA, 0, 0);
-        drawcall.vertices.emplace_back(posB, 24, 0);
-        drawcall.vertices.emplace_back(posC, 0, 24);
-        drawcall.vertices.emplace_back(posB, 24, 0);
-        drawcall.vertices.emplace_back(posC, 0, 24);
-        drawcall.vertices.emplace_back(posD, 24, 24);
+        drawcall.vertices.emplace_back(posA, 0 + u, 0);
+        drawcall.vertices.emplace_back(posB, 24 + u, 0);
+        drawcall.vertices.emplace_back(posC, 0 + u, 24);
+        drawcall.vertices.emplace_back(posB, 24 + u, 0);
+        drawcall.vertices.emplace_back(posC, 0 + u, 24);
+        drawcall.vertices.emplace_back(posD, 24 + u, 24);
     }
-    drawcall.translation = player.playerPos;
+    drawcall.translation = this->playerPos;
     drawcall.scale = 2;
     XDino_Draw(drawcall);
 }
@@ -131,7 +135,13 @@ void DrawPlayer(float time)
 
 void Dino_GameFrame(double timeSinceStart)
 {
-    UpdatePlayer(timeSinceStart);
+    float deltaTime = static_cast<float>(timeSinceStart - lastTime);
+    lastTime = timeSinceStart;
+
+    player.UpdatePlayer(static_cast<float>(deltaTime));
+    player1.UpdatePlayer(static_cast<float>(deltaTime));
+    player2.UpdatePlayer(static_cast<float>(deltaTime));
+    player3.UpdatePlayer(static_cast<float>(deltaTime));
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
@@ -195,11 +205,14 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
-    DrawPlayer(timeSinceStart);
+    player.DrawPlayer(static_cast<float>(timeSinceStart));
+    player1.DrawPlayer(static_cast<float>(timeSinceStart));
+    player2.DrawPlayer(static_cast<float>(timeSinceStart));
+    player3.DrawPlayer(static_cast<float>(timeSinceStart));
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
-        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+        std::string text = std::format("dTime={:04.1f}ms", timeSinceStart * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         drawCall.scale = 2;
         XDino_Draw(drawCall);
@@ -207,7 +220,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
     {
-        std::string text = std::format("FARIN Pix", deltaTime * 1000.0);
+        std::string text = std::format("FARIN Pix", timeSinceStart * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_RED);
         drawCall.scale = 1;
         drawCall.rotation = 180;
