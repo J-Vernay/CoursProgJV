@@ -119,6 +119,7 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
     Extrait du code :
+
 // Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 {
 std::string text = std::format("FARIN Pix", deltaTime * 1000.0);
