@@ -19,11 +19,16 @@ struct DinoPlayer {
     bool isWalking = false;
     bool isRunning = false;
 
+    int indexPlayer = 0;
+
     void UpdatePlayer(float deltaTime);
     void DrawPlayer(double timeSinceStart);
 };
 
-DinoPlayer dinoPlayer;
+DinoPlayer dinoPlayer1;
+DinoPlayer dinoPlayer2;
+DinoPlayer dinoPlayer3;
+DinoPlayer dinoPlayer4;
 
 std::vector<DinoVec2> polyline;
 
@@ -33,9 +38,9 @@ constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 void DinoPlayer::UpdatePlayer(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
-    dinoPlayer.isIdle = false;
-    dinoPlayer.isWalking = false;
-    dinoPlayer.isRunning = false;
+    this->isIdle = false;
+    this->isWalking = false;
+    this->isRunning = false;
 
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
@@ -49,19 +54,19 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
             playerSpeed *= 2.f;
         }
 
-        dinoPlayer.playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
-        dinoPlayer.playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
+        this->playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
+        this->playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
 
         if (gamepad.stick_left_x != 0) {
-            dinoPlayer.isMirror = gamepad.stick_left_x < 0;
+            this->isMirror = gamepad.stick_left_x < 0;
         }
 
-        dinoPlayer.isIdle = gamepad.stick_left_x == 00 && gamepad.stick_left_y == 0;
-        if (!dinoPlayer.isIdle) {
+        this->isIdle = gamepad.stick_left_x == 00 && gamepad.stick_left_y == 0;
+        if (!this->isIdle) {
             if (gamepad.btn_right)
-                dinoPlayer.isRunning = true;
+                this->isRunning = true;
             else {
-                dinoPlayer.isWalking = true;
+                this->isWalking = true;
             }
         }
     }
@@ -81,38 +86,40 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
 
     int animationIndex = 0;
 
-    if (dinoPlayer.isIdle) {
+    if (this->isIdle) {
         int indexFrame = int(timeSinceStart * 8) % 4;
         animationIndex = 0 + 24 * indexFrame;
     }
-    if (dinoPlayer.isWalking) {
+    if (this->isWalking) {
         int indexFrame = int(timeSinceStart * 8) % 6;
         animationIndex = 96 + 24 * indexFrame;
     }
-    if (dinoPlayer.isRunning) {
+    if (this->isRunning) {
         int indexFrame = int(timeSinceStart * 16) % 6;
         animationIndex = 432 + 24 * indexFrame;
     }
 
-    if (dinoPlayer.isMirror) {
-        drawCall.vertices.emplace_back(posA, animationIndex + 24, 0); // J'ai mis le premier dinosaure bleu
-        drawCall.vertices.emplace_back(posB, animationIndex, 0);
-        drawCall.vertices.emplace_back(posC, animationIndex + 24, 24);
-        drawCall.vertices.emplace_back(posB, animationIndex, 0);
-        drawCall.vertices.emplace_back(posC, animationIndex + 24, 24);
-        drawCall.vertices.emplace_back(posD, animationIndex, 24);
+    int v = indexPlayer * 24;
+
+    if (this->isMirror) {
+        drawCall.vertices.emplace_back(posA, animationIndex + 24, v + 0); // J'ai mis le premier dinosaure bleu
+        drawCall.vertices.emplace_back(posB, animationIndex, v + 0);
+        drawCall.vertices.emplace_back(posC, animationIndex + 24, v + 24);
+        drawCall.vertices.emplace_back(posB, animationIndex, v + 0);
+        drawCall.vertices.emplace_back(posC, animationIndex + 24, v + 24);
+        drawCall.vertices.emplace_back(posD, animationIndex, v + 24);
     }
     else {
-        drawCall.vertices.emplace_back(posA, animationIndex, 0);
-        drawCall.vertices.emplace_back(posB, animationIndex + 24, 0);
-        drawCall.vertices.emplace_back(posC, animationIndex, 24);
-        drawCall.vertices.emplace_back(posB, animationIndex + 24, 0);
-        drawCall.vertices.emplace_back(posC, animationIndex, 24);
-        drawCall.vertices.emplace_back(posD, animationIndex + 24, 24);
+        drawCall.vertices.emplace_back(posA, animationIndex, v + 0);
+        drawCall.vertices.emplace_back(posB, animationIndex + 24, v + 0);
+        drawCall.vertices.emplace_back(posC, animationIndex, v + 24);
+        drawCall.vertices.emplace_back(posB, animationIndex + 24, v + 0);
+        drawCall.vertices.emplace_back(posC, animationIndex, v + 24);
+        drawCall.vertices.emplace_back(posD, animationIndex + 24, v + 24);
     }
 
     drawCall.scale = 3;
-    drawCall.translation = dinoPlayer.playerPos;
+    drawCall.translation = this->playerPos;
     XDino_Draw(drawCall);
 }
 
@@ -120,7 +127,14 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    dinoPlayer.playerPos = {windowSize.x / 2, windowSize.y / 2};
+    dinoPlayer1.playerPos = {windowSize.x / 2, windowSize.y / 2};
+    dinoPlayer1.indexPlayer = 0;
+    dinoPlayer2.playerPos = {windowSize.x / 2 + 100, windowSize.y / 2};
+    dinoPlayer2.indexPlayer = 1;
+    dinoPlayer3.playerPos = {windowSize.x / 2, windowSize.y / 2 - 100};
+    dinoPlayer3.indexPlayer = 2;
+    dinoPlayer4.playerPos = {windowSize.x / 2 + 100, windowSize.y / 2 - 100};
+    dinoPlayer4.indexPlayer = 3;
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
@@ -136,14 +150,20 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    dinoPlayer.UpdatePlayer(deltaTime);
+    dinoPlayer1.UpdatePlayer(deltaTime);
+    dinoPlayer2.UpdatePlayer(deltaTime);
+    dinoPlayer3.UpdatePlayer(deltaTime);
+    dinoPlayer4.UpdatePlayer(deltaTime);
 
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
-    dinoPlayer.DrawPlayer(timeSinceStart);
+    dinoPlayer1.DrawPlayer(timeSinceStart);
+    dinoPlayer2.DrawPlayer(timeSinceStart);
+    dinoPlayer3.DrawPlayer(timeSinceStart);
+    dinoPlayer4.DrawPlayer(timeSinceStart);
     XDino_SetClearColor(CLEAR_COLOR);
 
     // Dessin de la "polyligne" 
