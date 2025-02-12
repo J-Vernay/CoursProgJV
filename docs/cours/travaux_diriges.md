@@ -273,7 +273,10 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> L'éditeur de lien détermine le positionnement des différents `.obj` dans un executable, résolvant les adresses de
+> fonctions et de données, et produisant du code executable par le système d'opération. L'éditeur de liens peut produire
+> des fichiers `.exe` ou `.dll`, les `.exe` étant des fichiers directement executables pas le système d'opération,
+> les `.dll` nécessitant d'être linké dynamiquement à un processus pour être executés.
 
 ## 4. Programmation du terrain
 
