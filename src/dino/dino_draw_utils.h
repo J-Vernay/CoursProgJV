@@ -32,7 +32,10 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = D
 /// @param points Liste de points par lesquels la polyligne passe.
 /// @param width Epaisseur du trait, en pixels.
 /// @param color Couleur du trait.
-DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
+DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<const DinoVec2> points, float width,
                                           DinoColor color = DinoColor_WHITE);
+
+DinoDrawCall Dino_CreateDrawCall_DinoRight();
+DinoDrawCall Dino_CreateDrawCall_DinoLeft();
 
 /// @}

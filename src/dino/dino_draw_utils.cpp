@@ -18,6 +18,42 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
     return drawCall;
 }
 
+DinoDrawCall Dino_CreateDrawCall_DinoRight()
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = "dinosaurs.png";
+    drawCall.vertices.reserve(6);
+    DinoVec2 posA = {100, 100};
+    DinoVec2 posB = {124, 100};
+    DinoVec2 posC = {100, 124};
+    DinoVec2 posD = {124, 124};
+    drawCall.vertices.emplace_back(posA, 24, 0);
+    drawCall.vertices.emplace_back(posB, 0, 0);
+    drawCall.vertices.emplace_back(posC, 24, 24);
+    drawCall.vertices.emplace_back(posB, 0, 0);
+    drawCall.vertices.emplace_back(posC, 24, 24);
+    drawCall.vertices.emplace_back(posD, 0, 24);
+    return drawCall;
+}
+
+DinoDrawCall Dino_CreateDrawCall_DinoLeft()
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = "dinosaurs.png";
+    drawCall.vertices.reserve(6);
+    DinoVec2 posA = {100, 100};
+    DinoVec2 posB = {124, 100};
+    DinoVec2 posC = {100, 124};
+    DinoVec2 posD = {124, 124};
+    drawCall.vertices.emplace_back(posA, 0, 0);
+    drawCall.vertices.emplace_back(posB, 0, 24);
+    drawCall.vertices.emplace_back(posC, 24, 0);
+    drawCall.vertices.emplace_back(posB, 0, 24);
+    drawCall.vertices.emplace_back(posC, 24, 0);
+    drawCall.vertices.emplace_back(posD, 24, 24);
+    return drawCall;
+}
+
 DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, DinoColor colorBackground,
                                       DinoVec2* pOutSize)
 {
@@ -97,7 +133,7 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, Di
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
+DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<const DinoVec2> points, float width,
                                           DinoColor color)
 {
     DinoDrawCall drawCall;
