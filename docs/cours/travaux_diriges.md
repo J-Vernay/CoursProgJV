@@ -105,7 +105,13 @@ g) Qu'est-ce qu'un "draw call" ?
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> Ces configurations permettent de tester le jeu dans différents contextes.
+> Debug n'optimise pas le code, permettant de mettre des breakpoints et de suivre précisément l'execution du programme.
+> Release est une compilation du jeu "prêt à être publié", avec les optimisations activées et un build généralement plus léger et rapide que les autres.
+> Profile est la même configuration que Release, mais implémente quelques fonctions permettant de profiler la vitesse d'execution du jeu en "conditions réelles".
+> Un exemple de l'impact des différentes configurations peut être observé dans `xdino.h` entre les lignes 178 et 195, 
+> où la définition des fonctions `XDino_ProfileBegin` et `XDino_ProfileEnd` dépend de la configuration de compilation, notamment si on est en configuration Profile ou non.
+> Si on est bien en Profile, les fonctions sont définies, sinon elles sont compilées en tant que fonctions vides.
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
