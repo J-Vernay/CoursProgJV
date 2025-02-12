@@ -11,6 +11,7 @@ double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
 DinoVec2 dinoPos = {};
+bool dinoDirection;
 std::vector<DinoVec2> polyline;
 
 // Constantes.
@@ -57,6 +58,9 @@ void Dino_GameFrame(double timeSinceStart)
 
         dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
         dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+        if (abs(gamepad.stick_left_x) > 0.1f) {
+            dinoDirection = gamepad.stick_left_x < 0;
+        }
     }
 
     // Affichage
@@ -125,7 +129,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du cercle que l'on peut bouger.
     {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(0, 0, 24, 24);
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(0, 0, 24, 24, dinoDirection);
         drawCall.textureName = "dinosaurs.png";
         drawCall.translation = dinoPos;
         drawCall.scale = 2;

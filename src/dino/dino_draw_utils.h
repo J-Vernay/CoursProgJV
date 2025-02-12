@@ -42,6 +42,7 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
 /// @param v Position V en haut à gauche de la sprite, en pixels.
 /// @param width Largeur de la sprite, en pixels.
 /// @param height Hauteur de la sprite, en pixels.
-DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height);
+/// @param flip Si `true` la sprite sera inversé horizontalement.
+DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height, bool flip = false);
 
 /// @}
