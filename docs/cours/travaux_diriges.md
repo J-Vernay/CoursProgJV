@@ -137,7 +137,7 @@ c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-> ...
+> On peut récupérer les coordonnées UV de la bonne animation en tirant un index de frame via une liste de frames, et en le multipliant par la largeur de la sprite.
 
 d) Implémentez la fonctionnalité F1.4 .
 
