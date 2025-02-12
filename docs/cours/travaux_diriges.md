@@ -223,7 +223,11 @@ b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Ce sont les noms des différents fichiers `.cpp` du projet.
+> 
+> `build\obj\x64-windows\Debug\Dino_MatysGueroult`
+> 
+> `build\obj\x64-windows\Debug\Dino_External`
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
