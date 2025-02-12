@@ -195,7 +195,9 @@ Comment créer cette fonction sans exposer publiquement la position de `DinoPlay
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
-> ...
+> `.begin()` et `.end()` retournent des itérateurs, type de données permettant d'itérer au travers des élements d'une
+> structure de données de la librairie standard. Dans le contexte de `std::sort` ces itérateurs permettent de définir la
+> portée de données que la fonction va trier.
 
 ## 3. Comprendre la compilation des fichiers C++
 
