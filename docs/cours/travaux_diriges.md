@@ -5,7 +5,8 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous
+venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -13,21 +14,27 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Ce fichier contient les définitions des fonctions, classes et structs API qui fait le pont entre le moteur
+> et le jeu.
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : Celui-ci contient le point d'entrée du programme avec la fonction WinMain. Il est responsable
+> de la création de la fenêtre windows ainsi que de détecter les événements sur cette dernière.
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` : Le moteur Dino utilise l'API graphique DirectX. En effet, on retrouve dans ce fichier toutes
+> les fonctions internes qui sont responsables de communiquer avec la carte graphique et d'afficher des éléments sur la
+> fenêtre.
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Ici, on retrouve l'implémentation concrète des fonctions de jeu présentent dans le fichier xdino.h.
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Ce fichier contient une fonction permettant de détecter les intersections entre deux segments.
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Dans ce fichier, on retrouve des fonctions permettant de simplifier la création de DrawCall en
+> fonction de ce que l'on veut dessiner sur l'écran (forme, texte...).
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Contient les données utiles à la création du dossier "build" créé à l'éxécution du fichier .bat.
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place
+des `// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -113,7 +120,6 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 > ...
-
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -213,7 +219,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -229,7 +236,8 @@ Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droit
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire
+dans `dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
@@ -297,7 +305,8 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 ## 7. Interactions
 
@@ -386,11 +395,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
