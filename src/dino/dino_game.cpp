@@ -59,8 +59,7 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_SetClearColor(CLEAR_COLOR);
 
     // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    XDino_SetRenderSize({480, 360});
 
     std::sort(players.begin(), players.end(), DinoPlayer::compareHeight);
     for (DinoPlayer& player : players) {
@@ -71,7 +70,6 @@ void Dino_GameFrame(double timeSinceStart)
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
-        drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
 
@@ -80,9 +78,8 @@ void Dino_GameFrame(double timeSinceStart)
         DinoVec2 size = {};
         DinoVec2 renderSize = XDino_GetRenderSize();
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &size);
-        drawCall.scale = 2;
-        drawCall.translation = {renderSize.x - size.x * static_cast<float>(drawCall.scale),
-                                renderSize.y - size.y * static_cast<float>(drawCall.scale)};
+        drawCall.translation = {renderSize.x - size.x,
+                                renderSize.y - size.y};
         XDino_Draw(drawCall);
     }
 }

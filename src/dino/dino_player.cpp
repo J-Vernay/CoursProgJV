@@ -1,8 +1,8 @@
 ﻿#include "dino_player.h"
 #include "dino/dino_draw_utils.h"
 
-constexpr float WALK_SPEED = 300.f;
-constexpr float RUN_SPEED = 600.f;
+constexpr float WALK_SPEED = 150.f;
+constexpr float RUN_SPEED = 300.f;
 constexpr float HIT_TIME = 1.5f;
 
 const Animation animations[] = {
@@ -40,7 +40,6 @@ void DinoPlayer::draw() const
         direction);
     drawCall.textureName = "dinosaurs.png";
     drawCall.translation = position;
-    drawCall.scale = 2;
     XDino_Draw(drawCall);
 }
 

@@ -20,8 +20,8 @@
 #endif
 
 // Définition des constantes.
-constexpr int XDino_INIT_WIDTH = 640;
-constexpr int XDino_INIT_HEIGHT = 480;
+constexpr int XDino_INIT_WIDTH = 480*2;
+constexpr int XDino_INIT_HEIGHT = 360*2;
 
 // Variables globales, accédées dans ce fichier.
 HINSTANCE gXDino_hInstance = nullptr;
@@ -82,7 +82,7 @@ void XDino_Win64_CreateWindow()
         DINO_CRITICAL("RegisterClassExW failed");
 
     RECT windowRect{0, 0, XDino_INIT_WIDTH, XDino_INIT_HEIGHT};
-    AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
+    AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME, FALSE);
     int32_t width = windowRect.right - windowRect.left;
     int32_t height = windowRect.bottom - windowRect.top;
 
@@ -90,7 +90,7 @@ void XDino_Win64_CreateWindow()
         0,
         L"Dino",
         L"Dino",
-        WS_OVERLAPPEDWINDOW,
+        WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
         width,
