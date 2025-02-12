@@ -20,8 +20,8 @@
 #endif
 
 // Définition des constantes.
-constexpr int XDino_INIT_WIDTH = 480*2;
-constexpr int XDino_INIT_HEIGHT = 360*2;
+constexpr int XDino_INIT_WIDTH = 480 * 2;
+constexpr int XDino_INIT_HEIGHT = 360 * 2;
 
 // Variables globales, accédées dans ce fichier.
 HINSTANCE gXDino_hInstance = nullptr;
@@ -167,7 +167,7 @@ void XDino_Win64_DestroyWindow()
 }
 
 // Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
-void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
+void _impl_XDino_Critical(const char* pFunc, int line, const char* msg)
 {
     char buffer[8192];
     snprintf(buffer, sizeof(buffer), "%s\n%s (line %d)", msg, pFunc, line);
