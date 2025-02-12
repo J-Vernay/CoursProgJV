@@ -10,33 +10,24 @@
 double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
-DinoVec2 circlePos = {};
+DinoVec2 dinoPos = {};
 std::vector<DinoVec2> polyline;
 
 // Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 
-void Dino_GameInit()
+struct DinoPlayer {
+    DinoVec2 pos;
+    bool bMirror;
+};
+
+DinoPlayer g_player;
+
+void UpdatePlayer(float deltaTime)
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
-    circlePos = {windowSize.x / 2, windowSize.y / 2};
-
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
-}
-
-void Dino_GameFrame(double timeSinceStart)
-{
-    // Prendre en compte le temps qui passe.
-
-    float deltaTime = static_cast<float>(timeSinceStart - lastTime);
-    lastTime = timeSinceStart;
-
-    // Gestion des entrées et mise à jour de la logique de jeu.
+    bool bIdle = false;
+    bool bWalking = false;
+    bool bRunning = false;
 
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
@@ -53,29 +44,121 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.btn_right && !gamepad.btn_left)
             rotation -= 90.0 * deltaTime;
 
-        circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
+        dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+
+        if (gamepad.stick_left_x != 0) {
+            g_player.bMirror = gamepad.stick_left_x < 0;
+        }
+
+        bIdle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
+        if (!bIdle) {
+            if (gamepad.btn_right)
+                bRunning = true;
+            else
+                bWalking = true;
+        }
     }
+}
+
+void DrawPlayer(double timeSinceStart)
+{
+    
+
+    // Dessin du dinosaur qu'on peut bouger
+    {
+        DinoDrawCall drawCall;
+        drawCall.textureName = "dinosaurs.png";
+        DinoVec2 posA = {0, 0};
+        DinoVec2 posB = {24, 0};
+        DinoVec2 posC = {0, 24};
+        DinoVec2 posD = {24, 24};
+
+        switch (g_player.bMirror) {
+        case false: drawCall.vertices.emplace_back(posA, 0, 0);
+            drawCall.vertices.emplace_back(posB, 24, 0);
+            drawCall.vertices.emplace_back(posC, 0, 24);
+            drawCall.vertices.emplace_back(posB, 24, 0);
+            drawCall.vertices.emplace_back(posC, 0, 24);
+            drawCall.vertices.emplace_back(posD, 24, 24);
+            break;
+        case true: drawCall.vertices.emplace_back(posA, 24, 0);
+            drawCall.vertices.emplace_back(posB, 0, 0);
+            drawCall.vertices.emplace_back(posC, 24, 24);
+            drawCall.vertices.emplace_back(posB, 0, 0);
+            drawCall.vertices.emplace_back(posC, 24, 24);
+            drawCall.vertices.emplace_back(posD, 0, 24);
+            break;
+        }
+
+        drawCall.scale = scale;
+        drawCall.translation = dinoPos;
+
+        XDino_Draw(drawCall);
+
+    }
+}
+
+void Dino_GameInit()
+{
+    DinoVec2 windowSize = XDino_GetWindowSize();
+    XDino_SetRenderSize(windowSize);
+    g_player.pos = {windowSize.x / 2, windowSize.y / 2};
+}
+
+void Dino_GameFrame(double timeSinceStart)
+{
+    // Prendre en compte le temps qui passe.
+    float deltaTime = static_cast<float>(timeSinceStart - lastTime);
+    lastTime = timeSinceStart;
+
+    UpdatePlayer(deltaTime);
 
     // Affichage
-
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-    constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
-
     XDino_SetClearColor(CLEAR_COLOR);
 
-    // Dessin de la "polyligne" 
-    {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Polyline(polyline, 100, POLYLINE_COLOR);
-        XDino_Draw(drawCall);
-    }
-
     // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
-    // Dessin de la texture centrale qu'on peut bouger.
+    
+    DrawPlayer(timeSinceStart);
+
+    /*// Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
+{
+    std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+    DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
+    drawCall.scale = 2;
+    XDino_Draw(drawCall);
+}
+
+//Prénom
+{
+    std::string text = "Thomas Druesne";
+    DinoVec2 textSize;
+
+    DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+    drawCall.scale = 2;
+    // Placer en bas a droite dans le coin en utilisant le parametre de retour poutsize
+
+    drawCall.translation.x = windowSize.x - 2 * textSize.x;
+    drawCall.translation.y = windowSize.y - 2 * textSize.y;
+
+    // Afficher le texte
+    XDino_Draw(drawCall);
+}*/
+
+}
+
+
+void Dino_GameShut()
+{
+
+}
+
+
+/*// Dessin de la texture centrale qu'on peut bouger.
     {
         constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
         constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
@@ -119,43 +202,4 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.textureName = "monogram-bitmap.png";
 
         XDino_Draw(drawCall);
-    }
-
-    // Dessin du cercle que l'on peut bouger.
-    {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Circle(20);
-        drawCall.translation = circlePos;
-        XDino_Draw(drawCall);
-    }
-
-    // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
-    {
-        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
-        drawCall.scale = 2;
-        XDino_Draw(drawCall);
-    }
-
-    //Prénom
-    {
-        std::string text = "Thomas Druesne";
-        DinoVec2 textSize;
-
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
-        drawCall.scale = 2;
-        // Placer en bas a droite dans le coin en utilisant le parametre de retour poutsize
-        
-        
-        drawCall.translation.x = windowSize.x - 2 * textSize.x;
-        drawCall.translation.y = windowSize.y - 2 * textSize.y;
-
-        // Afficher le texte
-        XDino_Draw(drawCall);
-    }
-
-}
-
-void Dino_GameShut()
-{
-
-}
+    }*/
