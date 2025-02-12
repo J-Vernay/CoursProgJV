@@ -128,11 +128,14 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
-    // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
+    // Clément
     {
-        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
+        std::string text = std::format("LI Clement");
+        DinoVec2 textSize;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
         drawCall.scale = 2;
+        // translation en bas à droite
+        drawCall.translation = {windowSize.x - textSize.x * 2, windowSize.y - textSize.y * 2};
         XDino_Draw(drawCall);
     }
 

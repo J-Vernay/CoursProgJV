@@ -150,6 +150,7 @@ struct DinoGamepad {
 /// @param idx Quelle manette regarder, ou le clavier avec `DinoGamepadIdx::Keyboard`.
 /// @param outGamepad Où sont stockées les valeurs récupérées.
 /// @return `true` quand réussit, `false` si non-disponible.
+/// 
 bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad);
 
 /// @}

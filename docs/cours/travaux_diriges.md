@@ -13,19 +13,19 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Contient toutes les fonctions du moteur du jeu qui sont spécifiques à la plateforme.
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : Implémentation du moteur de jeu pour la plateforme.
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` : Parti rendu pour la plateforme.
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Gère les fonctions principales de la logique de jeu.
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Fonctions qui gère les collisions.
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Fonctions d'aide pour rendu graphique.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Configure la compilation du projet, comment on passe des fichiers sources à l'éxécutable.
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 
@@ -79,28 +79,28 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 300px/s x 0.02 = 6 px
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Vers le bas gauche avec une vitesse de 50 000px/s
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> (170,130)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé est définit par des uv.
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> 
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
