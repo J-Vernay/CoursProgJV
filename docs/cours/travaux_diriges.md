@@ -205,7 +205,13 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> `src\dino`
+>
+> `src\dino\x64-windows`
+>
+> `external\stb`
+>
+> `external\pix\Include\WinPixEventRuntime`
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
