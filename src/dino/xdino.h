@@ -40,7 +40,7 @@ struct DinoVec2 {
 
 /// Représente une couleur de pixels, utilisée pour moduler l'affichage d'une texture.
 union DinoColor {
-    struct {
+    struct{
         uint8_t r;
         uint8_t g;
         uint8_t b;
@@ -50,16 +50,16 @@ union DinoColor {
     uint32_t rgba;
 };
 
-constexpr DinoColor DinoColor_WHITE{0xFF, 0xFF, 0xFF, 0xFF};
-constexpr DinoColor DinoColor_GREY{0x80, 0x80, 0x80, 0xFF};
-constexpr DinoColor DinoColor_BLACK{0x00, 0x00, 0x00, 0xFF};
-constexpr DinoColor DinoColor_TRANSPARENT{0xFF, 0xFF, 0xFF, 0x80};
-constexpr DinoColor DinoColor_INVISIBLE{0xFF, 0xFF, 0xFF, 0x00};
-constexpr DinoColor DinoColor_BLUE{0x4D, 0x92, 0xBC, 0xFF};
-constexpr DinoColor DinoColor_RED{0xBC, 0x4D, 0x4F, 0xFF};
-constexpr DinoColor DinoColor_YELLOW{0xFD, 0xC7, 0x60, 0xFF};
-constexpr DinoColor DinoColor_GREEN{0x88, 0xA0, 0x43, 0xFF}; 
-constexpr DinoColor DinoColor_ORANGE{0xFF, 0xA5, 0x00, 0xFF};
+constexpr DinoColor DinoColor_WHITE{{0xFF, 0xFF, 0xFF, 0xFF}};
+constexpr DinoColor DinoColor_GREY{{0x80, 0x80, 0x80, 0xFF}};
+constexpr DinoColor DinoColor_BLACK{{0x00, 0x00, 0x00, 0xFF}};
+constexpr DinoColor DinoColor_TRANSPARENT{{0xFF, 0xFF, 0xFF, 0x80}};
+constexpr DinoColor DinoColor_INVISIBLE{{0xFF, 0xFF, 0xFF, 0x00}};
+constexpr DinoColor DinoColor_BLUE{{0x4D, 0x92, 0xBC, 0xFF}};
+constexpr DinoColor DinoColor_RED{{0xBC, 0x4D, 0x4F, 0xFF}};
+constexpr DinoColor DinoColor_YELLOW{{0xFD, 0xC7, 0x60, 0xFF}};
+constexpr DinoColor DinoColor_GREEN{{0x88, 0xA0, 0x43, 0xFF}}; 
+constexpr DinoColor DinoColor_ORANGE{{0xFF, 0xA5, 0x00, 0xFF}};
 
 /// Représente un des sommets d'un triangle envoyé à la carte graphique.
 struct DinoVertex {

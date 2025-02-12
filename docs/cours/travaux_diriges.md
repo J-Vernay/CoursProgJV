@@ -25,7 +25,7 @@ a) Résumez en une phrase le rôle des fichiers suivants :
 >
 > `dino_draw_utils.cpp` : fonctions pour draw des formes multiples ou des textes
 >
-> `premake5.lua` : ...
+> `premake5.lua` : permets la configuration du projet
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 
@@ -132,13 +132,15 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> on inverse les coordonnées dans lequel les vertices sont initialisées à chaque frame, 
+> exemple, la vertices[0] sera en haut a droite au lieu de en haut a gauche
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-> ...
+> selon l'etat du dino et donc l'animation souhaitée (ainsi que la taille en pixel des frame, 24 dans ce cas),
+> on additionne un offset a la coordonnée u de l'uv
 
 d) Implémentez la fonctionnalité F1.4 .
 
@@ -147,7 +149,7 @@ d) Implémentez la fonctionnalité F1.4 .
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper et en avoir plusieurs instances ?
 
-> ...
+> on regroupe les données utiles a l'instance en struct ou class
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -157,7 +159,10 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> une fonction membre
+> on peut utiliser des contrôles d'acces, private protected public, pour limiter la visibilité des fonctions.
+> C'est intéressant pour permettre d'ouvrir à d'autres programmeurs ou partie du systeme juste ce qui est necessaire,
+> et ne pas risquer d'utilisations erronées.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -166,17 +171,19 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> ...
+> for (type variable : tableau) {}
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
-> ...
+> pour la fonction sort, on crée une fonction CompareHeight qui compare la position en y entre 2 Dino et on l'utilise dans la fonction sort.
+> La fonction de comparaison se charge elle meme d'acceder a la position
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
-> ...
+> begin renvoit un iterateur vers le premier element du vecteur et end renvoit un itérateur vers le dernier element du vecteur.
+> Dans la fonction sort, cela donne la portée des données triées
 
 ## 3. Comprendre la compilation des fichiers C++
 
@@ -184,45 +191,67 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino
+> 
+> src/dino/x64-windows
+> 
+> external/stb
+> 
+> external/pix/Include/WinPixEventRuntime
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino
+> 
+> src/dino/x64-windows
+> 
+> external/stb
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Ils ont le meme nom que les fichiers C++ correspondants
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> Dino_ClementStrappazzon.exe path : CoursProgJV
+> 
+> Dino_JulienVernay.exe path : CoursProgJV/build/x64-windows/Debug
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> ref aux .h : lignes 22, 86, 94, 100, 112
+> 
+> ref aux .cpp : lignes 22, 86, 94, 100 (a la ligne 112, le directory external/pix/Include/WinPixEventRuntime ne contenait que des headers)
+> 
+> ref aux .obj : ligne 16 (directory build contient les obj)
+> 
+> ref aux .exe : ligne 19 (directory build/x64-windows/Debug contient le .exe)
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** les déclarations sont dans le header .h et sont implémentées dans le .cpp
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** les obj sont les compilations non liés des .cpp
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** les .lib contiennent un/des .obj pouvant être liés avec d'autres .obj
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** les .dll contiennent un/des .obj liés entre eux, exposant des fonctions de ces .obj et les liant dynamiquement à l'exécution 
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** les .obj sont liés pour créer le .exe
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** les .dll sont séparées des .exe mais peuvent être liés pendant l'exécution du .exe (du code est contenu dans la dll mais pas dans le .exe)
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Le préprocesseur permet d'avoir une phase de préparation à la compilation pour permettre par exemple de 
+> inclure des segments de code (#include), définir des macros (#define), la compilation conditionnelle (#if ...)
+> Cela permet d'avoir une sortie de compilation modulable et ne nécessitant pas de modification manuelle pour toute ou partie du maintient du code.
+> On reconnait ces directives commencant souvant par un #
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
 
-> ...
+> L'editeur de lien positionne et lie les .obj dans un ensemble executable. Il peut générer des .exe ou des .dll.
+> J'ai essayé de voir pour être sûr, mais je crois aussi avoir vu sous certaines conditions, des .lib ou ilk pouvait etre fait, mais je crois avoir manqué une info pour ca
 
 ## 4. Programmation du terrain
 

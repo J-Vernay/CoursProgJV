@@ -20,8 +20,8 @@
 #endif
 
 // Définition des constantes.
-constexpr int XDino_INIT_WIDTH = 640;
-constexpr int XDino_INIT_HEIGHT = 480;
+constexpr int XDino_INIT_WIDTH = 960;
+constexpr int XDino_INIT_HEIGHT = 720;
 
 // Variables globales, accédées dans ce fichier.
 HINSTANCE gXDino_hInstance = nullptr;
