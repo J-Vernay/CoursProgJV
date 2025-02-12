@@ -52,9 +52,10 @@ void Dino_GameFrame(double timeSinceStart)
             rotation += 90.0 * deltaTime;
         if (gamepad.btn_right && !gamepad.btn_left)
             rotation -= 90.0 * deltaTime;
-
+        
         circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        if (gamepad.stick_left_y > 0)
+            circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
     }
 
     // Affichage
