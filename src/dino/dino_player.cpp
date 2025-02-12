@@ -33,10 +33,11 @@ void DinoPlayer::update(float deltaTime)
 void DinoPlayer::draw() const
 {
     DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(
-        animations[animatorState.animationId].frames[animatorState.frame] * 24,
-        color * 24,
+        animations[animatorState.animationId].frames[animatorState.frame],
+        color,
         24,
         24,
+        {-12, -12},
         direction);
     drawCall.textureName = "dinosaurs.png";
     drawCall.translation = position;

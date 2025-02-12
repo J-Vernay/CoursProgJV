@@ -55,15 +55,54 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Affichage
 
-    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
+    constexpr DinoColor CLEAR_COLOR = {0, 146, 221, 255};
     XDino_SetClearColor(CLEAR_COLOR);
 
     // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
     XDino_SetRenderSize({480, 360});
 
-    std::sort(players.begin(), players.end(), DinoPlayer::compareHeight);
-    for (DinoPlayer& player : players) {
-        player.draw();
+    {
+        DinoVec2 renderSize = XDino_GetRenderSize();
+
+        DinoVec2 offset = {(renderSize.x - 18*16) / 2.0f, (renderSize.y - 14*16) / 2.0f};
+
+        for (int y = 0; y < 14; y++) {
+            for (int x = 0; x < 18; x++) {
+                int16_t u, v;
+
+                if (y == 0) {
+                    v = 1;
+                }
+                else if (y == 13) {
+                    v = 3;
+                }
+                else {
+                    v = 2;
+                }
+
+                if (x == 0) {
+                    u = 0;
+                }
+                else if (x == 17) {
+                    u = 2;
+                }
+                else {
+                    u = 1;
+                }
+
+                DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(u, v, 16, 16);
+                drawCall.textureName = "terrain.png";
+                drawCall.translation = {offset.x + x * 16.0f, offset.y + y * 16.0f};
+                XDino_Draw(drawCall);
+            }
+        }
+    }
+
+    {
+        std::sort(players.begin(), players.end(), DinoPlayer::compareHeight);
+        for (DinoPlayer& player : players) {
+            player.draw();
+        }
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.

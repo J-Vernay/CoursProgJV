@@ -97,7 +97,7 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, Di
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
+DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<const DinoVec2> points, float width,
                                           DinoColor color)
 {
     DinoDrawCall drawCall;
@@ -204,20 +204,23 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height, bool flip)
+DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height, DinoVec2 vertexOffset, bool flip)
 {
     DinoDrawCall drawCall;
 
+    u *= width;
+    v *= height;
+
     int16_t left = flip ? u + width : u;
     int16_t right = flip ? u : u + width;
-    
+
     drawCall.vertices.reserve(6);
-    drawCall.vertices.emplace_back( DinoVec2{-12, -12}, left, v, DinoColor_WHITE);
-    drawCall.vertices.emplace_back( DinoVec2{-12,  12}, left, v + height, DinoColor_WHITE);
-    drawCall.vertices.emplace_back( DinoVec2{ 12,  12}, right, v + height, DinoColor_WHITE);
-    drawCall.vertices.emplace_back( DinoVec2{ 12,  12}, right, v + height, DinoColor_WHITE);
-    drawCall.vertices.emplace_back( DinoVec2{ 12, -12}, right, v, DinoColor_WHITE);
-    drawCall.vertices.emplace_back( DinoVec2{-12, -12}, left, v, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(vertexOffset, left, v, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x, vertexOffset.y + height}, left, v + height, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y + height}, right, v + height, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y + height}, right, v + height, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y}, right, v, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(vertexOffset, left, v, DinoColor_WHITE);
 
     return drawCall;
 }
