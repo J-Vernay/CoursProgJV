@@ -145,10 +145,6 @@ Quand les animaux disparaissent, une petite notification contenant le texte `+10
 
 Sur le côté gauche de l'écran, le score des 4 joueurs est affiché, chacun suivant la couleur du dinosaure.
 
-> **CONSEIL:** Pour pouvoir positionner le texte précisément, modifiez Dino_CreateDrawCall_Text()
-> pour prendre un DinoVec2 en paramètre de sortie (pointeur vers non-const) dans lequel sera stockée
-> la taille en pixels du bloc de texte.
-
 ### F7. Lobby et flow du jeu
 
 Quand le programme est lancé, un terrain vide est affiché avec une saison aléatoire "le lobby".

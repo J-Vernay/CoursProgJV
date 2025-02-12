@@ -3,6 +3,12 @@
 Ce fichier contient le plan global du cours.
 Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du cours.
 
+**Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
+
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+
+**A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
+
 ## 0. Prise en main de la base de code
 
 a) Résumez en une phrase le rôle des fichiers suivants :
@@ -149,13 +155,13 @@ Comment appelle-t-on cette limitation ? Quel intérêt ?
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
 
-e) Créez quatre dinosaures, c'est-à-dire quatre instances de la classe `DinoPlayer`.
+e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances de la classe `DinoPlayer`.
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
 > ...
 
-f) Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
+f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
@@ -223,11 +229,16 @@ Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droit
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain.
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
 > ...
+
+f) Implémentez la fonctionnalité F2.3 .
+
+g) Implémentez la fonctionnalité F2.4 .
 
 ## 5. Programmation des animaux
 
@@ -271,6 +282,8 @@ des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
 
 > ...
 
+j) Implémentez la fonctionnalité F3.4.
+
 ## 6. Programmation des lassos
 
 a) Implémentez la fonctionnalité F4.1 .
@@ -296,7 +309,7 @@ c) Comment détecter si deux cercles à des positions données sont en collision
 
 > ...
 
-d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
+d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
 > ...
