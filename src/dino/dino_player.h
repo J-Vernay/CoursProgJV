@@ -12,15 +12,20 @@ class DinoPlayer {
         RUN
     };
 
+    DinoGamepadIdx gamepadIdx;
     DinoVec2 position = {};
     bool direction = false;
     float hitTimer = 0;
+    int16_t color = 0;
     AnimatorState<AnimationId> animatorState = {0, 0, IDLE};
 
 public:
     /// Initialise le joueur.
-    /// @param startPosition Position de départ du joueur.
-    void init(DinoVec2 startPosition);
+    /// @param position Position de départ du joueur.
+    explicit DinoPlayer(DinoVec2 position, DinoGamepadIdx gamepadIdx, int16_t color) : gamepadIdx(gamepadIdx),
+        position(position), color(color)
+    {
+    }
 
     /// Effectue la logique de jeu du joueur.
     /// @param deltaTime Temps passé depuis la dernière frame.

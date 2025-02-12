@@ -1,8 +1,8 @@
 ﻿#include "dino_player.h"
 #include "dino/dino_draw_utils.h"
 
-constexpr float WALK_SPEED = 50.f;
-constexpr float RUN_SPEED = 100.f;
+constexpr float WALK_SPEED = 300.f;
+constexpr float RUN_SPEED = 600.f;
 constexpr float HIT_TIME = 1.5f;
 
 const Animation animations[] = {
@@ -12,22 +12,17 @@ const Animation animations[] = {
     {16, {17, 18, 19, 20, 21, 22}}
 };
 
-void DinoPlayer::init(DinoVec2 startPosition)
-{
-    this->position = startPosition;
-}
-
 void DinoPlayer::update(float deltaTime)
 {
     DinoGamepad gamepad;
-    XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad);
+    XDino_GetGamepad(gamepadIdx, gamepad);
 
     if (gamepad.btn_down) {
         hit();
     }
 
     updateHit(deltaTime);
-    
+
     if (canMove()) {
         updateMovement(deltaTime, gamepad);
     }
@@ -37,7 +32,12 @@ void DinoPlayer::update(float deltaTime)
 
 void DinoPlayer::draw() const
 {
-    DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(animations[animatorState.animationId].frames[animatorState.frame] * 24, 0, 24, 24, direction);
+    DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(
+        animations[animatorState.animationId].frames[animatorState.frame] * 24,
+        color * 24,
+        24,
+        24,
+        direction);
     drawCall.textureName = "dinosaurs.png";
     drawCall.translation = position;
     drawCall.scale = 2;
@@ -51,7 +51,8 @@ void DinoPlayer::hit()
 
 void DinoPlayer::updateHit(float deltaTime)
 {
-    if (hitTimer <= 0) return;
+    if (hitTimer <= 0)
+        return;
     hitTimer -= deltaTime;
 }
 
@@ -61,7 +62,7 @@ void DinoPlayer::updateMovement(float deltaTime, DinoGamepad gamepad)
 
     position.x += gamepad.stick_left_x * speed * deltaTime;
     position.y += gamepad.stick_left_y * speed * deltaTime;
-    
+
     if (abs(gamepad.stick_left_x) > 0.1f) {
         direction = gamepad.stick_left_x < 0;
     }
@@ -73,7 +74,7 @@ void DinoPlayer::updateAnimator(DinoGamepad gamepad)
         setAnimation(HIT);
         return;
     }
-    
+
     if (abs(gamepad.stick_left_x) + abs(gamepad.stick_left_y) < 0.1f) {
         setAnimation(IDLE);
         return;
@@ -86,7 +87,8 @@ void DinoPlayer::updateAnimation(float deltaTime)
 {
     animatorState.timer += deltaTime;
 
-    if (animatorState.timer < 1.0f / animations[animatorState.animationId].framerate) return;
+    if (animatorState.timer < 1.0f / animations[animatorState.animationId].framerate)
+        return;
     animatorState.frame = (++animatorState.frame) % animations[animatorState.animationId].frames.size();
     animatorState.timer = 0;
 }

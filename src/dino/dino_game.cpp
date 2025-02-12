@@ -9,13 +9,19 @@
 
 // Variables globales.
 double lastTime = 0;
-DinoPlayer player;
+std::vector<DinoPlayer> players;
+std::vector<DinoGamepadIdx> availableGamepads;
 
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    player.init({windowSize.x / 2, windowSize.y / 2});
+
+    availableGamepads.push_back(DinoGamepadIdx::Gamepad1);
+    availableGamepads.push_back(DinoGamepadIdx::Gamepad2);
+    availableGamepads.push_back(DinoGamepadIdx::Gamepad3);
+    availableGamepads.push_back(DinoGamepadIdx::Gamepad4);
+    availableGamepads.push_back(DinoGamepadIdx::Keyboard);
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -25,12 +31,29 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
+    if (players.size() < 4) {
+        for (DinoGamepadIdx gamepadIdx : availableGamepads) {
+            DinoGamepad gamepad;
+            XDino_GetGamepad(gamepadIdx, gamepad);
+
+            if (abs(gamepad.stick_left_x) + abs(gamepad.stick_left_y) < 0.1f)
+                continue;
+            DinoVec2 windowSize = XDino_GetRenderSize();
+            players.push_back(DinoPlayer({windowSize.x / 2, windowSize.y / 2},
+                                         gamepadIdx,
+                                         static_cast<uint16_t>(players.size())));
+            availableGamepads.erase(std::find(availableGamepads.begin(), availableGamepads.end(), gamepadIdx));
+        }
+    }
+
     // Gestion des entrées et mise à jour de la logique de jeu.
-    
-    player.update(deltaTime);
+
+    for (DinoPlayer& player : players) {
+        player.update(deltaTime);
+    }
 
     // Affichage
-    
+
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     XDino_SetClearColor(CLEAR_COLOR);
 
@@ -38,7 +61,9 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
-    player.draw();
+    for (DinoPlayer& player : players) {
+        player.draw();
+    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

@@ -5,7 +5,8 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous
+venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -13,9 +14,11 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : Déclare une API d'interaction entre le moteur XDino et le jeu, comportant des fonctions pour du rendu graphique, de la prise d'inputs et autre fonctions utilitaires.
+> `xdino.h` : Déclare une API d'interaction entre le moteur XDino et le jeu, comportant des fonctions pour du rendu
+> graphique, de la prise d'inputs et autre fonctions utilitaires.
 >
-> `xdino_win64_main.cpp` : Implémente des fonctions liés à la création de la fenêtre et le polling des inputs, en plus de la fonction d'entrée du programme.
+> `xdino_win64_main.cpp` : Implémente des fonctions liés à la création de la fenêtre et le polling des inputs, en plus
+> de la fonction d'entrée du programme.
 >
 > `xdino_win64_rdr.cpp` : Implémente des fonctions étant liées au rendu graphique via Direct3D 11.
 >
@@ -23,11 +26,13 @@ a) Résumez en une phrase le rôle des fichiers suivants :
 >
 > `dino_geometry.cpp` : Implémente une fonction permettant de détecter si deux segments s'intersectent entre eux.
 >
-> `dino_draw_utils.cpp` : Implémente des fonctions utilitaires permettant de déssiner à l'écran différents éléments, comme du texte, des cercles et des lignes.
+> `dino_draw_utils.cpp` : Implémente des fonctions utilitaires permettant de déssiner à l'écran différents éléments,
+> comme du texte, des cercles et des lignes.
 >
 > `premake5.lua` : Utilitaire permettant de configurer la solution du projet.
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place
+des `// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -79,7 +84,7 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> 6 pixels ont étés parcouru entre les deux frames. 
+> 6 pixels ont étés parcouru entre les deux frames.
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
@@ -96,21 +101,26 @@ au bout d'une seconde ?
 
 f) Par quoi est définit un triangle texturé ?
 
-> Un triangle texturé dans XDino est défini par 3 positions `DinoVec2`, 3 couleurs `DinoColor` et 3 sets de position UV, chaque set de position, couleur et UV représentant un des sommets du triangle.
+> Un triangle texturé dans XDino est défini par 3 positions `DinoVec2`, 3 couleurs `DinoColor` et 3 sets de position UV,
+> chaque set de position, couleur et UV représentant un des sommets du triangle.
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> Un draw call est un appel de rendu pour la carte graphique, en passant une structure de données pour représenter ce qui doit être dessiné à l'écran.
+> Un draw call est un appel de rendu pour la carte graphique, en passant une structure de données pour représenter ce
+> qui doit être dessiné à l'écran.
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
 > Ces configurations permettent de tester le jeu dans différents contextes.
 > Debug n'optimise pas le code, permettant de mettre des breakpoints et de suivre précisément l'execution du programme.
-> Release est une compilation du jeu "prêt à être publié", avec les optimisations activées et un build généralement plus léger et rapide que les autres.
-> Profile est la même configuration que Release, mais implémente quelques fonctions permettant de profiler la vitesse d'execution du jeu en "conditions réelles".
-> Un exemple de l'impact des différentes configurations peut être observé dans `xdino.h` entre les lignes 178 et 195, 
-> où la définition des fonctions `XDino_ProfileBegin` et `XDino_ProfileEnd` dépend de la configuration de compilation, notamment si on est en configuration Profile ou non.
+> Release est une compilation du jeu "prêt à être publié", avec les optimisations activées et un build généralement plus
+> léger et rapide que les autres.
+> Profile est la même configuration que Release, mais implémente quelques fonctions permettant de profiler la vitesse
+> d'execution du jeu en "conditions réelles".
+> Un exemple de l'impact des différentes configurations peut être observé dans `xdino.h` entre les lignes 178 et 195,
+> où la définition des fonctions `XDino_ProfileBegin` et `XDino_ProfileEnd` dépend de la configuration de compilation,
+> notamment si on est en configuration Profile ou non.
 > Si on est bien en Profile, les fonctions sont définies, sinon elles sont compilées en tant que fonctions vides.
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
@@ -119,7 +129,6 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 > ...
-
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -131,13 +140,15 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> On peut mettre en miroir le sprite du dinosaure en inversant les coordonnées U de la gauche et de la droite de la sprite.
+> On peut mettre en miroir le sprite du dinosaure en inversant les coordonnées U de la gauche et de la droite de la
+> sprite.
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-> On peut récupérer les coordonnées UV de la bonne animation en tirant un index de frame via une liste de frames, et en le multipliant par la largeur de la sprite.
+> On peut récupérer les coordonnées UV de la bonne animation en tirant un index de frame via une liste de frames, et en
+> le multipliant par la largeur de la sprite.
 
 d) Implémentez la fonctionnalité F1.4 .
 
@@ -162,7 +173,8 @@ Comment appelle-t-on cette limitation ? Quel intérêt ?
 > de limiter la modification d'un type de données uniquement aux fonctions membres.
 > L'intérêt est de pouvoir faire en sorte qu'un programmeur puisse mettre à disposition de ses collègues uniquement
 > ce qui est sensé modifier un type de donnée d'une manière contrôlée, et éviter qu'un programmeur qui ne connait
-> pas précisément le fonctionnement d'un type de donnée ne crée des bugs en accédant d'une manière non prévue à ce dernier.
+> pas précisément le fonctionnement d'un type de donnée ne crée des bugs en accédant d'une manière non prévue à ce
+> dernier.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -171,7 +183,7 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> ...
+> ````for (Type nom : tableau)````
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
@@ -225,7 +237,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -241,7 +254,8 @@ Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droit
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire
+dans `dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
@@ -309,7 +323,8 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 ## 7. Interactions
 
@@ -398,11 +413,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
