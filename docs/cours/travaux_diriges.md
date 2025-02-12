@@ -285,7 +285,11 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> Marge: (tailleTotale - tailleInterieur) / 2
+>
+> Marge horizontale: (480 - 256) / 2
+>
+> Marge verticale: (360 - 192) / 2
 
 c) Implémentez la fonctionnalité F2.1 .
 
