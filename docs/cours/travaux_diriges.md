@@ -5,7 +5,8 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous
+venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -13,21 +14,23 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` :  le moteur du jeu, permet de gerer l’initialisation du logiciel, de la logique du jeu, des manettes, gérer de l’aléatoire
+> `xdino.h` : fonction du moteur de jeu spécifique à la plateforme
 >
-> `xdino_win64_main.cpp` : Permet de d'ouvrir la fenetre de jeu et de l'afficher, de gérer le temps via les ticks, et de  pouvoir fermer correctemeent le jeu
+> `xdino_win64_main.cpp` : Permet de d'ouvrir la fenetre de jeu et de l'afficher, de gérer le temps via les ticks, et de
+> pouvoir fermer correctemeent le jeu pour Windows
 >
-> `xdino_win64_rdr.cpp` : Permet de gérer des fonctions spécifiques à la plateforme et d'initialiser les shaders et variables globales utiles aux textures et à l'affichage
+> `xdino_win64_rdr.cpp` : la partie rendu par rapport à la plateforme
 >
-> `dino_game.cpp` : Fichier contenant le jeu en lui meme, ce que l'on va retrouver dans la fenetre windows
+> `dino_game.cpp` : Fichier contenant la logique du jeu en lui meme, ce que l'on va retrouver dans la fenetre windows
 >
-> `dino_geometry.cpp` : Permet de vérifier si des segment s'intersecte 
+> `dino_geometry.cpp` : Permet de vérifier si des segment s'intersecte (gérer les collision)
 >
-> `dino_draw_utils.cpp` : Permet de gérer les drawcalls
+> `dino_draw_utils.cpp` : Permet de dessiner un cercle, une ligne, etc, fonction dev rendu graphique
 >
-> `premake5.lua` : Permet de lié le projet au APIs et logiciels tierces ainsi que de gérer sa compilation
+> `premake5.lua` : Permet de gérer la compilation du projet
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place
+des `// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -35,7 +38,7 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 // Déclaration des fonctions qui sont définies plus bas dans le fichier.
 
 // Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-// Tourne en boucle tant que le programme continue.
+// Tourne en boucle tant que le programme continue. X
 
 // Définition des constantes.
 
@@ -46,74 +49,73 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 
 // Gère les événements que nous communique le système d'exploitation.
 
-// Initialisation de la fenêtre graphique.
+// Initialisation de la fenêtre graphique. X
 
-// L'utilisateur redimensionne la fenêtre.
-// On ajuste le moteur de rendu en conséquence.
+// L'utilisateur redimensionne la fenêtre. X
+// On ajuste le moteur de rendu en conséquence. X
 
 // Expose les fonctions de la base de code.
 
 // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
 
-// Expose les fonctions de la bibliothèque tierce PIX.
+// Expose les fonctions de la bibliothèque tierce PIX. X
 
-// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
+// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows. X
 
 // Le système d'exploitation demande à redessiner la fenêtre.
 // On demande à la logique de jeu de dessiner une frame.
 
-// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
+// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur. X
 
-// L'utilisateur a demandé à détruire la fenêtre.
-// On notifie le système d'exploitation qu'on veut arrêter.
+// L'utilisateur a demandé à détruire la fenêtre. X
+// On notifie le système d'exploitation qu'on veut arrêter. 
 
-// Expose les fonctions de la bibliothèque standard.
+// Expose les fonctions de la bibliothèque standard. X
 
-// Variables globales, accédées dans ce fichier.
+// Variables globales, accédées dans ce fichier. 
 
-// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu.
+// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu. XX
 
-// Expose les fonctions du système d'exploitation Windows.
+// Expose les fonctions du système d'exploitation Windows. X
 ```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 6 pixels entre les deux frames
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> 50 000 px/s
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> environ (170; 130 )
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Une triangle texturé est défini par des vertices avec des coordonnées et une texture appliqué par UV
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> Un draw call est un appels à la carte graphique du GPU pour dessiner les graphismes
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> Debug : ajoute des informations de débogage, le code correspond à celui que le dev à ecrit Profile : optimise pour la
+> performance, Release : optimisé par le compilateur
+> Exemple : DINO_CRITICAL affiche une popup en cas d'erreur en Debug, mais pas en Release
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
-
-> ...
-
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -213,7 +215,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -229,7 +232,8 @@ Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droit
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire
+dans `dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
@@ -297,7 +301,8 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 ## 7. Interactions
 
@@ -386,11 +391,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
