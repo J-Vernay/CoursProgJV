@@ -10,19 +10,114 @@
 double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
-DinoVec2 playerPos = {};
+
+struct DinoPlayer {
+    DinoVec2 playerPos = {};
+    bool isMirror = false;
+
+    bool isIdle = false;
+    bool isWalking = false;
+    bool isRunning = false;
+};
+
+DinoPlayer dinoPlayer;
+
 std::vector<DinoVec2> polyline;
 
 // Constantes.
 constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 
-bool isRight = true;
+void UpdatePlayer(float deltaTime)
+{
+    // Gestion des entrées et mise à jour de la logique de jeu.
+    dinoPlayer.isIdle = false;
+    dinoPlayer.isWalking = false;
+    dinoPlayer.isRunning = false;
+
+    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
+        DinoGamepad gamepad{};
+        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
+        if (!bSuccess)
+            continue;
+
+        float playerSpeed = speed;
+
+        if (gamepad.btn_right && !gamepad.btn_left) {
+            playerSpeed *= 2.f;
+        }
+
+        dinoPlayer.playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
+        dinoPlayer.playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
+
+        if (gamepad.stick_left_x != 0) {
+            dinoPlayer.isMirror = gamepad.stick_left_x < 0;
+        }
+
+        dinoPlayer.isIdle = gamepad.stick_left_x == 00 && gamepad.stick_left_y == 0;
+        if (!dinoPlayer.isIdle) {
+            if (gamepad.btn_right)
+                dinoPlayer.isRunning = true;
+            else {
+                dinoPlayer.isWalking = true;
+            }
+        }
+    }
+}
+
+void DrawPlayer(double timeSinceStart)
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
+    drawCall.vertices.reserve(6);
+
+    DinoVec2 posA = {0, 0};
+    DinoVec2 posB = {24, 0};
+    DinoVec2 posC = {0, 24};
+    DinoVec2 posD = {24, 24};
+    DinoColor color = DinoColor_WHITE;
+
+    int animationIndex = 0;
+
+    if (dinoPlayer.isIdle) {
+        int indexFrame = int(timeSinceStart * 8) % 4;
+        animationIndex = 0 + 24 * indexFrame;
+    }
+    if (dinoPlayer.isWalking) {
+        int indexFrame = int(timeSinceStart * 8) % 6;
+        animationIndex = 96 + 24 * indexFrame;
+    }
+    if (dinoPlayer.isRunning) {
+        int indexFrame = int(timeSinceStart * 16) % 6;
+        animationIndex = 432 + 24 * indexFrame;
+    }
+
+    if (dinoPlayer.isMirror) {
+        drawCall.vertices.emplace_back(posA, animationIndex + 24, 0);
+        drawCall.vertices.emplace_back(posB, animationIndex, 0);
+        drawCall.vertices.emplace_back(posC, animationIndex + 24, 24);
+        drawCall.vertices.emplace_back(posB, animationIndex, 0);
+        drawCall.vertices.emplace_back(posC, animationIndex + 24, 24);
+        drawCall.vertices.emplace_back(posD, animationIndex, 24);
+    }
+    else {
+        drawCall.vertices.emplace_back(posA, animationIndex, 0); // J'ai mis le premier dinosaure bleu
+        drawCall.vertices.emplace_back(posB, animationIndex + 24, 0);
+        drawCall.vertices.emplace_back(posC, animationIndex, 24);
+        drawCall.vertices.emplace_back(posB, animationIndex + 24, 0);
+        drawCall.vertices.emplace_back(posC, animationIndex, 24);
+        drawCall.vertices.emplace_back(posD, animationIndex + 24, 24);
+    }
+
+    drawCall.scale = 3;
+    drawCall.translation = dinoPlayer.playerPos;
+    XDino_Draw(drawCall);
+}
 
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    playerPos = {windowSize.x / 2, windowSize.y / 2};
+    dinoPlayer.playerPos = {windowSize.x / 2, windowSize.y / 2};
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
@@ -38,33 +133,14 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    // Gestion des entrées et mise à jour de la logique de jeu.
-
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-        float playerSpeed = speed;
-
-        if (gamepad.btn_right && !gamepad.btn_left) {
-            playerSpeed *= 2.f;
-        }
-
-        playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
-        playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
-
-        if (gamepad.stick_left_x != 0) {
-            isRight = gamepad.stick_left_x > 0;
-        }
-    }
+    UpdatePlayer(deltaTime);
 
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
+    DrawPlayer(timeSinceStart);
     XDino_SetClearColor(CLEAR_COLOR);
 
     // Dessin de la "polyligne" 
@@ -80,7 +156,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin de la texture centrale qu'on peut bouger.
     {
-        constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
+        /*constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
         constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
         constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
         constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
@@ -121,39 +197,12 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.vertices[5].v = 96;
         drawCall.textureName = "monogram-bitmap.png";
 
-        XDino_Draw(drawCall);
+        XDino_Draw(drawCall);*/
     }
 
     // Dessin du dinosaure que l'on peut bouger.
     {
-        DinoDrawCall drawCall;
-        drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
-        drawCall.vertices.reserve(6);
 
-        DinoVec2 posA = {0, 0};
-        DinoVec2 posB = {24, 0};
-        DinoVec2 posC = {0, 24};
-        DinoVec2 posD = {24, 24};
-        if (isRight) {
-            drawCall.vertices.emplace_back(posA, 0, 0); // J'ai mis le premier dinosaure bleu
-            drawCall.vertices.emplace_back(posB, 24, 0);
-            drawCall.vertices.emplace_back(posC, 0, 24);
-            drawCall.vertices.emplace_back(posB, 24, 0);
-            drawCall.vertices.emplace_back(posC, 0, 24);
-            drawCall.vertices.emplace_back(posD, 24, 24);
-        }
-        else {
-            drawCall.vertices.emplace_back(posA, 24, 0);
-            drawCall.vertices.emplace_back(posB, 0, 0);
-            drawCall.vertices.emplace_back(posC, 24, 24);
-            drawCall.vertices.emplace_back(posB, 0, 0);
-            drawCall.vertices.emplace_back(posC, 24, 24);
-            drawCall.vertices.emplace_back(posD, 0, 24);
-        }
-
-        drawCall.scale = 3;
-        drawCall.translation = playerPos;
-        XDino_Draw(drawCall);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
