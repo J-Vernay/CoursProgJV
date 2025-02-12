@@ -146,7 +146,8 @@ d) Implémentez la fonctionnalité F1.4 .
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper et en avoir plusieurs instances ?
 
-> ...
+> On peut créer une classe pour regrouper les données et la logique du dinosaure.
+> En utilisant la classe on peut créer plusieurs instances du dinosaure.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
