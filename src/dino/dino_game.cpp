@@ -19,15 +19,18 @@ constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 struct DinoPlayer {
     DinoVec2 pos;
     bool bMirror;
+    bool bIdle;
+    bool bWalking;
+    bool bRunning;
+
+    void UpdatePlayer(float deltaTime);
+    void DrawPlayer(double timeSinceStart);
 };
 
 DinoPlayer g_player;
 
-void UpdatePlayer(float deltaTime)
+void DinoPlayer::UpdatePlayer(float deltaTime)
 {
-    bool bIdle = false;
-    bool bWalking = false;
-    bool bRunning = false;
 
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
@@ -52,18 +55,27 @@ void UpdatePlayer(float deltaTime)
         }
 
         bIdle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
+
         if (!bIdle) {
-            if (gamepad.btn_right)
+            if (gamepad.btn_right) {
                 bRunning = true;
-            else
+                bWalking = false;
+            }
+
+            else {
+                bRunning = false;
                 bWalking = true;
+            }
+        }
+        else {
+            bRunning = false;
+            bWalking = false;
         }
     }
 }
 
-void DrawPlayer(double timeSinceStart)
+void DinoPlayer::DrawPlayer(double timeSinceStart)
 {
-    
 
     // Dessin du dinosaur qu'on peut bouger
     {
@@ -74,20 +86,35 @@ void DrawPlayer(double timeSinceStart)
         DinoVec2 posC = {0, 24};
         DinoVec2 posD = {24, 24};
 
+        int u = 0;
+
+        if (bIdle) {
+            int idxFrame = int(timeSinceStart * 8) % 4;
+            u = 0 + 24 * idxFrame;
+        }
+        if (bWalking) {
+            int idxFrame = int(timeSinceStart * 8) % 6;
+            u = 96 + 24 * idxFrame;
+        }
+        if (bRunning) {
+            int idxFrame = int(timeSinceStart * 16) % 6;
+            u = 432 + 24 * idxFrame;
+        }
+
         switch (g_player.bMirror) {
-        case false: drawCall.vertices.emplace_back(posA, 0, 0);
-            drawCall.vertices.emplace_back(posB, 24, 0);
-            drawCall.vertices.emplace_back(posC, 0, 24);
-            drawCall.vertices.emplace_back(posB, 24, 0);
-            drawCall.vertices.emplace_back(posC, 0, 24);
-            drawCall.vertices.emplace_back(posD, 24, 24);
+        case false: drawCall.vertices.emplace_back(posA, 0 + u, 0);
+            drawCall.vertices.emplace_back(posB, 24 + u, 0);
+            drawCall.vertices.emplace_back(posC, 0 + u, 24);
+            drawCall.vertices.emplace_back(posB, 24 + u, 0);
+            drawCall.vertices.emplace_back(posC, 0 + u, 24);
+            drawCall.vertices.emplace_back(posD, 24 + u, 24);
             break;
-        case true: drawCall.vertices.emplace_back(posA, 24, 0);
-            drawCall.vertices.emplace_back(posB, 0, 0);
-            drawCall.vertices.emplace_back(posC, 24, 24);
-            drawCall.vertices.emplace_back(posB, 0, 0);
-            drawCall.vertices.emplace_back(posC, 24, 24);
-            drawCall.vertices.emplace_back(posD, 0, 24);
+        case true: drawCall.vertices.emplace_back(posA, 24 + u, 0);
+            drawCall.vertices.emplace_back(posB, 0 + u, 0);
+            drawCall.vertices.emplace_back(posC, 24 + u, 24);
+            drawCall.vertices.emplace_back(posB, 0 + u, 0);
+            drawCall.vertices.emplace_back(posC, 24 + u, 24);
+            drawCall.vertices.emplace_back(posD, 0 + u, 24);
             break;
         }
 
@@ -112,7 +139,7 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    UpdatePlayer(deltaTime);
+    g_player.UpdatePlayer(deltaTime);
 
     // Affichage
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -122,8 +149,7 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
-    
-    DrawPlayer(timeSinceStart);
+    g_player.DrawPlayer(timeSinceStart);
 
     /*// Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
 {
