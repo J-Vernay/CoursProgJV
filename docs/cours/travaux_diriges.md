@@ -237,7 +237,13 @@ d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez 
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> Pour les chemins des fichiers `.h`, les lignes 22, 86, 94, 100 et 112 y font référence.
+> 
+> Pour les chemins des fichiers `.cpp` les lignes 22, 86, 94 et 100 y font référence.
+> 
+> Pour les chemins des fichiers `.obj`, la ligne 16 y fait référence.
+> 
+> Pour les chemins des fichiers `.exe`, la ligne 19 y fait référence.
 
 f) Quels sont les liens entre :
 
