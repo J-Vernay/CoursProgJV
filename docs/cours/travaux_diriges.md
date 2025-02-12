@@ -224,40 +224,44 @@ b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
 > Ce sont les noms des différents fichiers `.cpp` du projet.
-> 
+>
 > `build\obj\x64-windows\Debug\Dino_MatysGueroult`
-> 
+>
 > `build\obj\x64-windows\Debug\Dino_External`
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
 > `Dino_JulienVernay.exe`
-> 
+>
 > `build\x64-windows\Debug\Dino_MatysGueroult.exe`
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
 > Pour les chemins des fichiers `.h`, les lignes 22, 86, 94, 100 et 112 y font référence.
-> 
+>
 > Pour les chemins des fichiers `.cpp` les lignes 22, 86, 94 et 100 y font référence.
-> 
+>
 > Pour les chemins des fichiers `.obj`, la ligne 16 y fait référence.
-> 
+>
 > Pour les chemins des fichiers `.exe`, la ligne 19 y fait référence.
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** les fichiers `.h` déclarent ce que les fichiers `.cpp` implémentent.
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** les fichiers `.obj` sont les versions compilées (mais pas linkées) des
+> fichiers `.cpp`.
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** les fichiers `.lib` contiennent un ou plusieurs fichiers `.obj`, prêts à être linkés
+> statiquement avec d'autres fichiers `.obj`.
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** les fichiers `.dll` contiennent un ou plusieurs fichiers `.obj` linkés entre eux,
+> exposant des fonctions provenant des `.obj` à un linkage dynamique avec un processus.
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** les fichiers `.obj` sont linkés entre eux pour produire un fichier `.exe`.
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** les fichiers `.dll` sont séparés des fichiers `.exe` mais peuvent être linkés entre
+> eux durant l'execution du fichier `.exe`.
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
