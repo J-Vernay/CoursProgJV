@@ -13,107 +13,61 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : L'API d'Intéraction entre le Moteur du Jeu et la Logique du jeu, va aussi renvoyer différents types de valeurs et créer de nombreuses fonctions définies pour d'autres fichiers.
+> 
+> `xdino_win64_main.cpp` : Implémente la création et la destruction de la fenetre, en plus de communiquer directement avec Windows.
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_rdr.cpp` : Implémente le rendu graphique sur Windows, en plus d'utiliser des bibliothèques externes et des fonctions permettant de changer le contenu graphique.
 >
-> `xdino_win64_rdr.cpp` : ...
+> `dino_game.cpp` : Les Fonctions principales et importantes pour l'activation et la mise à jour du jeu.
 >
-> `dino_game.cpp` : ...
+> `dino_geometry.cpp` : Contient le contenu de la fonction "Dino_IntersectSegment", une fonction qui vérifie si deux Segments [AB] et [CD] ont une intéraction. Cette fonction est déclarée dans 'dino_geometry.h'.
 >
-> `dino_geometry.cpp` : ...
+> `dino_draw_utils.cpp` : Les fonctions permettant d'afficher plusieurs objets dans la fenêtre, comme des cercles ou du Texte par exemple.
 >
-> `dino_draw_utils.cpp` : ...
->
-> `premake5.lua` : ...
+> `premake5.lua` : Un fichier va stocker plusieurs valeurs et informations qui permet au script de bien fonctionner sur Windows et au Coder de savoir avec quoi il travaille.
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
-
-```cpp
-// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
-
-// Déclaration des fonctions qui sont définies plus bas dans le fichier.
-
-// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-// Tourne en boucle tant que le programme continue.
-
-// Définition des constantes.
-
-// Quand le programme se termine, on libère les ressources associés au programme.
-
-// La fenêtre graphique vient d'être construite,
-// on initialise des variables globales et le moteur de rendu.
-
-// Gère les événements que nous communique le système d'exploitation.
-
-// Initialisation de la fenêtre graphique.
-
-// L'utilisateur redimensionne la fenêtre.
-// On ajuste le moteur de rendu en conséquence.
-
-// Expose les fonctions de la base de code.
-
-// Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
-
-// Expose les fonctions de la bibliothèque tierce PIX.
-
-// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
-
-// Le système d'exploitation demande à redessiner la fenêtre.
-// On demande à la logique de jeu de dessiner une frame.
-
-// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
-
-// L'utilisateur a demandé à détruire la fenêtre.
-// On notifie le système d'exploitation qu'on veut arrêter.
-
-// Expose les fonctions de la bibliothèque standard.
-
-// Variables globales, accédées dans ce fichier.
-
-// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu.
-
-// Expose les fonctions du système d'exploitation Windows.
-```
+```cpp```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 6 Pixels (300*(20/1000))
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Le cercle s'est déplacé vers le Sud-Ouest. 
+> Cela correspond à -30 pixels sur l'axe X et 40 pixels vers l'axe Y par Milliseconde. Et donc -3000 Pixels sur l'axe X et 4000 Pixels sur L'axe Y par Seconde.
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> (200,100)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé est un groupe de 3 positions faisant un triangle, ce dernier peut être coloré et on peut attribuer à un groupe de triangle texturés des sprites.
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> Un draw call est un appel du CPU vers le GPU, contenant un ou plusieurs triangle Texturé.
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> ...   
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
-> ...
-
+> Done
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -121,6 +75,8 @@ a) Implémentez la fonctionnalité F1.1 .
 Quand le bouton de course est enfoncé, doublez la vitesse de déplacement.
 Pour le rendu, il vous faudra dessiner un carré, soit deux triangles texturés.
 Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure en haut à gauche de la texture.
+
+> Done!
 
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?

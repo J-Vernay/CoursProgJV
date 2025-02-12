@@ -1,6 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "x64-windows/xdino_win64_rdr.h"
+
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 
@@ -12,9 +14,20 @@ double rotation = 360.0;
 double scale = 1.0;
 DinoVec2 circlePos = {};
 std::vector<DinoVec2> polyline;
+DinoVec2 textNamePos;
+
+float counter;
 
 // Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float CIRCLE_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
+constexpr float timeUntilDoubleSpeed = 1; //Tome until Speeds up
+
+void ExchangeValues(uint16_t* value1, uint16_t* value2)
+{
+    uint16_t *e = value1;
+    value1 = value2;
+    value2 = e;
+}
 
 void Dino_GameInit()
 {
@@ -37,13 +50,23 @@ void Dino_GameFrame(double timeSinceStart)
     lastTime = timeSinceStart;
 
     // Gestion des entrées et mise à jour de la logique de jeu.
-
+    
+    bool movementRegistered = false;
+    float xMovement, yMovement = 1;
+    
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
         if (!bSuccess)
             continue;
 
+        if (gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0) {
+            continue;
+        }
+        movementRegistered = true;
+        xMovement = gamepad.stick_left_x * deltaTime;
+        yMovement = gamepad.stick_left_y * deltaTime;
+        
         if (gamepad.btn_down && !gamepad.btn_up)
             scale /= 1.01;
         if (gamepad.btn_up && !gamepad.btn_down)
@@ -52,15 +75,25 @@ void Dino_GameFrame(double timeSinceStart)
             rotation += 90.0 * deltaTime;
         if (gamepad.btn_right && !gamepad.btn_left)
             rotation -= 90.0 * deltaTime;
-
-        circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+    }
+    //Detect if movement isnt null & superior to timeUntilDoubleSpeed
+    if(movementRegistered) {
+        counter+= 0.1f;
+        float cSpeed = CIRCLE_SPEED;
+        if (counter > timeUntilDoubleSpeed) {
+            cSpeed*=2;
+        }
+        circlePos.x += xMovement * cSpeed;
+        circlePos.y += yMovement * cSpeed;
+    }
+    else {
+        counter = 0;
     }
 
     // Affichage
 
-    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-    constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
+    constexpr DinoColor CLEAR_COLOR = {{50, 50, 80, 255}};
+    constexpr DinoColor POLYLINE_COLOR = {{70, 70, 100, 255}};
 
     XDino_SetClearColor(CLEAR_COLOR);
 
@@ -121,11 +154,51 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
-    // Dessin du cercle que l'on peut bouger.
+    // Dessin du cercle que l'on peut bouger./Dessin du Dino.
     {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Circle(20);
-        drawCall.translation = circlePos;
-        XDino_Draw(drawCall);
+        DinoDrawCall drawCallDino;
+        drawCallDino.vertices.resize(6);
+        drawCallDino.vertices[0].pos = {0, 0};
+        drawCallDino.vertices[0].u = 6;drawCallDino.vertices[0].v = 4;
+        
+        drawCallDino.vertices[1].pos = {15, 0};
+        drawCallDino.vertices[1].u = 19;drawCallDino.vertices[1].v = 4;
+        
+        drawCallDino.vertices[2].pos = {0, 17};
+        drawCallDino.vertices[2].u = 6;drawCallDino.vertices[2].v = 21;
+
+        drawCallDino.vertices[3].pos = {15, 17};
+        drawCallDino.vertices[3].u = 19;drawCallDino.vertices[3].v = 21;
+        
+        drawCallDino.vertices[4].pos = {15, 0};
+        drawCallDino.vertices[4].u = 19;drawCallDino.vertices[4].v = 4;
+        
+        drawCallDino.vertices[5].pos = {0, 17};
+        drawCallDino.vertices[5].u = 6;drawCallDino.vertices[5].v = 21;
+
+        if (circlePos.x < 0) {
+            ExchangeValues(&drawCallDino.vertices[0].u, &drawCallDino.vertices[0].v);
+            ExchangeValues(&drawCallDino.vertices[1].u, &drawCallDino.vertices[1].v);
+            ExchangeValues(&drawCallDino.vertices[2].u, &drawCallDino.vertices[2].v);
+            ExchangeValues(&drawCallDino.vertices[3].u, &drawCallDino.vertices[3].v);
+            ExchangeValues(&drawCallDino.vertices[4].u, &drawCallDino.vertices[4].v);
+            ExchangeValues(&drawCallDino.vertices[5].u, &drawCallDino.vertices[5].v);
+            drawCallDino.textureName = "dinosaurs.png";
+        }
+        
+        
+        //Dino_CreateDrawCall_Circle(20);
+        drawCallDino.translation = circlePos;
+        drawCallDino.scale = 2;
+        XDino_Draw(drawCallDino);
+    }
+
+    //0.h Affichage du Texte nom et prénom
+    {
+        DinoDrawCall nameText = Dino_CreateDrawCall_Text("PENDARIES David", DinoColor_BLUE,DinoColor_INVISIBLE, &textNamePos);
+        nameText.scale = 2;
+        nameText.translation = {windowSize.x -textNamePos.x*2-5, windowSize.y -textNamePos.y*2-3};
+        XDino_Draw(nameText);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
