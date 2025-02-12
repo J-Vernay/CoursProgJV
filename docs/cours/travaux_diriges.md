@@ -96,7 +96,7 @@ au bout d'une seconde ?
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé dans XDino est défini par 3 positions `DinoVec2`, 3 couleurs `DinoColor` et 3 sets de position UV, chaque set de position, couleur et UV représentant un des sommets du triangle.
 
 g) Qu'est-ce qu'un "draw call" ?
 
