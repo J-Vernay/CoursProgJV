@@ -231,7 +231,9 @@ c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concer
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> `Dino_JulienVernay.exe`
+> 
+> `build\x64-windows\Debug\Dino_MatysGueroult.exe`
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
