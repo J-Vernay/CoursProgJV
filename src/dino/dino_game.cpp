@@ -3,129 +3,26 @@
 
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
+#include <dino/dino_player.h>
 
 #include <format>
 
 // Variables globales.
 double lastTime = 0;
 
-struct DinoPlayer {
-    DinoVec2 pos = {};
-    bool bMirror = false;
-
-    bool bIdle = false;
-    bool bWalking = false;
-    bool bRunning = false;
-    int idxPlayer = 0;
-
-    void UpdatePlayer(float deltaTime);
-    void DrawPlayer(double timeSinceStart);
-};
-
 DinoPlayer g_Player1;
 DinoPlayer g_Player2;
 DinoPlayer g_Player3;
 DinoPlayer g_Player4;
 
-// Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
-
-void DinoPlayer::UpdatePlayer(float deltaTime)
-{
-    // Gestion des entrées et mise à jour de la logique de jeu.
-    
-    this->bIdle = false;
-    this->bWalking = false;
-    this->bRunning = false;
-    
-	// Copier coller du code
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-        float speed = CIRCLE_SPEED;
-        if (gamepad.btn_right)
-            speed *= 2;
-        
-        this->pos.x += gamepad.stick_left_x * speed * deltaTime;
-        this->pos.y += gamepad.stick_left_y * speed * deltaTime;
-
-        if (gamepad.stick_left_x != 0)
-            this->bMirror = gamepad.stick_left_x < 0;
-
-        this->bIdle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
-        if (!this->bIdle) {
-            if (gamepad.btn_right)
-                this->bRunning = true;
-            else
-                this->bWalking = true;
-        }
-    }
-}
-
-void DinoPlayer::DrawPlayer(double timeSinceStart)
-{
-    // Copier-coller de l'ancien code.
-    
-    DinoDrawCall drawCall;
-    drawCall.textureName = "dinosaurs.png";
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {24, 0};
-    DinoVec2 posC = {0, 24};
-    DinoVec2 posD = {24, 24};
-
-    int u = 0;
-    if (this->bIdle) {
-        int idxFrame = int(timeSinceStart * 8) % 4;
-        u = 0 + 24 * idxFrame;
-    }
-    if (this->bWalking) {
-        int idxFrame = int(timeSinceStart * 8) % 6;
-        u = 96 + 24 * idxFrame;
-    }
-    if (this->bRunning) {
-        int idxFrame = int(timeSinceStart * 16) % 6;
-        u = 432 + 24 * idxFrame;
-    }
-
-    int v = idxPlayer * 24; // 24 pixels par ligne de sprite
-
-    if (this->bMirror) {
-        drawCall.vertices.emplace_back(posA, u + 24, v + 0);
-        drawCall.vertices.emplace_back(posB, u + 0, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 24, v + 24);
-        drawCall.vertices.emplace_back(posB, u + 0, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 24, v + 24);
-        drawCall.vertices.emplace_back(posD, u + 0, v + 24);
-    }
-    else {
-        drawCall.vertices.emplace_back(posA, u + 0, v + 0);
-        drawCall.vertices.emplace_back(posB, u + 24, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 0, v + 24);
-        drawCall.vertices.emplace_back(posB, u + 24, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 0, v + 24);
-        drawCall.vertices.emplace_back(posD, u + 24, v + 24);
-    }
-    
-    drawCall.scale = 3;
-    drawCall.translation = this->pos;
-    XDino_Draw(drawCall);
-}
-
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_Player1.pos = {windowSize.x / 2, windowSize.y / 2};
-    g_Player1.idxPlayer = 0;
-    g_Player2.pos = {windowSize.x / 2 + 100, windowSize.y / 2};
-    g_Player2.idxPlayer = 1;
-    g_Player3.pos = {windowSize.x / 2, windowSize.y / 2 + 100};
-    g_Player3.idxPlayer = 2;
-    g_Player4.pos = {windowSize.x / 2 + 100, windowSize.y / 2 + 100};
-    g_Player4.idxPlayer = 3;
+    g_Player1.Init({windowSize.x / 2 - 100, windowSize.y / 2 - 100}, 0, DinoGamepadIdx::Keyboard);
+    g_Player2.Init({windowSize.x / 2 - 100, windowSize.y / 2 + 100}, 1, DinoGamepadIdx::Gamepad1);
+    g_Player3.Init({windowSize.x / 2 + 100, windowSize.y / 2 - 100}, 2, DinoGamepadIdx::Gamepad2);
+    g_Player4.Init({windowSize.x / 2 + 100, windowSize.y / 2 + 100}, 3, DinoGamepadIdx::Gamepad3);
 }
 
 void Dino_GameFrame(double timeSinceStart)
