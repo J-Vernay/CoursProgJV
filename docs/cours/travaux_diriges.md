@@ -348,7 +348,13 @@ g) Que représente un `std::vector` ? Comment pourrait-il être représenté en 
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> `std::vector` représente un tableau de données à taille dynamique.
+>
+> En mémoire il est représenté par un bloc contigu de mémoire contenant les données et un pointeur vers le début du
+> bloc.
+>
+> Pour connaître la position en mémoire d'un élément, on prend le pointeur du premier élément, et on y ajoute l'indice
+> donné multiplié par la taille en mémoire du type.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
