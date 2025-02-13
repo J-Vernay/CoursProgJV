@@ -179,10 +179,8 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> La syntaxe est la suivante:
-> ```cpp
-> for(type obj : list) { }
-> ```
+> Afin d'itérer sur tous les éléments d'un tableau sans manipuler d'indices de cases, on peut utiliser les itérateurs en
+> C++.
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.

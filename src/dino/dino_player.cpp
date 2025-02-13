@@ -58,25 +58,24 @@ void DinoPlayer::Update(float deltaTime)
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
-    int u = 0;
+    uint16_t u = 0;
     if (bIdle) {
         u = 0;
-        u += int(timeSinceStart / 0.125f) % 4 * 24;
+        u += static_cast<uint16_t>(timeSinceStart / 0.125f) % 4 * 24;
     }
     if (bWalking) {
         u = 96;
-        u += int(timeSinceStart / 0.125f) % 4 * 24;
+        u += static_cast<uint16_t>(timeSinceStart / 0.125f) % 4 * 24;
     }
     if (bRunning) {
         u = 432;
-        u += int(timeSinceStart / 0.0625f) % 6 * 24;
+        u += static_cast<uint16_t>(timeSinceStart / 0.0625f) % 6 * 24;
     }
 
-    int v = static_cast<int>(gamepadIdx) * 24;
+    uint16_t v = static_cast<uint16_t>(gamepadIdx) * 24;
 
-    DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite("dinosaurs.png", 24, 24, u, v, bMirror);
+    DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite("dinosaurs.png", 24, 24, u, v, 24, 24, bMirror);
     drawCall.translation = pos;
-    drawCall.scale = 1.5;
     XDino_Draw(drawCall);
 }
 

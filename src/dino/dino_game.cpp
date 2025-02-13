@@ -20,6 +20,7 @@ constexpr DinoVec2 RENDER_SIZE = {480, 360};
 void InitDinoPlayers();
 void UpdateDinoPlayers(float deltaTime);
 void DrawDinoPlayers(double timeSinceStart);
+void DrawTerrain();
 
 void Dino_GameInit()
 {
@@ -47,6 +48,8 @@ void Dino_GameFrame(double timeSinceStart)
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
+
+    DrawTerrain();
 
     // Dessin du player que l'on peut bouger.
     DrawDinoPlayers(timeSinceStart);
@@ -111,4 +114,12 @@ void DrawDinoPlayers(double timeSinceStart)
     for (DinoPlayer& player : g_players) {
         player.Draw(timeSinceStart);
     }
+}
+
+void DrawTerrain()
+{
+    DinoVec2 renderSize = XDino_GetRenderSize();
+
+    DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite("terrain.png", renderSize.x, renderSize.y, 0, 0, 16, 16);
+    XDino_Draw(drawCall);
 }

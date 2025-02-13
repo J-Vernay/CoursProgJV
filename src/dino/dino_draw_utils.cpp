@@ -204,35 +204,33 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Sprite(std::string textureName, int w, int h, uint16_t u,
-                                        uint16_t v, bool flip, DinoColor color)
+DinoDrawCall Dino_CreateDrawCall_Sprite(std::string textureName, float w, float h, uint16_t u, uint16_t v,
+                                        uint16_t uSize, uint16_t vSize, bool flip, DinoColor color)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = textureName;
     drawCall.vertices.reserve(6);
 
-    float fW = static_cast<float>(w);
-    float fH = static_cast<float>(h);
-    DinoVec2 posA = {-fW, -fH};
-    DinoVec2 posB = {fW, -fH};
-    DinoVec2 posC = {-fW, fH};
-    DinoVec2 posD = {fW, fH};
+    DinoVec2 posA = {-w, -h};
+    DinoVec2 posB = {w, -h};
+    DinoVec2 posC = {-w, h};
+    DinoVec2 posD = {w, h};
 
     if (flip) {
-        drawCall.vertices.emplace_back(posA, u + w, v + 0, color);
+        drawCall.vertices.emplace_back(posA, u + uSize, v + 0, color);
         drawCall.vertices.emplace_back(posB, u + 0, v + 0, color);
-        drawCall.vertices.emplace_back(posC, u + w, v + h, color);
+        drawCall.vertices.emplace_back(posC, u + uSize, v + vSize, color);
         drawCall.vertices.emplace_back(posB, u + 0, v + 0, color);
-        drawCall.vertices.emplace_back(posC, u + w, v + h, color);
-        drawCall.vertices.emplace_back(posD, u + 0, v + h, color);
+        drawCall.vertices.emplace_back(posC, u + uSize, v + vSize, color);
+        drawCall.vertices.emplace_back(posD, u + 0, v + vSize, color);
     }
     else {
         drawCall.vertices.emplace_back(posA, u + 0, v + 0, color);
-        drawCall.vertices.emplace_back(posB, u + w, v + 0, color);
-        drawCall.vertices.emplace_back(posC, u + 0, v + h, color);
-        drawCall.vertices.emplace_back(posB, u + w, v + 0, color);
-        drawCall.vertices.emplace_back(posC, u + 0, v + h, color);
-        drawCall.vertices.emplace_back(posD, u + w, v + h, color);
+        drawCall.vertices.emplace_back(posB, u + uSize, v + 0, color);
+        drawCall.vertices.emplace_back(posC, u + 0, v + vSize, color);
+        drawCall.vertices.emplace_back(posB, u + uSize, v + 0, color);
+        drawCall.vertices.emplace_back(posC, u + 0, v + vSize, color);
+        drawCall.vertices.emplace_back(posD, u + uSize, v + vSize, color);
     }
 
     return drawCall;

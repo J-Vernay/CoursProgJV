@@ -37,5 +37,6 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
 
 /// @}
 
-DinoDrawCall Dino_CreateDrawCall_Sprite(std::string textureName, int w, int h, uint16_t u,
-                                        uint16_t v, bool flip, DinoColor color = DinoColor_WHITE);
+DinoDrawCall Dino_CreateDrawCall_Sprite(std::string textureName, float w, float h, uint16_t u, uint16_t v,
+                                        uint16_t uSize, uint16_t vSize, bool flip = false,
+                                        DinoColor color = DinoColor_WHITE);
