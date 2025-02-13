@@ -3,6 +3,7 @@
 
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
+#include "DinoPlayer.h"
 
 #include <format>
 
@@ -10,20 +11,6 @@
 double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
-
-struct DinoPlayer {
-    DinoVec2 playerPos = {};
-    bool isMirror = false;
-
-    bool isIdle = false;
-    bool isWalking = false;
-    bool isRunning = false;
-
-    int indexPlayer = 0;
-
-    void UpdatePlayer(float deltaTime);
-    void DrawPlayer(double timeSinceStart);
-};
 
 DinoPlayer dinoPlayer1;
 DinoPlayer dinoPlayer2;
@@ -123,18 +110,20 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
     XDino_Draw(drawCall);
 }
 
+void DinoPlayer::Init(int index, DinoVec2 posInit)
+{
+    playerPos = posInit;
+    indexPlayer = index;
+}
+
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    dinoPlayer1.playerPos = {windowSize.x / 2, windowSize.y / 2};
-    dinoPlayer1.indexPlayer = 0;
-    dinoPlayer2.playerPos = {windowSize.x / 2 + 100, windowSize.y / 2};
-    dinoPlayer2.indexPlayer = 1;
-    dinoPlayer3.playerPos = {windowSize.x / 2, windowSize.y / 2 - 100};
-    dinoPlayer3.indexPlayer = 2;
-    dinoPlayer4.playerPos = {windowSize.x / 2 + 100, windowSize.y / 2 - 100};
-    dinoPlayer4.indexPlayer = 3;
+    dinoPlayer1.Init(0, {windowSize.x / 2, windowSize.y / 2});
+    dinoPlayer2.Init(1, {windowSize.x / 2 + 100, windowSize.y / 2});
+    dinoPlayer3.Init(2, {windowSize.x / 2, windowSize.y / 2 - 100});
+    dinoPlayer4.Init(3, {windowSize.x / 2 + 100, windowSize.y / 2 - 100});
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
