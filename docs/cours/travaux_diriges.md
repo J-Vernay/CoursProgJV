@@ -323,7 +323,14 @@ Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets p
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Pour allouer de la mémoire sur un ordinateur moderne, le processus intéragit avec la librairie standard, qui gère un
+> espace de mémoire virtuel, pour obtenir des bouts de mémoire. Physiquement seulement une petite partie de la mémoire
+> virtuelle est allouée, et ce n'est seulement que quand une allocation est trop grande pour l'espace déjà alloué que la
+> librairie standard alloue plus de mémoire (en blocs de quelques kilo-octets) en intéragissant avec le système
+> d'opération.
+> L'opération est relativement peu couteuse la plupart du temps, mais peut demander un peu plus de temps si un gros bloc
+> de mémoire doit être alloué. Généralement si on alloue pas trop régulièrement de mémoire il ne devrait réellement y
+> avoir de problèmes de performance.
 
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
