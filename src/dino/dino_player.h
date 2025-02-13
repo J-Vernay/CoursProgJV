@@ -16,8 +16,15 @@ class dino_player {
     DinoGamepadIdx m_idxGamepad;
 
 public:
+    // Met à jour la position du joueur en fonction de la manette.
     void UpdatePlayer(float deltaTime);
+
+    // Dessine le joueur à l'écran.
     void DrawDino(double timeSinceStart);
+
+    // Initialise le joueur.
     void InitDino(DinoVec2 position, int index, DinoGamepadIdx idxGamepad);
+
+    // Détermine si le joueur est au-dessus de l'autre.
     bool IsAbove(dino_player& other);
 };

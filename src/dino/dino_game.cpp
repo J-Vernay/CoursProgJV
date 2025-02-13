@@ -4,6 +4,7 @@
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
+#include <dino/dino_animal.h>
 
 #include <algorithm>
 #include <vector>
@@ -12,7 +13,7 @@
 // Variables globales.
 double lastTime = 0;
 double scale = 1.0;
-dino_player player1, player2, player3, player4;
+std::vector<dino_animal> g_animal;
 std::vector<dino_player> players;
 
 bool CompareDinoPlayers(dino_player& a, dino_player& b)
@@ -29,7 +30,10 @@ void Dino_GameInit()
     players[1].InitDino({200, 100}, 1, DinoGamepadIdx::Gamepad1);
     players[2].InitDino({300, 100}, 2, DinoGamepadIdx::Gamepad2);
     players[3].InitDino({400, 100}, 3, DinoGamepadIdx::Gamepad3);
+
 }
+
+double g_AnimalLastSpawnTime = 0;
 
 void Dino_GameFrame(double timeSinceStart)
 {
@@ -39,6 +43,20 @@ void Dino_GameFrame(double timeSinceStart)
     lastTime = timeSinceStart;
 
     // Gestion des entrées et mise à jour de la logique de jeu.
+
+    for (dino_player& player : players) {
+        player.UpdatePlayer(deltaTime);
+    }
+
+    double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
+    if (timeSinceLastSpawn > 1) {
+        g_AnimalLastSpawnTime = timeSinceStart;
+        g_animal.push_back(dino_animal());
+        g_animal.back().InitAnimal({XDino_RandomFloat(0, 256), XDino_RandomFloat(0, 192)}, 0);
+    }
+    for (dino_animal& animal : g_animal) {
+        animal.UpdateAnimal(deltaTime);
+    }
 
     // Affichage
 
@@ -60,10 +78,12 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     std::sort(players.begin(), players.end(), CompareDinoPlayers);
-
     for (dino_player& player : players) {
-        player.UpdatePlayer(deltaTime);
         player.DrawDino(timeSinceStart);
+    }
+
+    for (dino_animal& animal : g_animal) {
+        animal.DrawAnimal(timeSinceStart);
     }
 
     // Clément

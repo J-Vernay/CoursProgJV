@@ -214,25 +214,25 @@ e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** 
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** les obj compilent le code du cpp.
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** les obj sont compiler puis archiver dans la lib.
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** édition des liens.
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** édition des liens.
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** Appelle des fonctions déja compilés et déjà liées entre elles
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> #
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
 
-> ...
+> 
 
 ## 4. Programmation du terrain
 
@@ -266,33 +266,41 @@ b) Implémentez la fonctionnalité F3.2 .
 c) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32 GB de RAM de disponible. Dans un programme 64-bits 2pow64 octets dans l'espace adressable. Aux endroits correspond aux adressable selon la RAM physique
 
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> L'allocation de mémoire est le fait que l'os fait correspondre l'adressable à la RAM physique c'est à dire discuter entre l'os, le programme, la RAM et le CPU.
+> Ce la dépend du programme que l'on veut faire tourner ainsi que du CPU.
 
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Un type est un outil du language de programmation pour garder l'information de comment interpréter une suite de bits et quelles opérations sont autorisées.
+> Un pointeur correspond à une pointer une suite de bits qui est allouer à cette endroit.
+> Selon le type de donnée que l'on veut récupérer, le résultat ne sera pas le même.
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> DinoVertex = 16 octets 128 bits 
+> DinoColor = 4uint8_t -> 4 octets -> 32 bits.
+> Union = Même emplacement mémoire, qui au cours de l'exécution, va y stocker des types différents.
 
 g) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> un vector représente un pointer vers le début jusqu'à un pointer de fin.
+> ptr du début + sizeof(int32) * index.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Ce qui alloue la mémoire pour les variables globales, c'est l'OS lors de l'éxécution de l'exe.
+> La mémoire des variable loacales sont alloue par la stack (1 grosse allocation à chaque appel de fonction "on grignote" dedans à chaque return "on rend la mémoire"). La stack est appelée après l'exe.
+> L'allocation a lieu à la création, lors d'ajouts (push_back, emplace_back) et elles sont allouées dynamiquement.
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
