@@ -100,12 +100,14 @@ f) Par quoi est définit un triangle texturé ?
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> 
+> Le CPU envoie un ordre au GPU afin d'afficher la texture voulu.
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
-> ...
+> Debug : Décompile le code pas par pas.
+  Release : Code avec optimisation.
+  Profile : Code optimisé pour tester les perfs.
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
@@ -177,23 +179,38 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino -> nos fichiers header
+> external/pix/... -> fichiers externes qui permettent d'accéder aux fonctionnalités de piX,
+> external/std -> fichier externe utilisé par le moteur
+> src/dino/x64-windows -> fichiers hearders propre à la plateforme
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino -> nos fichiers sources
+> src/dino/x64-windows -> ficiers sources propres à la plateforme
+> external/std -> implémentation du code externe par le moteur
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Chaque ficher CPP à un fichier OBJ correspondant.
+> build/obj/x64-windows/Debug/...
+> x64-windows -> spécifique à la plateforme
+> Debug -> spécifique à la configuration.
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> build/x64-windows/Debug/Dino_LiClement.exe
+> x64-windows -> spécifique à la plateforme
+> Debug -> spécifique à la configuration.
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> build/%{cfg.platform}/%{cfg.buildfg} --> dossier contenant l'exe
+>
+>include dirs {"src", "external"}
+>#include <dino/dino_player.h>
+>
+>files {"external}
 
 f) Quels sont les liens entre :
 

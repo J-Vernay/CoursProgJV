@@ -2,7 +2,7 @@
 
 #include <dino/xdino.h>
 
-constexpr float CIRCLE_SPEED = 300.f;
+constexpr float CIRCLE_SPEED = 150.f;
 
 class dino_player {
     DinoVec2 pos = {};
@@ -13,8 +13,11 @@ class dino_player {
     bool bWalking = false;
     bool bRunning = false;
 
+    DinoGamepadIdx m_idxGamepad;
+
 public:
     void UpdatePlayer(float deltaTime);
     void DrawDino(double timeSinceStart);
-    void InitDino(DinoVec2 position, int index);
+    void InitDino(DinoVec2 position, int index, DinoGamepadIdx idxGamepad);
+    bool IsAbove(dino_player& other);
 };

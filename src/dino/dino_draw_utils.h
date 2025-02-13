@@ -35,7 +35,8 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = D
 DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<const DinoVec2> points, float width,
                                           DinoColor color = DinoColor_WHITE);
 
-DinoDrawCall Dino_CreateDrawCall_DinoRight();
-DinoDrawCall Dino_CreateDrawCall_DinoLeft();
+DinoDrawCall Dino_CreateDrawCall_Rectangle(DinoVec2 size, DinoColor color = DinoColor_WHITE);
+
+DinoDrawCall Dino_CreateDrawCall_Terrain(DinoVec2 size);
 
 /// @}

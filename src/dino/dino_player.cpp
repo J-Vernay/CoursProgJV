@@ -1,44 +1,37 @@
 #include "dino_player.h"
 
-void dino_player::InitDino(DinoVec2 position, int index)
+void dino_player::InitDino(DinoVec2 position, int index, DinoGamepadIdx idxGamepad)
 {
     pos = position;
     idxPlayer = index;
+    m_idxGamepad = idxGamepad;
 }
 
 void dino_player::UpdatePlayer(float deltaTime)
 {
-    bIdle = false;
-    bRunning = false;
-    bWalking = false;
+    this->bIdle = false;
+    this->bRunning = false;
+    this->bWalking = false;
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+    DinoGamepad gamepad;
+    bool bSuccess = XDino_GetGamepad(m_idxGamepad, gamepad);
+    if (!bSuccess)
+        gamepad = {};
+    float speed = CIRCLE_SPEED;
+    if (gamepad.btn_right)
+        speed *= 2;
 
-        float speed = CIRCLE_SPEED;
-        if (gamepad.btn_right) {
-            speed *= 2;
-        }
-
-        pos.x += gamepad.stick_left_x * speed * deltaTime;
-        pos.y += gamepad.stick_left_y * speed * deltaTime;
-
-        if (gamepad.stick_left_x != 0) {
-            bMirror = gamepad.stick_left_x < 0;
-        }
-
-        bIdle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
-        if (!bIdle) {
-            if (gamepad.btn_right)
-                bRunning = true;
-            else
-                bWalking = true;
-        }
+    this->pos.x += gamepad.stick_left_x * speed * deltaTime;
+    this->pos.y += gamepad.stick_left_y * speed * deltaTime;
+    if (gamepad.stick_left_x != 0)
+        this->bMirror = gamepad.stick_left_x < 0;
+    this->bIdle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
+    if (!this->bIdle) {
+        if (gamepad.btn_right)
+            this->bRunning = true;
+        else
+            this->bWalking = true;
     }
-
 }
 
 void dino_player::DrawDino(double timeSinceStart)
@@ -85,7 +78,12 @@ void dino_player::DrawDino(double timeSinceStart)
         drawCall.vertices.emplace_back(posD, u + 24, v + 24);
     }
 
-    drawCall.scale = 3;
+    drawCall.scale = 1;
     drawCall.translation = pos;
     XDino_Draw(drawCall);
+}
+
+bool dino_player::IsAbove(dino_player& other)
+{
+    return pos.y < other.pos.y;
 }

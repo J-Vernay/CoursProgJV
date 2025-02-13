@@ -18,42 +18,6 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_DinoRight()
-{
-    DinoDrawCall drawCall;
-    drawCall.textureName = "dinosaurs.png";
-    drawCall.vertices.reserve(6);
-    DinoVec2 posA = {100, 100};
-    DinoVec2 posB = {124, 100};
-    DinoVec2 posC = {100, 124};
-    DinoVec2 posD = {124, 124};
-    drawCall.vertices.emplace_back(posA, 24, 0);
-    drawCall.vertices.emplace_back(posB, 0, 0);
-    drawCall.vertices.emplace_back(posC, 24, 24);
-    drawCall.vertices.emplace_back(posB, 0, 0);
-    drawCall.vertices.emplace_back(posC, 24, 24);
-    drawCall.vertices.emplace_back(posD, 0, 24);
-    return drawCall;
-}
-
-DinoDrawCall Dino_CreateDrawCall_DinoLeft()
-{
-    DinoDrawCall drawCall;
-    drawCall.textureName = "dinosaurs.png";
-    drawCall.vertices.reserve(6);
-    DinoVec2 posA = {100, 100};
-    DinoVec2 posB = {124, 100};
-    DinoVec2 posC = {100, 124};
-    DinoVec2 posD = {124, 124};
-    drawCall.vertices.emplace_back(posA, 0, 0);
-    drawCall.vertices.emplace_back(posB, 0, 24);
-    drawCall.vertices.emplace_back(posC, 24, 0);
-    drawCall.vertices.emplace_back(posB, 0, 24);
-    drawCall.vertices.emplace_back(posC, 24, 0);
-    drawCall.vertices.emplace_back(posD, 24, 24);
-    return drawCall;
-}
-
 DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, DinoColor colorBackground,
                                       DinoVec2* pOutSize)
 {
@@ -237,5 +201,41 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<const DinoVec2> points, floa
         lenAB = lenBC;
     }
 
+    return drawCall;
+}
+
+DinoDrawCall Dino_CreateDrawCall_Rectangle(DinoVec2 size, DinoColor color)
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = "terrain.png";
+    drawCall.vertices.reserve(6);
+    DinoVec2 posA = {0, 0};
+    DinoVec2 posB = {size.x, 0};
+    DinoVec2 posC = {0, size.y};
+    DinoVec2 posD = {size.x, size.y};
+    drawCall.vertices.emplace_back(posA, 0, 0, color);
+    drawCall.vertices.emplace_back(posB, 16, 0, color);
+    drawCall.vertices.emplace_back(posC, 0, 16, color);
+    drawCall.vertices.emplace_back(posB, 16, 0, color);
+    drawCall.vertices.emplace_back(posC, 0, 16, color);
+    drawCall.vertices.emplace_back(posD, 16, 16, color);
+    return drawCall;
+}
+
+DinoDrawCall Dino_CreateDrawCall_Terrain(DinoVec2 size)
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = "terrain.png";
+    drawCall.vertices.reserve(6);
+    DinoVec2 posA = {0, 0};
+    DinoVec2 posB = {size.x, 0};
+    DinoVec2 posC = {0, size.y};
+    DinoVec2 posD = {size.x, size.y};
+    drawCall.vertices.emplace_back(posA, 16, 0);
+    drawCall.vertices.emplace_back(posB, 32, 0);
+    drawCall.vertices.emplace_back(posC, 16, 0);
+    drawCall.vertices.emplace_back(posB, 32, 0);
+    drawCall.vertices.emplace_back(posC, 16, 0);
+    drawCall.vertices.emplace_back(posD, 32, 0);
     return drawCall;
 }
