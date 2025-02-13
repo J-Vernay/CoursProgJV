@@ -284,33 +284,49 @@ b) Implémentez la fonctionnalité F3.2 .
 c) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> La RAM correspond à la mémoire, sur ma machie j'ai 32 GB RAM physique. En 64 bits, on peut adresser 2^64 octets dans
+> l'espace adressable, soit 16 000 000 000 GB adressables.
 
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Allouer de la mémoire c'est fait par le système d'exploitation (OS), c'est discuter entre l'OS, le programme, la RAM
+> et le CPU. Cela permet de bloquer la mémoire pour un programme et cela permet au logiciel qu'aucun autre
+> programme que lui-même ne touche à cet espace. C'est une opération qui dure 16 000 microsecondes environ pour un jeu à
+> 60 FPS. Nous pouvons faire environ 5 000 allocations si nous ne faisons que ça.
 
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Un type est un outil de langage de programmation pour garder l'information de comment interpréter ne suite de bits et
+> quelles opérations sont autorisées. Le typag statique : le compilateur connait les types associés aux emplacements
+> mémoire, donc il peut détecter les erreurs logiques. Un pointeur est une adresse mémoire. Réinterpréter un pointeur
+> c'est changer le
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> La taille de DinoColor est de 4 octets soit 32 bits et la taille de DinoVertex est de 16 octets soit 128. Une
+> structure est un ensemble de variable. Un union est un ensemble de variable qui partage la même adresse mémoire qui au
+> cours de l'exécution, va y stocker des types différents. Via Rider, en passant sur le type, nous pouvons voir la
+> taille ou bien via sizeof(type).
 
 g) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> std::vector est un tableau dynamique. Il est représenté en mémoire par un pointeur vers le début du tableau, pour la
+> valeur suivante il fait le pointeur du début + sizeof(int32) * indice. Pour connaître la position en mémoire d'un
+> élément étant donné son indice, il faut faire le pointeur du début + sizeof(int32) * indice.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> OS commence le programme .exe et dans le fichier exe, il y a la taille nécessaire pour les variables globales. Il crée
+> une correspondance dans notre espace mémoire pour les variables globales, au tout début. L'OS alloue la stack (pile en
+> français). Les variables locales sont allouées à chaque appel de fonction. La stack ne fait qu'une seule grosse
+> allocation, elle est allouée à chaque appel de fonction et nous "grignotons" dedans, à chaque return nus rendons la
+> mémoire. Les std::vector sont alloués à chaque appel de fonction.
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
