@@ -9,6 +9,19 @@ const int terrainAnimationFrames[] = {
     0, 1, 2, 1, 0
 };
 
+void DinoTerrain::init()
+{
+    for (int y = 0; y < TERRAIN_HEIGHT; y++) {
+        for (int x = 0; x < TERRAIN_WIDTH; x++) {
+            int16_t tile = XDino_RandomInt32(0, 20);
+            if (tile > 4) {
+                tile = 0;
+            }
+            decorations[y * TERRAIN_WIDTH + x] = tile;
+        }
+    }
+}
+
 void DinoTerrain::update(float deltaTime)
 {
     timer += deltaTime;
@@ -77,5 +90,16 @@ void DinoTerrain::draw_terrain()
         drawCall.textureName = "terrain.png";
         drawCall.translation = {offset.x + 16, offset.y + 16};
         XDino_Draw(drawCall);
+    }
+
+    for (int y = 0; y < TERRAIN_HEIGHT; y++) {
+        for (int x = 0; x < TERRAIN_WIDTH; x++) {
+            if (decorations[y * TERRAIN_WIDTH + x] == 0) continue;
+            
+            DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(decorations[y * TERRAIN_WIDTH + x], 0, 16, 16);
+            drawCall.textureName = "terrain.png";
+            drawCall.translation = {offset.x + (x + 1) * 16, offset.y + (y + 1) * 16};
+            XDino_Draw(drawCall);
+        }
     }
 }

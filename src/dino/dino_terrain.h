@@ -7,7 +7,10 @@ class DinoTerrain {
     float timer = 0;
     int frame = 0;
 
+    int16_t decorations[TERRAIN_WIDTH * TERRAIN_HEIGHT];
+
 public:
+    void init();
     void update(float deltaTime);
     void draw_ocean();
     void draw_terrain();

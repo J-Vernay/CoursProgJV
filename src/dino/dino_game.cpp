@@ -25,6 +25,8 @@ void Dino_GameInit()
     availableGamepads.push_back(DinoGamepadIdx::Gamepad3);
     availableGamepads.push_back(DinoGamepadIdx::Gamepad4);
     availableGamepads.push_back(DinoGamepadIdx::Keyboard);
+
+    terrain.init();
 }
 
 void Dino_GameFrame(double timeSinceStart)
