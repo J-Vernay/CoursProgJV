@@ -370,7 +370,8 @@ Quand et qui alloue la mémoire des `std::vector` ?
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
 
-> ...
+> On peut faire en sorte que `DinoPlayer` et `DinoAnimal` hérite tous deux d'une même classe `DinoActor`, comme ça on
+> peut stocker toutes les instances des joueurs et animaux dans le même `std::vector`.
 
 j) Implémentez la fonctionnalité F3.4.
 

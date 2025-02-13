@@ -9,7 +9,7 @@ void DinoAnimal::update(float deltaTime)
     update_animation(deltaTime);
 }
 
-void DinoAnimal::draw()
+void DinoAnimal::draw() const
 {
     DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(
         type * 4 + animatorState.frame,

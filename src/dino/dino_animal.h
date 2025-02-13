@@ -1,9 +1,10 @@
 #pragma once
+#include "dino_actor.h"
 #include "dino_animation.h"
 
 #include <dino/xdino.h>
 
-class DinoAnimal {
+class DinoAnimal : public DinoActor {
 public:
     enum AnimalType {
         PIG_1,
@@ -25,21 +26,20 @@ private:
         DEAD
     };
 
-    DinoVec2 position;
     DinoVec2 direction;
     AnimalType type;
     AnimatorState<AnimationId> animatorState;
 
 public:
     explicit DinoAnimal(DinoVec2 position)
-        : position(position), type(static_cast<AnimalType>(XDino_RandomInt32(0, MAX - 1))),
+        : DinoActor(position), type(static_cast<AnimalType>(XDino_RandomInt32(0, MAX - 1))),
           animatorState({0, 0, WALK_SIDE})
     {
         choose_random_direction();
     }
 
-    void update(float deltaTime);
-    void draw();
+    void update(float deltaTime) override;
+    void draw() const override;
 
 private:
     void update_movement(float deltaTime);

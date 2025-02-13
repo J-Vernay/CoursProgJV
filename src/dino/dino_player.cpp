@@ -49,11 +49,6 @@ void DinoPlayer::hit()
     hitTimer = HIT_TIME;
 }
 
-bool DinoPlayer::compareHeight(const DinoPlayer& first, const DinoPlayer& second)
-{
-    return first.position.y < second.position.y;
-}
-
 void DinoPlayer::updateHit(float deltaTime)
 {
     if (hitTimer <= 0)

@@ -1,10 +1,12 @@
 ﻿#pragma once
 
+#include "dino_actor.h"
+
 #include <dino/xdino.h>
 #include <dino/dino_animation.h>
 
 /// Representation et logique d'un joueur
-class DinoPlayer {
+class DinoPlayer : public DinoActor {
     enum AnimationId {
         IDLE,
         WALK,
@@ -13,7 +15,6 @@ class DinoPlayer {
     };
 
     DinoGamepadIdx gamepadIdx;
-    DinoVec2 position = {};
     bool direction = false;
     float hitTimer = 0;
     int16_t color = 0;
@@ -22,23 +23,20 @@ class DinoPlayer {
 public:
     /// Initialise le joueur.
     /// @param position Position de départ du joueur.
-    explicit DinoPlayer(DinoVec2 position, DinoGamepadIdx gamepadIdx, int16_t color) : gamepadIdx(gamepadIdx),
-        position(position), color(color)
+    explicit DinoPlayer(DinoVec2 position, DinoGamepadIdx gamepadIdx, int16_t color)
+        : DinoActor(position), gamepadIdx(gamepadIdx), color(color)
     {
     }
 
     /// Effectue la logique de jeu du joueur.
     /// @param deltaTime Temps passé depuis la dernière frame.
-    void update(float deltaTime);
+    void update(float deltaTime) override;
 
     /// Render le joueur à l'écran.
-    void draw() const;
+    void draw() const override;
 
     /// Frappe le joueur et l'immobilise.
     void hit();
-
-    static bool compareHeight(const DinoPlayer& first, const DinoPlayer& second);
-
 private:
     void updateHit(float deltaTime);
     void updateMovement(float deltaTime, const DinoGamepad& gamepad);
