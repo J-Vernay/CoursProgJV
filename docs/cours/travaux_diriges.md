@@ -335,7 +335,10 @@ Est-ce une opération coûteuse ?
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Un type correspond à une déclaration de la manière d'interpreter et d'intéragir avec un bloc de données.
+> Un pointeur correspond à la position d'un bloc de données dans la mémoire.
+> Réinterpréter un pointeur veut dire qu'on change le type, donc l'interprétation, du bloc de données référencé par le
+> pointeur.
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
