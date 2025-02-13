@@ -75,7 +75,7 @@ void DinoTerrain::draw_terrain()
 
         drawCall = Dino_CreateDrawCall_Sprite(u + uSeason, 3 + terrainAnimationFrames[frame] * 3, 16, 16);
         drawCall.textureName = "terrain.png";
-        drawCall.translation = {offset.x + x * 16, offset.y + 13 * 16};
+        drawCall.translation = {offset.x + x * 16, offset.y + (TERRAIN_HEIGHT_TOTAL - 1) * 16};
         XDino_Draw(drawCall);
     }
 

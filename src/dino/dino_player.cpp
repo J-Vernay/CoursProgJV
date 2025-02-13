@@ -4,8 +4,8 @@
 #include "dino_player.h"
 #include "dino/dino_draw_utils.h"
 
-constexpr float WALK_SPEED = 150.f;
-constexpr float RUN_SPEED = 300.f;
+constexpr float WALK_SPEED = 75.f;
+constexpr float RUN_SPEED = 150.f;
 constexpr float HIT_TIME = 1.5f;
 
 const Animation animations[] = {
@@ -13,6 +13,13 @@ const Animation animations[] = {
     {8, {4, 5, 6, 7, 8, 9}},
     {8, {14, 15, 16}},
     {16, {17, 18, 19, 20, 21, 22}}
+};
+
+const DinoColor colors[] = {
+    {{77, 146, 188, 255}},
+    {{188, 77, 79, 255}},
+    {{253, 199, 96, 255}},
+    {{159, 188, 77, 255}}
 };
 
 void DinoPlayer::update(float deltaTime)
@@ -31,6 +38,8 @@ void DinoPlayer::update(float deltaTime)
     }
     updateAnimator(gamepad);
     updateAnimation(deltaTime);
+
+    lasso.update(deltaTime, position);
 }
 
 void DinoPlayer::draw() const
@@ -45,6 +54,11 @@ void DinoPlayer::draw() const
     drawCall.textureName = "dinosaurs.png";
     drawCall.translation = position;
     XDino_Draw(drawCall);
+}
+
+void DinoPlayer::drawLasso() const
+{
+    lasso.draw(colors[color]);
 }
 
 void DinoPlayer::hit()
@@ -104,7 +118,7 @@ void DinoPlayer::setAnimation(AnimationId animation)
     animatorState.frame = 0;
 }
 
-bool DinoPlayer::canMove()
+bool DinoPlayer::canMove() const
 {
     return hitTimer <= 0;
 }

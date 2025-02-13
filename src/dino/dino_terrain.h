@@ -3,8 +3,8 @@
 
 #pragma once
 
-constexpr int TERRAIN_WIDTH = 16;
-constexpr int TERRAIN_HEIGHT = 12;
+constexpr int TERRAIN_WIDTH = 22;
+constexpr int TERRAIN_HEIGHT = 14;
 
 /// Terrain de jeu
 class DinoTerrain {

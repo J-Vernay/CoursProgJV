@@ -4,6 +4,7 @@
 #pragma once
 
 #include "dino_actor.h"
+#include "dino_lasso.h"
 
 #include <dino/xdino.h>
 #include <dino/dino_animation.h>
@@ -27,10 +28,11 @@ private:
         RUN
     };
 
+    DinoLasso lasso;
     DinoGamepadIdx gamepadIdx;
-    bool direction = false;
-    float hitTimer = 0;
-    Color color = BLUE;
+    bool direction;
+    float hitTimer;
+    Color color;
     AnimatorState<AnimationId> animatorState = {0, 0, IDLE};
 
 public:
@@ -39,12 +41,13 @@ public:
     /// @param gamepadIdx Indentificateur du gamepad lié au joueur.
     /// @param color Couleur du dinosaure.
     explicit DinoPlayer(DinoVec2 position, DinoGamepadIdx gamepadIdx, Color color)
-        : DinoActor(position), gamepadIdx(gamepadIdx), color(color)
+        : DinoActor(position), gamepadIdx(gamepadIdx), direction(false), hitTimer(0), color(color)
     {
     }
     
     void update(float deltaTime) override;
     void draw() const override;
+    void drawLasso() const;
 
     /// Frappe le joueur et l'immobilise.
     void hit();
@@ -55,5 +58,5 @@ private:
     void updateAnimation(float deltaTime);
     void setAnimation(AnimationId animation);
 
-    bool canMove();
+    bool canMove() const;
 };

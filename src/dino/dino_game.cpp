@@ -13,9 +13,10 @@
 // Variables globales.
 double lastTime = 0;
 DinoTerrain terrain;
+std::vector<DinoPlayer> players;
+std::vector<DinoAnimal> animals;
 std::vector<DinoActor*> actors;
 std::vector<DinoGamepadIdx> availableGamepads;
-int playerCount = 0;
 float spawnTimer = 0;
 
 void Dino_GameInit()
@@ -39,7 +40,7 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    if (playerCount < 4) {
+    if (players.size() < 4) {
         for (DinoGamepadIdx gamepadIdx : availableGamepads) {
             DinoGamepad gamepad;
             XDino_GetGamepad(gamepadIdx, gamepad);
@@ -48,8 +49,7 @@ void Dino_GameFrame(double timeSinceStart)
                 continue;
             
             DinoVec2 windowSize = XDino_GetRenderSize();
-            actors.push_back(new DinoPlayer({windowSize.x / 2, windowSize.y / 2},
-                                         gamepadIdx, static_cast<DinoPlayer::Color>(playerCount++)));
+            players.push_back(DinoPlayer({windowSize.x / 2, windowSize.y / 2}, gamepadIdx, static_cast<DinoPlayer::Color>(players.size())));
             availableGamepads.erase(std::find(availableGamepads.begin(), availableGamepads.end(), gamepadIdx));
         }
     }
@@ -64,14 +64,24 @@ void Dino_GameFrame(double timeSinceStart)
 
             DinoVec2 minPosition = terrain.get_terrain_min_position();
             DinoVec2 maxPosition = terrain.get_terrain_max_position();
-
-            actors.push_back(new DinoAnimal({XDino_RandomFloat(minPosition.x, maxPosition.x),
+            animals.push_back(DinoAnimal({XDino_RandomFloat(minPosition.x, maxPosition.x),
                                           XDino_RandomFloat(minPosition.y, maxPosition.y)}));
         }
     }
 
-    for (DinoActor* actor : actors) {
-        actor->update(deltaTime);
+    {
+        actors.clear();
+        for (DinoPlayer& player : players) {
+            actors.push_back(&player);
+        }
+
+        for (DinoAnimal& animal : animals) {
+            actors.push_back(&animal);
+        }
+        
+        for (DinoActor* actor : actors) {
+            actor->update(deltaTime);
+        }
     }
 
     // Affichage
@@ -81,6 +91,12 @@ void Dino_GameFrame(double timeSinceStart)
     terrain.draw_ocean();
     terrain.draw_terrain();
 
+    {
+        for (DinoPlayer& player : players) {
+            player.drawLasso();
+        }
+    }
+    
     {
         std::sort(actors.begin(), actors.end(), DinoPlayer::compareHeight);
         for (DinoActor* actor : actors) {
@@ -108,5 +124,4 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-
 }

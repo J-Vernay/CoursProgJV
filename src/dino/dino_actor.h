@@ -9,6 +9,8 @@
 /// @brief Classe abstraite pour les acteurs du jeu.
 /// N'implémente vraiment que la fonction de comparaison de hauteur.
 class DinoActor {
+    friend class DinoLasso;
+
 protected:
     DinoVec2 position; ///< Position de l'acteur à l'écran.
 
@@ -18,6 +20,8 @@ public:
     explicit DinoActor(DinoVec2 position) : position(position)
     {
     }
+
+    virtual ~DinoActor() = default;
 
     /// Execute la logique de l'acteur pour une frame.
     /// @param deltaTime Le temps écoulé depuis la dernière frame (en ms).
