@@ -20,14 +20,15 @@ bool ComparePlayerPos(dino_player& a, dino_player& b)
 
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    // DinoVec2 windowSize = XDino_GetWindowSize();
+    DinoVec2 renderSize = {480, 360};
+    XDino_SetRenderSize(renderSize);
 
     dinoPlayers.resize(4);
-    dinoPlayers[0].Init(0, {windowSize.x / 2 - 100, windowSize.y / 2 - 100});
-    dinoPlayers[1].Init(1, {windowSize.x / 2 - 100, windowSize.y / 2 + 100});
-    dinoPlayers[2].Init(2, {windowSize.x / 2 + 100, windowSize.y / 2 - 100});
-    dinoPlayers[3].Init(3, {windowSize.x / 2 + 100, windowSize.y / 2 + 100});
+    dinoPlayers[0].Init(0, {renderSize.x / 2 - 100, renderSize.y / 2 - 100});
+    dinoPlayers[1].Init(1, {renderSize.x / 2 - 100, renderSize.y / 2 + 100});
+    dinoPlayers[2].Init(2, {renderSize.x / 2 + 100, renderSize.y / 2 - 100});
+    dinoPlayers[3].Init(3, {renderSize.x / 2 + 100, renderSize.y / 2 + 100});
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -45,12 +46,42 @@ void Dino_GameFrame(double timeSinceStart)
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
+    DinoVec2 renderSize = XDino_GetRenderSize();
     XDino_SetClearColor(CLEAR_COLOR);
 
-    // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
+    {
+        DinoVec2 terrainSize = {256, 192};
+        DinoDrawCall drawCall;
+        drawCall.textureName = "terrain.png";
 
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+        DinoVec2 posA, posB, posC, posD;
+        posA.x = (renderSize.x - terrainSize.x) / 2;
+        posA.y = (renderSize.y - terrainSize.y) / 2;
+        posB.x = posA.x + terrainSize.x;
+        posB.y = posA.y;
+        posC.x = posA.x;
+        posC.y = posA.y + terrainSize.y;
+        posD.x = posA.x + terrainSize.x;
+        posD.y = posA.y + terrainSize.y;
+
+        // Océan en fond
+        drawCall.vertices.emplace_back(DinoVec2{0, 0}, 0, 0);
+        drawCall.vertices.emplace_back(DinoVec2{renderSize.x, 0}, 16, 0);
+        drawCall.vertices.emplace_back(DinoVec2{0, renderSize.y}, 0, 16);
+        drawCall.vertices.emplace_back(DinoVec2{renderSize.x, 0}, 16, 0);
+        drawCall.vertices.emplace_back(DinoVec2{0, renderSize.y}, 0, 16);
+        drawCall.vertices.emplace_back(DinoVec2{renderSize.x, renderSize.y}, 16, 16);
+
+        // Terrain au milieu
+        drawCall.vertices.emplace_back(posA, 16, 0);
+        drawCall.vertices.emplace_back(posB, 32, 0);
+        drawCall.vertices.emplace_back(posC, 16, 16);
+        drawCall.vertices.emplace_back(posB, 32, 0);
+        drawCall.vertices.emplace_back(posC, 16, 16);
+        drawCall.vertices.emplace_back(posD, 32, 16);
+
+        XDino_Draw(drawCall);
+    }
 
     std::sort(dinoPlayers.begin(), dinoPlayers.end(), ComparePlayerPos);
     for (dino_player& player : dinoPlayers) {
@@ -65,21 +96,21 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
-    // Dessin du dinosaure que l'on peut bouger.
-    {
-
-    }
-
     // NOM Prénom
     {
         std::string text = "DUFOUR Enzo";
         DinoVec2 textSize;
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
         drawCall.scale = 2;
-        drawCall.translation.x = windowSize.x - 2 * textSize.x;
-        drawCall.translation.y = windowSize.y - 2 * textSize.y;
+        drawCall.translation.x = renderSize.x - 2 * textSize.x;
+        drawCall.translation.y = renderSize.y - 2 * textSize.y;
         XDino_Draw(drawCall);
     }
+}
+
+void DrawTerrain(double timeSinceStart)
+{
+
 }
 
 // Constantes.

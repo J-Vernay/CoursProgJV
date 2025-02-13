@@ -258,7 +258,7 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> Il faut faire pour X : (renderSize.x - terrainSize.x) / 2 et pour Y : (renderSize.y - terrainSize.y) / 2.
 
 c) Implémentez la fonctionnalité F2.1 .
 
