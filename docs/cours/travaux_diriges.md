@@ -5,7 +5,8 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous
+venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -13,21 +14,26 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers suivants :
 
-> `xdino.h` : ...
+> `xdino.h` : Le fichier fourni des fonctions pour l'initialisation, l'affichage, la gestion des inputs et des events,
+> ainsi que des structs essentielles au moteur comme la couleur ou le vecteur2.
 >
-> `xdino_win64_main.cpp` : ...
+> `xdino_win64_main.cpp` : Le fichier gère la création de la window, la gestion des event Windows (souris, clavier,
+> manette), le rendering et la main loop du programme.
 >
-> `xdino_win64_rdr.cpp` : ...
+> `xdino_win64_rdr.cpp` : Le fichier implémente le moteur de rendu graphique sur Windows, en définissant les structures
+> essentielles, la gestion des ressources Direct3D 11, ainsi que la compilation et l'exécution des shaders.
 >
-> `dino_game.cpp` : ...
+> `dino_game.cpp` : Le fichier implémente la logique du jeu.
 >
-> `dino_geometry.cpp` : ...
+> `dino_geometry.cpp` : Le fichier contient un helper de geometry qui vérifie si deux segments s'intersectent.
 >
-> `dino_draw_utils.cpp` : ...
+> `dino_draw_utils.cpp` : Le fichier contient les fonctions qui exécutent la logique de création de DrawCalls pour
+> différents éléments.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Le fichier est un script de configuration pour build et qui contient toutes les infos nécessaires.
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place
+des `// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -79,28 +85,29 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> La distance est de 6 px.
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-300, 400) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Il s'est déplacé vers en bas à gauche, à une vitesse de 50 000 px/s.
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> Il se retrouve en environ (170.71, 129.29).
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Il est définie par une position 2D, des coordonnées UV de textures, et une couleure de modulation.
 
 g) Qu'est-ce qu'un "draw call" ?
 
-> ...
+> C'est une commande envoyée à la carte graphique pour dessiner un ensemble de forme à l'écran en une seule fois. Un
+> draw call contient ici la liste des vertices, le nom de la texture et le transform.
 
 h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
@@ -112,8 +119,7 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
-> ...
-
+> Fait.
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -177,7 +183,7 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+>
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
@@ -185,11 +191,16 @@ b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Chaque fichier CPP a un fichier OBJ correspondant.;
+> build/obj/x64-windows/Debug/...;
+> x64-windows -> spécifique a la plateforme;
+> Debug -> Spécifique a la compilation;
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> build/x64-window/Debug/Dino_RayanElKotob.exe;
+> x64-window -> spécifique a la plateforme;
+> Debug -> Spécifique a la configuration;
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
@@ -213,7 +224,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -224,17 +236,18 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> X = (480 - 256) / 2 et Y = (360-192) / 2
 
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire
+dans `dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
-> ...
+> 4 Triangles -> 12 Vertices
 
 f) Implémentez la fonctionnalité F2.3 .
 
@@ -297,7 +310,8 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 ## 7. Interactions
 
@@ -386,11 +400,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
