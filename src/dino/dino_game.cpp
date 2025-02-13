@@ -13,7 +13,7 @@
 double lastTime = 0;
 
 std::vector<DinoPlayer> g_Players;
-DinoAnimal g_Animal;
+std::vector<DinoAnimal> g_Animals;
 
 bool ComparePlayersPos(DinoPlayer& a, DinoPlayer& b)
 {
@@ -30,11 +30,14 @@ void Dino_GameInit()
     g_Players[2].Init({renderSize.x / 2 + 50, renderSize.y / 2 - 50}, 2, DinoGamepadIdx::Gamepad2);
     g_Players[3].Init({renderSize.x / 2 + 50, renderSize.y / 2 + 50}, 3, DinoGamepadIdx::Gamepad3);
 
-    g_Animal.Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
 }
+
+double g_AnimalLastSpawnTime = 0;
 
 void Dino_GameFrame(double timeSinceStart)
 {
+    DinoVec2 renderSize = XDino_GetRenderSize();
+    
     // Prendre en compte le temps qui passe.
 
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
@@ -42,14 +45,21 @@ void Dino_GameFrame(double timeSinceStart)
 
 	for (DinoPlayer& player : g_Players)
 		player.UpdatePlayer(deltaTime);
-    g_Animal.UpdateAnimal(deltaTime);
+
+    double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
+    if (timeSinceLastSpawn > 1) {
+        g_AnimalLastSpawnTime = timeSinceStart;
+        g_Animals.emplace_back();
+        g_Animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
+    }
+    for (DinoAnimal& animal : g_Animals)
+        animal.UpdateAnimal(deltaTime);
     
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
-    DinoVec2 renderSize = XDino_GetRenderSize();
     XDino_SetClearColor(CLEAR_COLOR);
 
     {
@@ -90,7 +100,8 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoPlayer& player : g_Players)
         player.DrawPlayer(timeSinceStart);
     
-    g_Animal.DrawAnimal(timeSinceStart);
+    for (DinoAnimal& animal : g_Animals)
+        animal.DrawAnimal(timeSinceStart);
     
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
