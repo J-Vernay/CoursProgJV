@@ -96,8 +96,3 @@ void DinoPlayer::Init(DinoVec2 pos, DinoGamepadIdx idx, int indexGraph = 0)
     gamepadIdx = idx;
     indexG = indexGraph;
 }
-
-bool DinoPlayer::isAbove(DinoPlayer& other)
-{
-    return playerPos.y < other.playerPos.y;
-}

@@ -254,7 +254,7 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
->  drawcall.translation.x = (windowSize.x - size.x) / 2;
+> drawcall.translation.x = (windowSize.x - size.x) / 2;
 > drawcall.translation.y = (windowSize.y - size.y) / 2;
 > windowSize étant {480, 360};
 
@@ -267,7 +267,7 @@ qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
-> ...
+> 4
 
 f) Implémentez la fonctionnalité F2.3 .
 
@@ -281,8 +281,9 @@ b) Implémentez la fonctionnalité F3.2 .
 
 c) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
-
-> ...
+> 32 GB RAM physique
+> 16 000 000 000 GB adressables
+> les octets aux addresses valides que l'OS renvoie
 
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?

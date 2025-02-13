@@ -1,12 +1,13 @@
 #pragma once
-#include "dino/dino_entities.h"
+#include "dino_entities.h"
 #include "dino/xdino.h"
 
-class DinoPlayer : public DinoEntity {
+class DinoAnimals : public DinoEntity {
 public :
     void UpdatePlayer(float time);
     void DrawPlayer(double time);
-    void Init(DinoVec2 pos, DinoGamepadIdx idx, int indexGraph);
+    void Init();
+    DinoVec2 playerPos = {};
 
 private :
     DinoGamepadIdx gamepadIdx;
