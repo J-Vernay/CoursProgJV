@@ -95,16 +95,20 @@ Comment récupérer les coordonnées UV de la bonne animation ?
 
 d) Implémentez la fonctionnalité F1.4 .
 
+> passé pour l'instant
+
 ## 2. Introduction à la programmation orientée objet en C++ (F1.5-F1.6)
 
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper et en avoir plusieurs instances ?
 
-> ...
+> en créant la struct DinoPlayer et une instance pour chaque joueur
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
 N'oubliez pas de relancer le script `SetupWorkspace.bat`.
+
+> fait
 
 c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un type de données ?
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?

@@ -3,6 +3,7 @@
 
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
+#include <dino/dino_player.h>
 
 #include <format>
 
@@ -12,19 +13,6 @@ double rotation = 360.0;
 double scale = 1.0;
 //DinoVec2 circlePos = {};
 std::vector<DinoVec2> polyline;
-;
-
-struct DinoPlayer {
-    DinoVec2 pos = {};
-    bool goingRight = false;
-    bool idle;
-    bool walking;
-    bool running;
-    int playerIndex = 0;
-
-    void UpdatePlayer(float deltaTime);
-    void DrawPlayer(double timeSinceStart);
-};
 
 DinoPlayer player1;
 DinoPlayer player2;
@@ -41,103 +29,16 @@ DinoPlayer players[] = {
 // Constantes.
 constexpr float Dino_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
-void DinoPlayer::UpdatePlayer(float deltaTime)
-{
-    this->idle = false;
-    this->walking = false;
-    this->running = false;
-
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-        /*if (gamepad.btn_down && !gamepad.btn_up)
-            scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            rotation -= 90.0 * deltaTime;*/
-
-        float speed = Dino_SPEED;
-        if (gamepad.btn_right)
-            speed *= 2;
-
-        this->pos.x += gamepad.stick_left_x * speed * deltaTime;
-        this->pos.y += gamepad.stick_left_y * speed * deltaTime;
-        if (gamepad.stick_left_x != 0)
-            this->goingRight = gamepad.stick_left_x > 0;
-
-        this->idle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
-        if (!this->idle) {
-            if (gamepad.btn_right) {
-                this->running = true;
-            }
-            else {
-                this->walking = true;
-            }
-        }
-    }
-}
-
-void DinoPlayer::DrawPlayer(double timeSinceStart)
-{
-    DinoDrawCall drawCall;
-    float radiusX = 24;
-    float radiusY = 24;
-    drawCall.textureName = "dinosaurs.png";
-    drawCall.vertices.reserve(6);
-    if (!this->goingRight)
-        radiusX = -radiusX;
-
-    DinoVec2 posA = {-radiusX, -radiusY};
-    DinoVec2 posB = {radiusX, -radiusY};
-    DinoVec2 posC = {-radiusX, radiusY};
-    DinoVec2 posD = {radiusX, radiusY};
-    DinoColor color = DinoColor_WHITE;
-
-    float secondsPerSprite;
-    if (this->running)
-        secondsPerSprite = 0.0625;
-    else {
-
-        secondsPerSprite = 0.125;
-    }
-
-    int animationIndex = int(timeSinceStart / secondsPerSprite) % 4 * 24;
-
-    if (this->walking)
-        animationIndex += 96;
-    if (this->running)
-        animationIndex += 432;
-
-    int v = playerIndex * 24;
-
-    drawCall.vertices.emplace_back(posA, animationIndex, v + 0, color);
-    drawCall.vertices.emplace_back(posB, animationIndex + 24, v + 0, color);
-    drawCall.vertices.emplace_back(posC, animationIndex, v + 24, color);
-    drawCall.vertices.emplace_back(posB, animationIndex + 24, v + 0, color);
-    drawCall.vertices.emplace_back(posC, animationIndex, v + 24, color);
-    drawCall.vertices.emplace_back(posD, animationIndex + 24, v + 24, color);
-    drawCall.translation = this->pos;
-    XDino_Draw(drawCall);
-}
 
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    player1.pos = {windowSize.x / 2, windowSize.y / 2};
-    player1.playerIndex = 0;
-    player2.pos = {windowSize.x / 2 + 100, windowSize.y / 2};
-    player2.playerIndex = 1;
-    player3.pos = {windowSize.x / 2, windowSize.y / 2 + 100};
-    player3.playerIndex = 2;
-    player4.pos = {windowSize.x / 2 + 100, windowSize.y / 2 + 100};
-    player4.playerIndex = 3;
+
+    player1.Init(0, {windowSize.x / 2, windowSize.y / 2});
+    player2.Init(1, {windowSize.x / 2 + 100, windowSize.y / 2});
+    player3.Init(2, {windowSize.x / 2, windowSize.y / 2 + 100});
+    player4.Init(3, {windowSize.x / 2 + 100, windowSize.y / 2 + 100});
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
