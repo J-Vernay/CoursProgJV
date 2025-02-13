@@ -4,14 +4,17 @@
 class DinoPlayer {
 public :
     void UpdatePlayer(float time);
-    void DrawPlayer(float time);
-    void Init(DinoVec2 pos);
+    void DrawPlayer(double time);
+    void Init(DinoVec2 pos, DinoGamepadIdx idx, int indexGraph);
+    bool isAbove(DinoPlayer& other);
     DinoVec2 playerPos = {};
 
 private :
+    DinoGamepadIdx gamepadIdx;
     bool g_bMiror = false;
+    int indexG = 0;
     bool isIdle;
-    float baseSpeed = 1;
+    float baseSpeed = 300;
     bool isWalking;
     bool isRunning;
 };

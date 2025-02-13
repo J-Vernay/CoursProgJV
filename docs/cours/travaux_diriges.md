@@ -195,23 +195,34 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> CoursProgJV\src\dino\
+> CoursProgJV\external\pix\Include\WinPixEventRuntime\
+> CoursProgJV\external\stb\
+> CoursProgJV\src\dino\x64-windows\
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> CoursProgJV\src\dino\
+> CoursProgJV\external\stb\
+> CoursProgJV\src\dino\x64-windows\
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> CoursProgJV\build\obj\x64-windows\Debug\Dino_PixFarin\
+> Ils portent le meme nom que ceux en cpp
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> CoursProgJV\Dino_JulienVernay.exe
+> CoursProgJV\build\x64-windows\Debug\Dino_PixFarin.exe
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+>   targetdir "build/%{cfg.platform}/%{cfg.buildcfg}"
+>   includedirs { "src", "external" }
+>   files { "external/**.cpp", "external/**.h" }
+>   files { "src/dino/*" }
+>   files { "src/dino/x64-windows/*" }
 
 f) Quels sont les liens entre :
 

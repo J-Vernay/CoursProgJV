@@ -8,46 +8,44 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
     bool bMiror = this->g_bMiror;
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (gamepad.stick_left_x < 0) {
-            bMiror = true;
-            this->isIdle = false;
-            this->isWalking = true;
-        }
-        else if (gamepad.stick_left_x > 0) {
-            bMiror = false;
-            this->isIdle = false;
-            this->isWalking = true;
-        }
-        else if (gamepad.stick_left_y != 0) {
-            this->isIdle = false;
-            this->isWalking = true;
-        }
-        else {
-            this->isIdle = true;
-            this->isWalking = false;
-        }
-        if (!bSuccess)
-            continue;
-
-        if (gamepad.btn_right) {
-            speed = baseSpeed * 2;
-            this->isRunning = true;
-        }
-        else {
-            speed = baseSpeed;
-            this->isRunning = false;
-        }
-
-        this->playerPos.x += gamepad.stick_left_x * speed * deltaTime;
-        this->playerPos.y += gamepad.stick_left_y * speed * deltaTime;
-        this->g_bMiror = bMiror;
+    DinoGamepad gamepad{};
+    bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
+    if (gamepad.stick_left_x < 0) {
+        bMiror = true;
+        this->isIdle = false;
+        this->isWalking = true;
     }
+    else if (gamepad.stick_left_x > 0) {
+        bMiror = false;
+        this->isIdle = false;
+        this->isWalking = true;
+    }
+    else if (gamepad.stick_left_y != 0) {
+        this->isIdle = false;
+        this->isWalking = true;
+    }
+    else {
+        this->isIdle = true;
+        this->isWalking = false;
+    }
+    if (!bSuccess)
+        return;
+
+    if (gamepad.btn_right) {
+        speed = baseSpeed * 2;
+        this->isRunning = true;
+    }
+    else {
+        speed = baseSpeed;
+        this->isRunning = false;
+    }
+
+    this->playerPos.x += gamepad.stick_left_x * speed * deltaTime;
+    this->playerPos.y += gamepad.stick_left_y * speed * deltaTime;
+    this->g_bMiror = bMiror;
 }
 
-void DinoPlayer::DrawPlayer(float time)
+void DinoPlayer::DrawPlayer(double time)
 {
     DinoDrawCall drawcall;
     drawcall.textureName = "dinosaurs.png";
@@ -72,27 +70,34 @@ void DinoPlayer::DrawPlayer(float time)
     }
 
     if (this->g_bMiror) {
-        drawcall.vertices.emplace_back(posA, 24 + u, 0);
-        drawcall.vertices.emplace_back(posB, 0 + u, 0);
-        drawcall.vertices.emplace_back(posC, 24 + u, 24);
-        drawcall.vertices.emplace_back(posB, 0 + u, 0);
-        drawcall.vertices.emplace_back(posC, 24 + u, 24);
-        drawcall.vertices.emplace_back(posD, 0 + u, 24);
+        drawcall.vertices.emplace_back(posA, 24 + u, 0 + 24 * indexG);
+        drawcall.vertices.emplace_back(posB, 0 + u, 0 + 24 * indexG);
+        drawcall.vertices.emplace_back(posC, 24 + u, 24 + 24 * indexG);
+        drawcall.vertices.emplace_back(posB, 0 + u, 0 + 24 * indexG);
+        drawcall.vertices.emplace_back(posC, 24 + u, 24 + 24 * indexG);
+        drawcall.vertices.emplace_back(posD, 0 + u, 24 + 24 * indexG);
     }
     else {
-        drawcall.vertices.emplace_back(posA, 0 + u, 0);
-        drawcall.vertices.emplace_back(posB, 24 + u, 0);
-        drawcall.vertices.emplace_back(posC, 0 + u, 24);
-        drawcall.vertices.emplace_back(posB, 24 + u, 0);
-        drawcall.vertices.emplace_back(posC, 0 + u, 24);
-        drawcall.vertices.emplace_back(posD, 24 + u, 24);
+        drawcall.vertices.emplace_back(posA, 0 + u, 0 + 24 * indexG);
+        drawcall.vertices.emplace_back(posB, 24 + u, 0 + 24 * indexG);
+        drawcall.vertices.emplace_back(posC, 0 + u, 24 + 24 * indexG);
+        drawcall.vertices.emplace_back(posB, 24 + u, 0 + 24 * indexG);
+        drawcall.vertices.emplace_back(posC, 0 + u, 24 + 24 * indexG);
+        drawcall.vertices.emplace_back(posD, 24 + u, 24 + 24 * indexG);
     }
     drawcall.translation = this->playerPos;
     drawcall.scale = 2;
     XDino_Draw(drawcall);
 }
 
-void DinoPlayer::Init(DinoVec2 pos)
+void DinoPlayer::Init(DinoVec2 pos, DinoGamepadIdx idx, int indexGraph = 0)
 {
     playerPos = pos;
+    gamepadIdx = idx;
+    indexG = indexGraph;
+}
+
+bool DinoPlayer::isAbove(DinoPlayer& other)
+{
+    return playerPos.y < other.playerPos.y;
 }
