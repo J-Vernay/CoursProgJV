@@ -86,7 +86,7 @@ void DinoPlayer::DrawPlayer(double time)
         drawcall.vertices.emplace_back(posD, 24 + u, 24 + 24 * indexG);
     }
     drawcall.translation = this->playerPos;
-    drawcall.scale = 2;
+    drawcall.scale = 1;
     XDino_Draw(drawcall);
 }
 

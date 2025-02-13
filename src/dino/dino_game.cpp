@@ -21,7 +21,7 @@ bool ComparePlayerPos(DinoPlayer& a, DinoPlayer& b)
 
 void Dino_GameInit()
 {
-    XDino_SetRenderSize({480,360});
+    XDino_SetRenderSize({480, 360});
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
     players.resize(4);
@@ -36,7 +36,6 @@ void Dino_GameFrame(double timeSinceStart)
 {
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
-
     for (DinoPlayer& player : players) {
         player.UpdatePlayer(deltaTime);
     }
@@ -48,8 +47,47 @@ void Dino_GameFrame(double timeSinceStart)
 
     // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
 
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    DinoVec2 windowSize = XDino_GetRenderSize();
+    XDino_SetRenderSize({480, 360});
+
+    {
+        DinoVec2 size = {480, 360};
+        DinoVec2 posA = {0, 0};
+        DinoVec2 posB = {size.x, 0};
+        DinoVec2 posC = {0, size.y};
+        DinoVec2 posD = {size.x, size.y};
+        DinoDrawCall drawcall;
+        drawcall.vertices.emplace_back(posA, 16, 0);
+        drawcall.vertices.emplace_back(posB, 0, 0);
+        drawcall.vertices.emplace_back(posC, 16, 16);
+        drawcall.vertices.emplace_back(posB, 0, 0);
+        drawcall.vertices.emplace_back(posC, 16, 16);
+        drawcall.vertices.emplace_back(posD, 0, 16);
+        drawcall.textureName = "terrain.png";
+        XDino_Draw(drawcall);
+
+        
+    }
+
+    {
+        DinoVec2 size = {256, 192};
+        DinoVec2 posA = {0, 0};
+        DinoVec2 posB = {size.x, 0};
+        DinoVec2 posC = {0, size.y};
+        DinoVec2 posD = {size.x, size.y};
+        DinoDrawCall drawcall;
+        drawcall.vertices.emplace_back(posA, 32, 0);
+        drawcall.vertices.emplace_back(posB, 16, 0);
+        drawcall.vertices.emplace_back(posC, 32, 16);
+        drawcall.vertices.emplace_back(posB, 16, 0);
+        drawcall.vertices.emplace_back(posC, 32, 16);
+        drawcall.vertices.emplace_back(posD, 16, 16);
+        drawcall.textureName = "terrain.png";
+        drawcall.translation.x = (windowSize.x - size.x) / 2;
+        drawcall.translation.y = (windowSize.y - size.y) / 2;
+        XDino_Draw(drawcall);
+    }
+
     std::sort(players.begin(), players.end(), ComparePlayerPos);
     for (DinoPlayer& player : players) {
         player.DrawPlayer(timeSinceStart);
@@ -69,7 +107,7 @@ void Dino_GameFrame(double timeSinceStart)
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_BLUE, DinoColor_RED);
         drawCall.scale = 1;
         drawCall.rotation = 0;
-        drawCall.translation = {windowSize.x - 60, windowSize.y - 20};
+        drawCall.translation = {windowSize.x - 65, windowSize.y - 20};
         XDino_Draw(drawCall);
     }
 

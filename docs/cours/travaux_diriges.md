@@ -218,11 +218,11 @@ d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez 
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
->   targetdir "build/%{cfg.platform}/%{cfg.buildcfg}"
->   includedirs { "src", "external" }
->   files { "external/**.cpp", "external/**.h" }
->   files { "src/dino/*" }
->   files { "src/dino/x64-windows/*" }
+> targetdir "build/%{cfg.platform}/%{cfg.buildcfg}"
+> includedirs { "src", "external" }
+> files { "external/**.cpp", "external/**.h" }
+> files { "src/dino/*" }
+> files { "src/dino/x64-windows/*" }
 
 f) Quels sont les liens entre :
 
@@ -254,7 +254,9 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+>  drawcall.translation.x = (windowSize.x - size.x) / 2;
+> drawcall.translation.y = (windowSize.y - size.y) / 2;
+> windowSize étant {480, 360};
 
 c) Implémentez la fonctionnalité F2.1 .
 
