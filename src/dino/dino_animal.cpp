@@ -31,7 +31,8 @@ void DinoAnimal::update_movement(float deltaTime)
 void DinoAnimal::update_animation(float deltaTime)
 {
     animatorState.timer += deltaTime;
-    if (animatorState.timer < 1 / 8.0f) return;
+    if (animatorState.timer < 1 / 8.0f)
+        return;
     animatorState.timer = 0;
     animatorState.frame = (animatorState.frame + 1) % 4;
 }

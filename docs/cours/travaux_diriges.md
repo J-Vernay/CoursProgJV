@@ -317,7 +317,8 @@ b) Implémentez la fonctionnalité F3.2 .
 c) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 31.7 Go sont disponibles sur ma machine. Sont adressables 18 446 744 073 709 551 616 octets. On ne peut théoriquement
+> adresser que les octets alloués à notre processus.
 
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
