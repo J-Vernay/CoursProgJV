@@ -1,9 +1,10 @@
 #pragma once
+#include "Entity.h"
 #include "xdino.h"
 #include <vector>
 
 
-class PolyLine
+class PolyLine : public Entity
 {
 public:
     explicit PolyLine();

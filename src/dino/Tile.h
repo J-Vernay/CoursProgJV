@@ -1,22 +1,21 @@
 #pragma once
+#include "Entity.h"
 #include "xdino.h"
 
 #include <string>
 
-class Tile
+class Tile : public Entity
 {
 public:
     explicit Tile();
-    explicit Tile(std::string tex);
-    explicit Tile(std::string tex, DinoVec2 pos);
-
-    void Update(float deltaTime);
-    void Draw();
+    explicit Tile(const std::string& tex_d);
+    explicit Tile(const std::string& tex_d, DinoVec2 pos_d);
+    explicit Tile(const std::string& tex_d, DinoVec2 pos_d, uint16_t u, uint16_t v);
+    
+    void Update(float deltaTime) const;
+    void Draw() const;
 
 private:
-    std::string tex;
-    DinoVec2 pos;
-
     uint16_t i;
     uint16_t j;
 };

@@ -1,14 +1,16 @@
 ﻿#pragma once
+#include "Entity.h"
+
 #include <string>
 
 #include "dino/xdino.h"
 
-class Dino
+class Dino : public Entity
 {
 public:
     explicit Dino();
-    explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex, uint16_t id);
-    explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex, uint16_t id, DinoVec2 pos);
+    explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex_d, uint16_t id);
+    explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex_d, uint16_t id, DinoVec2 pos_d);
 
     static bool CompareHeight(const Dino& d1, const Dino& d2);
     
@@ -17,8 +19,6 @@ public:
     void Draw() const;
     
 private:
-    std::string tex;
-    DinoVec2 pos;
     DinoGamepadIdx gamepad_idx;
     
     uint16_t id;

@@ -4,6 +4,6 @@
 
 void UIFrame::Update(const float deltaTime)
 {
-    text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+    tex = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
 }
 

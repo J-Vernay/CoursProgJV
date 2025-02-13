@@ -5,7 +5,7 @@ class UIName : public UIText
 {
 public:
     explicit UIName();
-    explicit UIName(std::string text);
+    explicit UIName(const std::string& text_d, DinoVec2 windowSize_d);
     
-    void Draw(DinoVec2 windowSize);
+    void Draw() const;
 };

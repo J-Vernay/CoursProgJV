@@ -21,10 +21,10 @@ Dino::Dino()
     inverted = false;
 }
 
-Dino::Dino(const DinoGamepadIdx gamepad_idx, const std::string& tex, const uint16_t id)
+Dino::Dino(const DinoGamepadIdx gamepad_idx, const std::string& tex_d, const uint16_t id) : Entity(tex_d)
 {
     this->gamepad_idx = gamepad_idx;
-    this->tex = tex;
+    this->tex = tex_d;
     this->pos = {0, 0};
     this->id = id;
     animationTime = 0;
@@ -36,11 +36,11 @@ Dino::Dino(const DinoGamepadIdx gamepad_idx, const std::string& tex, const uint1
     inverted = false;
 }
 
-Dino::Dino(const DinoGamepadIdx gamepad_idx, const std::string& tex, const uint16_t id, const DinoVec2 pos)
+Dino::Dino(const DinoGamepadIdx gamepad_idx, const std::string& tex_d, const uint16_t id, const DinoVec2 pos_d) : Entity(tex_d, pos_d)
 {
     this->gamepad_idx = gamepad_idx;
-    this->tex = tex;
-    this->pos = pos;
+    this->tex = tex_d;
+    this->pos = pos_d;
     this->id = id;
     animationTime = 0;
     i = 0;

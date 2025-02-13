@@ -3,6 +3,7 @@
 
 #include "DinoPlayer.h"
 #include "PolyLine.h"
+#include "TileMap.h"
 #include "UIFrame.h"
 #include "UIName.h"
 
@@ -14,10 +15,11 @@
 
 // Variables globales.
 double lastTime = 0;
-auto un = UIName("Strappazzon Clement");
+UIName un;
 auto uf = UIFrame();
 auto pl = PolyLine(4);
 auto dp = DinoPlayer();
+auto tm = TileMap(2, 16, 12);
 
 //Consts
 constexpr DinoColor CLEAR_COLOR = {{50, 50, 80, 255}};
@@ -26,7 +28,9 @@ void Dino_GameInit()
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
+    un = UIName("STRAPPAZZON Clement", windowSize);
     dp.Init();
+    tm.Init();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -38,6 +42,9 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
+    tm.Update(deltaTime);
+    tm.Draw();
+    
     dp.Update(deltaTime);
     dp.Draw();
     
@@ -48,9 +55,9 @@ void Dino_GameFrame(double timeSinceStart)
     
     //UIs
     uf.Update(deltaTime);
-    uf.Draw(windowSize);
+    uf.Draw();
     un.Update(deltaTime);
-    un.Draw(windowSize);
+    un.Draw();
 }
 
 void Dino_GameShut()

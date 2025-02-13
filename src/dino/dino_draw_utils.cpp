@@ -25,18 +25,20 @@ DinoDrawCall Dino_CreateDrawCall_Sprite(const std::string& tex, const uint16_t p
     drawCall.scale = scale;
     drawCall.vertices.reserve(6);
 
-    drawCall.vertices[0].u = uBlit;
-    drawCall.vertices[0].v = vBlit;
-    drawCall.vertices[1].u = pixelSize + uBlit;
-    drawCall.vertices[1].v = vBlit;
-    drawCall.vertices[2].u = uBlit;
-    drawCall.vertices[2].v = pixelSize + vBlit;
-    drawCall.vertices[3].u = pixelSize + uBlit;
-    drawCall.vertices[3].v = vBlit;
-    drawCall.vertices[4].u = uBlit;
-    drawCall.vertices[4].v = pixelSize + vBlit;
-    drawCall.vertices[5].u = pixelSize + uBlit;
-    drawCall.vertices[5].v = pixelSize + vBlit;
+    const float ps = pixelSize;
+    const float radius = ps / 2;
+    
+    DinoVec2 posA = {-radius, -radius};
+    DinoVec2 posB = {radius, -radius};
+    DinoVec2 posC = {-radius, radius};
+    DinoVec2 posD = {radius, radius};
+    
+    drawCall.vertices.emplace_back(posA, uBlit, vBlit, color);
+    drawCall.vertices.emplace_back(posB, pixelSize + uBlit, vBlit, color);
+    drawCall.vertices.emplace_back(posC, uBlit, pixelSize + vBlit, color);
+    drawCall.vertices.emplace_back(posB, pixelSize + uBlit, vBlit, color);
+    drawCall.vertices.emplace_back(posC, uBlit, pixelSize + vBlit, color);
+    drawCall.vertices.emplace_back(posD, pixelSize + uBlit, pixelSize + vBlit, color);
 
     return drawCall;
 }
@@ -49,18 +51,20 @@ DinoDrawCall Dino_CreateDrawCall_InvertedSprite(const std::string& tex, const ui
     drawCall.scale = scale;
     drawCall.vertices.reserve(6);
 
-    drawCall.vertices[0].u = pixelSize + uBlit;
-    drawCall.vertices[0].v = vBlit;
-    drawCall.vertices[1].u = uBlit;
-    drawCall.vertices[1].v = vBlit;
-    drawCall.vertices[2].u = pixelSize + uBlit;
-    drawCall.vertices[2].v = pixelSize + vBlit;
-    drawCall.vertices[3].u = uBlit;
-    drawCall.vertices[3].v = vBlit;
-    drawCall.vertices[4].u = pixelSize + uBlit;
-    drawCall.vertices[4].v = pixelSize + vBlit;
-    drawCall.vertices[5].u = uBlit;
-    drawCall.vertices[5].v = pixelSize + vBlit;
+    const float ps = pixelSize;
+    const float radius = ps / 2;
+    
+    DinoVec2 posA = {-radius, -radius};
+    DinoVec2 posB = {radius, -radius};
+    DinoVec2 posC = {-radius, radius};
+    DinoVec2 posD = {radius, radius};
+    
+    drawCall.vertices.emplace_back(posA, pixelSize + uBlit, vBlit, color);
+    drawCall.vertices.emplace_back(posB, uBlit, vBlit, color);
+    drawCall.vertices.emplace_back(posC, pixelSize + uBlit, pixelSize + vBlit, color);
+    drawCall.vertices.emplace_back(posB, uBlit, vBlit, color);
+    drawCall.vertices.emplace_back(posC, pixelSize + uBlit, pixelSize + vBlit, color);
+    drawCall.vertices.emplace_back(posD, uBlit, pixelSize + vBlit, color);
 
     return drawCall;
 }
