@@ -88,36 +88,35 @@ constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 void dino_player::UpdatePlayer(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
-    this->isIdle = false;
-    this->isWalking = false;
-    this->isRunning = false;
+    isIdle = false;
+    isWalking = false;
+    isRunning = false;
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+    DinoGamepad gamepad{};
 
-        float playerSpeed = speed;
+    bool bSuccess = XDino_GetGamepad(DinoGamepadIdx_ALL[indexPlayer], gamepad);
+    if (!bSuccess)
+        return;
 
-        if (gamepad.btn_right && !gamepad.btn_left) {
-            playerSpeed *= 2.f;
-        }
+    float playerSpeed = speed;
 
-        this->playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
-        this->playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
+    if (gamepad.btn_right && !gamepad.btn_left) {
+        playerSpeed *= 2.f;
+    }
 
-        if (gamepad.stick_left_x != 0) {
-            this->isMirror = gamepad.stick_left_x < 0;
-        }
+    playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
+    playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
 
-        this->isIdle = gamepad.stick_left_x == 00 && gamepad.stick_left_y == 0;
-        if (!this->isIdle) {
-            if (gamepad.btn_right)
-                this->isRunning = true;
-            else {
-                this->isWalking = true;
-            }
+    if (gamepad.stick_left_x != 0) {
+        isMirror = gamepad.stick_left_x < 0;
+    }
+
+    isIdle = gamepad.stick_left_x == 00 && gamepad.stick_left_y == 0;
+    if (!isIdle) {
+        if (gamepad.btn_right)
+            isRunning = true;
+        else {
+            isWalking = true;
         }
     }
 }
@@ -136,22 +135,22 @@ void dino_player::DrawPlayer(double timeSinceStart)
 
     int animationIndex = 0;
 
-    if (this->isIdle) {
+    if (isIdle) {
         int indexFrame = int(timeSinceStart * 8) % 4;
         animationIndex = 0 + 24 * indexFrame;
     }
-    if (this->isWalking) {
+    if (isWalking) {
         int indexFrame = int(timeSinceStart * 8) % 6;
         animationIndex = 96 + 24 * indexFrame;
     }
-    if (this->isRunning) {
+    if (isRunning) {
         int indexFrame = int(timeSinceStart * 16) % 6;
         animationIndex = 432 + 24 * indexFrame;
     }
 
     int v = indexPlayer * 24;
 
-    if (this->isMirror) {
+    if (isMirror) {
         drawCall.vertices.emplace_back(posA, animationIndex + 24, v + 0); // J'ai mis le premier dinosaure bleu
         drawCall.vertices.emplace_back(posB, animationIndex, v + 0);
         drawCall.vertices.emplace_back(posC, animationIndex + 24, v + 24);
@@ -169,7 +168,7 @@ void dino_player::DrawPlayer(double timeSinceStart)
     }
 
     drawCall.scale = 3;
-    drawCall.translation = this->playerPos;
+    drawCall.translation = playerPos;
     XDino_Draw(drawCall);
 }
 
