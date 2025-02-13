@@ -30,7 +30,8 @@ void DinoTerrain::draw_terrain()
 {
     DinoVec2 renderSize = XDino_GetRenderSize();
 
-    DinoVec2 offset = {(renderSize.x - TERRAIN_WIDTH_TOTAL * 16) / 2.0f, (renderSize.y - TERRAIN_HEIGHT_TOTAL * 16) / 2.0f};
+    DinoVec2 offset = {(renderSize.x - TERRAIN_WIDTH_TOTAL * 16) / 2.0f,
+                       (renderSize.y - TERRAIN_HEIGHT_TOTAL * 16) / 2.0f};
 
     for (int x = 0; x < TERRAIN_WIDTH_TOTAL; x++) {
         int16_t u = 1;
@@ -41,7 +42,7 @@ void DinoTerrain::draw_terrain()
         else if (x == TERRAIN_WIDTH_TOTAL - 1) {
             u = 2;
         }
-        
+
         DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(u, 1 + terrainAnimationFrames[frame] * 3, 16, 16);
         drawCall.textureName = "terrain.png";
         drawCall.translation = {offset.x + x * 16, offset.y};
@@ -53,7 +54,7 @@ void DinoTerrain::draw_terrain()
         XDino_Draw(drawCall);
     }
 
-    for (int y = 0; y < TERRAIN_HEIGHT; y++) {        
+    for (int y = 0; y < TERRAIN_HEIGHT; y++) {
         DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(0, 2 + terrainAnimationFrames[frame] * 3, 16, 16);
         drawCall.textureName = "terrain.png";
         drawCall.translation = {offset.x, offset.y + (y + 1) * 16};
@@ -64,7 +65,7 @@ void DinoTerrain::draw_terrain()
         drawCall.translation = {offset.x + (TERRAIN_WIDTH_TOTAL - 1) * 16, offset.y + (y + 1) * 16};
         XDino_Draw(drawCall);
     }
-    
+
     {
         DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(1, 0, 16, 16);
 
@@ -72,7 +73,7 @@ void DinoTerrain::draw_terrain()
         drawCall.vertices[2].pos = {TERRAIN_WIDTH * 16, TERRAIN_HEIGHT * 16};
         drawCall.vertices[3].pos = {TERRAIN_WIDTH * 16, TERRAIN_HEIGHT * 16};
         drawCall.vertices[4].pos.x = TERRAIN_WIDTH * 16;
-        
+
         drawCall.textureName = "terrain.png";
         drawCall.translation = {offset.x + 16, offset.y + 16};
         XDino_Draw(drawCall);

@@ -300,7 +300,9 @@ qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
-> ...
+> (4 + 16 + 16 + 12 + 12 + 1) * 2 = 122. L'océan étant dessiné avec le clear de l'écran, et le centre du terrain étant
+> dessiné avec un seul rectangle, il ne reste plus qu'à dessiner la bordure du terrain qui prends 120 triangles. En
+> comptant le centre du terrain la scène entière prends 122 triangles à dessiner.
 
 f) Implémentez la fonctionnalité F2.3 .
 
