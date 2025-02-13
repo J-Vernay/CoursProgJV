@@ -44,6 +44,7 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<const DinoVec2> points, floa
 /// @param height Hauteur de la sprite, en pixels.
 /// @param vertexOffset Offset des vertex par rapport au centre de la sprite, en pixels.
 /// @param flip Si `true` la sprite sera inversé horizontalement.
-DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height, DinoVec2 vertexOffset = {0, 0}, bool flip = false);
+/// @param tint Couleur de teinte de la sprite.
+DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height, DinoVec2 vertexOffset = {0, 0}, bool flip = false, DinoColor tint = DinoColor_WHITE);
 
 /// @}

@@ -1,12 +1,25 @@
-﻿#pragma once
+﻿/// @file dino_player.h
+/// @brief Un acteur controllable par un utilisateur.
+
+#pragma once
 
 #include "dino_actor.h"
 
 #include <dino/xdino.h>
 #include <dino/dino_animation.h>
 
-/// Representation et logique d'un joueur
+/// Joueur dinosaure
+/// @brief Un acteur controllable par un utilisateur.
 class DinoPlayer : public DinoActor {
+public:
+    /// Couleur d'un dinosaure
+    enum Color {
+        BLUE,
+        RED,
+        YELLOW,
+        GREEN
+    };
+private:
     enum AnimationId {
         IDLE,
         WALK,
@@ -17,22 +30,20 @@ class DinoPlayer : public DinoActor {
     DinoGamepadIdx gamepadIdx;
     bool direction = false;
     float hitTimer = 0;
-    int16_t color = 0;
+    Color color = BLUE;
     AnimatorState<AnimationId> animatorState = {0, 0, IDLE};
 
 public:
     /// Initialise le joueur.
     /// @param position Position de départ du joueur.
-    explicit DinoPlayer(DinoVec2 position, DinoGamepadIdx gamepadIdx, int16_t color)
+    /// @param gamepadIdx Indentificateur du gamepad lié au joueur.
+    /// @param color Couleur du dinosaure.
+    explicit DinoPlayer(DinoVec2 position, DinoGamepadIdx gamepadIdx, Color color)
         : DinoActor(position), gamepadIdx(gamepadIdx), color(color)
     {
     }
-
-    /// Effectue la logique de jeu du joueur.
-    /// @param deltaTime Temps passé depuis la dernière frame.
+    
     void update(float deltaTime) override;
-
-    /// Render le joueur à l'écran.
     void draw() const override;
 
     /// Frappe le joueur et l'immobilise.

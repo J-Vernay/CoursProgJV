@@ -49,7 +49,7 @@ void Dino_GameFrame(double timeSinceStart)
             
             DinoVec2 windowSize = XDino_GetRenderSize();
             actors.push_back(new DinoPlayer({windowSize.x / 2, windowSize.y / 2},
-                                         gamepadIdx, static_cast<int16_t>(playerCount++)));
+                                         gamepadIdx, static_cast<DinoPlayer::Color>(playerCount++)));
             availableGamepads.erase(std::find(availableGamepads.begin(), availableGamepads.end(), gamepadIdx));
         }
     }

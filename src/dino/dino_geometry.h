@@ -1,3 +1,6 @@
+/// @file dino_geometry.h
+/// @brief Fonctions de calculs de collisions.
+
 #pragma once
 
 #include <dino/xdino.h>

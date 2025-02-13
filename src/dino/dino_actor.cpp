@@ -1,3 +1,6 @@
+/// @file dino_actor.cpp
+/// @brief Implémentation de la classe DinoActor.
+
 #include <dino/xdino.h>
 #include <dino/dino_actor.h>
 

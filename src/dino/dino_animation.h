@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿/// @file dino_animation.h
+/// @brief Structures liées à l'animation d'objets.
+
+#pragma once
 #include <dino/xdino.h>
 
 /// Représentation d'une animation

@@ -1,3 +1,6 @@
+/// @file dino_geometry.cpp
+/// @brief Implémentation des fonctions de collisions.
+
 #include <dino/dino_geometry.h>
 
 bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)

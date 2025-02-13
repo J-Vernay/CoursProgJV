@@ -1,4 +1,7 @@
-﻿#include <dino/dino_draw_utils.h>
+﻿/// @file dino_draw_utils.cpp
+/// @brief Implémentation de fonctions utilitaires pour générer des DinoDrawCall.
+
+#include <dino/dino_draw_utils.h>
 
 DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
 {
@@ -204,7 +207,7 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<const DinoVec2> points, floa
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height, DinoVec2 vertexOffset, bool flip)
+DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int16_t height, DinoVec2 vertexOffset, bool flip, DinoColor tint)
 {
     DinoDrawCall drawCall;
 
@@ -215,12 +218,12 @@ DinoDrawCall Dino_CreateDrawCall_Sprite(int16_t u, int16_t v, int16_t width, int
     int16_t right = flip ? u : u + width;
 
     drawCall.vertices.reserve(6);
-    drawCall.vertices.emplace_back(vertexOffset, left, v, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x, vertexOffset.y + height}, left, v + height, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y + height}, right, v + height, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y + height}, right, v + height, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y}, right, v, DinoColor_WHITE);
-    drawCall.vertices.emplace_back(vertexOffset, left, v, DinoColor_WHITE);
+    drawCall.vertices.emplace_back(vertexOffset, left, v, tint);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x, vertexOffset.y + height}, left, v + height, tint);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y + height}, right, v + height, tint);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y + height}, right, v + height, tint);
+    drawCall.vertices.emplace_back(DinoVec2{vertexOffset.x + width, vertexOffset.y}, right, v, tint);
+    drawCall.vertices.emplace_back(vertexOffset, left, v, tint);
 
     return drawCall;
 }
