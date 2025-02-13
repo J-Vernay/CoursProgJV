@@ -288,33 +288,43 @@ Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets p
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Allouer de la mémoire c'est la discussion entre l'os, le programme, la RAM et le CPU qui fait correspondre les
+> addresse adressale à la RAM physique
+> C'est une opération couteuse car elle prend du temps de calcul
 
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Un type sert à exprimer à la machine comment elle doit interprété les informations en binaire
+> un pointeur est un code correspondant à l'addresse mémoire d'un élément en particulier
+> réinterprété un pointeur signifie changer le type de l'element pointer sans en modifier l'addresse
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> DinoColor ==> 4 octets ==> 32 bits
+> DinoVertex ==> 64 bits + 16 *2 bits + 32 bits ==> 128 bits soit 16 octets 
 
 g) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> Un std vector est une classe qui stock le pointeur du début des éléments qu'on veut retenir dans la liste et celui de fin. 
+> un vector pourrait prendre 128 bits si ses deux valeurs font 64 bits
+> grace à l'indice d'un element, il suffit de faire un calcule par rapport aux données de taille de la liste et de pointeur de début et de fin
+> Cela entraine (..to be continued) 
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Dans le fichier exe, on retrouve la taille nécessaire pour les variables globales. Ainsi, l'OS crée la correspondance mémoire pour ces dernieres dès le départ. 
+> Pour les variables locales, l'OS alloue la stack temps que la fonction est en cours d'utilisation 
+> std::vector a une allocation dynamique, ses valeurs peuvent etre modifié (resize) et donc la stack est modifé par l'OS a chaque fois. 
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
 
-> ...
+> On peut creer la classe DinoEntity permettant un héritage de classe et en faisant découler DinoPlyer et DinoAnimal
 
 j) Implémentez la fonctionnalité F3.4.
 

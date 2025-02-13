@@ -58,20 +58,20 @@ void DinoAnimals::DrawPlayer(double time)
     DinoVec2 posD = {32, 32};
 
     if (this->g_bMiror) {
-        drawcall.vertices.emplace_back(posA, 32 , 0 + 32 * indexG);
-        drawcall.vertices.emplace_back(posB, 0 , 0 + 32 * indexG);
-        drawcall.vertices.emplace_back(posC, 32 , 32 + 32 * indexG);
-        drawcall.vertices.emplace_back(posB, 0 , 0 + 32 * indexG);
-        drawcall.vertices.emplace_back(posC, 32 , 32 + 32 * indexG);
-        drawcall.vertices.emplace_back(posD, 0 , 32 + 32 * indexG);
+        drawcall.vertices.emplace_back(posA, 32, 0 + 32 * indexG);
+        drawcall.vertices.emplace_back(posB, 0, 0 + 32 * indexG);
+        drawcall.vertices.emplace_back(posC, 32, 32 + 32 * indexG);
+        drawcall.vertices.emplace_back(posB, 0, 0 + 32 * indexG);
+        drawcall.vertices.emplace_back(posC, 32, 32 + 32 * indexG);
+        drawcall.vertices.emplace_back(posD, 0, 32 + 32 * indexG);
     }
     else {
-        drawcall.vertices.emplace_back(posA, 0 , 0 + 32 * indexG);
-        drawcall.vertices.emplace_back(posB, 32 , 0 + 32 * indexG);
-        drawcall.vertices.emplace_back(posC, 0 , 32 + 32 * indexG);
-        drawcall.vertices.emplace_back(posB, 32 , 0 + 32 * indexG);
-        drawcall.vertices.emplace_back(posC, 0 , 32 + 32 * indexG);
-        drawcall.vertices.emplace_back(posD, 32 , 32 + 32 * indexG);
+        drawcall.vertices.emplace_back(posA, 0, 0 + 32 * indexG);
+        drawcall.vertices.emplace_back(posB, 32, 0 + 32 * indexG);
+        drawcall.vertices.emplace_back(posC, 0, 32 + 32 * indexG);
+        drawcall.vertices.emplace_back(posB, 32, 0 + 32 * indexG);
+        drawcall.vertices.emplace_back(posC, 0, 32 + 32 * indexG);
+        drawcall.vertices.emplace_back(posD, 32, 32 + 32 * indexG);
     }
     drawcall.translation = this->playerPos;
     drawcall.scale = 1;
@@ -81,6 +81,6 @@ void DinoAnimals::DrawPlayer(double time)
 void DinoAnimals::Init()
 {
     playerPos = XDino_RandomUnitVec2();
-    playerPos = DinoVec2 {0,200};
+    playerPos = DinoVec2{0, 200};
     indexG = XDino_RandomUint32(0, 7);
 }
