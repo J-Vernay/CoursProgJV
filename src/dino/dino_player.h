@@ -2,7 +2,7 @@
 
 #include <dino/xdino.h>
 
-class DinoPlayer {
+class dino_player {
     DinoVec2 playerPos = {};
     bool isMirror = false;
     bool isIdle;
@@ -14,4 +14,6 @@ public:
     void Init(int index, DinoVec2 posInit);
     void UpdatePlayer(float deltaTime);
     void DrawPlayer(double timeSinceStart);
+
+    bool IsAbove(dino_player& other);
 };

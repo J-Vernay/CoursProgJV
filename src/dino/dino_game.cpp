@@ -3,26 +3,89 @@
 
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
-#include "DinoPlayer.h"
+#include "dino_player.h"
 
+#include <algorithm>
 #include <format>
 
 // Variables globales.
 double lastTime = 0;
-double rotation = 360.0;
-double scale = 1.0;
 
-DinoPlayer dinoPlayer1;
-DinoPlayer dinoPlayer2;
-DinoPlayer dinoPlayer3;
-DinoPlayer dinoPlayer4;
+std::vector<dino_player> dinoPlayers;
 
-std::vector<DinoVec2> polyline;
+bool ComparePlayerPos(dino_player& a, dino_player& b)
+{
+    return a.IsAbove(b);
+}
+
+void Dino_GameInit()
+{
+    DinoVec2 windowSize = XDino_GetWindowSize();
+    XDino_SetRenderSize(windowSize);
+
+    dinoPlayers.resize(4);
+    dinoPlayers[0].Init(0, {windowSize.x / 2 - 100, windowSize.y / 2 - 100});
+    dinoPlayers[1].Init(1, {windowSize.x / 2 - 100, windowSize.y / 2 + 100});
+    dinoPlayers[2].Init(2, {windowSize.x / 2 + 100, windowSize.y / 2 - 100});
+    dinoPlayers[3].Init(3, {windowSize.x / 2 + 100, windowSize.y / 2 + 100});
+}
+
+void Dino_GameFrame(double timeSinceStart)
+{
+    // Prendre en compte le temps qui passe.
+
+    float deltaTime = static_cast<float>(timeSinceStart - lastTime);
+    lastTime = timeSinceStart;
+
+    for (dino_player& player : dinoPlayers) {
+        player.UpdatePlayer(deltaTime);
+    }
+
+    // Affichage
+
+    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
+
+    XDino_SetClearColor(CLEAR_COLOR);
+
+    // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
+
+    DinoVec2 windowSize = XDino_GetWindowSize();
+    XDino_SetRenderSize(windowSize);
+
+    std::sort(dinoPlayers.begin(), dinoPlayers.end(), ComparePlayerPos);
+    for (dino_player& player : dinoPlayers) {
+        player.DrawPlayer(timeSinceStart);
+    }
+
+    // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
+    {
+        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
+        drawCall.scale = 2;
+        XDino_Draw(drawCall);
+    }
+
+    // Dessin du dinosaure que l'on peut bouger.
+    {
+
+    }
+
+    // NOM Prénom
+    {
+        std::string text = "DUFOUR Enzo";
+        DinoVec2 textSize;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.scale = 2;
+        drawCall.translation.x = windowSize.x - 2 * textSize.x;
+        drawCall.translation.y = windowSize.y - 2 * textSize.y;
+        XDino_Draw(drawCall);
+    }
+}
 
 // Constantes.
 constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 
-void DinoPlayer::UpdatePlayer(float deltaTime)
+void dino_player::UpdatePlayer(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
     this->isIdle = false;
@@ -59,7 +122,7 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
     }
 }
 
-void DinoPlayer::DrawPlayer(double timeSinceStart)
+void dino_player::DrawPlayer(double timeSinceStart)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
@@ -110,131 +173,15 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
     XDino_Draw(drawCall);
 }
 
-void DinoPlayer::Init(int index, DinoVec2 posInit)
+bool dino_player::IsAbove(dino_player& other)
+{
+    return playerPos.y < other.playerPos.y;
+}
+
+void dino_player::Init(int index, DinoVec2 posInit)
 {
     playerPos = posInit;
     indexPlayer = index;
-}
-
-void Dino_GameInit()
-{
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
-    dinoPlayer1.Init(0, {windowSize.x / 2, windowSize.y / 2});
-    dinoPlayer2.Init(1, {windowSize.x / 2 + 100, windowSize.y / 2});
-    dinoPlayer3.Init(2, {windowSize.x / 2, windowSize.y / 2 - 100});
-    dinoPlayer4.Init(3, {windowSize.x / 2 + 100, windowSize.y / 2 - 100});
-
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
-}
-
-void Dino_GameFrame(double timeSinceStart)
-{
-    // Prendre en compte le temps qui passe.
-
-    float deltaTime = static_cast<float>(timeSinceStart - lastTime);
-    lastTime = timeSinceStart;
-
-    dinoPlayer1.UpdatePlayer(deltaTime);
-    dinoPlayer2.UpdatePlayer(deltaTime);
-    dinoPlayer3.UpdatePlayer(deltaTime);
-    dinoPlayer4.UpdatePlayer(deltaTime);
-
-    // Affichage
-
-    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-    constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
-
-    dinoPlayer1.DrawPlayer(timeSinceStart);
-    dinoPlayer2.DrawPlayer(timeSinceStart);
-    dinoPlayer3.DrawPlayer(timeSinceStart);
-    dinoPlayer4.DrawPlayer(timeSinceStart);
-    XDino_SetClearColor(CLEAR_COLOR);
-
-    // Dessin de la "polyligne" 
-    {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Polyline(polyline, 100, POLYLINE_COLOR);
-        XDino_Draw(drawCall);
-    }
-
-    // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
-
-    // Dessin de la texture centrale qu'on peut bouger.
-    {
-        /*constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
-        constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
-        constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
-        constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
-
-        float quarterWidth = windowSize.x / 4;
-        float quarterHeight = windowSize.y / 4;
-
-        DinoDrawCall drawCall;
-        drawCall.vertices.resize(6);
-        drawCall.vertices[0].pos = {-quarterWidth, -quarterHeight};
-        drawCall.vertices[0].color = PURPLE;
-        drawCall.vertices[1].pos = {quarterWidth, -quarterHeight};
-        drawCall.vertices[1].color = CYAN;
-        drawCall.vertices[2].pos = {-quarterWidth, quarterHeight};
-        drawCall.vertices[2].color = PINK;
-        drawCall.vertices[3].pos = {quarterWidth, -quarterHeight};
-        drawCall.vertices[3].color = CYAN;
-        drawCall.vertices[4].pos = {-quarterWidth, quarterHeight};
-        drawCall.vertices[4].color = PINK;
-        drawCall.vertices[5].pos = {quarterWidth, quarterHeight};
-        drawCall.vertices[5].color = ORANGE;
-
-        drawCall.translation = {windowSize.x / 2, windowSize.y / 2};
-        drawCall.rotation = rotation;
-        drawCall.scale = scale;
-
-        drawCall.vertices[0].u = 0;
-        drawCall.vertices[0].v = 0;
-        drawCall.vertices[1].u = 96;
-        drawCall.vertices[1].v = 0;
-        drawCall.vertices[2].u = 0;
-        drawCall.vertices[2].v = 96;
-        drawCall.vertices[3].u = 96;
-        drawCall.vertices[3].v = 0;
-        drawCall.vertices[4].u = 0;
-        drawCall.vertices[4].v = 96;
-        drawCall.vertices[5].u = 96;
-        drawCall.vertices[5].v = 96;
-        drawCall.textureName = "monogram-bitmap.png";
-
-        XDino_Draw(drawCall);*/
-    }
-
-    // Dessin du dinosaure que l'on peut bouger.
-    {
-
-    }
-
-    // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
-    {
-        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
-        drawCall.scale = 2;
-        XDino_Draw(drawCall);
-    }
-    // NOM Prénom
-    {
-        std::string text = "DUFOUR Enzo";
-        DinoVec2 textSize;
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
-        drawCall.scale = 2;
-        drawCall.translation.x = windowSize.x - 2 * textSize.x;
-        drawCall.translation.y = windowSize.y - 2 * textSize.y;
-        XDino_Draw(drawCall);
-    }
-
 }
 
 void Dino_GameShut()

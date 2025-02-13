@@ -148,7 +148,7 @@ d) Implémentez la fonctionnalité F1.4 .
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper et en avoir plusieurs instances ?
 
-> ...
+> Via la création d'une struct.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -158,7 +158,9 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> Ces fonctions sont des méthodes. Elles permettent de limiter a modification d'un type de données à ces fonctions, via
+> l'utilisation de classe. Cette limitation est appelé l'encapsulation. Cela permet de protéger les données et de ne pas
+> les exposer directement.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -167,17 +169,19 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> ...
+> La syntaxe qui permet d'itérer sur tous les éléments d'un tableau sans manipuler d'indices de cases est la boucle for(
+> type obj : list). Par exemple : for (DinoPlayer& player : players) { ... }.
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
-> ...
+> Via la création d'une fonction qui return un bool. IsAbove.
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
-> ...
+> .begin() retourne le premier élément du vecteur et .end() retourne le dernier élément du vecteur. Ils servent à
+> définir la plage de tri.
 
 ## 3. Comprendre la compilation des fichiers C++
 
@@ -185,46 +189,67 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino c'est nos fichiers headers.
+> external/pix/... ce sont nos fichiers externes et qui permettent d'accéder aux fonctionnalités de Pix.
+> external/stb ce sont encore des fichiers externes utilisés par le moteur.
+> src/dino/x64-windows ce sont des fichiers headers propre à la plateforme.
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino c'est nos fichiers sources.
+> src/dino/x64-windows ce sont des fichiers sources propre à la plateforme.
+> external/stb implémentation du code externe par le moteur.
+> Remarque : nous n'avons pas de fichier sources pour Pix ?
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Chaque fichier CPP a un fichier OBJ correspondant.
+> build/obj/x64-windows/Debug/Dino_EnzoDufour
+> x64-windows c'est spécifique à la plateforme.
+> Debug c'est spécifique à la configuration.
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> build/bin/x64-windows/Debug/Dino_EnzoDufour.exe
+> x64-windows c'est spécifique à la plateforme.
+> Debug c'est spécifique à la configuration.
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> C'est lui qui définit comment nous passons des fichiers sources à l'exécutable final.
+> build/%{cfg.buildcfg} c'est le dossier contenant l'exe.
+> includedirs{ "src", "external" }
+> #include <dino/dino_player.h>
+>
+> files { "external/**.cpp", "external **.h"}
+> files { "src/dino/**.cpp", "src/dino/**.h"}
+> files { "src/dino/x64-windows/**.cpp", "src/dino/x64-windows/**.h"}
+> Ils disent où on va hercher nos .cpp et nos .h.
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** .h est une déclaration de ce que l'on va faire dans le .cpp.
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** .obj est une standardisation du .cpp.
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** Nous partons des fichiers .obj pour créer les .lib. Un .lib est une bibliothèque de
+> .obj
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** C'est le même lien que pour .obj et .lib mais pour .dll c'est quelqu'un qui a déjà
+> fait la compilation et en plus il a fait l'édition des liens.
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** .obj est une standardisation du .cpp. .exe est le résultat final de la compilation.
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** .exe va permettre de directement appeler des fonctions de la .dll.
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Nous les reconnaissons via le #. Il permet d'importer des fonctions et des valeurs.
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> Il permet de lier les fichiers .obj entre eux pour créer un .exe. Il peut produire des .lib et des .dll. La différence
 
 ## 4. Programmation du terrain
 
