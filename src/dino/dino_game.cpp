@@ -10,19 +10,17 @@
 // Variables globales.
 double lastTime = 0;
 
-DinoPlayer g_Player1;
-DinoPlayer g_Player2;
-DinoPlayer g_Player3;
-DinoPlayer g_Player4;
+std::vector<DinoPlayer> g_Players;
 
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_Player1.Init({windowSize.x / 2 - 100, windowSize.y / 2 - 100}, 0, DinoGamepadIdx::Keyboard);
-    g_Player2.Init({windowSize.x / 2 - 100, windowSize.y / 2 + 100}, 1, DinoGamepadIdx::Gamepad1);
-    g_Player3.Init({windowSize.x / 2 + 100, windowSize.y / 2 - 100}, 2, DinoGamepadIdx::Gamepad2);
-    g_Player4.Init({windowSize.x / 2 + 100, windowSize.y / 2 + 100}, 3, DinoGamepadIdx::Gamepad3);
+    g_Players.resize(4);
+    g_Players[0].Init({windowSize.x / 2 - 100, windowSize.y / 2 - 100}, 0, DinoGamepadIdx::Keyboard);
+    g_Players[1].Init({windowSize.x / 2 - 100, windowSize.y / 2 + 100}, 1, DinoGamepadIdx::Gamepad1);
+    g_Players[2].Init({windowSize.x / 2 + 100, windowSize.y / 2 - 100}, 2, DinoGamepadIdx::Gamepad2);
+    g_Players[3].Init({windowSize.x / 2 + 100, windowSize.y / 2 + 100}, 3, DinoGamepadIdx::Gamepad3);
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -32,10 +30,8 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    g_Player1.UpdatePlayer(deltaTime);
-    g_Player2.UpdatePlayer(deltaTime);
-    g_Player3.UpdatePlayer(deltaTime);
-    g_Player4.UpdatePlayer(deltaTime);
+	for (DinoPlayer& player : g_Players)
+		player.UpdatePlayer(deltaTime);
     
     // Affichage
 
@@ -47,11 +43,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-
-    g_Player1.DrawPlayer(timeSinceStart);
-    g_Player2.DrawPlayer(timeSinceStart);
-    g_Player3.DrawPlayer(timeSinceStart);
-    g_Player4.DrawPlayer(timeSinceStart);
+    
+    for (DinoPlayer& player : g_Players)
+        player.DrawPlayer(timeSinceStart);
     
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
