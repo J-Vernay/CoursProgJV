@@ -1,4 +1,6 @@
 #pragma once
+#include "dino_animation.h"
+
 #include <dino/xdino.h>
 
 class DinoAnimal {
@@ -16,16 +18,31 @@ public:
     };
 
 private:
+    enum AnimationId {
+        WALK_SIDE,
+        WALK_DOWN,
+        WALK_UP,
+        DEAD
+    };
+
     DinoVec2 position;
-    bool direction;
+    DinoVec2 direction;
     AnimalType type;
+    AnimatorState<AnimationId> animatorState;
 
 public:
-    explicit DinoAnimal(DinoVec2 position) : position(position), direction(false),
-                                             type(static_cast<AnimalType>(XDino_RandomInt32(0, MAX - 1)))
+    explicit DinoAnimal(DinoVec2 position)
+        : position(position), type(static_cast<AnimalType>(XDino_RandomInt32(0, MAX - 1))),
+          animatorState({0, 0, WALK_SIDE})
     {
+        choose_random_direction();
     }
 
     void update(float deltaTime);
     void draw();
+
+private:
+    void update_movement(float deltaTime);
+    void update_animation(float deltaTime);
+    void choose_random_direction();
 };
