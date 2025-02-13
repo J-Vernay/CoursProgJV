@@ -360,7 +360,12 @@ h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Les variables globales sont alloués au début du processus dans le secteur "data".
+>
+> Les variables locales sont alloués à chaque fois qu'une fonction est appelée, dans le "stack".
+>
+> La mémoire des `std::vector` est allouée à la création de ces derniers, ainsi que quand la mémoire déjà allouée pour
+> le `std::vector` est remplie, le tout étant situé dans la "heap".
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
