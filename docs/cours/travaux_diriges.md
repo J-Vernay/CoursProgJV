@@ -147,7 +147,7 @@ c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-    -  on affiche la frame à partir d'un index qu on fait loop via une division euclidenne et des calculs 
+    -  on affiche la frame à partir d'un index qu on fait loop via une division euclidenne et des calculs en se basant sur la taille de chaque frame
 
 d) Implémentez la fonctionnalité F1.4 .
 
