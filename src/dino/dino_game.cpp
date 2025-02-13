@@ -14,7 +14,6 @@ double scale = 1.0;
 std::vector<DinoVec2> polyline;
 
 
-
 DinoPlayer player;
 DinoPlayer player1;
 DinoPlayer player2;
@@ -28,10 +27,10 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    player.playerPos = {windowSize.x / 2, windowSize.y / 2};
-    player1.playerPos = {windowSize.x / 2 - 100, windowSize.y / 2};
-    player2.playerPos = {windowSize.x / 2, windowSize.y / 2 - 100};
-    player3.playerPos = {windowSize.x / 2 - 100, windowSize.y / 2 - 100};
+    player.Init({windowSize.x / 2, windowSize.y / 2});
+    player1.Init({windowSize.x / 2 - 100, windowSize.y / 2});
+    player2.Init({windowSize.x / 2, windowSize.y / 2 - 100});
+    player3.Init({windowSize.x / 2 - 100, windowSize.y / 2 - 100});
 }
 
 

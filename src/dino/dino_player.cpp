@@ -33,11 +33,11 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
             continue;
 
         if (gamepad.btn_right) {
-            speed = CIRCLE_SPEED * 2;
+            speed = baseSpeed * 2;
             this->isRunning = true;
         }
         else {
-            speed = CIRCLE_SPEED;
+            speed = baseSpeed;
             this->isRunning = false;
         }
 
@@ -90,4 +90,9 @@ void DinoPlayer::DrawPlayer(float time)
     drawcall.translation = this->playerPos;
     drawcall.scale = 2;
     XDino_Draw(drawcall);
+}
+
+void DinoPlayer::Init(DinoVec2 pos)
+{
+    playerPos = pos;
 }
