@@ -11,7 +11,7 @@ public:
         AUTUMN,
         WINTER
     };
-    
+
 private:
     float timer = 0;
     int frame = 0;
@@ -24,4 +24,6 @@ public:
     void update(float deltaTime);
     void draw_ocean();
     void draw_terrain();
+    DinoVec2 get_terrain_min_position();
+    DinoVec2 get_terrain_max_position();
 };

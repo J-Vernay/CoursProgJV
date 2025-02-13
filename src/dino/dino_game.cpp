@@ -6,6 +6,7 @@
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
+#include <dino/dino_animal.h>
 
 #include <format>
 
@@ -14,6 +15,8 @@ double lastTime = 0;
 DinoTerrain terrain;
 std::vector<DinoPlayer> players;
 std::vector<DinoGamepadIdx> availableGamepads;
+std::vector<DinoAnimal> animals;
+float spawnTimer = 0;
 
 void Dino_GameInit()
 {
@@ -58,6 +61,23 @@ void Dino_GameFrame(double timeSinceStart)
         player.update(deltaTime);
     }
 
+    {
+        spawnTimer += deltaTime;
+        if (spawnTimer >= 1) {
+            spawnTimer = 0;
+
+            DinoVec2 minPosition = terrain.get_terrain_min_position();
+            DinoVec2 maxPosition = terrain.get_terrain_max_position();
+
+            animals.push_back(DinoAnimal({XDino_RandomFloat(minPosition.x, maxPosition.x),
+                                          XDino_RandomFloat(minPosition.y, maxPosition.y)}));
+        }
+    }
+
+    for (DinoAnimal& animal : animals) {
+        animal.update(deltaTime);
+    }
+
     // Affichage
     // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
     XDino_SetRenderSize({480, 360});
@@ -69,6 +89,10 @@ void Dino_GameFrame(double timeSinceStart)
         std::sort(players.begin(), players.end(), DinoPlayer::compareHeight);
         for (DinoPlayer& player : players) {
             player.draw();
+        }
+
+        for (DinoAnimal& animal : animals) {
+            animal.draw();
         }
     }
 

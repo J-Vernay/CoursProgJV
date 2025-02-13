@@ -10,7 +10,7 @@ const int terrainAnimationFrames[] = {
     0, 1, 2, 1, 0
 };
 
-const DinoColor oceanColors[] = {
+constexpr DinoColor oceanColors[] = {
     {0, 146, 221, 255},
     {0, 146, 221, 255},
     {0, 146, 221, 255},
@@ -19,8 +19,8 @@ const DinoColor oceanColors[] = {
 
 void DinoTerrain::init()
 {
-    season = static_cast<Season>(XDino_RandomInt32(0, Season::WINTER));
-    
+    season = static_cast<Season>(XDino_RandomInt32(0, WINTER));
+
     for (int y = 0; y < TERRAIN_HEIGHT; y++) {
         for (int x = 0; x < TERRAIN_WIDTH; x++) {
             int16_t tile = XDino_RandomInt32(0, 20);
@@ -103,12 +103,25 @@ void DinoTerrain::draw_terrain()
 
     for (int y = 0; y < TERRAIN_HEIGHT; y++) {
         for (int x = 0; x < TERRAIN_WIDTH; x++) {
-            if (decorations[y * TERRAIN_WIDTH + x] == 0) continue;
-            
+            if (decorations[y * TERRAIN_WIDTH + x] == 0)
+                continue;
+
             DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(decorations[y * TERRAIN_WIDTH + x] + uSeason, 0, 16, 16);
             drawCall.textureName = "terrain.png";
             drawCall.translation = {offset.x + (x + 1) * 16, offset.y + (y + 1) * 16};
             XDino_Draw(drawCall);
         }
     }
+}
+
+DinoVec2 DinoTerrain::get_terrain_min_position()
+{
+    DinoVec2 renderSize = XDino_GetRenderSize();
+    return {(renderSize.x - TERRAIN_WIDTH * 16) / 2.0f, (renderSize.y - TERRAIN_HEIGHT * 16) / 2.0f};
+}
+
+DinoVec2 DinoTerrain::get_terrain_max_position()
+{
+    DinoVec2 minPosition = get_terrain_min_position();
+    return {minPosition.x + TERRAIN_WIDTH * 16, minPosition.y + TERRAIN_HEIGHT * 16};
 }
