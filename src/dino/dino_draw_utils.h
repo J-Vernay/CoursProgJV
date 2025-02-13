@@ -34,5 +34,24 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = D
 /// @param color Couleur du trait.
 DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
                                           DinoColor color = DinoColor_WHITE);
+/// Produit un dessin d'un sprite a partir d'un blit d'une texture
+/// @param tex tecture complete
+/// @param pixelSize pixel par unité
+/// @param uBlit U de l'uv
+/// @param vBlit V de l'uv
+/// @param scale scale du sprite affiché
+/// @param color couleur du sprite
+/// @return 
+DinoDrawCall Dino_CreateDrawCall_Sprite(const std::string& tex, uint16_t pixelSize, uint16_t uBlit, uint16_t vBlit, int scale, DinoColor color = DinoColor_WHITE);
+
+/// Produit un dessin d'un sprite inversé par uv a partir d'un blit d'une texture
+/// @param tex texture complete
+/// @param pixelSize pixel par unité
+/// @param uBlit U de l'uv
+/// @param vBlit V de l'uv
+/// @param scale scale du sprite affiché
+/// @param color couleur du sprite
+/// @return 
+DinoDrawCall Dino_CreateDrawCall_InvertedSprite(const std::string& tex, uint16_t pixelSize, uint16_t uBlit, uint16_t vBlit, int scale, DinoColor color = DinoColor_WHITE);
 
 /// @}

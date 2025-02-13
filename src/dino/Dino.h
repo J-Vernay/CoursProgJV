@@ -7,17 +7,19 @@ class Dino
 {
 public:
     explicit Dino();
-    explicit Dino(const std::string& tex, uint16_t id);
-    explicit Dino(const std::string& tex, uint16_t id, DinoVec2 pos);
+    explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex, uint16_t id);
+    explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex, uint16_t id, DinoVec2 pos);
 
     static bool CompareHeight(const Dino& d1, const Dino& d2);
     
-    void Update(float deltaTime, const DinoGamepad gamepad);
-    void Draw(DinoDrawCall* dc) const;
-
+    void Update(float deltaTime);
+    
+    void Draw() const;
+    
 private:
     std::string tex;
     DinoVec2 pos;
+    DinoGamepadIdx gamepad_idx;
     
     uint16_t id;
 

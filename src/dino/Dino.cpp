@@ -1,12 +1,14 @@
 ﻿#include "Dino.h"
 
-#include <iostream>
+#include "dino_draw_utils.h"
+
 #include <ostream>
 
 #pragma region Constructors
 
 Dino::Dino()
 {
+    gamepad_idx = DinoGamepadIdx::Keyboard;
     tex = "dinosaurs.png";
     pos = {0, 0};
     id = 0;
@@ -19,8 +21,9 @@ Dino::Dino()
     inverted = false;
 }
 
-Dino::Dino(const std::string& tex, const uint16_t id)
+Dino::Dino(const DinoGamepadIdx gamepad_idx, const std::string& tex, const uint16_t id)
 {
+    this->gamepad_idx = gamepad_idx;
     this->tex = tex;
     this->pos = {0, 0};
     this->id = id;
@@ -33,8 +36,9 @@ Dino::Dino(const std::string& tex, const uint16_t id)
     inverted = false;
 }
 
-Dino::Dino(const std::string& tex, const uint16_t id, const DinoVec2 pos)
+Dino::Dino(const DinoGamepadIdx gamepad_idx, const std::string& tex, const uint16_t id, const DinoVec2 pos)
 {
+    this->gamepad_idx = gamepad_idx;
     this->tex = tex;
     this->pos = pos;
     this->id = id;
@@ -56,13 +60,18 @@ bool Dino::CompareHeight(const Dino& d1, const Dino& d2)
     return d1.pos.y < d2.pos.y;
 }
 
-void Dino::Update(const float deltaTime, const DinoGamepad gamepad)
+void Dino::Update(const float deltaTime)
 {
     float s = 1;
     uint16_t o;
     
     if (!stunned)
     {
+        DinoGamepad gamepad{};
+        bool success = XDino_GetGamepad(gamepad_idx, gamepad);
+        if (!success)
+            return;
+        
         if (gamepad.stick_left_x < -0.1)
             inverted = true;
         else if (gamepad.stick_left_x > 0.1)
@@ -99,29 +108,13 @@ void Dino::Update(const float deltaTime, const DinoGamepad gamepad)
     SetUV(deltaTime * s, o);
 }
 
-void Dino::Draw(DinoDrawCall* dc) const
+void Dino::Draw() const
 {
-    dc->translation = pos;
-    
-    dc->vertices[0].u = inverted ? 24 + i : i;
-    dc->vertices[0].v = j;
-    
-    dc->vertices[1].u = inverted ? i : 24 + i;
-    dc->vertices[1].v = j;
-    
-    dc->vertices[2].u = inverted ? 24 + i : i;
-    dc->vertices[2].v = 24 + j;
-    
-    dc->vertices[3].u = inverted ? i : 24 + i;
-    dc->vertices[3].v = j;
-    
-    dc->vertices[4].u = inverted ? 24 + i : i;
-    dc->vertices[4].v = 24 + j;
-    
-    dc->vertices[5].u = inverted ? i : 24 + i;
-    dc->vertices[5].v = 24 + j;
-    
-    dc->textureName = tex;
+    auto dc = inverted
+                  ? Dino_CreateDrawCall_InvertedSprite(tex, 24, i, j, 2)
+                  : Dino_CreateDrawCall_Sprite(tex, 24, i, j, 2);
+    dc.translation = pos;
+    XDino_Draw(dc);
 }
 
 void Dino::SetUV(const float deltaTime, const uint16_t offset)

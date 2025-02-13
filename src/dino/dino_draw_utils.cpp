@@ -18,6 +18,53 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
     return drawCall;
 }
 
+DinoDrawCall Dino_CreateDrawCall_Sprite(const std::string& tex, const uint16_t pixelSize, const uint16_t uBlit, const uint16_t vBlit, const int scale, const DinoColor color)
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = tex;
+    drawCall.scale = scale;
+    drawCall.vertices.reserve(6);
+
+    drawCall.vertices[0].u = uBlit;
+    drawCall.vertices[0].v = vBlit;
+    drawCall.vertices[1].u = pixelSize + uBlit;
+    drawCall.vertices[1].v = vBlit;
+    drawCall.vertices[2].u = uBlit;
+    drawCall.vertices[2].v = pixelSize + vBlit;
+    drawCall.vertices[3].u = pixelSize + uBlit;
+    drawCall.vertices[3].v = vBlit;
+    drawCall.vertices[4].u = uBlit;
+    drawCall.vertices[4].v = pixelSize + vBlit;
+    drawCall.vertices[5].u = pixelSize + uBlit;
+    drawCall.vertices[5].v = pixelSize + vBlit;
+
+    return drawCall;
+}
+
+DinoDrawCall Dino_CreateDrawCall_InvertedSprite(const std::string& tex, const uint16_t pixelSize, const uint16_t uBlit, const uint16_t vBlit,
+    const int scale, const DinoColor color)
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = tex;
+    drawCall.scale = scale;
+    drawCall.vertices.reserve(6);
+
+    drawCall.vertices[0].u = pixelSize + uBlit;
+    drawCall.vertices[0].v = vBlit;
+    drawCall.vertices[1].u = uBlit;
+    drawCall.vertices[1].v = vBlit;
+    drawCall.vertices[2].u = pixelSize + uBlit;
+    drawCall.vertices[2].v = pixelSize + vBlit;
+    drawCall.vertices[3].u = uBlit;
+    drawCall.vertices[3].v = vBlit;
+    drawCall.vertices[4].u = pixelSize + uBlit;
+    drawCall.vertices[4].v = pixelSize + vBlit;
+    drawCall.vertices[5].u = uBlit;
+    drawCall.vertices[5].v = pixelSize + vBlit;
+
+    return drawCall;
+}
+
 DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, DinoColor colorBackground,
                                       DinoVec2* pOutSize)
 {
