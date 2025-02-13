@@ -177,23 +177,43 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino -> nos fichiers headers
+> external/pix/... -> fichiers externes qui permettent d'accéder aux fonctionnalités de pIX
+> external/stb -> fichier externe utilisé par le moteur
+*> src/dino/x64-windows -> fichiers heade*rs propre à la plateforme
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino -> nos fichiers sources
+> src/dino/x64-windows -> fichiers sources propres à la plateforme
+> external/stb -> implémentation du code externe par le moteur
+> 
+> REMARQUE : On n'a pas de fichier sources pour PIX ?
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Chaque fichier CPP a un fichier OBJ correspondant.
+> build/obj/x64-windows/Debug/...
+> x64-windows -> spécifique à la plateforme
+> Debug -> spécifique à la configuration
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> build/x64-windows/Debug/Dino_JulienVernay.exe
+> x64-windows -> spécifique à la plateforme
+> Debug -> spécifique à la configuration
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> build/%{cfg.platform}/%{cfg.buildcfg} --> dossier contenant l'exe
+> 
+> includedirs { "src", "external" }
+> #include <dino/dino_player.h>
+> 
+> files { "external/**.cpp", "external/**.h" }
+> files { "src/dino/*" }
+> files { "src/dino/x64-windows/*" }
+> Où sont les .H et les .CPP
 
 f) Quels sont les liens entre :
 

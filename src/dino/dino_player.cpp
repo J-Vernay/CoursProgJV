@@ -92,3 +92,8 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
     drawCall.translation = this->pos;
     XDino_Draw(drawCall);
 }
+
+bool DinoPlayer::IsAbove(DinoPlayer& other)
+{
+    return pos.y < other.pos.y;
+}

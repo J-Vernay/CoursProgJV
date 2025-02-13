@@ -5,12 +5,18 @@
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
 
+#include <algorithm>
 #include <format>
 
 // Variables globales.
 double lastTime = 0;
 
 std::vector<DinoPlayer> g_Players;
+
+bool ComparePlayersPos(DinoPlayer& a, DinoPlayer& b)
+{
+    return a.IsAbove(b);
+}
 
 void Dino_GameInit()
 {
@@ -43,7 +49,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    
+
+    std::sort(g_Players.begin(), g_Players.end(), ComparePlayersPos);
     for (DinoPlayer& player : g_Players)
         player.DrawPlayer(timeSinceStart);
     

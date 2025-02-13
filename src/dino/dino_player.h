@@ -16,4 +16,6 @@ public:
     void Init(DinoVec2 initPos, int32_t idxPlayer, DinoGamepadIdx idxGamepad);
     void UpdatePlayer(float deltaTime);
     void DrawPlayer(double timeSinceStart);
+
+    bool IsAbove(DinoPlayer& other);
 };
