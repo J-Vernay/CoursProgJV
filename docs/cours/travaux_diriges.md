@@ -342,7 +342,7 @@ Que veut dire réinterpréter un pointeur ?
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> `DinoColor` occupe 4 octets. `DinoVertex` occupe 16 octets.
 
 g) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
