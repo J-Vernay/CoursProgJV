@@ -3,7 +3,7 @@
 #include <dino/dino_player.h>
 
 // Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float CIRCLE_SPEED = 100.f; // Nombre de pixels parcourus en une seconde.
 
 void DinoPlayer::Init(DinoVec2 initPos, int32_t idxPlayer, DinoGamepadIdx idxGamepad)
 {
@@ -88,7 +88,7 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
         drawCall.vertices.emplace_back(posD, u + 24, v + 24);
     }
     
-    drawCall.scale = 3;
+    drawCall.scale = 1;
     drawCall.translation = this->pos;
     XDino_Draw(drawCall);
 }
