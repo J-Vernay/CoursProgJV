@@ -1,7 +1,9 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "dino_player.h"
+
+#include <algorithm>
+#include <dino/dino_player.h>
 
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
@@ -13,7 +15,7 @@ double lastTime = 0;
 
 
 
-DinoPlayer g_player;
+std::vector<DinoPlayer> g_Players;
 
 
 
@@ -21,8 +23,39 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_player.pos = {windowSize.x / 2, windowSize.y / 2};
+    g_Players.resize(4);
+    g_Players[0].Init({windowSize.x / 2 - 100, windowSize.y / 2 - 100}, 0, DinoGamepadIdx::Keyboard);
+    g_Players[1].Init({windowSize.x / 2 - 100, windowSize.y / 2 + 100}, 1, DinoGamepadIdx::Gamepad1);
+    g_Players[2].Init({windowSize.x / 2 + 100, windowSize.y / 2 - 100}, 2, DinoGamepadIdx::Gamepad2);
+    g_Players[3].Init({windowSize.x / 2 + 100, windowSize.y / 2 + 100}, 3, DinoGamepadIdx::Gamepad3);
+
+    // Display the terrain using the terrains.png texture
+    DinoDrawCall drawCall;
+    drawCall.textureName = "terrains.png";
+    drawCall.vertices.resize(6);
+    drawCall.vertices[0].pos = {0, 0};
+    drawCall.vertices[1].pos = {windowSize.x, 0};
+    drawCall.vertices[2].pos = {0, windowSize.y};
+    drawCall.vertices[3].pos = {windowSize.x, 0};
+    drawCall.vertices[4].pos = {0, windowSize.y};
+    drawCall.vertices[5].pos = {windowSize.x, windowSize.y};
+    drawCall.vertices[0].u = 0;
+    drawCall.vertices[0].v = 0;
+    drawCall.vertices[1].u = 1;
+    drawCall.vertices[1].v = 0;
+    drawCall.vertices[2].u = 0;
+    drawCall.vertices[2].v = 1;
+    drawCall.vertices[3].u = 1;
+    drawCall.vertices[3].v = 0;
+    drawCall.vertices[4].u = 0;
+    drawCall.vertices[4].v = 1;
+    drawCall.vertices[5].u = 1;
+    drawCall.vertices[5].v = 1;
+    XDino_Draw(drawCall);
+    
+    
 }
+
 
 void Dino_GameFrame(double timeSinceStart)
 {
@@ -30,7 +63,10 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-    g_player.UpdatePlayer(deltaTime);
+    for (DinoPlayer& player : g_Players)
+    {
+        player.UpdatePlayer(deltaTime);
+    }
 
     // Affichage
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -40,7 +76,9 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
-    g_player.DrawPlayer(timeSinceStart);
+    std::sort(g_Players.begin(), g_Players.end(), [](DinoPlayer const& a, DinoPlayer const& b) {
+        return a.pos.y < b.pos.y;
+    });
 
     /*// Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
 {

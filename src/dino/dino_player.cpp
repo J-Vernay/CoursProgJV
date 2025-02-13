@@ -1,109 +1,85 @@
-#include "dino_player.h"
-
-
-double rotation = 360.0;
-double scale = 1.0;
-DinoVec2 dinoPos = {};
-std::vector<DinoVec2> polyline;
-
+#include <dino/xdino.h>
+#include <dino/dino_player.h>
 // Constantes.
-constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
 
-
+void DinoPlayer::Init(DinoVec2 initPos, int32_t idxPlayer, DinoGamepadIdx idxGamepad)
+{
+    pos = initPos;
+    m_idxPlayer = idxPlayer;
+    m_idxGamepad = idxGamepad;
+}
 void DinoPlayer::UpdatePlayer(float deltaTime)
 {
-
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-        if (gamepad.btn_down && !gamepad.btn_up)
-            scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            rotation -= 90.0 * deltaTime;
-
-        dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
-        dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
-
-        if (gamepad.stick_left_x != 0) {
-            bMirror = gamepad.stick_left_x < 0;
-        }
-
-        bIdle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
-
-        if (!bIdle) {
-            if (gamepad.btn_right) {
-                bRunning = true;
-                bWalking = false;
-            }
-
-            else {
-                bRunning = false;
-                bWalking = true;
-            }
-        }
-        else {
-            bRunning = false;
-            bWalking = false;
-        }
+    // Gestion des entrées et mise à jour de la logique de jeu.
+    
+    this->bIdle = false;
+    this->bWalking = false;
+    this->bRunning = false;
+    
+    DinoGamepad gamepad;
+    bool bSuccess = XDino_GetGamepad(m_idxGamepad, gamepad);
+    if (!bSuccess)
+        gamepad = {}; // Laisser vide, on considère le joueur immobile
+    float speed = CIRCLE_SPEED;
+    if (gamepad.btn_right)
+        speed *= 2;
+    
+    this->pos.x += gamepad.stick_left_x * speed * deltaTime;
+    this->pos.y += gamepad.stick_left_y * speed * deltaTime;
+    if (gamepad.stick_left_x != 0)
+        this->bMirror = gamepad.stick_left_x < 0;
+    this->bIdle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
+    if (!this->bIdle) {
+        if (gamepad.btn_right)
+            this->bRunning = true;
+        else
+            this->bWalking = true;
     }
 }
-
 void DinoPlayer::DrawPlayer(double timeSinceStart)
 {
-
-    // Dessin du dinosaur qu'on peut bouger
-    {
-        DinoDrawCall drawCall;
-        drawCall.textureName = "dinosaurs.png";
-        DinoVec2 posA = {0, 0};
-        DinoVec2 posB = {24, 0};
-        DinoVec2 posC = {0, 24};
-        DinoVec2 posD = {24, 24};
-
-        int u = 0;
-
-        if (bIdle) {
-            int idxFrame = int(timeSinceStart * 8) % 4;
-            u = 0 + 24 * idxFrame;
-        }
-        if (bWalking) {
-            int idxFrame = int(timeSinceStart * 8) % 6;
-            u = 96 + 24 * idxFrame;
-        }
-        if (bRunning) {
-            int idxFrame = int(timeSinceStart * 16) % 6;
-            u = 432 + 24 * idxFrame;
-        }
-
-        switch (bMirror) {
-        case false: drawCall.vertices.emplace_back(posA, 0 + u, 0);
-            drawCall.vertices.emplace_back(posB, 24 + u, 0);
-            drawCall.vertices.emplace_back(posC, 0 + u, 24);
-            drawCall.vertices.emplace_back(posB, 24 + u, 0);
-            drawCall.vertices.emplace_back(posC, 0 + u, 24);
-            drawCall.vertices.emplace_back(posD, 24 + u, 24);
-            break;
-        case true: drawCall.vertices.emplace_back(posA, 24 + u, 0);
-            drawCall.vertices.emplace_back(posB, 0 + u, 0);
-            drawCall.vertices.emplace_back(posC, 24 + u, 24);
-            drawCall.vertices.emplace_back(posB, 0 + u, 0);
-            drawCall.vertices.emplace_back(posC, 24 + u, 24);
-            drawCall.vertices.emplace_back(posD, 0 + u, 24);
-            break;
-        }
-
-        drawCall.scale = scale;
-        drawCall.translation = dinoPos;
-
-        XDino_Draw(drawCall);
-
+    // Copier-coller de l'ancien code.
+    
+    DinoDrawCall drawCall;
+    drawCall.textureName = "dinosaurs.png";
+    DinoVec2 posA = {0, 0};
+    DinoVec2 posB = {24, 0};
+    DinoVec2 posC = {0, 24};
+    DinoVec2 posD = {24, 24};
+    int u = 0;
+    if (this->bIdle) {
+        int idxFrame = int(timeSinceStart * 8) % 4;
+        u = 0 + 24 * idxFrame;
     }
+    if (this->bWalking) {
+        int idxFrame = int(timeSinceStart * 8) % 6;
+        u = 96 + 24 * idxFrame;
+    }
+    if (this->bRunning) {
+        int idxFrame = int(timeSinceStart * 16) % 6;
+        u = 432 + 24 * idxFrame;
+    }
+    int v = m_idxPlayer * 24; // 24 pixels par ligne de sprite
+    if (this->bMirror) {
+        drawCall.vertices.emplace_back(posA, u + 24, v + 0);
+        drawCall.vertices.emplace_back(posB, u + 0, v + 0);
+        drawCall.vertices.emplace_back(posC, u + 24, v + 24);
+        drawCall.vertices.emplace_back(posB, u + 0, v + 0);
+        drawCall.vertices.emplace_back(posC, u + 24, v + 24);
+        drawCall.vertices.emplace_back(posD, u + 0, v + 24);
+    }
+    else {
+        drawCall.vertices.emplace_back(posA, u + 0, v + 0);
+        drawCall.vertices.emplace_back(posB, u + 24, v + 0);
+        drawCall.vertices.emplace_back(posC, u + 0, v + 24);
+        drawCall.vertices.emplace_back(posB, u + 24, v + 0);
+        drawCall.vertices.emplace_back(posC, u + 0, v + 24);
+        drawCall.vertices.emplace_back(posD, u + 24, v + 24);
+    }
+    
+    drawCall.scale = 3;
+    drawCall.translation = this->pos;
+    XDino_Draw(drawCall);
 }
