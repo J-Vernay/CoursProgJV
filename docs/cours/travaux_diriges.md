@@ -261,7 +261,6 @@ Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droit
 > Il faut faire pour X : (renderSize.x - terrainSize.x) / 2 et pour Y : (renderSize.y - terrainSize.y) / 2.
 
 c) Implémentez la fonctionnalité F2.1 .
-> Check
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire
@@ -270,7 +269,7 @@ qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
-> ...
+> Nous avons besoin de quatre triangles au total.
 
 f) Implémentez la fonctionnalité F2.3 .
 

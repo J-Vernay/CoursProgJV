@@ -25,10 +25,10 @@ void Dino_GameInit()
     XDino_SetRenderSize(renderSize);
 
     dinoPlayers.resize(4);
-    dinoPlayers[0].Init(0, {renderSize.x / 2 - 100, renderSize.y / 2 - 100});
-    dinoPlayers[1].Init(1, {renderSize.x / 2 - 100, renderSize.y / 2 + 100});
-    dinoPlayers[2].Init(2, {renderSize.x / 2 + 100, renderSize.y / 2 - 100});
-    dinoPlayers[3].Init(3, {renderSize.x / 2 + 100, renderSize.y / 2 + 100});
+    dinoPlayers[0].Init({renderSize.x / 2 - 100, renderSize.y / 2 - 100}, 0, DinoGamepadIdx::Gamepad1);
+    dinoPlayers[1].Init({renderSize.x / 2 - 100, renderSize.y / 2 + 100}, 1, DinoGamepadIdx::Gamepad2);
+    dinoPlayers[2].Init({renderSize.x / 2 + 100, renderSize.y / 2 - 100}, 2, DinoGamepadIdx::Gamepad3);
+    dinoPlayers[3].Init({renderSize.x / 2 + 100, renderSize.y / 2 + 100}, 3, DinoGamepadIdx::Gamepad4);
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -208,7 +208,7 @@ bool dino_player::IsAbove(dino_player& other)
     return playerPos.y < other.playerPos.y;
 }
 
-void dino_player::Init(int index, DinoVec2 posInit)
+void dino_player::Init(DinoVec2 posInit, int index, DinoGamepadIdx idxGamepad)
 {
     playerPos = posInit;
     indexPlayer = index;
