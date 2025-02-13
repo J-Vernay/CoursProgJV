@@ -177,7 +177,7 @@ Comment créer cette fonction sans exposer publiquement la position de `DinoPlay
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
-> 
+> Les itérateurs du début et de la fin du vecteur
 
 ## 3. Comprendre la compilation des fichiers C++
 
@@ -185,23 +185,25 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino, src/dino/x64-windows, external/stb et external/pix/Include/WinPixeventRuntime
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino, external/stb et src/dino/x64-windows
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Il y a un fichier .obj par fichier cpp, dans le dossier `src/dino/x64-windows/Debug`
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> `Dino_ThomasDruesne.exe` dans le dossier `src/dino/x64-windows/Debug`
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> build/%{cfg.platform}/%{cfg.buildcfg} --> dossier contenant l'exe
+> includedirs { "src", "external" } #include <dino/dino_player.h>
+> files { "external/.cpp", "external/.h" } files { "src/dino/" } files { "src/dino/x64-windows/" } Où sont les .H et les .CPP
 
 f) Quels sont les liens entre :
 
