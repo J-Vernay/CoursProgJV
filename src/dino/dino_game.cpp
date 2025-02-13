@@ -4,6 +4,7 @@
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
+#include <dino/dino_animal.h>
 
 #include <algorithm>
 #include <format>
@@ -12,6 +13,7 @@
 double lastTime = 0;
 
 std::vector<DinoPlayer> g_Players;
+DinoAnimal g_Animal;
 
 bool ComparePlayersPos(DinoPlayer& a, DinoPlayer& b)
 {
@@ -27,6 +29,8 @@ void Dino_GameInit()
     g_Players[1].Init({renderSize.x / 2 - 50, renderSize.y / 2 + 50}, 1, DinoGamepadIdx::Gamepad1);
     g_Players[2].Init({renderSize.x / 2 + 50, renderSize.y / 2 - 50}, 2, DinoGamepadIdx::Gamepad2);
     g_Players[3].Init({renderSize.x / 2 + 50, renderSize.y / 2 + 50}, 3, DinoGamepadIdx::Gamepad3);
+
+    g_Animal.Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -38,6 +42,7 @@ void Dino_GameFrame(double timeSinceStart)
 
 	for (DinoPlayer& player : g_Players)
 		player.UpdatePlayer(deltaTime);
+    g_Animal.UpdateAnimal(deltaTime);
     
     // Affichage
 
@@ -84,6 +89,8 @@ void Dino_GameFrame(double timeSinceStart)
     std::sort(g_Players.begin(), g_Players.end(), ComparePlayersPos);
     for (DinoPlayer& player : g_Players)
         player.DrawPlayer(timeSinceStart);
+    
+    g_Animal.DrawAnimal(timeSinceStart);
     
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
