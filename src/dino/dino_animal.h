@@ -2,21 +2,20 @@
 
 #include <dino/xdino.h>
 
-class DinoPlayer {
+class DinoAnimal {
     DinoVec2 pos = {};
     bool goingRight = false;
-    bool idle;
-    bool walking;
-    bool running;
-    int playerIndex = 0;
+    int animalType;
+    DinoVec2 dir;
+    float speed = 0;
 
 public:
     /// Configure le joueur
-    void Init(int idx, DinoVec2 posInit);
+    void SpawnAnimal(int type);
     /// Met a jour la position du joueur
-    void UpdatePlayer(float deltaTime);
+    void UpdateAnimal(float deltaTime);
     /// Affiche le joueur à l'ecran
-    void DrawPlayer(double timeSinceStart);
+    void DrawAnimal(double timeSinceStart);
     /// Compare la position de deux joueurs pour determiner si le premier est au dessus de l'autre
-    bool IsAbove(DinoPlayer& player);
+    bool IsAbove(DinoAnimal& animal);
 };

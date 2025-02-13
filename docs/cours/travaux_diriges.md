@@ -114,7 +114,7 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> ... un conteneur ?
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -123,17 +123,17 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> ...
+> std:: sort
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
-> ...
+> avec une fonction dans DinoPlayer qui renvoie le resultat de la comparaison
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
-> ...
+> les elements du std::vector
 
 ## 3. Comprendre la compilation des fichiers C++
 
@@ -141,46 +141,63 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino
+> external/pix
+> external/stb
+> src/dino/x64-windows
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino
+> src/dino/x64-windows
+> external/stb
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Les CPP ont des obj correspondants
+> build/obj/x-64windows/Debug/...
+> x64-windows
+> Debug
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> build/x64-windows/Debug/Dino_PharrellBastien.exe
+> x64-windows
+> Debug
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> targetdir "build/%{cfg.platform}/%{cfg.buildcfg}"
+>
+>includedirs { "src", "external"}
+> #include <dino/dino_player.h>
+>
+> files { "src/dino/x64-windows/*" }
+> et d'autres
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :**  le h rend accessible des valeurs et fonctions du cpp
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** obj est une standardisation du cpp
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** lib est un export des liens de l'obj pour le rendre accessible avec un point d'
+> entrée (archive)
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** regroupement des liens pour les rendre accessible sans point d'entrée
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** regroupement des obj
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** exe va directement appeler des fonctions du dll pour accéder aux obj
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> c'est le # , pour importer des fonctions et valeurs
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> lib et dll, l'un sans point d'entrée l'autre avec
 
 ## 4. Programmation du terrain
 
@@ -189,59 +206,74 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> rdrsize - terrainsize / 2 en precisant x ou y
 
 c) Implémentez la fonctionnalité F2.1 .
+> fait
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans
 `dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
+> skip pour l'instant
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
-> ...
+> 4 triangles donc 12 vertices
 
 f) Implémentez la fonctionnalité F2.3 .
+> skip
 
 g) Implémentez la fonctionnalité F2.4 .
+> skip
 
 ## 5. Programmation des animaux
 
 a) Implémentez la fonctionnalité F3.1 .
+> fait
 
 b) Implémentez la fonctionnalité F3.2 .
+> pasencore correctement animés
 
 c) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32 gb de ram, 2^64 adresses possible, ceux qui restent dans la limite de stockage de la ram physique
 
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> ça signifie réserver un espace de mémoire afin qu'un autre programme n'ecrive pas à la meme adresse
+
 
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> le type sert a interpreter correctement les valeurs de la sequence de bits (ex: int float, color),
+> un pointeur redirige a une adresse
+>
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> 32bits, sizeof(DinoVertex) 128bits
 
 g) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> classe qui stocke le pointeur de debut et de fin d'une liste de valeur,
+> un stockage de données ainsi que des métadonnées permettant de retrouver ces données
+> adresse de but + type*indice
+
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> l'OS lorsqu'il lance l'exe alloue l'espace pour les variables globales l'info est stockée dans l'exe
+> l'OS alloue ensuite une stack (pile) dans laquelle les variables locales vont etre stockées
+> les données sont stockées par l'OS de facon dynamique et par contre ses métadonnées ont été stockées avec les
+> variables globale
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?

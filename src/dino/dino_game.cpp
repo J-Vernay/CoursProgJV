@@ -1,10 +1,13 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "dino_animal.h"
+
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
 
+#include <algorithm>
 #include <format>
 
 // Variables globales.
@@ -12,40 +15,40 @@ double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
 //DinoVec2 circlePos = {};
-std::vector<DinoVec2> polyline;
+//std::vector<DinoVec2> polyline;
 
-DinoPlayer player1;
-DinoPlayer player2;
-DinoPlayer player3;
-DinoPlayer player4;
-
-DinoPlayer players[] = {
-    player1,
-    player2,
-    player3,
-    player4
-};
+std::vector<DinoPlayer> players;
+std::vector<DinoAnimal> animals;
 
 // Constantes.
 constexpr float Dino_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
+bool ComparePlayerPos(DinoPlayer& a, DinoPlayer& b)
+{
+    //return a.pos.y < b.pos.y;
+    return a.IsAbove(b);
+}
 
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    DinoVec2 renderSize = {480, 360};
+    XDino_SetRenderSize(renderSize);
 
-    player1.Init(0, {windowSize.x / 2, windowSize.y / 2});
-    player2.Init(1, {windowSize.x / 2 + 100, windowSize.y / 2});
-    player3.Init(2, {windowSize.x / 2, windowSize.y / 2 + 100});
-    player4.Init(3, {windowSize.x / 2 + 100, windowSize.y / 2 + 100});
+    players.resize(4);
 
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
+    players[0].Init(0, {renderSize.x / 2, renderSize.y / 2});
+    players[1].Init(1, {renderSize.x / 2 + 100, renderSize.y / 2});
+    players[2].Init(2, {renderSize.x / 2, renderSize.y / 2 + 100});
+    players[3].Init(3, {renderSize.x / 2 + 100, renderSize.y / 2 + 100});
+
+    /*polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
+    polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);*/
 }
+
+double animalLastSpawnTime = 0;
 
 void Dino_GameFrame(double timeSinceStart)
 {
@@ -56,36 +59,80 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    player1.UpdatePlayer(deltaTime);
-    player2.UpdatePlayer(deltaTime);
-    player3.UpdatePlayer(deltaTime);
-    player4.UpdatePlayer(deltaTime);
+    for (DinoPlayer& player : players) {
+        player.UpdatePlayer(deltaTime);
+    }
+    double timeSinceLastSpawn = timeSinceStart - animalLastSpawnTime;
+    if (timeSinceLastSpawn > 1) {
+        animals.emplace_back();
+        animals.back().SpawnAnimal(XDino_RandomUint32(0, 7));
+        animalLastSpawnTime = timeSinceStart;
+    }
 
+    for (DinoAnimal& animal : animals) {
+        animal.UpdateAnimal(deltaTime);
+    }
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-    constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
+    //constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
+    DinoVec2 renderSize = XDino_GetWindowSize();
 
-    player1.DrawPlayer(timeSinceStart);
-    player2.DrawPlayer(timeSinceStart);
-    player3.DrawPlayer(timeSinceStart);
-    player4.DrawPlayer(timeSinceStart);
+    DinoVec2 terrainSize = {renderSize.x / 2, renderSize.y / 2};
+    DinoDrawCall drawCall;
+    drawCall.textureName = "terrain.png";
 
-    // Dessin de la "polyligne" 
+    DinoVec2 posA, posB, posC, posD;
+    posA.x = (renderSize.x - terrainSize.x) / 2;
+    posA.y = (renderSize.y - terrainSize.y) / 2;
+    posB.x = posA.x + terrainSize.x;
+    posB.y = posA.y;
+    posC.x = posA.x;
+    posC.y = posA.y + terrainSize.y;
+    posD.x = posA.x + terrainSize.x;
+    posD.y = posA.y + terrainSize.y;
+    // Océan en fond
+    drawCall.vertices.emplace_back(DinoVec2{0, 0}, 0, 0);
+    drawCall.vertices.emplace_back(DinoVec2{renderSize.x, 0}, 16, 0);
+    drawCall.vertices.emplace_back(DinoVec2{0, renderSize.y}, 0, 16);
+    drawCall.vertices.emplace_back(DinoVec2{renderSize.x, 0}, 16, 0);
+    drawCall.vertices.emplace_back(DinoVec2{0, renderSize.y}, 0, 16);
+    drawCall.vertices.emplace_back(DinoVec2{renderSize.x, renderSize.y}, 16, 16);
+    // Terrain au milieu
+    drawCall.vertices.emplace_back(posA, 16, 0);
+    drawCall.vertices.emplace_back(posB, 32, 0);
+    drawCall.vertices.emplace_back(posC, 16, 16);
+    drawCall.vertices.emplace_back(posB, 32, 0);
+    drawCall.vertices.emplace_back(posC, 16, 16);
+    drawCall.vertices.emplace_back(posD, 32, 16);
+    XDino_Draw(drawCall);
+
+    std::sort(players.begin(), players.end(), ComparePlayerPos);
+
+    for (DinoPlayer& player : players) {
+        player.DrawPlayer(timeSinceStart);
+    }
+
+    for (DinoAnimal& animal : animals) {
+        animal.DrawAnimal(timeSinceStart);
+    }
+
+    DinoVec2 windowSize = XDino_GetWindowSize();
+    XDino_SetRenderSize(windowSize);
+
+    /* Dessin de la "polyligne" 
     {
         DinoDrawCall drawCall = Dino_CreateDrawCall_Polyline(polyline, 100, POLYLINE_COLOR);
         XDino_Draw(drawCall);
     }
 
     // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    
 
     // Dessin de la texture centrale qu'on peut bouger.
-    /*{
+    {
         constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
         constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
         constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
@@ -151,6 +198,8 @@ void Dino_GameFrame(double timeSinceStart)
         std::string text = "Pharrell Bastien";
         DinoVec2 textSize;
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.translation.x = renderSize.x - 2 * textSize.x;
+        drawCall.translation.y = renderSize.y - 2 * textSize.y;
         drawCall.scale = 2;
         drawCall.translation = {windowSize.x - textSize.x * 2, windowSize.y - textSize.y * 2};
 

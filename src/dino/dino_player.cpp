@@ -6,38 +6,36 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
     this->walking = false;
     this->running = false;
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+    DinoGamepad gamepad{};
+    bool bSuccess = XDino_GetGamepad(DinoGamepadIdx_ALL[playerIndex], gamepad);
+    if (!bSuccess)
+        return;
 
-        /*if (gamepad.btn_down && !gamepad.btn_up)
-            scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            rotation -= 90.0 * deltaTime;*/
+    /*if (gamepad.btn_down && !gamepad.btn_up)
+        scale /= 1.01;
+    if (gamepad.btn_up && !gamepad.btn_down)
+        scale *= 1.01;
+    if (gamepad.btn_left && !gamepad.btn_right)
+        rotation += 90.0 * deltaTime;
+    if (gamepad.btn_right && !gamepad.btn_left)
+        rotation -= 90.0 * deltaTime;*/
 
-        float speed = 300;
-        if (gamepad.btn_right)
-            speed *= 2;
+    float speed = 300;
+    if (gamepad.btn_right)
+        speed *= 2;
 
-        this->pos.x += gamepad.stick_left_x * speed * deltaTime;
-        this->pos.y += gamepad.stick_left_y * speed * deltaTime;
-        if (gamepad.stick_left_x != 0)
-            this->goingRight = gamepad.stick_left_x > 0;
+    this->pos.x += gamepad.stick_left_x * speed * deltaTime;
+    this->pos.y += gamepad.stick_left_y * speed * deltaTime;
+    if (gamepad.stick_left_x != 0)
+        this->goingRight = gamepad.stick_left_x > 0;
 
-        this->idle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
-        if (!this->idle) {
-            if (gamepad.btn_right) {
-                this->running = true;
-            }
-            else {
-                this->walking = true;
-            }
+    this->idle = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
+    if (!this->idle) {
+        if (gamepad.btn_right) {
+            this->running = true;
+        }
+        else {
+            this->walking = true;
         }
     }
 }
@@ -89,4 +87,14 @@ void DinoPlayer::Init(int idx, DinoVec2 posInit)
 {
     pos = posInit;
     playerIndex = idx;
+}
+
+bool DinoPlayer::IsAbove(DinoPlayer& player)
+{
+    if (player.pos.y >= pos.y) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
