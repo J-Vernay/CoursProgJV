@@ -168,7 +168,9 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On appelle ces fonctions des méthodes. Pour limiter la modification d'un type de données à ces fonctions, on utilise
+> les classes. On appelle cette limitation l'encapsulation. L'intérêt est de protéger les données et de ne pas les
+> exposer directement.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -186,11 +188,14 @@ f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affic
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
-> ...
+> On peut créer une méthode static qui prend deux DinoPlayer en paramètre et qui renvoie le booléen de comparaison.
+> Grâce à la méthode static, on peut accéder à la position des DinoPlayers sans avoir à les exposer publiquement.
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
-> ...
+> Ces fonctions renvoient un itérateur. Les itérateurs sont des pointeurs qui permettent de parcourir les éléments d'un
+> tableau ou d'une liste. `.begin()` renvoie un itérateur sur le premier élément du tableau et `.end()` renvoie un
+> itérateur sur l'élément après le dernier élément du tableau.
 
 ## 3. Comprendre la compilation des fichiers C++
 

@@ -4,12 +4,12 @@
 class DinoPlayer {
 private:
     DinoGamepadIdx gamepadIdx;
-    DinoVec2 pos = {};
-    bool bMirror = false;
+    DinoVec2 pos;
+    bool bMirror;
 
-    bool bIdle = false;
-    bool bWalking = false;
-    bool bRunning = false;
+    bool bIdle;
+    bool bWalking;
+    bool bRunning;
 
 public:
     DinoPlayer();
@@ -19,4 +19,6 @@ public:
 
     void Update(float deltaTime);
     void Draw(double timeSinceStart);
+
+    static bool DinoPlayerCompare(const DinoPlayer& a, const DinoPlayer& b);
 };

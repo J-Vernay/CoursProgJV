@@ -203,3 +203,37 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
 
     return drawCall;
 }
+
+DinoDrawCall Dino_CreateDrawCall_Sprite(std::string textureName, int w, int h, uint16_t u,
+                                        uint16_t v, bool flip, DinoColor color)
+{
+    DinoDrawCall drawCall;
+    drawCall.textureName = textureName;
+    drawCall.vertices.reserve(6);
+
+    float fW = static_cast<float>(w);
+    float fH = static_cast<float>(h);
+    DinoVec2 posA = {-fW, -fH};
+    DinoVec2 posB = {fW, -fH};
+    DinoVec2 posC = {-fW, fH};
+    DinoVec2 posD = {fW, fH};
+
+    if (flip) {
+        drawCall.vertices.emplace_back(posA, u + w, v + 0, color);
+        drawCall.vertices.emplace_back(posB, u + 0, v + 0, color);
+        drawCall.vertices.emplace_back(posC, u + w, v + h, color);
+        drawCall.vertices.emplace_back(posB, u + 0, v + 0, color);
+        drawCall.vertices.emplace_back(posC, u + w, v + h, color);
+        drawCall.vertices.emplace_back(posD, u + 0, v + h, color);
+    }
+    else {
+        drawCall.vertices.emplace_back(posA, u + 0, v + 0, color);
+        drawCall.vertices.emplace_back(posB, u + w, v + 0, color);
+        drawCall.vertices.emplace_back(posC, u + 0, v + h, color);
+        drawCall.vertices.emplace_back(posB, u + w, v + 0, color);
+        drawCall.vertices.emplace_back(posC, u + 0, v + h, color);
+        drawCall.vertices.emplace_back(posD, u + w, v + h, color);
+    }
+
+    return drawCall;
+}

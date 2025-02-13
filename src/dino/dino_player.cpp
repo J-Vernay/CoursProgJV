@@ -1,8 +1,10 @@
 #include "dino_player.h"
 
+#include "dino_draw_utils.h"
+
 #include <iostream>
 
-constexpr float PLAYER_SPEED = 300;
+constexpr float PLAYER_SPEED = 260;
 
 DinoPlayer::DinoPlayer()
 {
@@ -10,7 +12,7 @@ DinoPlayer::DinoPlayer()
     pos = {};
 
     bMirror = false;
-    bIdle = false;
+    bIdle = true;
     bWalking = false;
     bRunning = false;
 }
@@ -28,7 +30,7 @@ DinoPlayer::~DinoPlayer()
 
 void DinoPlayer::Update(float deltaTime)
 {
-    bIdle = false;
+    bIdle = true;
     bWalking = false;
     bRunning = false;
 
@@ -56,14 +58,6 @@ void DinoPlayer::Update(float deltaTime)
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
-    DinoDrawCall drawCall;
-    drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
-    drawCall.vertices.reserve(6);
-    DinoVec2 posA = {-24, -24};
-    DinoVec2 posB = {24, -24};
-    DinoVec2 posC = {-24, 24};
-    DinoVec2 posD = {24, 24};
-
     int u = 0;
     if (bIdle) {
         u = 0;
@@ -80,23 +74,13 @@ void DinoPlayer::Draw(double timeSinceStart)
 
     int v = static_cast<int>(gamepadIdx) * 24;
 
-    if (bMirror) {
-        drawCall.vertices.emplace_back(posA, u + 24, v + 0);
-        drawCall.vertices.emplace_back(posB, u + 0, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 24, v + 24);
-        drawCall.vertices.emplace_back(posB, u + 0, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 24, v + 24);
-        drawCall.vertices.emplace_back(posD, u + 0, v + 24);
-    }
-    else {
-        drawCall.vertices.emplace_back(posA, u + 0, v + 0); // J'ai mis le premier dinosaure bleu
-        drawCall.vertices.emplace_back(posB, u + 24, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 0, v + 24);
-        drawCall.vertices.emplace_back(posB, u + 24, v + 0);
-        drawCall.vertices.emplace_back(posC, u + 0, v + 24);
-        drawCall.vertices.emplace_back(posD, u + 24, v + 24);
-    }
+    DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite("dinosaurs.png", 24, 24, u, v, bMirror);
     drawCall.translation = pos;
-    drawCall.scale = 2;
+    drawCall.scale = 1.5;
     XDino_Draw(drawCall);
+}
+
+bool DinoPlayer::DinoPlayerCompare(const DinoPlayer& a, const DinoPlayer& b)
+{
+    return a.pos.y < b.pos.y;
 }

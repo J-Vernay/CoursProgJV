@@ -3,6 +3,7 @@
 
 #include "dino_player.h"
 
+#include <algorithm>
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 
@@ -14,16 +15,18 @@ double scale = 1.0;
 
 std::vector<DinoPlayer> g_players;
 
-void InitDinoPlayers(DinoVec2 windowSize);
+constexpr DinoVec2 RENDER_SIZE = {480, 360};
+
+void InitDinoPlayers();
 void UpdateDinoPlayers(float deltaTime);
 void DrawDinoPlayers(double timeSinceStart);
 
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    XDino_SetRenderSize(RENDER_SIZE);
 
-    InitDinoPlayers(windowSize);
+    InitDinoPlayers();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -37,13 +40,13 @@ void Dino_GameFrame(double timeSinceStart)
     UpdateDinoPlayers(deltaTime);
 
     // Affichage
+    DinoVec2 windowSize = XDino_GetWindowSize();
+    DinoVec2 renderSize = XDino_GetRenderSize();
+    // XDino_SetRenderSize(windowSize);
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
-
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
 
     // Dessin du player que l'on peut bouger.
     DrawDinoPlayers(timeSinceStart);
@@ -84,12 +87,12 @@ DinoVec2 GetSpawnPos(int playerIndex, DinoVec2 windowSize)
     }
 }
 
-void InitDinoPlayers(DinoVec2 windowSize)
+void InitDinoPlayers()
 {
     g_players = std::vector<DinoPlayer>(4);
     for (int i = 0; i < g_players.size(); i++) {
         DinoPlayer player = DinoPlayer();
-        player.Init(static_cast<DinoGamepadIdx>(i), GetSpawnPos(i, windowSize));
+        player.Init(static_cast<DinoGamepadIdx>(i), GetSpawnPos(i, RENDER_SIZE));
         g_players[i] = player;
     }
 }
@@ -103,6 +106,8 @@ void UpdateDinoPlayers(float deltaTime)
 
 void DrawDinoPlayers(double timeSinceStart)
 {
+    std::sort(g_players.begin(), g_players.end(), DinoPlayer::DinoPlayerCompare);
+
     for (DinoPlayer& player : g_players) {
         player.Draw(timeSinceStart);
     }
