@@ -24,9 +24,9 @@ constexpr float timeUntilDoubleSpeed = 1; //Tome until Speeds up
 
 void ExchangeValues(uint16_t* value1, uint16_t* value2)
 {
-    uint16_t *e = value1;
-    value1 = value2;
-    value2 = e;
+    uint16_t e = *value1;
+    *value1 = *value2;
+    *value2 = e;
 }
 
 void Dino_GameInit()
@@ -52,7 +52,7 @@ void Dino_GameFrame(double timeSinceStart)
     // Gestion des entrées et mise à jour de la logique de jeu.
     
     bool movementRegistered = false;
-    float xMovement, yMovement = 1;
+    float xMovement = 0, yMovement = 0;
     
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
@@ -176,16 +176,14 @@ void Dino_GameFrame(double timeSinceStart)
         drawCallDino.vertices[5].pos = {0, 17};
         drawCallDino.vertices[5].u = 6;drawCallDino.vertices[5].v = 21;
 
-        if (circlePos.x < 0) {
-            ExchangeValues(&drawCallDino.vertices[0].u, &drawCallDino.vertices[0].v);
-            ExchangeValues(&drawCallDino.vertices[1].u, &drawCallDino.vertices[1].v);
-            ExchangeValues(&drawCallDino.vertices[2].u, &drawCallDino.vertices[2].v);
-            ExchangeValues(&drawCallDino.vertices[3].u, &drawCallDino.vertices[3].v);
-            ExchangeValues(&drawCallDino.vertices[4].u, &drawCallDino.vertices[4].v);
-            ExchangeValues(&drawCallDino.vertices[5].u, &drawCallDino.vertices[5].v);
-            drawCallDino.textureName = "dinosaurs.png";
+        if (xMovement < 0) {
+            
+            ExchangeValues(&drawCallDino.vertices[0].u, &drawCallDino.vertices[3].u);
+            ExchangeValues(&drawCallDino.vertices[1].u, &drawCallDino.vertices[5].u);
+            ExchangeValues(&drawCallDino.vertices[2].u, &drawCallDino.vertices[4].u);
         }
-        
+
+        drawCallDino.textureName = "dinosaurs.png";
         
         //Dino_CreateDrawCall_Circle(20);
         drawCallDino.translation = circlePos;
