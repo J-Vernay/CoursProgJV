@@ -19,11 +19,9 @@ bool ComparePlayerPos(DinoPlayer& a, DinoPlayer& b)
     return a.isAbove(b);
 }
 
-// Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
-
 void Dino_GameInit()
 {
+    XDino_SetRenderSize({480,360});
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
     players.resize(4);
