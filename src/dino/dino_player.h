@@ -8,7 +8,10 @@ class DinoPlayer
 public:
     void UpdatePlayer(float deltaTime);
     void DisplayPlayer(double timeSinceStart);
+    void DinoPlayerInit(DinoVec2 pos, int idx, DinoGamepadIdx gamepadIdx);
     void SetPlayerPos(DinoVec2 pos);
+    void SetPlayerIdx(int idx);
+    bool IsAbove(DinoPlayer& other);
     
 private:
     DinoVec2 player_pos_ = {};
@@ -18,5 +21,7 @@ private:
     bool d_walking_ = false;
     bool d_running_ = false;
 
-    int spriteIdx = 0;
+    int sprite_idx_ = 0;
+    int idx_player_ = 0;
+    DinoGamepadIdx idx_gamepad_;
 };

@@ -169,7 +169,7 @@ Comment créer cette fonction sans exposer publiquement la position de `DinoPlay
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
-> ...
+>
 
 ## 3. Comprendre la compilation des fichiers C++
 
@@ -177,45 +177,56 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/sino -> nos headers
+> ser/pix -> fichiers extrenes pour accéder à PIX
+> extern/stb -> fichier utilisé par le moteur
+> src/dino/x64-windows -> fichiers headers porpre à la plateforme
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> src/dino -> nos headers
+> src/dino/x64-windows -> fichiers headers porpre à la plateforme
+> externals/stb -> fichier utilisé par le moteur
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Chaques CPP avec un fichier OBJ corresponant
+> build/obj/x64-windows/Debug
+> x64-winows -> Spécifique à la plateforme
+> Debug -> Spécifique à la configuration
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> build/x64-windows/Debug/Dino
+> x64-winows -> Spécifique à la plateforme
+> Debug -> Spécifique à la configuration
+
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> build/%{cfg.platform}/%/{cfg.builfcfg}
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** Préprocesseur
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** Compilation
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** Compilation + Archive
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** Compilation + Edition de lien
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** Edition de lien
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** le .exe lui même
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Le Préprocesseur fait le lien entre les include et les fichiers. On reconnais les directives grâce à #
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
 
-> ...
+> .exe et .dll, le .exe possède une entrée, alors que le .dll non
 
 ## 4. Programmation du terrain
 
@@ -224,7 +235,7 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> (480 - 256) / 2
 
 c) Implémentez la fonctionnalité F2.1 .
 
@@ -234,7 +245,7 @@ qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
-> ...
+> 4 (sans les bordures)
 
 f) Implémentez la fonctionnalité F2.3 .
 
@@ -249,33 +260,35 @@ b) Implémentez la fonctionnalité F3.2 .
 c) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32Gb, 16 000 000 000, seulement les adresse qui lui sont alloué 
 
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Allouer est le fait de reserver un espace de ram pour un programme, c'est relativement couteux
 
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> La façon d'interpréter une suite de bits, un pointeur c'est l'adresse dans la mémoire, récupérer la valeur stocké à cette adresse
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> 32 bits, 128 bits
 
 g) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> Une liste de valeur, un poiteur de début + la taille des éléments qu'il contient, pointeur 0 + size de l'élément qu'il contient * l'index, la taille max
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> OS au lancement de l'app
+> Le compilateur lorsque l'on rentre dans une fonction/class
+> dynamiquement, cela change en fonction de si variable global/local
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?

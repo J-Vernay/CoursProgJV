@@ -35,4 +35,5 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = D
 DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
                                           DinoColor color = DinoColor_WHITE);
 
+DinoDrawCall Dino_CreateTerrain(DinoVec2 dim);
 /// @}

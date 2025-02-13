@@ -4,13 +4,20 @@
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
+#include <dino/dino_map.h>
+#include <dino/dino_animals.h>
 
 #include <format>
+#include <algorithm>
+
+const DinoVec2 WINDOW_SIZE = {480, 360};
 
 // Variables globales.
 double lastTime = 0;
 double rotation = 360.0;
 std::vector<DinoVec2> polyline;
+
+DinoMap map;
 
 DinoPlayer player1;
 DinoPlayer player2;
@@ -18,22 +25,20 @@ DinoPlayer player3;
 DinoPlayer player4;
     
 std::vector<DinoPlayer> players {player1, player2, player3, player4};
-
+std::vector<DinoAnimal> animals;
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    XDino_SetRenderSize(WINDOW_SIZE);
 
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
-    
-    players[0].SetPlayerPos({windowSize.x/2 - 100, windowSize.y/2 + 100});
-    players[1].SetPlayerPos({windowSize.x/2 + 100, windowSize.y/2 + 100});
-    players[2].SetPlayerPos({windowSize.x/2 - 100, windowSize.y/2 - 100});
-    players[3].SetPlayerPos({windowSize.x/2 + 100, windowSize.y/2 - 100});
+    players[0].DinoPlayerInit({WINDOW_SIZE.x/2 - 20, WINDOW_SIZE.y/2 + 20}, 0, DinoGamepadIdx::Keyboard);
+    players[1].DinoPlayerInit({WINDOW_SIZE.x/2 + 20, WINDOW_SIZE.y/2 + 20}, 1, DinoGamepadIdx::Gamepad1);
+    players[2].DinoPlayerInit({WINDOW_SIZE.x/2 - 20, WINDOW_SIZE.y/2 - 20}, 2, DinoGamepadIdx::Gamepad2);
+    players[3].DinoPlayerInit({WINDOW_SIZE.x/2 + 20, WINDOW_SIZE.y/2 - 20}, 3, DinoGamepadIdx::Gamepad3);
+}
+
+bool ComparePlayersPos(DinoPlayer& a, DinoPlayer& b)
+{
+    return a.IsAbove(b);
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -45,23 +50,32 @@ void Dino_GameFrame(double timeSinceStart)
     // Affichage
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
+
+    XDino_SetClearColor(CLEAR_COLOR);
+    
+    XDino_SetRenderSize(WINDOW_SIZE);
+
+    map.DisplayMap();
+
+    std::sort(players.begin(), players.end(), ComparePlayersPos);
+    
     for (DinoPlayer& player : players) {
         player.UpdatePlayer(deltaTime);
         player.DisplayPlayer(timeSinceStart);
     }
 
+    animals.emplace_back();
+    animals.back().DinoAnimalInit({WINDOW_SIZE.x/2, WINDOW_SIZE.y/2}, XDino_RandomInt32(0,7));
+    for (DinoAnimal& animal : animals) {
+        animal.UpdateAnimal(deltaTime);
+        animal.DisplayAnimal(timeSinceStart);
+    }
 
-    XDino_SetClearColor(CLEAR_COLOR);
-
-    // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
-
+    
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
-        drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
 
@@ -70,11 +84,12 @@ void Dino_GameFrame(double timeSinceStart)
         std::string text = std::format("Hugo Lesec");
         DinoVec2 textSize;
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &textSize);
+        drawCall.translation = {WINDOW_SIZE.x - textSize.x *2, WINDOW_SIZE.y - textSize.y *2};
         drawCall.scale = 2;
-        drawCall.translation = {windowSize.x - textSize.x *2, windowSize.y - textSize.y *2};
         XDino_Draw(drawCall);
     }
 }
+
 
 void Dino_GameShut()
 {

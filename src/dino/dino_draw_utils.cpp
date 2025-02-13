@@ -18,6 +18,39 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
     return drawCall;
 }
 
+DinoDrawCall Dino_CreateTerrain(DinoVec2 dim)
+{
+    DinoVec2 windowSize = XDino_GetRenderSize(); 
+    DinoDrawCall drawCall;
+    drawCall.textureName = "terrain.png";
+    
+    DinoVec2 posA = {0,0};
+    DinoVec2 posB = {windowSize.x, 0};
+    DinoVec2 posC = {0, windowSize.y};
+    DinoVec2 posD = {windowSize.x, windowSize.y};
+
+    drawCall.vertices.emplace_back(posA, 0, 0);
+    drawCall.vertices.emplace_back(posB, 16, 0);
+    drawCall.vertices.emplace_back(posC, 0, 16);
+    drawCall.vertices.emplace_back(posB, 16, 0);
+    drawCall.vertices.emplace_back(posC, 0, 16);
+    drawCall.vertices.emplace_back(posD, 16, 16);
+
+    posA = {(windowSize.x - dim.x) / 2, (windowSize.y - dim.y) / 2};
+    posB = {posA.x + dim.x, posA.y};
+    posC = {posA.x, posA.y + dim.y};
+    posD = {posA.x + dim.x, posA.y + dim.y};
+
+    drawCall.vertices.emplace_back(posA, 16, 0);
+    drawCall.vertices.emplace_back(posB, 32, 0);
+    drawCall.vertices.emplace_back(posC, 16, 16);
+    drawCall.vertices.emplace_back(posB, 32, 0);
+    drawCall.vertices.emplace_back(posC, 16, 16);
+    drawCall.vertices.emplace_back(posD, 32, 16);
+
+    return drawCall;
+}
+
 DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, DinoColor colorBackground,
                                       DinoVec2* pOutSize)
 {
