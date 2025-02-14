@@ -354,7 +354,7 @@ Qu'est-ce que la fonctionnalité implique pour les octets en mémoire qui repré
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 
-> Il y a 6 intersections de segments calculés. Il y a 120 points donc 119 segments.
+> Il y a environ 20 000 intersections de segments qui sont calculés. Il y a 120 points donc 119 segments.
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
@@ -433,13 +433,14 @@ Dépendamment de la connexion, cela peut prendre plusieurs minutes.
 
 En utilisant Everything, quel type de fichiers se trouvent dans `C:\symcache` ? Quel est leur rôle ?
 
-> ...
+> Des fichiers .pdb. Ils contiennent les informations de débogage pour les fichiers .exe.
 
 d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez **Items to show = Sampled functions**.
 
 Quelle part représente `Dino_GameFrame` relativement à `WinMain` ? Quelle autre fonction prend du temps ?
 
-> ...
+> Représente environ 5% du temps. La fonction "Dino_Draw", "Dino_Update" prend du temps mais cela est relatif. Les
+> collisions à force prennent du temps également.
 
 e) Zoomez sur la timeline (`Ctrl + Molette souris`), jusqu'à voir les frames individuellement.
 Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations de la question précédente.
@@ -447,7 +448,7 @@ Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations 
 f) Double-cliquez sur un rectangle **Frame**, puis cliquez en bas à gauche sur **Graph Duration in Metrics View**.
 Quelle est le temps moyen d'une frame ? Le temps minimum ? Le temps maximum ?
 
-> ...
+> Le temps moyen est de 16 534 556 ns avec une valeur minimum de 1 627 700 ns et un maximum de 55 330 700 ns.
 
 g) Les rectangles dans la timeline PIX sont créés dans le code par des appels à XDino_ProfileBegin()
 et XDino_ProfileEnd() . Ces appels de fonctions peuvent être imbriqués. Utilisez ces fonctions
