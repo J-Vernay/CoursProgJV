@@ -26,8 +26,10 @@ void DinoPlayer::update(float deltaTime)
 {
     DinoActor::update(deltaTime);
 
+    XDino_ProfileBegin(DinoColor_RED, "Gamepad reading");
     DinoGamepad gamepad;
     XDino_GetGamepad(gamepadIdx, gamepad);
+    XDino_ProfileEnd();
 
     updateHit(deltaTime);
 

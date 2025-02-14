@@ -19,6 +19,7 @@ void DinoAnimal::update(float deltaTime)
 
 void DinoAnimal::draw() const
 {
+    XDino_ProfileBegin(DinoColor_BLUE, "Draw animal");
     uint8_t alpha = static_cast<uint8_t>(std::clamp(appearTimer / APPEAR_TIME, 0.0f, 1.0f) * 255);
     DinoColor tintColor = {255, 255, 255, static_cast<uint8_t>(alive ? alpha : 255 - alpha)};
 
@@ -33,6 +34,7 @@ void DinoAnimal::draw() const
     drawCall.textureName = "animals.png";
     drawCall.translation = position;
     XDino_Draw(drawCall);
+    XDino_ProfileEnd();
 }
 
 void DinoAnimal::hit()

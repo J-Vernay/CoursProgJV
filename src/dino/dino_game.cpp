@@ -35,6 +35,7 @@ void Dino_GameInit()
 
 void Dino_GameFrame(double timeSinceStart)
 {
+    XDino_ProfileBegin(DinoColor_GREEN, "Game logic");
     // Prendre en compte le temps qui passe.
 
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
@@ -56,7 +57,7 @@ void Dino_GameFrame(double timeSinceStart)
             availableGamepads.erase(std::find(availableGamepads.begin(), availableGamepads.end(), gamepadIdx));
         }
     }
-
+    
     // Gestion des entrées et mise à jour de la logique de jeu.
     terrain.update(deltaTime);
 
@@ -100,7 +101,8 @@ void Dino_GameFrame(double timeSinceStart)
         for (DinoActor* actor : actors) {
             actor->update(deltaTime);
         }
-
+        
+        XDino_ProfileBegin(DinoColor_YELLOW, "Collision solving");
         if (actors.size() > 1) {
             auto actorIterator = actors.begin();
             while (actorIterator < actors.end() - 1) {
@@ -116,9 +118,10 @@ void Dino_GameFrame(double timeSinceStart)
         for (DinoActor* actor : actors) {
             actor->handleTerrainCollision();
         }
+        XDino_ProfileEnd();
 
+        XDino_ProfileBegin(DinoColor_RED, "Lasso intersections");
         for (int i = 0; i < lassos.size(); i++) {
-
             for (int j = 0; j < lassos.size(); j++) {
                 if (i == j)
                     continue;
@@ -136,13 +139,16 @@ void Dino_GameFrame(double timeSinceStart)
                 }
             });
         }
+        XDino_ProfileEnd();
     }
 
+    XDino_ProfileEnd();
     // Affichage
     // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
     XDino_SetRenderSize({480, 360});
 
     terrain.draw_ocean();
+    XDino_ProfileBegin(DinoColor_GREEN, "Draw");
     terrain.draw_terrain();
 
     {
@@ -157,6 +163,7 @@ void Dino_GameFrame(double timeSinceStart)
             actor->draw();
         }
     }
+    XDino_ProfileEnd();
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

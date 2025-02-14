@@ -487,17 +487,17 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 
 **Temps passé en moyenne pour...**
 
-> **Lire les entrées claviers/manette :** ...
+> **Lire les entrées claviers/manette :** 18 909 ns
 >
-> **Le calcul des DinoDrawCall :** ...
+> **Le calcul des DinoDrawCall :** 53 465 ns
 >
-> **La logique de jeu (excluant lire les entrées et drawcalls):** ...
+> **La logique de jeu (excluant lire les entrées et drawcalls):** 371 732 ns (466 277 ns - 5 * 18 909 ns)
 >
-> **Résoudre les collisions :** ...
+> **Résoudre les collisions :** 26 358 ns
 >
-> **Calculer les intersections de lasso :** ...
+> **Calculer les intersections de lasso :** 3 361 ns
 >
-> **Le calcul des DinoDrawCall des animaux :** ...
+> **Le calcul des DinoDrawCall des animaux :** 173 ns
 >
-> **Le calcul des DinoDrawCall des lasso :** ...
+> **Le calcul des DinoDrawCall des lasso :** 6 750 ns
 

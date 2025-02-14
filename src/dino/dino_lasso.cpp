@@ -17,8 +17,10 @@ void DinoLasso::update(float deltaTime, DinoActor* actor)
 
 void DinoLasso::draw(DinoColor color) const
 {
+    XDino_ProfileBegin(DinoColor_BLUE, "Draw lasso");
     DinoDrawCall drawCall = Dino_CreateDrawCall_Polyline(linePoints, LINE_WIDTH, color);
     XDino_Draw(drawCall);
+    XDino_ProfileEnd();
 }
 
 void DinoLasso::handleActorCollision(DinoActor* actor)
