@@ -6,32 +6,32 @@ constexpr float ANIMAL_SPEED = 40.f; // Nombre de pixels parcourus en une second
 
 void DinoAnimal::Init(DinoVec2 initPos, int32_t idxAnimal)
 {
-    m_pos = initPos;
+    playerPos = initPos;
     m_dir = XDino_RandomUnitVec2();
     m_idxAnimal = idxAnimal;
 }
 
-void DinoAnimal::UpdateAnimal(float deltaTime)
+void DinoAnimal::Update(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    m_pos.x += m_dir.x * ANIMAL_SPEED * deltaTime;
-    m_pos.y += m_dir.y * ANIMAL_SPEED * deltaTime;
+    playerPos.x += m_dir.x * ANIMAL_SPEED * deltaTime;
+    playerPos.y += m_dir.y * ANIMAL_SPEED * deltaTime;
 
     if (m_dir.x != 0)
         m_bMirror = m_dir.x > 0;
 }
 
-void DinoAnimal::DrawAnimal(double timeSinceStart)
+void DinoAnimal::Draw(double timeSinceStart)
 {
     // Copier-coller de l'ancien code.
 
     DinoDrawCall drawCall;
     drawCall.textureName = "animals.png";
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {32, 0};
-    DinoVec2 posC = {0, 32};
-    DinoVec2 posD = {32, 32};
+    DinoVec2 posA = {-16, -32};
+    DinoVec2 posB = {16, -32};
+    DinoVec2 posC = {-16, 0};
+    DinoVec2 posD = {16, 0};
 
     int idxFrame = int(timeSinceStart * 8) % 4;
     int u = 32 * idxFrame;
@@ -79,9 +79,15 @@ void DinoAnimal::DrawAnimal(double timeSinceStart)
     }
 
     drawCall.scale = 1;
-    drawCall.translation = m_pos;
+    drawCall.translation = playerPos;
     XDino_Draw(drawCall);
 }
+
+void DinoAnimal::OnTerrainBorder()
+{
+    m_dir = XDino_RandomUnitVec2();
+}
+
 
 /* TODO
 bool DinoAnimal::IsAbove(DinoPlayer& other)

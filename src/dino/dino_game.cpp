@@ -18,9 +18,9 @@ double scale = 1.0;
 std::vector<DinoPlayer> players;
 std::vector<DinoAnimal> animals;
 
-bool ComparePlayerPos(DinoEntity& a, DinoEntity& b)
+bool CompareEntitiesPos(DinoEntity* pEntity1, DinoEntity* pEntity2)
 {
-    return a.isAbove(b);
+    return pEntity1->GetPos().y < pEntity2->GetPos().y;
 }
 
 void Dino_GameInit()
@@ -78,16 +78,12 @@ void SetBackground(DinoVec2 windowSize)
     }
 }
 
+double g_AnimalLastSpawnTime = 0;
+
 void Dino_GameFrame(double timeSinceStart)
 {
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
-    for (DinoPlayer& player : players) {
-        player.UpdatePlayer(deltaTime);
-    }
-    for (DinoAnimal& animal : animals) {
-        animal.UpdateAnimal(deltaTime);
-    }
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
@@ -106,15 +102,37 @@ void Dino_GameFrame(double timeSinceStart)
     terB.x = terA.x + 256;
     terB.y = terA.y + 192;
 
-    std::sort(players.begin(), players.end(), ComparePlayerPos);
-    for (DinoPlayer& player : players) {
-        player.DrawPlayer(timeSinceStart);
-        player.ApplyTerrain(terA, terB);
+    double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
+    if (timeSinceLastSpawn > 0.1) {
+        g_AnimalLastSpawnTime = timeSinceStart;
+        animals.emplace_back();
+        animals.back().Init({windowSize.x / 2, windowSize.y / 2}, XDino_RandomInt32(0, 7));
     }
-    for (DinoAnimal& animal : animals) {
-        animal.DrawAnimal(timeSinceStart);
-        animal.ApplyTerrain(terA, terB);
+    std::vector<DinoEntity*> pEntities;
+    for (DinoPlayer& player : players)
+        pEntities.emplace_back(&player);
+    for (DinoAnimal& animal : animals)
+        pEntities.emplace_back(&animal);
+
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->Update(deltaTime);
+
+    for (DinoEntity* pEntity1 : pEntities) {
+        for (DinoEntity* pEntity2 : pEntities) {
+            DinoVec2 a = pEntity1->GetPos();
+            DinoVec2 b = pEntity2->GetPos();
+            Dino_ResolveCollision(a, b, 8);
+            pEntity1->Set(a);
+            pEntity2->Set(b);
+        }
     }
+
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->ApplyTerrain(terA, terB);
+
+    std::sort(pEntities.begin(), pEntities.end(), CompareEntitiesPos);
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -130,7 +148,8 @@ void Dino_GameFrame(double timeSinceStart)
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_BLUE, DinoColor_RED);
         drawCall.scale = 1;
         drawCall.rotation = 0;
-        drawCall.translation = {windowSize.x - 65, windowSize.y - 20};
+        drawCall.translation.x = windowSize.x - 2 * windowSize.x;
+        drawCall.translation.y = windowSize.y - 2 * windowSize.y;
         XDino_Draw(drawCall);
     }
 

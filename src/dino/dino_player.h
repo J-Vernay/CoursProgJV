@@ -4,9 +4,10 @@
 
 class DinoPlayer : public DinoEntity {
 public :
-    void UpdatePlayer(float time);
-    void DrawPlayer(double time);
+    void Update(float deltaTime);
+    void Draw(double time);
     void Init(DinoVec2 pos, DinoGamepadIdx idx, int indexGraph);
+    void ChangeColor();
 
 private :
     DinoGamepadIdx gamepadIdx;
