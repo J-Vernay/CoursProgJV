@@ -6,7 +6,7 @@ constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
 
 void dino_player::Init(DinoVec2 posInit, int index, DinoGamepadIdx idxGamepad)
 {
-    playerPos = posInit;
+    pos = posInit;
     indexPlayer = index;
 }
 
@@ -29,8 +29,8 @@ void dino_player::UpdatePlayer(float deltaTime)
         playerSpeed *= 2.f;
     }
 
-    playerPos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
-    playerPos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
+    pos.x += gamepad.stick_left_x * playerSpeed * deltaTime;
+    pos.y += gamepad.stick_left_y * playerSpeed * deltaTime;
 
     if (gamepad.stick_left_x != 0) {
         isMirror = gamepad.stick_left_x < 0;
@@ -93,36 +93,26 @@ void dino_player::DrawPlayer(double timeSinceStart)
     }
 
     drawCall.scale = 1;
-    drawCall.translation = playerPos;
+    drawCall.translation = pos;
     XDino_Draw(drawCall);
 }
 
 bool dino_player::IsAbove(dino_player& other)
 {
-    return playerPos.y < other.playerPos.y;
+    return pos.y < other.pos.y;
 }
 
 void dino_player::ApplyTerain(DinoVec2 a, DinoVec2 b)
 {
-    if (playerPos.y < a.y)
-        playerPos.y = a.y;
+    if (pos.y < a.y)
+        pos.y = a.y;
 
-    if (playerPos.y > b.y)
-        playerPos.y = b.y;
+    if (pos.y > b.y)
+        pos.y = b.y;
 
-    if (playerPos.x < a.x)
-        playerPos.x = a.x;
+    if (pos.x < a.x)
+        pos.x = a.x;
 
-    if (playerPos.x > b.x)
-        playerPos.x = b.x;
-}
-
-void dino_player::SetPos(DinoVec2 newPos)
-{
-    playerPos = newPos;
-}
-
-DinoVec2 dino_player::GetPos()
-{
-    return playerPos;
+    if (pos.x > b.x)
+        pos.x = b.x;
 }

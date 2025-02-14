@@ -1,9 +1,10 @@
 #pragma once
 
 #include <dino//dino_draw_utils.h>
+#include <dino/dino_entity.h>
 
-class dino_animal {
-    DinoVec2 pos = {};
+class dino_animal : public dino_entity {
+private:
     DinoVec2 direction = {};
     int32_t idxAnimal;
 

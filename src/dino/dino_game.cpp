@@ -1,6 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "dino_entity.h"
+
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
@@ -63,21 +65,6 @@ void Dino_GameFrame(double timeSinceStart)
         player.UpdatePlayer(deltaTime);
     }
 
-    // Gérer les collisions entre joueurs.
-    for (dino_player& player1 : dinoPlayers) {
-        for (dino_player& player2 : dinoPlayers) {
-            DinoVec2 a = player1.GetPos();
-            DinoVec2 b = player2.GetPos();
-            Dino_ResolveCircleCollision(a, b, 8);
-            player1.SetPos(a);
-            player2.SetPos(b);
-        }
-    }
-
-    for (dino_player& player : dinoPlayers) {
-        player.ApplyTerain(terrainA, terrainB);
-    }
-
     double timeSinceLastSPawn = timeSinceStart - animalLastSpawnTime;
     if (timeSinceLastSPawn > 1) {
         animalLastSpawnTime = timeSinceStart;
@@ -87,6 +74,31 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (dino_animal& animal : animals) {
         animal.UpdateAnimal(deltaTime);
+    }
+
+    std::vector<dino_entity*> pEntities;
+    for (dino_player& player : dinoPlayers) {
+        pEntities.emplace_back(&player);
+    }
+    for (dino_animal& animal : animals) {
+        pEntities.emplace_back(&animal);
+    }
+    // Gérer les collisions entre joueurs.
+    for (dino_entity* pEntity1 : pEntities) {
+        for (dino_entity* pEntity2 : pEntities) {
+            DinoVec2 a = pEntity1->GetPos();
+            DinoVec2 b = pEntity2->GetPos();
+            Dino_ResolveCircleCollision(a, b, 8);
+            pEntity1->SetPos(a);
+            pEntity2->SetPos(b);
+        }
+    }
+
+    for (dino_player& player : dinoPlayers) {
+        player.ApplyTerain(terrainA, terrainB);
+    }
+
+    for (dino_animal& animal : animals) {
         animal.ApplyTerain(terrainA, terrainB);
     }
 

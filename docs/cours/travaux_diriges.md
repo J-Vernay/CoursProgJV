@@ -381,12 +381,13 @@ e) Implémentez la fonctionnalité F5.3 .
 
 f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Il y a une duplication du code puisqu'elles n'ont pas de classe mère commune, nous ne pouvons pas généraliser le code.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> Nous pouvons utiliser le principe de classe dérivée. Pour notifier le fiat qu'une classe dérive il faut mettre :
+> public DinoEntity {}; C'est le principe de l'héritage.
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
