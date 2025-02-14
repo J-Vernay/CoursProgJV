@@ -33,4 +33,6 @@ public:
     /// @param first Le premier acteur à comparer.
     /// @param second Le second acteur à comparer.
     static bool compareHeight(const DinoActor* first, const DinoActor* second);
+    
+    void handleTerrainCollision();
 };

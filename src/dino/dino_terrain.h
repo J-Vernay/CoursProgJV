@@ -29,6 +29,6 @@ public:
     void update(float deltaTime); ///< Execute la logique d'animation du terrain.
     void draw_ocean(); ///< Dessine l'océan à l'écran.
     void draw_terrain(); ///< Dessine le terrain à l'écran.
-    DinoVec2 get_terrain_min_position(); ///< Retourne la position à l'écran du coin en haut à gauche du terrain.
-    DinoVec2 get_terrain_max_position(); ///< Retourne la position à l'écran du coin en bas à droite du terrain.
+    static DinoVec2 get_terrain_min_position(); ///< Retourne la position à l'écran du coin en haut à gauche du terrain.
+    static DinoVec2 get_terrain_max_position(); ///< Retourne la position à l'écran du coin en bas à droite du terrain.
 };

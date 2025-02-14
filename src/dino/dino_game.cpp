@@ -14,6 +14,7 @@
 double lastTime = 0;
 DinoTerrain terrain;
 std::vector<DinoPlayer> players;
+std::vector<DinoLasso> lassos;
 std::vector<DinoAnimal> animals;
 std::vector<DinoActor*> actors;
 std::vector<DinoGamepadIdx> availableGamepads;
@@ -50,6 +51,7 @@ void Dino_GameFrame(double timeSinceStart)
             
             DinoVec2 windowSize = XDino_GetRenderSize();
             players.push_back(DinoPlayer({windowSize.x / 2, windowSize.y / 2}, gamepadIdx, static_cast<DinoPlayer::Color>(players.size())));
+            lassos.push_back(DinoLasso());
             availableGamepads.erase(std::find(availableGamepads.begin(), availableGamepads.end(), gamepadIdx));
         }
     }
@@ -73,12 +75,6 @@ void Dino_GameFrame(double timeSinceStart)
         actors.clear();
         for (DinoPlayer& player : players) {
             actors.push_back(&player);
-            DinoLasso* lasso = player.getLasso();
-
-            for (DinoPlayer& otherPlayer : players) {
-                if (lasso == otherPlayer.getLasso()) continue;
-                lasso->handlePlayerCollision(&otherPlayer);
-            }
         }
 
         for (DinoAnimal& animal : animals) {
@@ -87,6 +83,20 @@ void Dino_GameFrame(double timeSinceStart)
         
         for (DinoActor* actor : actors) {
             actor->update(deltaTime);
+        }
+
+        for (DinoActor* actor : actors) {
+            actor->handleTerrainCollision();
+        }
+
+        for (int i = 0; i < lassos.size(); i++) {
+
+            for (int j = 0; j < lassos.size(); j++) {
+                if (i == j) continue;
+                lassos[i].handlePlayerCollision(&players[j]);
+            }
+            
+            lassos[i].update(deltaTime, &players[i]);
         }
     }
 
@@ -98,8 +108,8 @@ void Dino_GameFrame(double timeSinceStart)
     terrain.draw_terrain();
 
     {
-        for (DinoPlayer& player : players) {
-            player.drawLasso();
+        for (int i = 0; i < lassos.size(); i++) {
+            lassos[i].draw(players[i].getColor());
         }
     }
     

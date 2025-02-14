@@ -6,9 +6,9 @@
 
 constexpr float LINE_WIDTH = 4;
 
-void DinoLasso::update(float deltaTime, DinoVec2 newPosition)
+void DinoLasso::update(float deltaTime, DinoActor* actor)
 {
-    handleAddingPoints(newPosition);
+    handleAddingPoints(actor->position);
     handleRemovingPoints(deltaTime);
     handleSelfIntersection();
 }

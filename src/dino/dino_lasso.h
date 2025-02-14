@@ -8,7 +8,7 @@ class DinoLasso {
     DinoVec2 position = {};
     float deleteTimer = 0;
 public:
-    void update(float deltaTime, DinoVec2 newPosition);
+    void update(float deltaTime, DinoActor* actor);
     void draw(DinoColor color) const;
     void handlePlayerCollision(DinoPlayer* player);
 private:

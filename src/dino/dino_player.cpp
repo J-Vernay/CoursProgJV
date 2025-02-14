@@ -38,8 +38,6 @@ void DinoPlayer::update(float deltaTime)
     }
     updateAnimator(gamepad);
     updateAnimation(deltaTime);
-
-    lasso.update(deltaTime, position);
 }
 
 void DinoPlayer::draw() const
@@ -56,19 +54,14 @@ void DinoPlayer::draw() const
     XDino_Draw(drawCall);
 }
 
-void DinoPlayer::drawLasso() const
-{
-    lasso.draw(colors[color]);
-}
-
-DinoLasso* DinoPlayer::getLasso()
-{
-    return &lasso;
-}
-
 void DinoPlayer::hit()
 {
     hitTimer = HIT_TIME;
+}
+
+DinoColor DinoPlayer::getColor() const
+{
+    return colors[color];
 }
 
 void DinoPlayer::updateHit(float deltaTime)

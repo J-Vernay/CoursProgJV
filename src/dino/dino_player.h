@@ -51,11 +51,10 @@ public:
     
     void update(float deltaTime) override;
     void draw() const override;
-    void drawLasso() const;
     /// Frappe le joueur et l'immobilise.
     void hit();
 
-    DinoLasso* getLasso();
+    DinoColor getColor() const;
 private:
     void updateHit(float deltaTime);
     void updateMovement(float deltaTime, const DinoGamepad& gamepad);
