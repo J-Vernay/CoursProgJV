@@ -6,6 +6,7 @@
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include "dino/dino_player.h"
+#include "dino/dino_geometry.h"
 
 #include <format>
 #include <algorithm>

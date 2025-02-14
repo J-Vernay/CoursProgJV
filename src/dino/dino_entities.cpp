@@ -6,7 +6,7 @@ bool DinoEntity::isAbove(DinoEntity& other)
     return playerPos.y < other.playerPos.y;
 }
 
-void DinoEntity::ApplyTerrain(DinoVec2 a, DinoVec2 b)
+void DinoEntity::ApplyTerrain(DinoVec2& a, DinoVec2& b)
 {
     if (playerPos.y < a.y)
         playerPos.y = a.y;
@@ -16,4 +16,14 @@ void DinoEntity::ApplyTerrain(DinoVec2 a, DinoVec2 b)
         playerPos.x = a.x;
     if (playerPos.x > b.x)
         playerPos.x = b.x;
+}
+
+DinoVec2 DinoEntity:: GetPos()
+{
+    return playerPos;
+}
+
+void DinoEntity:: Set(DinoVec2& newPos)
+{
+     playerPos = newPos;
 }

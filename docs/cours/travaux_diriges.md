@@ -370,12 +370,12 @@ e) Implémentez la fonctionnalité F5.3 .
 
 f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Car il faut gérer les colllisions pour les animaux et les joueurs
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> L'héritage de classe
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.

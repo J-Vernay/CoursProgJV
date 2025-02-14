@@ -26,3 +26,23 @@ bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)
     else
         return 0 <= dot_AB_AC && dot_AB_AD <= dot_AB_AB;
 }
+
+void Dino_ResolveCollision(DinoVec2& a, DinoVec2& b, float radius)
+{
+    float ab_sq = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
+    float r_sq = radius * radius;
+
+    if(ab_sq >= 4 * r_sq) return;
+    if((ab_sq) == 0 ) return;
+
+    float ab = (float)sqrt(ab_sq);
+    float alpha = (2 * radius - ab) / (2* ab);
+    DinoVec2 v;
+    v.x = alpha * (b.x - a.x);
+    v.y = alpha * (b.y - a.y);
+
+    a.x -= v.x;
+    a.y -= v.y ;
+    b.x += v.x;
+    b.y += v.y;
+}
