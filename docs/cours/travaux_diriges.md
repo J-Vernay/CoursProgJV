@@ -468,7 +468,8 @@ d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionn
 
 Quelle part représente `Dino_GameFrame` relativement à `WinMain` ? Quelle autre fonction prend du temps ?
 
-> ...
+> `Dino_GameFrame` prends environ 32.43% du temps d'execution de `WinMain`. `XDino_Win64_EndDraw` prends la majeure
+> partie du reste du temps, avec 64.45% du temps d'execution de `WinMain`.
 
 e) Zoomez sur la timeline (`Ctrl + Molette souris`), jusqu'à voir les frames individuellement.
 Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations de la question précédente.
