@@ -2,6 +2,8 @@
 
 #include "x64-windows/xdino_win64_rdr.h"
 
+#include <dino/dino_draw_utils.h>
+
 void DinoPlayer::Update(float deltaTime, DinoVec2 windowSize, DinoVec2 terrainSize)
 {
     this->idle = false;
@@ -44,7 +46,9 @@ void DinoPlayer::Update(float deltaTime, DinoVec2 windowSize, DinoVec2 terrainSi
             this->walking = true;
         }
     }
+    m_lasso.emplace_back(pos);
 }
+
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
@@ -89,10 +93,18 @@ void DinoPlayer::Draw(double timeSinceStart)
     XDino_Draw(drawCall);
 }
 
-void DinoPlayer::Init(int idx, DinoVec2 posInit)
+void DinoPlayer::Init(int idx, DinoVec2 posInit, DinoColor lassoColor)
 {
     pos = posInit;
     playerIndex = idx;
+    m_lassoColor = lassoColor;
+}
+
+void DinoPlayer::DrawLasso()
+{
+    // Lasso
+    DinoDrawCall drawCallLasso = Dino_CreateDrawCall_Polyline(m_lasso, 4, m_lassoColor);
+    XDino_Draw(drawCallLasso);
 }
 
 

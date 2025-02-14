@@ -38,10 +38,10 @@ void Dino_GameInit()
 
     players.resize(4);
 
-    players[0].Init(0, {renderSize.x / 2 - 50, renderSize.y / 2 - 50});
-    players[1].Init(1, {renderSize.x / 2 - 50, renderSize.y / 2 + 50});
-    players[2].Init(2, {renderSize.x / 2 + 50, renderSize.y / 2 - 50});
-    players[3].Init(3, {renderSize.x / 2 + 50, renderSize.y / 2 + 50});
+    players[0].Init(0, {renderSize.x / 2 - 50, renderSize.y / 2 - 50}, DinoColor_BLUE);
+    players[1].Init(1, {renderSize.x / 2 - 50, renderSize.y / 2 + 50}, DinoColor_RED);
+    players[2].Init(2, {renderSize.x / 2 + 50, renderSize.y / 2 - 50}, DinoColor_YELLOW);
+    players[3].Init(3, {renderSize.x / 2 + 50, renderSize.y / 2 + 50}, DinoColor_GREEN);
 
     /*polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
@@ -130,6 +130,9 @@ void Dino_GameFrame(double timeSinceStart)
     drawCall.vertices.emplace_back(posC, 16, 16);
     drawCall.vertices.emplace_back(posD, 32, 16);
     XDino_Draw(drawCall);
+
+    for (DinoPlayer& player : players)
+        player.DrawLasso();
 
     std::sort(pEntities.begin(), pEntities.end(), CompareEntitiesPos);
     for (DinoEntity* pEntity : pEntities)
