@@ -4,8 +4,8 @@
 #include <dino/dino_player.h>
 #include <dino/dino_draw_utils.h>
 
-constexpr float WALK_SPEED = 75.f;
-constexpr float RUN_SPEED = 150.f;
+constexpr float WALK_SPEED = 120.f;
+constexpr float RUN_SPEED = 240.f;
 constexpr float HIT_TIME = 1.5f;
 
 const Animation animations[] = {

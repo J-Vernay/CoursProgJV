@@ -41,7 +41,7 @@ public:
     void handleActorCollision(DinoActor* other);
 
     /// Détecte et résout si l'acteur est entouré par un lasoo.
-    void handleActorCircled(std::vector<DinoVec2>::iterator first, std::vector<DinoVec2>::iterator second);
+    virtual bool handleActorCircled(std::vector<DinoVec2>::iterator first, std::vector<DinoVec2>::iterator second);
 
     /// Compare la position verticale de deux acteurs.
     /// @param first Le premier acteur à comparer.

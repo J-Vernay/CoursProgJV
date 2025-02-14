@@ -17,7 +17,9 @@ std::vector<DinoLasso> lassos;
 std::vector<DinoAnimal> animals;
 std::vector<DinoActor*> actors;
 std::vector<DinoGamepadIdx> availableGamepads;
-float spawnTimer = 0;
+std::vector<int> scores;
+float spawnTimer = 60;
+float gameTimer = 60;
 
 void Dino_GameInit()
 {
@@ -41,6 +43,9 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
+    gameTimer -= deltaTime;
+    gameTimer = std::max(gameTimer, 0.0f);
+
     if (players.size() < 4) {
         for (DinoGamepadIdx gamepadIdx : availableGamepads) {
             DinoGamepad gamepad;
@@ -54,6 +59,7 @@ void Dino_GameFrame(double timeSinceStart)
                                          gamepadIdx,
                                          static_cast<DinoPlayer::Color>(players.size())));
             lassos.push_back(DinoLasso());
+            scores.push_back(0);
             availableGamepads.erase(std::find(availableGamepads.begin(), availableGamepads.end(), gamepadIdx));
         }
     }
@@ -63,7 +69,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     {
         spawnTimer += deltaTime;
-        if (spawnTimer >= 1) {
+        if (spawnTimer >= std::max(0.5f, gameTimer / 30.0f)) {
             spawnTimer = 0;
 
             DinoVec2 minPosition = terrain.get_terrain_min_position();
@@ -128,14 +134,15 @@ void Dino_GameFrame(double timeSinceStart)
                 lassos[i].handleActorCollision(&players[j]);
             }
 
-            DinoPlayer* playerPointer = &players[i];
-            lassos[i].update(deltaTime, playerPointer);
-            lassos[i].handleSelfIntersection([playerPointer](auto first, auto second) {
+            lassos[i].update(deltaTime, &players[i]);
+            lassos[i].handleSelfIntersection([i](auto first, auto second) {
+                int bonus = 1;
                 for (DinoActor* actor : actors) {
-                    if (actor == playerPointer)
+                    if (actor == &players[i])
                         continue;
 
-                    actor->handleActorCircled(first, second);
+                    if (!actor->handleActorCircled(first, second)) continue;
+                    scores[i] += (bonus++) * 10;
                 }
             });
         }
@@ -168,15 +175,50 @@ void Dino_GameFrame(double timeSinceStart)
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_GREY, DinoColor_WHITE);
         XDino_Draw(drawCall);
+    }
+
+    {
+        int seconds = static_cast<int>(floorf(gameTimer));
+        float cents = floorf(fmodf(gameTimer, 1.0f) * 100);
+        std::string text = std::format("{:}:{:02}", seconds, cents);
+
+        DinoVec2 size = {};
+        DinoVec2 renderSize = XDino_GetRenderSize();
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_GREY, DinoColor_WHITE, &size);
+        drawCall.scale = 2;
+        drawCall.translation = {(renderSize.x - size.x * static_cast<float>(drawCall.scale)) / 2, 0};
+        XDino_Draw(drawCall);
+    }
+
+    {
+        DinoVec2 renderSize = XDino_GetRenderSize();
+        DinoVec2 size = {};
+
+        Dino_CreateDrawCall_Text("000", DinoColor_WHITE, DinoColor_GREY, &size);
+
+        size.y *= 2;
+        
+        constexpr float scoreSpacing = 10;
+        float totalScoresSize = size.y * static_cast<float>(scores.size()) + scoreSpacing * static_cast<float>(scores.size() - 1);
+        float offset = (renderSize.y - totalScoresSize) / 2;
+        float step = size.y + scoreSpacing;
+        
+        for (int i = 0; i < scores.size(); i++) {
+            std::string text = std::format("{:03}", scores[i]);
+            DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, players[i].getColor(), DinoColor_WHITE, &size);
+            drawCall.translation = {0, offset + step * static_cast<float>(i)};
+            drawCall.scale = 2;
+            XDino_Draw(drawCall);
+        }
     }
 
     {
         std::string text = "GUEROULT Matys";
         DinoVec2 size = {};
         DinoVec2 renderSize = XDino_GetRenderSize();
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY, &size);
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_GREY, DinoColor_WHITE, &size);
         drawCall.translation = {renderSize.x - size.x,
                                 renderSize.y - size.y};
         XDino_Draw(drawCall);

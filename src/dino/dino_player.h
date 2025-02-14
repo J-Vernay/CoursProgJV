@@ -52,6 +52,12 @@ public:
     /// Retourne la couleur RGBA associée à la couleur du dinosaure.
     DinoColor getColor() const;
 
+    bool handleActorCircled(std::vector<DinoVec2>::iterator first, std::vector<DinoVec2>::iterator second) override
+    {
+        DinoActor::handleActorCircled(first, second);
+        return false;
+    }
+
 protected:
     void hit() override;
 
