@@ -7,7 +7,7 @@ void dino_animal::InitAnimal(DinoVec2 initPos, int32_t idxAnimal)
     m_idxAnimal = idxAnimal;
 }
 
-void dino_animal::UpdateAnimal(float deltaTime)
+void dino_animal::Update(float deltaTime)
 {
     // Gestion de la position de l'animal.
 
@@ -18,18 +18,20 @@ void dino_animal::UpdateAnimal(float deltaTime)
         bMirror = m_dir.x > 0;
 }
 
-void dino_animal::DrawAnimal(double timeSinceStart)
+void dino_animal::Draw(double timeSinceStart)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = "animals.png";
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {32, 0};
-    DinoVec2 posC = {0, 32};
-    DinoVec2 posD = {32, 32};
+    DinoVec2 posA = {-16, -32};
+    DinoVec2 posB = {16, -32};
+    DinoVec2 posC = {-16, 0};
+    DinoVec2 posD = {16, 0};
 
     int idxFrame = static_cast<int>(timeSinceStart * 8) % 4;
     int u = 32 * idxFrame;
     int v = 0;
+
+    u += m_idxAnimal * 128;
 
     float fAbsoluDirX = m_dir.x;
     if (fAbsoluDirX < 0)
@@ -74,4 +76,10 @@ void dino_animal::DrawAnimal(double timeSinceStart)
 bool dino_animal::IsAbove(dino_animal& other)
 {
     return pos.y < other.pos.y;
+}
+
+
+void dino_animal::OnTerrainBorder()
+{
+    m_dir = XDino_RandomUnitVec2();
 }

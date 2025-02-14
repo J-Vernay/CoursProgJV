@@ -1,11 +1,12 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_entity.h>
+#include <dino/dino_draw_utils.h>
 
 constexpr float CIRCLE_SPEED = 150.f;
 
-class dino_player {
-    DinoVec2 pos = {};
+class dino_player : public DinoEntity {
     bool bMirror = false;
     int idxPlayer = 0;
 
@@ -15,16 +16,21 @@ class dino_player {
 
     DinoGamepadIdx m_idxGamepad;
 
+    std::vector<DinoVec2> lassoPoints;
+    DinoColor m_color;
+
 public:
     // Met à jour la position du joueur en fonction de la manette.
-    void UpdatePlayer(float deltaTime);
+    void Update(float deltaTime) override;
 
     // Dessine le joueur à l'écran.
-    void DrawDino(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
 
     // Initialise le joueur.
-    void InitDino(DinoVec2 position, int index, DinoGamepadIdx idxGamepad);
+    void InitDino(DinoVec2 position, int index, DinoGamepadIdx idxGamepad, DinoColor color);
 
     // Détermine si le joueur est au-dessus de l'autre.
     bool IsAbove(dino_player& other);
+
+    void DrawLasso();
 };

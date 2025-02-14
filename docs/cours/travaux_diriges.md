@@ -5,7 +5,8 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous
+venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -27,7 +28,8 @@ a) Résumez en une phrase le rôle des fichiers suivants :
 >
 > `premake5.lua` : Configure la compilation du projet, comment on passe des fichiers sources à l'éxécutable.
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place
+des `// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -106,8 +108,8 @@ h) À quoi servent les configurations Debug|Profile|Release ?
 Donnez un exemple de différence dans le code.
 
 > Debug : Décompile le code pas par pas.
-  Release : Code avec optimisation.
-  Profile : Code optimisé pour tester les perfs.
+> Release : Code avec optimisation.
+> Profile : Code optimisé pour tester les perfs.
 
 i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
@@ -115,7 +117,6 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 > ...
-
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -208,13 +209,13 @@ e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers
 > build/%{cfg.platform}/%{cfg.buildfg} --> dossier contenant l'exe
 >
 >include dirs {"src", "external"}
->#include <dino/dino_player.h>
+> #include <dino/dino_player.h>
 >
 >files {"external}
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** 
+> **Fichiers `.h` et `.cpp` :**
 >
 > **Fichiers `.cpp` et `.obj` :** les obj compilent le code du cpp.
 >
@@ -230,9 +231,10 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > #
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
-> 
+>
 
 ## 4. Programmation du terrain
 
@@ -241,17 +243,18 @@ a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> (RenderSize.x - 256) /2, (RenderSize.y - 192) /2
 
 c) Implémentez la fonctionnalité F2.1 .
 
 d) Implémentez la fonctionnalité F2.2 . Profitez-en pour créer les fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire dans `dino_draw_utils.cpp`
+qui contiendront la logique du terrain. Pour vous faciliter la vie, ajoutez une fonction utilitaire
+dans `dino_draw_utils.cpp`
 qui ajoute un sprite à un drawcall avec les bonnes positions et UV.
 
 e) Combien de triangles avez-vous besoin pour dessiner le terrain complet (océan compris) ?
 
-> ...
+> 4
 
 f) Implémentez la fonctionnalité F2.3 .
 
@@ -266,24 +269,31 @@ b) Implémentez la fonctionnalité F3.2 .
 c) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> 32 GB de RAM de disponible. Dans un programme 64-bits 2pow64 octets dans l'espace adressable. Aux endroits correspond aux adressable selon la RAM physique
+> 32 GB de RAM de disponible. Dans un programme 64-bits 2pow64 octets dans l'espace adressable. Aux endroits correspond
+> aux adressable selon la RAM physique
 
 d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> L'allocation de mémoire est le fait que l'os fait correspondre l'adressable à la RAM physique c'est à dire discuter entre l'os, le programme, la RAM et le CPU.
+> L'allocation de mémoire est le fait que l'os fait correspondre l'adressable à la RAM physique c'est à dire discuter
+> entre l'os, le programme, la RAM et le CPU.
 > Ce la dépend du programme que l'on veut faire tourner ainsi que du CPU.
 
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> Un type est un outil du language de programmation pour garder l'information de comment interpréter une suite de bits et quelles opérations sont autorisées.
+> Un type est un outil du language de programmation pour garder l'information de comment interpréter une suite de bits
+> et quelles opérations sont autorisées.
 > Un pointeur correspond à une pointer une suite de bits qui est allouer à cette endroit.
 > Selon le type de donnée que l'on veut récupérer, le résultat ne sera pas le même.
+> Une réinterprétation de pointeur est le fait de changer le type du pointeur : ex :
+> int a = 5;
+> int* pA = &a;
+> float* pB = (float*) &A;
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> DinoVertex = 16 octets 128 bits 
+> DinoVertex = 16 octets 128 bits
 > DinoColor = 4uint8_t -> 4 octets -> 32 bits.
 > Union = Même emplacement mémoire, qui au cours de l'exécution, va y stocker des types différents.
 
@@ -293,19 +303,21 @@ Quelle limitation cela entraîne-t-il ?
 
 > un vector représente un pointer vers le début jusqu'à un pointer de fin.
 > ptr du début + sizeof(int32) * index.
+> La limitation qu'entraine le std::vector : pour pouvoir avoir les incides les éléments doivent avoir les même taille
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
 > Ce qui alloue la mémoire pour les variables globales, c'est l'OS lors de l'éxécution de l'exe.
-> La mémoire des variable loacales sont alloue par la stack (1 grosse allocation à chaque appel de fonction "on grignote" dedans à chaque return "on rend la mémoire"). La stack est appelée après l'exe.
+> La mémoire des variable loacales sont alloue par la stack (1 grosse allocation à chaque appel de fonction "on
+> grignote" dedans à chaque return "on rend la mémoire"). La stack est appelée après l'exe.
 > L'allocation a lieu à la création, lors d'ajouts (push_back, emplace_back) et elles sont allouées dynamiquement.
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
 
-> ...
+> Créer une classe parente `DinoEntity` qui contient les fonctionnalités communes entre `DinoPlayer` et `DinoAnimal`.
 
 j) Implémentez la fonctionnalité F3.4.
 
@@ -316,13 +328,15 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Qu'est-ce que la fonctionnalité implique pour les octets en mémoire qui représente le lasso ?
 
-> ...
+> La fonctionnalité erase.
+> Les octets en mémoire qui représente le lasso sont effacés.
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 
-> ...
+> 6
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 ## 7. Interactions
 
@@ -332,33 +346,42 @@ b) Implémentez la fonctionnalité F5.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> AB = √dx2 + dy2
+> AB = √(A.x - B.x)2 + (A.y - B.y)2
+> Donc si cela est inférieur à deux fois le rayon alors ils collisionnent.
 
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> vecteur v= & vecteur AB
+> (Vecteur A - vecteur v) (vecteur B + vecteur v) = 2r
+> 2v + AB = 2r
+> 2&AB+AB = 2r
+> & = (2r-AB) / 2AB
+> Vecteur v = & Vecteur AB = ((2r - AB)/ 2AB) * Vecteur AB
+> Si on divise par 0, le cas n'est pas gérable puisqu'il ne sait pas dans quelle direction il doit repousser
 
 e) Implémentez la fonctionnalité F5.3 .
 
 f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Problème de mise à l'échelle : A chaque fois que je rajoute un noveau type d'animal, je dois rajouter une nouvelle
+> fonctionnalité. Il y a duplication de code car les deux classes ont des fonctionnalités communes.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> L'héritage permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal`.
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Le polymorphisme permet de gérer différemment un point de logique commune.
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+>
 
 j) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
@@ -411,11 +434,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
