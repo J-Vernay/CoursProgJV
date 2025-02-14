@@ -19,7 +19,7 @@ et à aller chercher les réponses proactivement.
 
 ## Examen papier (30%)
 
-Au début de la dernière séance, vous réaliserez un examen sur papier
+Le jeudi 27 février au matin, vous réaliserez un examen sur papier
 qui reprend ce qui a été vu le long du cours. `travaux_diriges.md`
 contient une partie des questions papier.
 
@@ -37,3 +37,18 @@ Seront jugés le bon fonctionnement des fonctionnalités (50%), et l'état globa
 * Pas de fonctions de 200 lignes qui touchent à tout.
 * Code lisible (variables bien nommées)
 * Minimiser les variables globales accédées partout.
+
+Les fonctionnalités laissées en autonomie sont :
+
+* F1.4 - **[BONUS]** Le dinosaure peut se prendre des dégâts (= immobilisation 3 secondes + animation).
+* F2.2 ; F2.3 ; F2.4 - **[BONUS]** Terrain animé, avec des fleurs, et des saisons différentes
+* F3.4 - **[BONUS]** Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.
+* F4.4 - **[NECESSAIRE]** Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.
+* F5.5 - **[BONUS]** Quand un dinosaure est dans une boucle de lasso, il se prend des dégâts
+* F5.6 - **[NECESSAIRE]** Quand des animaux sont dans une boucle de lasso, ils disparaissent.
+* F6 - **[NECESSAIRE]** Scoring et chronomètre - autonomie complète
+* F7 - **[NECESSAIRE]** Lobby et flow du jeu - autonomie complète 
+
+Les fonctionnalités **[NECESSAIRE]** font partie de l'évaluation.
+Les fonctionnalités **[BONUS]** sont considérées comme du polish, et représentent
+1.5 points bonus sur la note totale (1 point pour le cosmétique, 0.5 point pour gestion des dégâts).
