@@ -55,6 +55,7 @@ void dino_player::Update(float deltaTime)
     }
 
     if (lasso.size() >= 4) {
+        // On a juste besoin de vérifier si le dernier segment crée une intersection.
         DinoVec2 C = lasso[lasso.size() - 2];
         DinoVec2 D = lasso[lasso.size() - 1];
         for (int idxSegment1 = 0; idxSegment1 < lasso.size() - 3; ++idxSegment1) {

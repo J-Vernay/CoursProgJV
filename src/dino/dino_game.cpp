@@ -63,15 +63,20 @@ void Dino_GameFrame(double timeSinceStart)
         animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
     }
 
+    XDino_ProfileBegin(DinoColor_RED, "Collecter les entites");
     std::vector<dino_entity*> pEntities;
     for (dino_player& player : dinoPlayers)
         pEntities.emplace_back(&player);
     for (dino_animal& animal : animals)
         pEntities.emplace_back(&animal);
+    XDino_ProfileEnd();
 
+    XDino_ProfileBegin(DinoColor_BLUE, "Update des entites");
     for (dino_entity* pEntity : pEntities)
         pEntity->Update(deltaTime);
+    XDino_ProfileEnd();
 
+    XDino_ProfileBegin(DinoColor_YELLOW, "Collisions");
     // Gérer les collisions entre joueurs.
     for (dino_entity* pEntity1 : pEntities) {
         for (dino_entity* pEntity2 : pEntities) {
@@ -82,10 +87,13 @@ void Dino_GameFrame(double timeSinceStart)
             pEntity2->SetPos(b);
         }
     }
+    XDino_ProfileEnd();
 
+    XDino_ProfileBegin(DinoColor_YELLOW, "Interaction avec le terrain");
     for (dino_entity* pEntity : pEntities) {
         pEntity->ApplyTerain(terrainA, terrainB);
     }
+    XDino_ProfileEnd();
 
     // Affichage
 
