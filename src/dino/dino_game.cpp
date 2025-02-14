@@ -15,7 +15,7 @@ double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
 std::vector<DinoPlayer> players;
-std::vector<DinoAnimals> animals;
+std::vector<DinoAnimal> animals;
 
 bool ComparePlayerPos(DinoEntity& a, DinoEntity& b)
 {
@@ -33,7 +33,7 @@ void Dino_GameInit()
     players[1].Init({windowSize.x / 2 - 100, windowSize.y / 2}, DinoGamepadIdx::Gamepad1, 1);
     players[2].Init({windowSize.x / 2, windowSize.y / 2 - 100}, DinoGamepadIdx::Gamepad2, 2);
     players[3].Init({windowSize.x / 2 - 100, windowSize.y / 2 - 100}, DinoGamepadIdx::Gamepad3, 3);
-    animals[0].Init();
+    animals[0].Init({windowSize.x / 2, windowSize.y / 2}, XDino_RandomInt32(0, 7));
 }
 
 
@@ -84,6 +84,9 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoPlayer& player : players) {
         player.UpdatePlayer(deltaTime);
     }
+    for (DinoAnimal& animal : animals) {
+        animal.UpdateAnimal(deltaTime);
+    }
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
@@ -95,13 +98,20 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 windowSize = XDino_GetRenderSize();
     XDino_SetRenderSize({480, 360});
     SetBackground(windowSize);
+    
+    DinoVec2 terA, terB;
+    terA.x = (windowSize.x - 256 )/2;
+    terA.y = (windowSize.y - 192)/2;
+    terB.x = terA.x + 256;
+    terB.y = terA.y + 192;
 
     std::sort(players.begin(), players.end(), ComparePlayerPos);
     for (DinoPlayer& player : players) {
         player.DrawPlayer(timeSinceStart);
+        player.ApplyTerrain(terA, terB);
     }
-    for (DinoAnimals& animal : animals) {
-        animal.DrawPlayer(timeSinceStart);
+    for (DinoAnimal& animal : animals) {
+        animal.DrawAnimal(timeSinceStart);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.

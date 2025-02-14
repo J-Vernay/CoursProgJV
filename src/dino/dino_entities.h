@@ -4,5 +4,6 @@
 class DinoEntity {
 public :
     bool isAbove(DinoEntity& other);
+    void ApplyTerrain(DinoVec2 a, DinoVec2 b);
     DinoVec2 playerPos = {};
 };

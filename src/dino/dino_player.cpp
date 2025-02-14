@@ -50,10 +50,10 @@ void DinoPlayer::DrawPlayer(double time)
     DinoDrawCall drawcall;
     drawcall.textureName = "dinosaurs.png";
 
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {24, 0};
-    DinoVec2 posC = {0, 24};
-    DinoVec2 posD = {24, 24};
+    DinoVec2 posA = {-24, -24};
+    DinoVec2 posB = {0, -24};
+    DinoVec2 posC = {-24, 0};
+    DinoVec2 posD = {0, 0};
 
     int u = 0;
     if (this->isIdle) {
