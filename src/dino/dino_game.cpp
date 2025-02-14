@@ -1,10 +1,9 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "x64-windows/xdino_win64_rdr.h"
-
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
+#include <dino/dino_movement.h>
 
 #include <format>
 
@@ -16,21 +15,22 @@ DinoVec2 circlePos = {};
 std::vector<DinoVec2> polyline;
 DinoVec2 textNamePos;
 
-float counter;
+float counter, animCounter, lastDirection;
+int animWalkIndicatorCounter = 0;
+bool facingLeft = false;
+
+//Dino Variables
+DinoDrawCall drawCallDino;
 
 // Constantes.
 constexpr float CIRCLE_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
 constexpr float timeUntilDoubleSpeed = 1; //Tome until Speeds up
-
-void ExchangeValues(uint16_t* value1, uint16_t* value2)
-{
-    uint16_t e = *value1;
-    *value1 = *value2;
-    *value2 = e;
-}
+constexpr float timeUntilAnimFrameChange = 4;
+constexpr int posWalkAnimArray[12] = {25,52,76,106,124,148,172,196,220,244,268,292};
 
 void Dino_GameInit()
 {
+    InstantiateDinoVerticles(&drawCallDino);
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
     circlePos = {windowSize.x / 2, windowSize.y / 2};
@@ -156,38 +156,56 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du cercle que l'on peut bouger./Dessin du Dino.
     {
-        DinoDrawCall drawCallDino;
-        drawCallDino.vertices.resize(6);
-        drawCallDino.vertices[0].pos = {0, 0};
-        drawCallDino.vertices[0].u = 6;drawCallDino.vertices[0].v = 4;
-        
-        drawCallDino.vertices[1].pos = {15, 0};
-        drawCallDino.vertices[1].u = 19;drawCallDino.vertices[1].v = 4;
-        
-        drawCallDino.vertices[2].pos = {0, 17};
-        drawCallDino.vertices[2].u = 6;drawCallDino.vertices[2].v = 21;
 
-        drawCallDino.vertices[3].pos = {15, 17};
-        drawCallDino.vertices[3].u = 19;drawCallDino.vertices[3].v = 21;
-        
-        drawCallDino.vertices[4].pos = {15, 0};
-        drawCallDino.vertices[4].u = 19;drawCallDino.vertices[4].v = 4;
-        
-        drawCallDino.vertices[5].pos = {0, 17};
-        drawCallDino.vertices[5].u = 6;drawCallDino.vertices[5].v = 21;
+        if (xMovement != 0 || yMovement != 0)
+        {
+            animCounter ++;
+            if (animCounter > timeUntilAnimFrameChange) {
+                animCounter = 0;
+                animWalkIndicatorCounter++;
 
-        if (xMovement < 0) {
-            
-            ExchangeValues(&drawCallDino.vertices[0].u, &drawCallDino.vertices[3].u);
-            ExchangeValues(&drawCallDino.vertices[1].u, &drawCallDino.vertices[5].u);
-            ExchangeValues(&drawCallDino.vertices[2].u, &drawCallDino.vertices[4].u);
+                if ((animWalkIndicatorCounter < 10)) {
+                    drawCallDino.vertices[0].u += 24;
+                    drawCallDino.vertices[1].u += 24;
+                    drawCallDino.vertices[2].u += 24;
+                    drawCallDino.vertices[3].u += 24;
+                    drawCallDino.vertices[4].u += 24;
+                    drawCallDino.vertices[5].u += 24;
+                }
+                else {
+                    animWalkIndicatorCounter = 1;
+                    drawCallDino.vertices[0].u -= 192;
+                    drawCallDino.vertices[1].u -= 192;
+                    drawCallDino.vertices[2].u -= 192;
+                    drawCallDino.vertices[3].u -= 192;
+                    drawCallDino.vertices[4].u -= 192;
+                    drawCallDino.vertices[5].u -= 192;
+                }
+                if (xMovement < 0) {
+                    if (!facingLeft) {
+                        facingLeft = true;
+                        SwitchDinoRotation(&drawCallDino);
+                    }
+                }else if (facingLeft == true)
+                {
+                    facingLeft = false;
+                    SwitchDinoRotation(&drawCallDino);
+                }
+            }
+            lastDirection = xMovement;
+        }
+        else {
+            InstantiateDinoVerticles(&drawCallDino);
+            animWalkIndicatorCounter = 0;
+            animCounter = 0;
+            if(lastDirection < 0)SwitchDinoRotation(&drawCallDino);
         }
 
         drawCallDino.textureName = "dinosaurs.png";
         
         //Dino_CreateDrawCall_Circle(20);
         drawCallDino.translation = circlePos;
-        drawCallDino.scale = 2;
+        drawCallDino.scale = 2.5f;
         XDino_Draw(drawCallDino);
     }
 

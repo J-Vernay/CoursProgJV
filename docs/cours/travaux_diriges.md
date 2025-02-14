@@ -87,9 +87,11 @@ c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Comment récupérer les coordonnées UV de la bonne animation ?
 
-> ...
+> Done! Il y a 24 Pixels de distance entre chaque sprite de l'anim, on peut changer ca facilement avec Verticles
 
 d) Implémentez la fonctionnalité F1.4 .
+
+> Do
 
 ## 2. Introduction à la programmation orientée objet en C++ (F1.5-F1.6)
 
