@@ -48,9 +48,11 @@ void Dino_GameFrame(double timeSinceStart)
 
             if (abs(gamepad.stick_left_x) + abs(gamepad.stick_left_y) < 0.1f)
                 continue;
-            
+
             DinoVec2 windowSize = XDino_GetRenderSize();
-            players.push_back(DinoPlayer({windowSize.x / 2, windowSize.y / 2}, gamepadIdx, static_cast<DinoPlayer::Color>(players.size())));
+            players.push_back(DinoPlayer({windowSize.x / 2, windowSize.y / 2},
+                                         gamepadIdx,
+                                         static_cast<DinoPlayer::Color>(players.size())));
             lassos.push_back(DinoLasso());
             availableGamepads.erase(std::find(availableGamepads.begin(), availableGamepads.end(), gamepadIdx));
         }
@@ -80,7 +82,7 @@ void Dino_GameFrame(double timeSinceStart)
         for (DinoAnimal& animal : animals) {
             actors.push_back(&animal);
         }
-        
+
         for (DinoActor* actor : actors) {
             actor->update(deltaTime);
         }
@@ -92,10 +94,11 @@ void Dino_GameFrame(double timeSinceStart)
         for (int i = 0; i < lassos.size(); i++) {
 
             for (int j = 0; j < lassos.size(); j++) {
-                if (i == j) continue;
+                if (i == j)
+                    continue;
                 lassos[i].handlePlayerCollision(&players[j]);
             }
-            
+
             lassos[i].update(deltaTime, &players[i]);
         }
     }
@@ -112,7 +115,7 @@ void Dino_GameFrame(double timeSinceStart)
             lassos[i].draw(players[i].getColor());
         }
     }
-    
+
     {
         std::sort(actors.begin(), actors.end(), DinoPlayer::compareHeight);
         for (DinoActor* actor : actors) {

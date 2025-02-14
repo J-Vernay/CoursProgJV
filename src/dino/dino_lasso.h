@@ -7,10 +7,12 @@ class DinoLasso {
     std::vector<DinoVec2> linePoints;
     DinoVec2 position = {};
     float deleteTimer = 0;
+
 public:
     void update(float deltaTime, DinoActor* actor);
     void draw(DinoColor color) const;
     void handlePlayerCollision(DinoPlayer* player);
+
 private:
     void handleAddingPoints(DinoVec2 newPosition);
     void handleRemovingPoints(float deltaTime);

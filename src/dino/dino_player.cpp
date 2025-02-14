@@ -15,7 +15,7 @@ const Animation animations[] = {
     {16, {17, 18, 19, 20, 21, 22}}
 };
 
-const DinoColor colors[] = {
+constexpr DinoColor colors[] = {
     {{77, 146, 188, 255}},
     {{188, 77, 79, 255}},
     {{253, 199, 96, 255}},

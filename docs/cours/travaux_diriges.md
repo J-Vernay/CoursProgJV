@@ -400,7 +400,8 @@ b) Implémentez la fonctionnalité F5.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> On prends la distance entre les deux positions centrales des cercles et on la compare à la somme des radius des deux
+> cercles. Si la distance est plus petite alors les cercles sont en collision.
 
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?

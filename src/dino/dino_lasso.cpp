@@ -21,7 +21,8 @@ void DinoLasso::draw(DinoColor color) const
 
 void DinoLasso::handlePlayerCollision(DinoPlayer* player)
 {
-    if (linePoints.size() <= 2) return;
+    if (linePoints.size() <= 2)
+        return;
     auto point = linePoints.begin();
 
     while (point < linePoints.end() - 1) {
@@ -66,10 +67,11 @@ void DinoLasso::handleRemovingPoints(float deltaTime)
 
 void DinoLasso::handleSelfIntersection()
 {
-    if (linePoints.size() < 4) return;
+    if (linePoints.size() < 4)
+        return;
 
     auto point = linePoints.begin() + 2;
-    
+
     while (point < linePoints.end() - 1) {
         if (!Dino_IntersectSegment(linePoints.begin()[0], linePoints.begin()[1], point[0], point[1])) {
             ++point;

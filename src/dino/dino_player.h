@@ -13,7 +13,7 @@
 /// @brief Un acteur controllable par un utilisateur.
 class DinoPlayer : public DinoActor {
     friend DinoLasso;
-    
+
 public:
     /// Couleur d'un dinosaure
     enum Color {
@@ -22,6 +22,7 @@ public:
         YELLOW,
         GREEN
     };
+
 private:
     enum AnimationId {
         IDLE,
@@ -48,13 +49,14 @@ public:
           lastPosition(position)
     {
     }
-    
+
     void update(float deltaTime) override;
     void draw() const override;
     /// Frappe le joueur et l'immobilise.
     void hit();
 
     DinoColor getColor() const;
+
 private:
     void updateHit(float deltaTime);
     void updateMovement(float deltaTime, const DinoGamepad& gamepad);

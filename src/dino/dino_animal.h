@@ -12,15 +12,15 @@ class DinoAnimal : public DinoActor {
 public:
     /// Enum représentant le type d'animal de l'acteur.
     enum AnimalType {
-        PIG_1,      ///< Un cochon.
-        PIG_2,      ///< Un cochon boueux.
-        COW_1,      ///< Un boeuf.
-        COW_2,      ///< Une vache.
-        SHEEP_1,    ///< Un bouc.
-        SHEEP_2,    ///< Un mouton.
-        OSTRICH_1,  ///< Une autruche noire.
-        OSTRICH_2,  ///< Une autruce marron.
-        MAX         ///< Taille maximum de l'enum.
+        PIG_1, ///< Un cochon.
+        PIG_2, ///< Un cochon boueux.
+        COW_1, ///< Un boeuf.
+        COW_2, ///< Une vache.
+        SHEEP_1, ///< Un bouc.
+        SHEEP_2, ///< Un mouton.
+        OSTRICH_1, ///< Une autruche noire.
+        OSTRICH_2, ///< Une autruce marron.
+        MAX ///< Taille maximum de l'enum.
     };
 
 private:
@@ -48,8 +48,10 @@ public:
 
     void update(float deltaTime) override;
     void draw() const override;
+
 protected:
     void onTerrainCollide() override;
+
 private:
     void update_appear(float deltaTime);
     void update_movement(float deltaTime);

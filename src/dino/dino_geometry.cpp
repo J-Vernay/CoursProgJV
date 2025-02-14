@@ -27,6 +27,5 @@ bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)
 
     if (dot_AB_AC <= dot_AB_AD)
         return 0 <= dot_AB_AD && dot_AB_AC <= dot_AB_AB;
-    else
-        return 0 <= dot_AB_AC && dot_AB_AD <= dot_AB_AB;
+    return 0 <= dot_AB_AC && dot_AB_AD <= dot_AB_AB;
 }

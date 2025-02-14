@@ -17,8 +17,9 @@ void DinoAnimal::update(float deltaTime)
 
 void DinoAnimal::draw() const
 {
-    DinoColor tintColor = {255, 255, 255, static_cast<uint8_t>(std::clamp(appearTimer / APPEAR_TIME, 0.0f, 1.0f) * 255)};
-    
+    DinoColor tintColor = {255, 255, 255,
+                           static_cast<uint8_t>(std::clamp(appearTimer / APPEAR_TIME, 0.0f, 1.0f) * 255)};
+
     DinoDrawCall drawCall = Dino_CreateDrawCall_Sprite(
         type * 4 + animatorState.frame,
         animatorState.animationId,
@@ -39,7 +40,8 @@ void DinoAnimal::onTerrainCollide()
 
 void DinoAnimal::update_appear(float deltaTime)
 {
-    if (appearTimer >= APPEAR_TIME) return;
+    if (appearTimer >= APPEAR_TIME)
+        return;
     appearTimer += deltaTime;
 }
 
