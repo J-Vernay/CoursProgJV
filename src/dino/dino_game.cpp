@@ -1,6 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include <dino/dino_geometry.h>
+
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
@@ -56,6 +58,17 @@ void Dino_GameFrame(double timeSinceStart)
 	    player.UpdatePlayer(deltaTime);
 	    player.ApplyTerrain(terrainA, terrainB);
 	}
+
+    // Gérer les collisions entre joueurs.
+    for (DinoPlayer& player1 : g_Players) {
+        for (DinoPlayer& player2 : g_Players) {
+            DinoVec2 a = player1.GetPos();
+            DinoVec2 b = player2.GetPos();
+            Dino_ResolveCircleCollision(a, b, 8);
+            player1.SetPos(a);
+            player2.SetPos(b);
+        }
+    }
 
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
     if (timeSinceLastSpawn > 1) {

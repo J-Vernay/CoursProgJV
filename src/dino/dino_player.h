@@ -30,4 +30,8 @@ public:
     /// @param a Position en haut à gauche du terrain
     /// @param b Position en bas à droite du terrain
     void ApplyTerrain(DinoVec2 a, DinoVec2 b);
+
+    /// Récupérer et modifier les positions (nécessaires pour collisions).
+    DinoVec2 GetPos();
+    void SetPos(DinoVec2 newPos);
 };

@@ -109,3 +109,13 @@ void DinoPlayer::ApplyTerrain(DinoVec2 a, DinoVec2 b)
     if (pos.x > b.x)
         pos.x = b.x;
 }
+
+DinoVec2 DinoPlayer::GetPos()
+{
+    return pos;
+}
+
+void DinoPlayer::SetPos(DinoVec2 newPos)
+{
+    pos = newPos;
+}

@@ -1,5 +1,7 @@
 #include <dino/dino_geometry.h>
 
+#include <cmath>
+
 bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)
 {
     if (A.x == B.x && A.y == B.y)
@@ -25,4 +27,27 @@ bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)
         return 0 <= dot_AB_AD && dot_AB_AC <= dot_AB_AB;
     else
         return 0 <= dot_AB_AC && dot_AB_AD <= dot_AB_AB;
+}
+
+void Dino_ResolveCircleCollision(DinoVec2& a, DinoVec2& b, float radius)
+{
+    float ab_sq = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
+    float r_sq = radius * radius;
+
+    if (ab_sq >= 4 * r_sq)
+        return; // Les deux cercles ne sont pas en collision.
+
+    if (ab_sq == 0)
+        return; // Les deux cercles sont identiques, pas de résolution possible.
+
+    float ab = sqrt(ab_sq);
+    float alpha = (2 * radius - ab) / (2 * ab);
+    DinoVec2 v;
+    v.x = alpha * (b.x - a.x);
+    v.y = alpha * (b.y - a.y);
+
+    a.x -= v.x;
+    a.y -= v.y;
+    b.x += v.x;
+    b.y += v.y;
 }
