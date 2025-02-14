@@ -12,8 +12,9 @@ class DinoPlayer;
 /// @brief Un lasso, suite de points qui suivent la position d'un `DinoActor`
 /// et peuvent déclencher des évènements quand des boucles sont formées.
 class DinoLasso {
-    using intersection_callback = std::function<void (std::vector<DinoVec2>::iterator, std::vector<DinoVec2>::iterator)>;
-    
+    using intersection_callback = std::function<void (std::vector<DinoVec2>::iterator, std::vector<DinoVec2>::iterator)>
+    ;
+
     std::vector<DinoVec2> linePoints;
     DinoVec2 position = {};
     float deleteTimer = 0;
@@ -30,7 +31,7 @@ public:
 
     /// Détecte et résout la collision entre le lasso et un acteur.
     void handleActorCollision(DinoActor* actor);
-    
+
     /// Détecte et résout les boucles dans le lasso.
     void handleSelfIntersection(const intersection_callback& callback);
 

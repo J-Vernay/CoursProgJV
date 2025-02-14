@@ -68,13 +68,14 @@ void Dino_GameFrame(double timeSinceStart)
             DinoVec2 minPosition = terrain.get_terrain_min_position();
             DinoVec2 maxPosition = terrain.get_terrain_max_position();
 
-            DinoAnimal spawnedAnimal = DinoAnimal({XDino_RandomFloat(minPosition.x, maxPosition.x),
-                                          XDino_RandomFloat(minPosition.y, maxPosition.y)});
+            auto spawnedAnimal = DinoAnimal({XDino_RandomFloat(minPosition.x, maxPosition.x),
+                                             XDino_RandomFloat(minPosition.y, maxPosition.y)});
 
             bool spawned = false;
-            
+
             for (int i = 0; i < animals.size(); i++) {
-                if (animals[i].isAlive()) continue;
+                if (animals[i].isAlive())
+                    continue;
                 animals[i] = spawnedAnimal;
                 spawned = true;
                 break;

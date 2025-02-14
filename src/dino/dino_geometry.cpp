@@ -35,7 +35,7 @@ bool Dino_CollideCircles(DinoVec2* A, DinoVec2* B, float collisionDistance)
     float epsilon = std::numeric_limits<float>::epsilon();
     if (abs(A->x - B->x) < epsilon && abs(A->y - B->y) < epsilon)
         return false;
-    
+
     DinoVec2 diff = {A->x - B->x, A->y - B->y};
     float distance = sqrtf(powf(A->x - B->x, 2) + powf(A->y - B->y, 2));
     if (distance > collisionDistance)

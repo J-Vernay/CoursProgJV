@@ -460,7 +460,9 @@ Dépendamment de la connexion, cela peut prendre plusieurs minutes.
 
 En utilisant Everything, quel type de fichiers se trouvent dans `C:\symcache` ? Quel est leur rôle ?
 
-> ...
+> On trouve des fichiers `.pdb`, ce sont des fichiers symboles qui répertorient les noms des fonctions et autres membres
+> de multiples librairies système et standard. En mettant un nom sur ces éléments on peut donc plus facilement analyser
+> le comportement d'un executable.
 
 d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez **Items to show = Sampled functions**.
 

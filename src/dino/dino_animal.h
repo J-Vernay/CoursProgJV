@@ -52,7 +52,11 @@ public:
 
     void hit() override;
     bool isAlive() override;
-    bool isInteractable() override {return alive;}
+
+    bool isInteractable() override
+    {
+        return alive;
+    }
 
 protected:
     void onTerrainCollide() override;

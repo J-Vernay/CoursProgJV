@@ -11,7 +11,7 @@ constexpr float APPEAR_TIME = 0.5f;
 void DinoAnimal::update(float deltaTime)
 {
     DinoActor::update(deltaTime);
-    
+
     update_appear(deltaTime);
     update_movement(deltaTime);
     update_animation(deltaTime);
@@ -61,7 +61,8 @@ void DinoAnimal::update_appear(float deltaTime)
 
 void DinoAnimal::update_movement(float deltaTime)
 {
-    if (!alive) return;
+    if (!alive)
+        return;
     position = {position.x + direction.x * SPEED * deltaTime, position.y + direction.y * SPEED * deltaTime};
 }
 

@@ -26,7 +26,11 @@ public:
 
     /// Execute la logique de l'acteur pour une frame.
     /// @param deltaTime Le temps écoulé depuis la dernière frame (en ms).
-    virtual void update(float deltaTime) {lastPosition = position;}
+    virtual void update(float deltaTime)
+    {
+        lastPosition = position;
+    }
+
     /// Dessine l'acteur à l'écran.
     virtual void draw() const = 0;
 
@@ -45,15 +49,25 @@ public:
     static bool compareHeight(const DinoActor* first, const DinoActor* second);
 
     /// Renvoie si l'acteur est en vie ou non.
-    virtual bool isAlive() {return true;}
+    virtual bool isAlive()
+    {
+        return true;
+    }
 
     /// Renvoie si l'acteur est interactible ou non.
-    virtual bool isInteractable() {return true;}
+    virtual bool isInteractable()
+    {
+        return true;
+    }
 
 protected:
     /// Évenement déclenché quand la collision avec le terrain est détectée.
-    virtual void onTerrainCollide() {}
-    
+    virtual void onTerrainCollide()
+    {
+    }
+
     /// Évenement quand l'acteur est entouré par le lasso.
-    virtual void hit() {}
+    virtual void hit()
+    {
+    }
 };

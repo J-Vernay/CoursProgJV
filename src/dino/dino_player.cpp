@@ -25,7 +25,7 @@ constexpr DinoColor colors[] = {
 void DinoPlayer::update(float deltaTime)
 {
     DinoActor::update(deltaTime);
-    
+
     DinoGamepad gamepad;
     XDino_GetGamepad(gamepadIdx, gamepad);
 

@@ -41,14 +41,16 @@ void DinoActor::handleTerrainCollision()
 
 void DinoActor::handleActorCollision(DinoActor* other)
 {
-    if (!isInteractable() || !other->isInteractable()) return;
+    if (!isInteractable() || !other->isInteractable())
+        return;
     Dino_CollideCircles(&position, &other->position, 16);
 }
 
 void DinoActor::handleActorCircled(std::vector<DinoVec2>::iterator first, std::vector<DinoVec2>::iterator second)
 {
-    if (!isInteractable()) return;
-    
+    if (!isInteractable())
+        return;
+
     int intersectionCount = 0;
 
     while (first < second - 1) {
@@ -57,7 +59,8 @@ void DinoActor::handleActorCircled(std::vector<DinoVec2>::iterator first, std::v
         }
         ++first;
     }
-    
-    if ((intersectionCount & 1) == 0) return;
+
+    if ((intersectionCount & 1) == 0)
+        return;
     hit();
 }
