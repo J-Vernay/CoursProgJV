@@ -439,8 +439,8 @@ d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionn
 
 Quelle part représente `Dino_GameFrame` relativement à `WinMain` ? Quelle autre fonction prend du temps ?
 
-> Représente environ 5% du temps. La fonction "Dino_Draw", "Dino_Update" prend du temps mais cela est relatif. Les
-> collisions à force prennent du temps également.
+> WinMain représente 58,25%. La fonction "Dino_GameFrame" représent 36,96% de WinMain. Dans WinMain il y a également
+> Dino_ResolveCircleCollision, GetPos et Set mais très peu de ressources pour ces deux là.
 
 e) Zoomez sur la timeline (`Ctrl + Molette souris`), jusqu'à voir les frames individuellement.
 Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations de la question précédente.

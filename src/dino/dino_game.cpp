@@ -57,7 +57,7 @@ void Dino_GameFrame(double timeSinceStart)
     terrainB.y = terrainA.y + terrainSize.y;
 
     double timeSinceLastSPawn = timeSinceStart - animalLastSpawnTime;
-    if (timeSinceLastSPawn > 1) {
+    if (timeSinceLastSPawn > 0.01f) {
         animalLastSpawnTime = timeSinceStart;
         animals.emplace_back();
         animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
