@@ -6,6 +6,7 @@
 #include <dino/dino_player.h>
 #include <dino/dino_animal.h>
 #include <dino/dino_terrain.h>
+#include <dino/dino_geometry.h>
 
 #include <algorithm>
 #include <format>
@@ -60,6 +61,20 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (dino_player& player : dinoPlayers) {
         player.UpdatePlayer(deltaTime);
+    }
+
+    // Gérer les collisions entre joueurs.
+    for (dino_player& player1 : dinoPlayers) {
+        for (dino_player& player2 : dinoPlayers) {
+            DinoVec2 a = player1.GetPos();
+            DinoVec2 b = player2.GetPos();
+            Dino_ResolveCircleCollision(a, b, 8);
+            player1.SetPos(a);
+            player2.SetPos(b);
+        }
+    }
+
+    for (dino_player& player : dinoPlayers) {
         player.ApplyTerain(terrainA, terrainB);
     }
 

@@ -116,3 +116,13 @@ void dino_player::ApplyTerain(DinoVec2 a, DinoVec2 b)
     if (playerPos.x > b.x)
         playerPos.x = b.x;
 }
+
+void dino_player::SetPos(DinoVec2 newPos)
+{
+    playerPos = newPos;
+}
+
+DinoVec2 dino_player::GetPos()
+{
+    return playerPos;
+}
