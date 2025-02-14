@@ -5,7 +5,8 @@
 
 bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)
 {
-    if (A.x == B.x && A.y == B.y)
+    float epsilon = std::numeric_limits<float>::epsilon();
+    if (abs(A.x - B.x) < epsilon && abs(A.y - B.y) < epsilon || abs(C.x - D.x) < epsilon && abs(C.y - D.y) < epsilon)
         return false;
 
     float z_AB_AC = (B.x - A.x) * (C.y - A.y) - (B.y - A.y) * (C.x - A.x);

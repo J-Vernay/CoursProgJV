@@ -2,9 +2,8 @@
 /// @brief Un acteur d'animal qui se balade aléatoirement sur le terrain, capturable pas les lassos des dinosaures.
 
 #pragma once
-#include "dino_actor.h"
-#include "dino_animation.h"
-
+#include <dino/dino_actor.h>
+#include <dino/dino_animation.h>
 #include <dino/xdino.h>
 
 /// Animal

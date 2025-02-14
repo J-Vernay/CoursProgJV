@@ -387,7 +387,7 @@ Qu'est-ce que la fonctionnalité implique pour les octets en mémoire qui repré
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 
-> ...
+> Avec mon implémentation, sont calculés 468 intersections dans le pire des cas (qui est le plus commun des cas).
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.

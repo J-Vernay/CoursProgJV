@@ -3,7 +3,7 @@
 /// N'implémente vraiment que la fonction de comparaison de hauteur.
 
 #pragma once
-#include "xdino.h"
+#include <dino/xdino.h>
 
 /// Acteur basique.
 /// @brief Classe abstraite pour les acteurs du jeu.

@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "dino_actor.h"
-#include "dino_lasso.h"
+#include <dino/dino_actor.h>
+#include <dino/dino_lasso.h>
 
 #include <dino/xdino.h>
 #include <dino/dino_animation.h>

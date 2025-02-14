@@ -1,6 +1,5 @@
 #pragma once
-#include "dino_actor.h"
-#include "dino_draw_utils.h"
+#include <dino/dino_actor.h>
 
 class DinoLasso {
     std::vector<DinoVec2> linePoints;
@@ -10,6 +9,7 @@ public:
     void update(float deltaTime, DinoVec2 newPosition);
     void draw(DinoColor color) const;
 private:
-    void updateAddPoints(DinoVec2 newPosition);
-    void updateRemovePoints(float deltaTime);
+    void handleAddingPoints(DinoVec2 newPosition);
+    void handleRemovingPoints(float deltaTime);
+    void handleSelfIntersection();
 };

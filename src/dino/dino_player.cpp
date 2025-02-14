@@ -1,8 +1,8 @@
 ﻿/// @file dino_player.cpp
 /// @brief Implémentation du joueur.
 
-#include "dino_player.h"
-#include "dino/dino_draw_utils.h"
+#include <dino/dino_player.h>
+#include <dino/dino_draw_utils.h>
 
 constexpr float WALK_SPEED = 75.f;
 constexpr float RUN_SPEED = 150.f;

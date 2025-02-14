@@ -1,11 +1,14 @@
+#include <dino/dino_geometry.h>
+#include <dino/dino_draw_utils.h>
 #include <dino/dino_lasso.h>
 
 constexpr float LINE_WIDTH = 4;
 
 void DinoLasso::update(float deltaTime, DinoVec2 newPosition)
 {
-    updateAddPoints(newPosition);
-    updateRemovePoints(deltaTime);
+    handleAddingPoints(newPosition);
+    handleRemovingPoints(deltaTime);
+    handleSelfIntersection();
 }
 
 void DinoLasso::draw(DinoColor color) const
@@ -14,15 +17,15 @@ void DinoLasso::draw(DinoColor color) const
     XDino_Draw(drawCall);
 }
 
-void DinoLasso::updateAddPoints(DinoVec2 newPosition)
+void DinoLasso::handleAddingPoints(DinoVec2 newPosition)
 {
     linePoints.insert(linePoints.begin(), newPosition);
 }
 
-void DinoLasso::updateRemovePoints(float deltaTime)
+void DinoLasso::handleRemovingPoints(float deltaTime)
 {
     deleteTimer += deltaTime;
-    if (deleteTimer < 122 / 60.0f)
+    if (deleteTimer < 120.5f / 60.0f)
         return;
 
     if (linePoints.empty()) {
@@ -39,4 +42,23 @@ void DinoLasso::updateRemovePoints(float deltaTime)
 
         deleteTimer -= 1 / 60.0f;
     } while (deleteTimer < 1 / 60.0f);
+}
+
+void DinoLasso::handleSelfIntersection()
+{
+    if (linePoints.size() < 4) return;
+
+    auto point = linePoints.begin() + 2;
+    
+    while (point + 1 < linePoints.end()) {
+        if (!Dino_IntersectSegment(linePoints.begin()[0], linePoints.begin()[1], point[0], point[1])) {
+            ++point;
+            continue;
+        }
+
+        deleteTimer -= static_cast<float>(point - linePoints.begin() - 1) / 60.0f;
+        deleteTimer = std::max(deleteTimer, 0.0f);
+        linePoints.erase(linePoints.begin() + 2, point + 1);
+        break;
+    }
 }
