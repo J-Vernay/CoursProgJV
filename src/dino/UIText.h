@@ -11,8 +11,8 @@ public:
     explicit UIText(const std::string& tex_d, DinoVec2 windowSize);
     explicit UIText(const std::string& tex_d, DinoVec2 pos_d, DinoVec2 windowSize);
 
-    void Update(float deltaTime);
-    void Draw();
+    void Update(float deltaTime) override;
+    void Draw() override;
     
 protected:
     DinoVec2 windowSize;

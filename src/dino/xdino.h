@@ -164,11 +164,17 @@ uint32_t XDino_RandomUint32(uint32_t min, uint32_t max);
 /// Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus.
 int32_t XDino_RandomInt32(int32_t min, int32_t max);
 
+/// Génère un entier 16-bit non signé pseudo-aléatoire entre 'min' et 'max' inclus
+uint16_t XDino_RandomUint16(uint16_t min, uint16_t max);
+
 /// Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus.
 float XDino_RandomFloat(float min, float max);
 
 /// Génère un vecteur unitaire dans une direction aléatoire.
 DinoVec2 XDino_RandomUnitVec2();
+
+/// Génère un vecteur 2 aléatoire clampé entre 2 valeurs de x et 2 valeurs de y
+DinoVec2 XDino_RandomVec2_Between(float xmin, float xmax, float ymin, float ymax);
 
 /// @}
 

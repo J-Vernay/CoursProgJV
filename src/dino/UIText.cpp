@@ -15,7 +15,7 @@ UIText::UIText(const std::string& tex_d, const DinoVec2 windowSize) : Entity(tex
     this->windowSize = windowSize;
 }
 
-UIText::UIText(const std::string& tex_d, const DinoVec2 pos_d, const DinoVec2 windowSize) : Entity(tex_d, pos_d)
+UIText::UIText(const std::string& tex_d, const DinoVec2 pos_d, const DinoVec2 windowSize) : Entity(tex_d, pos_d, 0)
 {
     this->tex = tex_d;
     this->pos = pos_d;

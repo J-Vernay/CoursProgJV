@@ -284,6 +284,12 @@ int32_t XDino_RandomInt32(int32_t min, int32_t max)
     return distribution(gXDino_rng);
 }
 
+uint16_t XDino_RandomUint16(const uint16_t min, const uint16_t max)
+{
+    std::uniform_int_distribution distribution(min, max);
+    return distribution(gXDino_rng);
+}
+
 float XDino_RandomFloat(float min, float max)
 {
     std::uniform_real_distribution<float> distribution(min, max);
@@ -296,6 +302,14 @@ DinoVec2 XDino_RandomUnitVec2()
     std::uniform_real_distribution<float> distribution(0, 6.28318530718f);
     float angle = distribution(gXDino_rng);
     return {cosf(angle), sinf(angle)};
+}
+
+DinoVec2 XDino_RandomVec2_Between(const float xmin, const float xmax, const float ymin, const float ymax)
+{
+    std::uniform_real_distribution distribution(xmin, xmax);
+    std::uniform_real_distribution distribution2(ymin, ymax);
+
+    return {distribution(gXDino_rng), distribution2(gXDino_rng)};
 }
 
 #pragma endregion

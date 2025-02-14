@@ -12,5 +12,5 @@ public:
     void Draw();
     
 private:
-    std::vector<Dino> dinos;
+    std::vector<Dino*> dinos;
 };

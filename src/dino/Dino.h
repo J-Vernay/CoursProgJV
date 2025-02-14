@@ -12,11 +12,11 @@ public:
     explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex_d, uint16_t id);
     explicit Dino(DinoGamepadIdx gamepad_idx, const std::string& tex_d, uint16_t id, DinoVec2 pos_d);
 
-    static bool CompareHeight(const Dino& d1, const Dino& d2);
+    static bool CompareHeight(const Dino* d1, const Dino* d2);
     
-    void Update(float deltaTime);
+    void Update(float deltaTime) override;
     
-    void Draw() const;
+    void Draw() override;
     
 private:
     DinoGamepadIdx gamepad_idx;
@@ -32,6 +32,8 @@ private:
 
     bool inverted;
     bool stunned;
+
+    bool _active;
     
     void SetUV(float deltaTime, uint16_t offset);
 };

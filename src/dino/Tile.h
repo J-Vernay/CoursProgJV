@@ -12,10 +12,10 @@ public:
     explicit Tile(const std::string& tex_d, DinoVec2 pos_d);
     explicit Tile(const std::string& tex_d, DinoVec2 pos_d, uint16_t u, uint16_t v);
     
-    void Update(float deltaTime) const;
-    void Draw() const;
+    void Update(float deltaTime) override;
+    void Draw() override;
 
-private:
+protected:
     uint16_t i;
     uint16_t j;
 };

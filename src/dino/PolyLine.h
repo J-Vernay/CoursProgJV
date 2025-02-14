@@ -10,8 +10,8 @@ public:
     explicit PolyLine();
     explicit PolyLine(int size);
 
-    void Update(float deltaTime);
-    void Draw();
+    void Update(float deltaTime) override;
+    void Draw() override;
     
 private:
     DinoColor POLYLINE_COLOR = {{70, 70, 100, 255}};

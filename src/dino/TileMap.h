@@ -1,7 +1,6 @@
 #pragma once
-#include "xdino.h"
-
 #include "Tile.h"
+#include "xdino.h"
 
 class TileMap
 {
@@ -10,13 +9,14 @@ public:
     explicit TileMap(int scale, int width, int height);
     
     void Init();
-    void Update(float deltaTime);   
-    void Draw();
+    void Update(float deltaTime) const;   
+    void Draw() const;
 
 private:
-    DinoVec2 topPos;
-    int width, height;
-    int scale;
-    
-    std::vector<Tile> tiles;
+    DinoVec2 _top_pos;
+    int _width, _height;
+    int _scale;
+
+    std::vector<Tile*> _tiles;
+    std::vector<Tile*> _props;
 };

@@ -21,7 +21,7 @@ Tile::Tile(const std::string& tex_d) : Entity(tex_d)
     j = 0;
 }
 
-Tile::Tile(const std::string& tex_d, const DinoVec2 pos_d) : Entity(tex_d, pos_d)
+Tile::Tile(const std::string& tex_d, const DinoVec2 pos_d) : Entity(tex_d, pos_d, 0)
 {
     this->tex = tex_d;
     this->pos = pos_d;
@@ -30,7 +30,7 @@ Tile::Tile(const std::string& tex_d, const DinoVec2 pos_d) : Entity(tex_d, pos_d
     j = 0;
 }
 
-Tile::Tile(const std::string& tex_d, const DinoVec2 pos_d, const uint16_t u, const uint16_t v) : Entity(tex_d, pos_d)
+Tile::Tile(const std::string& tex_d, const DinoVec2 pos_d, const uint16_t u, const uint16_t v) : Entity(tex_d, pos_d, 0)
 {
     this->tex = tex_d;
     this->pos = pos_d;
@@ -38,12 +38,12 @@ Tile::Tile(const std::string& tex_d, const DinoVec2 pos_d, const uint16_t u, con
     this->j = v;
 }
 
-void Tile::Update(const float deltaTime) const
+void Tile::Update(const float deltaTime)
 {
     
 }
 
-void Tile::Draw() const
+void Tile::Draw()
 {
     auto dc = Dino_CreateDrawCall_Sprite(tex, 16, i, j, 2);
     dc.translation = pos;
