@@ -363,7 +363,10 @@ b) Implémentez la fonctionnalité F5.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> Admettons que nous leur donnions un rayon de 8 pixels, alors dans le cas ou la distance AB est supérieur à 16 pixels (
+> deux fois le rayon) alors ils ne collisionnent pas. En revanche, si AB est inférieur à 16 pixels alors ils
+> collisionnent. AB = racine de dx au carré + dy au carré. AB = racine carré de (A.x - B.x) au carré + (A.y - B.y) au
+> carré. Donc si cela est inférieur à deux fois le rayon alors ils collisionnent.
 
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
