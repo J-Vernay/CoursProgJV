@@ -24,6 +24,10 @@ public:
     /// @param b Position en bas à droite du terrain
     void ApplyTerrain(DinoVec2 a, DinoVec2 b);
     
+    /// Récupérer et modifier les positions (nécessaires pour collisions).
+    DinoVec2 GetPos();
+    void SetPos(DinoVec2 newPos);
+    
     /// Compare la position de deux joueurs pour savoir lequel afficher devant l'autre.
     // TODO: bool IsAbove(DinoPlayer& other);
 };

@@ -74,13 +74,27 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
-    if (timeSinceLastSpawn > 1) {
+    if (timeSinceLastSpawn > 0.1) {
         g_AnimalLastSpawnTime = timeSinceStart;
         g_Animals.emplace_back();
         g_Animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
     }
     for (DinoAnimal& animal : g_Animals) {
         animal.UpdateAnimal(deltaTime);
+    }
+    
+    // Gérer les collisions entre animaux.
+    for (DinoAnimal& animal1 : g_Animals) {
+        for (DinoAnimal& animal2 : g_Animals) {
+            DinoVec2 a = animal1.GetPos();
+            DinoVec2 b = animal2.GetPos();
+            Dino_ResolveCircleCollision(a, b, 8);
+            animal1.SetPos(a);
+            animal2.SetPos(b);
+        }
+    }
+    
+    for (DinoAnimal& animal : g_Animals) {
         animal.ApplyTerrain(terrainA, terrainB);
     }
     

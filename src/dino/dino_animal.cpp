@@ -108,6 +108,16 @@ void DinoAnimal::ApplyTerrain(DinoVec2 a, DinoVec2 b)
         m_dir = XDino_RandomUnitVec2();
 }
 
+DinoVec2 DinoAnimal::GetPos()
+{
+    return m_pos;
+}
+
+void DinoAnimal::SetPos(DinoVec2 newPos)
+{
+    m_pos = newPos;
+}
+
 /* TODO
 bool DinoAnimal::IsAbove(DinoPlayer& other)
 {
