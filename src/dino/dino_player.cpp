@@ -50,10 +50,10 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
     
     DinoDrawCall drawCall;
     drawCall.textureName = "dinosaurs.png";
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {24, 0};
-    DinoVec2 posC = {0, 24};
-    DinoVec2 posD = {24, 24};
+    DinoVec2 posA = {-12, -22};
+    DinoVec2 posB = {12, -22};
+    DinoVec2 posC = {-12, 2};
+    DinoVec2 posD = {12, 2};
 
     int u = 0;
     if (this->bIdle) {
@@ -96,4 +96,16 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
 bool DinoPlayer::IsAbove(DinoPlayer& other)
 {
     return pos.y < other.pos.y;
+}
+
+void DinoPlayer::ApplyTerrain(DinoVec2 a, DinoVec2 b)
+{
+    if (pos.y < a.y)
+        pos.y = a.y;
+    if (pos.y > b.y)
+        pos.y = b.y;
+    if (pos.x < a.x)
+        pos.x = a.x;
+    if (pos.x > b.x)
+        pos.x = b.x;
 }

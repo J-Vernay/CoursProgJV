@@ -43,8 +43,19 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
-	for (DinoPlayer& player : g_Players)
-		player.UpdatePlayer(deltaTime);
+    // Terrain
+    
+    DinoVec2 terrainSize = { 256, 192};
+    DinoVec2 terrainA, terrainB;
+    terrainA.x = (renderSize.x - terrainSize.x) / 2;
+    terrainA.y = (renderSize.y - terrainSize.y) / 2;
+    terrainB.x = terrainA.x + terrainSize.x;
+    terrainB.y = terrainA.y + terrainSize.y;
+    
+	for (DinoPlayer& player : g_Players) {
+	    player.UpdatePlayer(deltaTime);
+	    player.ApplyTerrain(terrainA, terrainB);
+	}
 
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
     if (timeSinceLastSpawn > 1) {
@@ -63,20 +74,17 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_SetClearColor(CLEAR_COLOR);
 
     {
-        DinoVec2 terrainSize = { 256, 192};
         DinoDrawCall drawCall;
         drawCall.textureName = "terrain.png";
         
         DinoVec2 posA, posB, posC, posD;
-        posA.x = (renderSize.x - terrainSize.x) / 2;
-        posA.y = (renderSize.y - terrainSize.y) / 2;
+        posA = terrainA;
         posB.x = posA.x + terrainSize.x;
         posB.y = posA.y;
         posC.x = posA.x;
         posC.y = posA.y + terrainSize.y;
-        posD.x = posA.x + terrainSize.x;
-        posD.y = posA.y + terrainSize.y;
-
+        posD = terrainB;
+        
         // Océan en fond
         drawCall.vertices.emplace_back(DinoVec2{0,0}, 0, 0);
         drawCall.vertices.emplace_back(DinoVec2{renderSize.x,0}, 16, 0);
@@ -105,7 +113,11 @@ void Dino_GameFrame(double timeSinceStart)
     
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
-        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+        int sizeVec2 = sizeof(DinoVec2);
+        int sizeColor = sizeof(DinoColor);
+        int sizeVertex = sizeof(DinoVertex);
+        std::string text = std::format("sizeVec2={}  sizeColor={}  sizeVertex={}", sizeVec2, sizeColor, sizeVertex);
+        //std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         drawCall.scale = 2;
         XDino_Draw(drawCall);

@@ -25,4 +25,9 @@ public:
 
     /// Compare la position de deux joueurs pour savoir lequel afficher devant l'autre.
     bool IsAbove(DinoPlayer& other);
+
+    /// Ajuste la position du joueur pour rester sur le terrain.
+    /// @param a Position en haut à gauche du terrain
+    /// @param b Position en bas à droite du terrain
+    void ApplyTerrain(DinoVec2 a, DinoVec2 b);
 };
