@@ -1,3 +1,5 @@
+#include "dino_player.h"
+
 #include <dino/dino_geometry.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_lasso.h>
@@ -15,6 +17,24 @@ void DinoLasso::draw(DinoColor color) const
 {
     DinoDrawCall drawCall = Dino_CreateDrawCall_Polyline(linePoints, LINE_WIDTH, color);
     XDino_Draw(drawCall);
+}
+
+void DinoLasso::handlePlayerCollision(DinoPlayer* player)
+{
+    if (linePoints.size() <= 2) return;
+    auto point = linePoints.begin();
+
+    while (point < linePoints.end() - 1) {
+        if (!Dino_IntersectSegment(player->position, player->lastPosition, point[0], point[1])) {
+            ++point;
+            continue;
+        }
+
+        deleteTimer -= static_cast<float>(linePoints.end() - point) / 60.0f;
+        deleteTimer = std::max(deleteTimer, 0.0f);
+        linePoints.erase(point, linePoints.end());
+        break;
+    }
 }
 
 void DinoLasso::handleAddingPoints(DinoVec2 newPosition)
@@ -50,7 +70,7 @@ void DinoLasso::handleSelfIntersection()
 
     auto point = linePoints.begin() + 2;
     
-    while (point + 1 < linePoints.end()) {
+    while (point < linePoints.end() - 1) {
         if (!Dino_IntersectSegment(linePoints.begin()[0], linePoints.begin()[1], point[0], point[1])) {
             ++point;
             continue;

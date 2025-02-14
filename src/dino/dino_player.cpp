@@ -61,6 +61,11 @@ void DinoPlayer::drawLasso() const
     lasso.draw(colors[color]);
 }
 
+DinoLasso* DinoPlayer::getLasso()
+{
+    return &lasso;
+}
+
 void DinoPlayer::hit()
 {
     hitTimer = HIT_TIME;
@@ -75,6 +80,7 @@ void DinoPlayer::updateHit(float deltaTime)
 
 void DinoPlayer::updateMovement(float deltaTime, const DinoGamepad& gamepad)
 {
+    lastPosition = position;
     float speed = gamepad.btn_right ? RUN_SPEED : WALK_SPEED;
 
     position.x += gamepad.stick_left_x * speed * deltaTime;

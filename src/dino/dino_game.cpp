@@ -73,6 +73,12 @@ void Dino_GameFrame(double timeSinceStart)
         actors.clear();
         for (DinoPlayer& player : players) {
             actors.push_back(&player);
+            DinoLasso* lasso = player.getLasso();
+
+            for (DinoPlayer& otherPlayer : players) {
+                if (lasso == otherPlayer.getLasso()) continue;
+                lasso->handlePlayerCollision(&otherPlayer);
+            }
         }
 
         for (DinoAnimal& animal : animals) {
