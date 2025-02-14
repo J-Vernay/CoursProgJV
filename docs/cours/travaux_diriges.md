@@ -371,7 +371,11 @@ c) Comment détecter si deux cercles à des positions données sont en collision
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> Pour résoudre cela, il faut repousser A et B de telle sorte qu'ils ne soient plus en collision donc un vecteur V et
+> -V. V = alpha AB. Nous voulons que A - V et B + V soit égal à 2 * rayon. Soit 2alpha AB + AB = 2r soit alpha = 2r -
+> AB / 2AB. V = alpha AB = (2r - AB / 2AB) AB. Le cas particulier est lorsque AB = 0 (division par 0 qui pose un
+> problème), c'est-à-dire que les deux cercles soient piles au même point. Dans ce cas, nous ne pouvons pas les
+> repousser. Nous allons faire une vérification s'il y a ce cas et si oui, alors nous ne faisons rien.
 
 e) Implémentez la fonctionnalité F5.3 .
 
