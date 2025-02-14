@@ -1,0 +1,12 @@
+<map id="XDino_ProfileEnd" name="XDino_ProfileEnd">
+<area shape="rect" id="Node000001" title="Finit un intervalle de profiling." alt="" coords="798,31,919,56"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__rdr_8cpp.html#ad13ae3c31e66f2cdf34b75465d4bac17" title="Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique." alt="" coords="591,5,750,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="782,36,750,32,751,26,783,31"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,31,543,56"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="782,46,544,46,544,41,782,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="576,32,544,36,544,30,576,27"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,31,315,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="348,46,315,46,315,41,348,41"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,31,77,56"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="109,46,77,46,77,41,109,41"/>
+</map>

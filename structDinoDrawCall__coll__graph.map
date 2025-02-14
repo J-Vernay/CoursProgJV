@@ -1,0 +1,5 @@
+<map id="DinoDrawCall" name="DinoDrawCall">
+<area shape="rect" id="Node000001" title="Représente une demande de dessin à la carte graphique." alt="" coords="5,154,103,279"/>
+<area shape="rect" id="Node000002" href="$xdino_8h.html#structDinoVec2" title="Représente une coordonnée 2D en pixels." alt="" coords="19,5,89,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="57,90,57,137,51,137,51,90"/>
+</map>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Modalités d&#39;évaluation</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div><div class="header">
+  <div class="headertitle"><div class="title">Modalités d'évaluation</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> <b>Veillez à travailler dans une branche Git à votre nom : NOM_Prenom</b>.</p>
+<p><b>Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point que vous venez de faire.</b> (par exemple: <code>git add .</code> puis <code>git commit -m "0.a"</code>)</p>
+<p><b>A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub</b> (<code>git push</code>)</p>
+<p>La note du cours est composée de 3 rendus :</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+travaux_diriges.md (30%)</h1>
+<p>Au fur et à mesure du cours, vous serez amené à remplir un mini-compte rendu dans le fichier <code><a class="el" href="travaux__diriges_8md.html">travaux_diriges.md</a></code>, à l'emplacement des <code>...</code>. Vous n'êtes pas obligé de faire des phrases si vos notes sont claires en quelques mots.</p>
+<p>Cette note sert à mesurer l'assiduité au long du cours, et à aller chercher les réponses proactivement.</p>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Examen papier (30%)</h1>
+<p>Le jeudi 27 février au matin, vous réaliserez un examen sur papier qui reprend ce qui a été vu le long du cours. <code><a class="el" href="travaux__diriges_8md.html">travaux_diriges.md</a></code> contient une partie des questions papier.</p>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Rendu du logiciel (40%)</h1>
+<p>Une fois le cours terminé, des fonctionnalités du jeu vous seront laissés à faire en autonomie. Il est conseillé de passer dessus au plus environ une journée. Le projet est à rendre d'ici deux semaines plus tard, sous la forme d'un <code>git push</code> de votre branche. Je prendrai l'état du dossier tel qu'il aura été le vendredi 28 février à minuit.</p>
+<p>Seront jugés le bon fonctionnement des fonctionnalités (50%), et l'état global de la base de code (50%) :</p>
+<ul>
+<li>Code commenté de telle sorte à pouvoir générer la documentation des classes.</li>
+<li>Séparation des responsabilités via encapsulation par différentes classes.</li>
+<li>Pas de fonctions de 200 lignes qui touchent à tout.</li>
+<li>Code lisible (variables bien nommées)</li>
+<li>Minimiser les variables globales accédées partout.</li>
+</ul>
+<p>Les fonctionnalités laissées en autonomie sont :</p>
+<ul>
+<li>F1.4 - <b>[BONUS]</b> Le dinosaure peut se prendre des dégâts (= immobilisation 3 secondes + animation).</li>
+<li>F2.2 ; F2.3 ; F2.4 - <b>[BONUS]</b> Terrain animé, avec des fleurs, et des saisons différentes</li>
+<li>F3.4 - <b>[BONUS]</b> Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.</li>
+<li>F4.4 - <b>[NECESSAIRE]</b> Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.</li>
+<li>F5.5 - <b>[BONUS]</b> Quand un dinosaure est dans une boucle de lasso, il se prend des dégâts</li>
+<li>F5.6 - <b>[NECESSAIRE]</b> Quand des animaux sont dans une boucle de lasso, ils disparaissent.</li>
+<li>F6 - <b>[NECESSAIRE]</b> Scoring et chronomètre - autonomie complète</li>
+<li>F7 - <b>[NECESSAIRE]</b> Lobby et flow du jeu - autonomie complète</li>
+</ul>
+<p>Les fonctionnalités <b>[NECESSAIRE]</b> font partie de l'évaluation. Les fonctionnalités <b>[BONUS]</b> sont considérées comme du polish, et représentent 1.5 points bonus sur la note totale (1 point pour le cosmétique, 0.5 point pour gestion des dégâts). </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

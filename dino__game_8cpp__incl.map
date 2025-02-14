@@ -1,0 +1,20 @@
+<map id="dino_game.cpp" name="dino_game.cpp">
+<area shape="rect" id="Node000001" title="Implémentation des fonctions principales de la logique de jeu." alt="" coords="179,5,287,31"/>
+<area shape="rect" id="Node000002" href="$xdino_8h.html" title="API d&#39;interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu." alt="" coords="76,153,166,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,34,177,53,148,81,134,109,127,138,122,136,129,107,144,77,173,49,205,29"/>
+<area shape="rect" id="Node000006" href="$dino__draw__utils_8h.html" title="Fonctions pour dessiner des primitives de rendu." alt="" coords="158,79,308,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="236,31,236,63,230,63,230,31"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="332,79,390,105"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="256,29,327,69,325,73,253,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,226,69,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="108,181,64,218,61,214,105,177"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="92,226,150,252"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="124,179,124,211,118,211,118,179"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="174,226,228,252"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="136,177,178,214,175,218,133,181"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="215,107,154,146,151,142,213,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="189,153,277,178"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="236,105,236,137,230,137,230,105"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="300,153,350,178"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="250,103,299,141,296,145,247,107"/>
+</map>

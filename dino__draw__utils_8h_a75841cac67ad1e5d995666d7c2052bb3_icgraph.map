@@ -1,0 +1,11 @@
+<map id="Dino_CreateDrawCall_Text" name="Dino_CreateDrawCall_Text">
+<area shape="rect" id="Node000001" title="Produit un dessin contenant du texte, avec éventuellement une couleur de fond. La position (0,..." alt="" coords="766,5,942,31"/>
+<area shape="rect" id="Node000002" href="$dino__game_8cpp.html#ac7b7408f18b3729af2f6e7f405f238e7" title="Appelé pour générer chaque frame. Doit lireles entrées de jeu avec XDino_GetGamepad(),..." alt="" coords="591,5,718,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="750,21,718,21,718,16,750,16"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,5,543,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="576,21,544,21,544,16,576,16"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,5,315,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="348,21,315,21,315,16,348,16"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,5,77,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="109,21,77,21,77,16,109,16"/>
+</map>

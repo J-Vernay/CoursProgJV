@@ -1,0 +1,14 @@
+<map id="XDino_SetRenderSize" name="XDino_SetRenderSize">
+<area shape="rect" id="Node000001" title="Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille." alt="" coords="766,31,915,56"/>
+<area shape="rect" id="Node000002" href="$dino__game_8cpp.html#ac7b7408f18b3729af2f6e7f405f238e7" title="Appelé pour générer chaque frame. Doit lireles entrées de jeu avec XDino_GetGamepad(),..." alt="" coords="591,5,718,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="750,34,718,29,719,24,750,29"/>
+<area shape="rect" id="Node000006" href="$dino__game_8cpp.html#a34e4cc788612f46dea16beb4b24dd0ab" title="Appelé au tout début, pour initialiser la logique de jeu." alt="" coords="601,55,708,80"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="750,58,709,63,708,58,749,53"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,31,543,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="576,31,544,35,544,29,575,25"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,31,315,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="348,46,315,46,315,41,348,41"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,31,77,56"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="109,46,77,46,77,41,109,41"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="585,62,544,57,544,52,586,57"/>
+</map>

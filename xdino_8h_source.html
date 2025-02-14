@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino:  Fichier source de xdino.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2bb994ae3c35c8ddd14b20e4aa61abb8.html">dino</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">xdino.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="xdino_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="xdino_8h.html#ae72f81db667ba4b51b14226770f73594">   13</a></span><span class="preprocessor">#define DINO_CRITICAL(msg) (_impl_XDino_Critical(__func__, __LINE__, msg), __debugbreak())</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#a34e4cc788612f46dea16beb4b24dd0ab">Dino_GameInit</a>();</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#ac7b7408f18b3729af2f6e7f405f238e7">Dino_GameFrame</a>(<span class="keywordtype">double</span> timeSinceStart);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#af5be2c6012bb9e2650a622d88c610fd6">Dino_GameShut</a>();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="};">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="xdino_8h.html">   36</a></span><span class="keyword">struct </span><a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a> {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="xdino_8h.html#ac82f66ffa9a47fc4e107b6ba10d2254e">   37</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="xdino_8h.html#ac82f66ffa9a47fc4e107b6ba10d2254e">x</a>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="xdino_8h.html#abb311146ea82c7137cbc18fcbdfcc036">   38</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="xdino_8h.html#abb311146ea82c7137cbc18fcbdfcc036">y</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>};</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="};">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="xdino_8h.html">   42</a></span><span class="keyword">union </span><a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> {</div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="};">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="xdino_8h.html">   43</a></span>    <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        uint8_t r;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        uint8_t g;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        uint8_t b;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        uint8_t a;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    };</div>
+</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="xdino_8h.html#a0c79a4de2b8deca82ccde8cf18039984">   50</a></span>    uint32_t <a class="code hl_variable" href="xdino_8h.html#a0c79a4de2b8deca82ccde8cf18039984">rgba</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
+</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">   53</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>{0xFF, 0xFF, 0xFF, 0xFF};</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="xdino_8h.html#a3d6ec0f401e24873eea2e55dbe5a3ff9">   54</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a3d6ec0f401e24873eea2e55dbe5a3ff9">DinoColor_GREY</a>{0x80, 0x80, 0x80, 0xFF};</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="xdino_8h.html#a289347d3145bcc1ada68d75b75ba58c9">   55</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a289347d3145bcc1ada68d75b75ba58c9">DinoColor_BLACK</a>{0x00, 0x00, 0x00, 0xFF};</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="xdino_8h.html#ae61e4fce79f41d23dc826ef73e40c19a">   56</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#ae61e4fce79f41d23dc826ef73e40c19a">DinoColor_TRANSPARENT</a>{0xFF, 0xFF, 0xFF, 0x80};</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">   57</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">DinoColor_INVISIBLE</a>{0xFF, 0xFF, 0xFF, 0x00};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="xdino_8h.html#a1b3e9eb2c4f8790e442bc2dbc5c6b9f7">   58</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a1b3e9eb2c4f8790e442bc2dbc5c6b9f7">DinoColor_BLUE</a>{0x4D, 0x92, 0xBC, 0xFF};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="xdino_8h.html#a43d3801d1a03c930499cd939692d786e">   59</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a43d3801d1a03c930499cd939692d786e">DinoColor_RED</a>{0xBC, 0x4D, 0x4F, 0xFF};</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="xdino_8h.html#ab8139914fa51566caf3d7e059af7d125">   60</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#ab8139914fa51566caf3d7e059af7d125">DinoColor_YELLOW</a>{0xFD, 0xC7, 0x60, 0xFF};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="xdino_8h.html#a7af8819cdc2d1e8d809ab6168bc09166">   61</a></span><span class="keyword">constexpr</span> <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a7af8819cdc2d1e8d809ab6168bc09166">DinoColor_GREEN</a>{0x88, 0xA0, 0x43, 0xFF};</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="};">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="xdino_8h.html">   64</a></span><span class="keyword">struct </span><a class="code hl_struct" href="xdino_8h.html#structDinoVertex">DinoVertex</a> {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="xdino_8h.html#a0cbbf650ffce89d01bb405e97e7378f5">   66</a></span>    <a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a> <a class="code hl_variable" href="xdino_8h.html#a0cbbf650ffce89d01bb405e97e7378f5">pos</a>{};</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="xdino_8h.html#ab1e47711c13f7a5bcd381aa5996d7fe2">   68</a></span>    uint16_t <a class="code hl_variable" href="xdino_8h.html#ab1e47711c13f7a5bcd381aa5996d7fe2">u</a> = 0;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="xdino_8h.html#aaed9eedb63b05d95c3d0a288a6ee87d0">   70</a></span>    uint16_t <a class="code hl_variable" href="xdino_8h.html#aaed9eedb63b05d95c3d0a288a6ee87d0">v</a> = 0;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="xdino_8h.html#a0ef4c66b111f5f62923dcf3fbfe00130">   72</a></span>    <a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> <a class="code hl_variable" href="xdino_8h.html#a0ef4c66b111f5f62923dcf3fbfe00130">color</a> = <a class="code hl_variable" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>};</div>
+</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="};">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="xdino_8h.html">   76</a></span><span class="keyword">struct </span><a class="code hl_struct" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a> {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="xdino_8h.html#a0a735e1f4c13a47d5af5f047018d84ad">   78</a></span>    std::vector&lt;DinoVertex&gt; <a class="code hl_variable" href="xdino_8h.html#a0a735e1f4c13a47d5af5f047018d84ad">vertices</a>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="xdino_8h.html#a68ce502c39ff890b21efeeec7e1b4907">   80</a></span>    std::string <a class="code hl_variable" href="xdino_8h.html#a68ce502c39ff890b21efeeec7e1b4907">textureName</a>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="xdino_8h.html#aeb4d6e016bd75b441e9f60f7350b60ce">   82</a></span>    <a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a> <a class="code hl_variable" href="xdino_8h.html#aeb4d6e016bd75b441e9f60f7350b60ce">translation</a> = <a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a>{0.0f, 0.0f};</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="xdino_8h.html#a086142c8f60d7ce99c3d9aba0c5a1c85">   84</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="xdino_8h.html#a086142c8f60d7ce99c3d9aba0c5a1c85">rotation</a> = 0.0;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="xdino_8h.html#ae1e2c3f1246534b117fd0d28b40fe25f">   86</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="xdino_8h.html#ae1e2c3f1246534b117fd0d28b40fe25f">scale</a> = 1.0;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>};</div>
+</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a> <a class="code hl_function" href="xdino_8h.html#a8fb3a63e6442dd880092baee74243dd3">XDino_GetWindowSize</a>();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a> <a class="code hl_function" href="xdino_8h.html#a4ded9317bd5f35f70b1473c729e56d1a">XDino_GetRenderSize</a>();</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#a57ea716600a49f61ffff0bd33bd78a7d">XDino_SetRenderSize</a>(<a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a> renderSize);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#abded2f43911a4a13d4742539b59797e0">XDino_SetClearColor</a>(<a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> color);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#af6f41148f29d2c60fc4f9e51449436fa">XDino_Draw</a>(<a class="code hl_struct" href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a> drawCall);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="};">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">  109</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> : int32_t {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab">Gamepad1</a>,</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec">Gamepad2</a>,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304">Gamepad3</a>,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9">Gamepad4</a>,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">Keyboard</a>,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>};</div>
+</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="foldopen" id="foldopen00117" data-start="{" data-end="};">
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="xdino_8h.html#a631d358f2de291da38e0fe933d6a5c85">  117</a></span><span class="keyword">constexpr</span> <a class="code hl_enumeration" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> <a class="code hl_variable" href="xdino_8h.html#a631d358f2de291da38e0fe933d6a5c85">DinoGamepadIdx_ALL</a>[] = {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab">DinoGamepadIdx::Gamepad1</a>,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec">DinoGamepadIdx::Gamepad2</a>,</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304">DinoGamepadIdx::Gamepad3</a>,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9">DinoGamepadIdx::Gamepad4</a>,</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <a class="code hl_enumvalue" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">DinoGamepadIdx::Keyboard</a>,</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>};</div>
+</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="};">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="xdino_8h.html">  126</a></span><span class="keyword">struct </span><a class="code hl_struct" href="xdino_8h.html#structDinoGamepad">DinoGamepad</a> {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="xdino_8h.html#ae8f6895a97795d2f871f447f222ecb8c">  127</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#ae8f6895a97795d2f871f447f222ecb8c">dpad_up</a> : 1; </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="xdino_8h.html#ab3f2fbf44d464753d0c9cea2ada1ba34">  128</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#ab3f2fbf44d464753d0c9cea2ada1ba34">dpad_left</a> : 1; </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="xdino_8h.html#a09346b67c8a776942a161c7bbb7b21d3">  129</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a09346b67c8a776942a161c7bbb7b21d3">dpad_right</a> : 1; </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="xdino_8h.html#a999458b1b81234a920711e6223057193">  130</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a999458b1b81234a920711e6223057193">dpad_down</a> : 1; </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="xdino_8h.html#a757c774b402277a01602e48daf0fd724">  131</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a757c774b402277a01602e48daf0fd724">btn_up</a> : 1; </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="xdino_8h.html#a7e29774181e395f2cec3b976d0538e8c">  132</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a7e29774181e395f2cec3b976d0538e8c">btn_left</a> : 1; </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="xdino_8h.html#a16fd2a19b3812bdeda3eddd7a51a5e9e">  133</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a16fd2a19b3812bdeda3eddd7a51a5e9e">btn_right</a> : 1; </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="xdino_8h.html#a0a65f8b03568e5d13ad9477464a77bc6">  134</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a0a65f8b03568e5d13ad9477464a77bc6">btn_down</a> : 1; </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="xdino_8h.html#ac725e856d310901f99f7cfbff36e100c">  135</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#ac725e856d310901f99f7cfbff36e100c">start</a> : 1; </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="xdino_8h.html#a61f7d6f6d88b9eb5ae07c6f2bd4a87c5">  136</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a61f7d6f6d88b9eb5ae07c6f2bd4a87c5">select</a> : 1; </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="xdino_8h.html#a6ea620672513e369f4f0ee0070825d29">  137</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a6ea620672513e369f4f0ee0070825d29">shoulder_left</a> : 1; </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="xdino_8h.html#a21bfb5e03e6be550f53b515b6d4fc58d">  138</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="xdino_8h.html#a21bfb5e03e6be550f53b515b6d4fc58d">shoulder_right</a> : 1; </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="xdino_8h.html#a2b9913616540d5b4e8543b959285aa9e">  140</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="xdino_8h.html#a2b9913616540d5b4e8543b959285aa9e">stick_left_x</a>; </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="xdino_8h.html#ad80a6949b45365d63b3862f933b5d564">  141</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="xdino_8h.html#ad80a6949b45365d63b3862f933b5d564">stick_left_y</a>; </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="xdino_8h.html#a3472d2d5f1a42c19cdfb8defbbd46a80">  142</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="xdino_8h.html#a3472d2d5f1a42c19cdfb8defbbd46a80">stick_right_x</a>; </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="xdino_8h.html#a5b09673eed3acb0308baece1136979cc">  143</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="xdino_8h.html#a5b09673eed3acb0308baece1136979cc">stick_right_y</a>; </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="xdino_8h.html#a2d8f90cf6d81dfad6248897667f8ba7c">  145</a></span>    int32_t <a class="code hl_variable" href="xdino_8h.html#a2d8f90cf6d81dfad6248897667f8ba7c">mouse_x</a>; </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="xdino_8h.html#a502324cbd76f6f735a0d604bb192846e">  146</a></span>    int32_t <a class="code hl_variable" href="xdino_8h.html#a502324cbd76f6f735a0d604bb192846e">mouse_y</a>; </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>};</div>
+</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="keywordtype">bool</span> <a class="code hl_function" href="xdino_8h.html#a68646c879bb2deb348cfa0ae2fc53b92">XDino_GetGamepad</a>(<a class="code hl_enumeration" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a> idx, <a class="code hl_struct" href="xdino_8h.html#structDinoGamepad">DinoGamepad</a>&amp; outGamepad);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>uint32_t <a class="code hl_function" href="xdino_8h.html#afe24d415c32e02761cd69c10d8949075">XDino_RandomUint32</a>(uint32_t min, uint32_t max);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>int32_t <a class="code hl_function" href="xdino_8h.html#a09a4d6e92b29b1c57f37cff0bba039a0">XDino_RandomInt32</a>(int32_t min, int32_t max);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="keywordtype">float</span> <a class="code hl_function" href="xdino_8h.html#a2e6d69578bed3d312e872e26a21c9435">XDino_RandomFloat</a>(<span class="keywordtype">float</span> min, <span class="keywordtype">float</span> max);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><a class="code hl_struct" href="xdino_8h.html#structDinoVec2">DinoVec2</a> <a class="code hl_function" href="xdino_8h.html#a633e7eb91888670d439d5cc124a36e7d">XDino_RandomUnitVec2</a>();</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="preprocessor">#ifdef USE_PIX</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#ab579fc5249712eea9dab54bbad4808f0">XDino_ProfileBegin</a>(<a class="code hl_union" href="xdino_8h.html#unionDinoColor">DinoColor</a> color, <span class="keywordtype">char</span> <span class="keyword">const</span>* msg);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#a847ecb99f82286c5ba044e4e50d6ca2c">XDino_ProfileEnd</a>();</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">// Quand USE_PIX n&#39;est pas utilisé, on remplace les fonctions par &quot;ne fait rien&quot;</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="preprocessor">#define XDino_ProfileBegin(...) (void)0</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="preprocessor">#define XDino_ProfileEnd() (void)0</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="keywordtype">void</span> <a class="code hl_function" href="xdino_8h.html#ac7336d7a0cef47c62cd1ea2a321be2d3">_impl_XDino_Critical</a>(<span class="keywordtype">char</span> <span class="keyword">const</span>* pFunc, <span class="keywordtype">int</span> line, <span class="keywordtype">char</span> <span class="keyword">const</span>* msg);</div>
+<div class="ttc" id="axdino_8h_html_a086142c8f60d7ce99c3d9aba0c5a1c85"><div class="ttname"><a href="xdino_8h.html#a086142c8f60d7ce99c3d9aba0c5a1c85">DinoDrawCall::rotation</a></div><div class="ttdeci">double rotation</div><div class="ttdoc">Rotation en degrés.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00084">xdino.h:84</a></div></div>
+<div class="ttc" id="axdino_8h_html_a09346b67c8a776942a161c7bbb7b21d3"><div class="ttname"><a href="xdino_8h.html#a09346b67c8a776942a161c7bbb7b21d3">DinoGamepad::dpad_right</a></div><div class="ttdeci">bool dpad_right</div><div class="ttdoc">Si clavier : Flèche droite.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00129">xdino.h:129</a></div></div>
+<div class="ttc" id="axdino_8h_html_a09a4d6e92b29b1c57f37cff0bba039a0"><div class="ttname"><a href="xdino_8h.html#a09a4d6e92b29b1c57f37cff0bba039a0">XDino_RandomInt32</a></div><div class="ttdeci">int32_t XDino_RandomInt32(int32_t min, int32_t max)</div><div class="ttdoc">Génère un entier 32-bit signé pseudo-aléatoire entre 'min' et 'max' inclus.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00276">xdino_win64_main.cpp:276</a></div></div>
+<div class="ttc" id="axdino_8h_html_a0a65f8b03568e5d13ad9477464a77bc6"><div class="ttname"><a href="xdino_8h.html#a0a65f8b03568e5d13ad9477464a77bc6">DinoGamepad::btn_down</a></div><div class="ttdeci">bool btn_down</div><div class="ttdoc">Si clavier : S.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00134">xdino.h:134</a></div></div>
+<div class="ttc" id="axdino_8h_html_a0a735e1f4c13a47d5af5f047018d84ad"><div class="ttname"><a href="xdino_8h.html#a0a735e1f4c13a47d5af5f047018d84ad">DinoDrawCall::vertices</a></div><div class="ttdeci">std::vector&lt; DinoVertex &gt; vertices</div><div class="ttdoc">Sommets des triangles à envoyer à la carte graphique.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00078">xdino.h:78</a></div></div>
+<div class="ttc" id="axdino_8h_html_a0c79a4de2b8deca82ccde8cf18039984"><div class="ttname"><a href="xdino_8h.html#a0c79a4de2b8deca82ccde8cf18039984">DinoColor::rgba</a></div><div class="ttdeci">uint32_t rgba</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00050">xdino.h:50</a></div></div>
+<div class="ttc" id="axdino_8h_html_a0cbbf650ffce89d01bb405e97e7378f5"><div class="ttname"><a href="xdino_8h.html#a0cbbf650ffce89d01bb405e97e7378f5">DinoVertex::pos</a></div><div class="ttdeci">DinoVec2 pos</div><div class="ttdoc">Position à l'écran (décalée suivant XDino_SetTransform())</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00066">xdino.h:66</a></div></div>
+<div class="ttc" id="axdino_8h_html_a0cbdf5c8996c3f409b9505e8e277aaf7"><div class="ttname"><a href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a></div><div class="ttdeci">constexpr DinoColor DinoColor_WHITE</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00053">xdino.h:53</a></div></div>
+<div class="ttc" id="axdino_8h_html_a0ef4c66b111f5f62923dcf3fbfe00130"><div class="ttname"><a href="xdino_8h.html#a0ef4c66b111f5f62923dcf3fbfe00130">DinoVertex::color</a></div><div class="ttdeci">DinoColor color</div><div class="ttdoc">Couleur utilisée pour moduler la texture (par défaut, pas de modulation).</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00072">xdino.h:72</a></div></div>
+<div class="ttc" id="axdino_8h_html_a16fd2a19b3812bdeda3eddd7a51a5e9e"><div class="ttname"><a href="xdino_8h.html#a16fd2a19b3812bdeda3eddd7a51a5e9e">DinoGamepad::btn_right</a></div><div class="ttdeci">bool btn_right</div><div class="ttdoc">Si clavier : D.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00133">xdino.h:133</a></div></div>
+<div class="ttc" id="axdino_8h_html_a1b3e9eb2c4f8790e442bc2dbc5c6b9f7"><div class="ttname"><a href="xdino_8h.html#a1b3e9eb2c4f8790e442bc2dbc5c6b9f7">DinoColor_BLUE</a></div><div class="ttdeci">constexpr DinoColor DinoColor_BLUE</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00058">xdino.h:58</a></div></div>
+<div class="ttc" id="axdino_8h_html_a21bfb5e03e6be550f53b515b6d4fc58d"><div class="ttname"><a href="xdino_8h.html#a21bfb5e03e6be550f53b515b6d4fc58d">DinoGamepad::shoulder_right</a></div><div class="ttdeci">bool shoulder_right</div><div class="ttdoc">Si clavier : ALT.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00138">xdino.h:138</a></div></div>
+<div class="ttc" id="axdino_8h_html_a289347d3145bcc1ada68d75b75ba58c9"><div class="ttname"><a href="xdino_8h.html#a289347d3145bcc1ada68d75b75ba58c9">DinoColor_BLACK</a></div><div class="ttdeci">constexpr DinoColor DinoColor_BLACK</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00055">xdino.h:55</a></div></div>
+<div class="ttc" id="axdino_8h_html_a2b9913616540d5b4e8543b959285aa9e"><div class="ttname"><a href="xdino_8h.html#a2b9913616540d5b4e8543b959285aa9e">DinoGamepad::stick_left_x</a></div><div class="ttdeci">float stick_left_x</div><div class="ttdoc">Entre -1 et 1. Si clavier : dérivé de 'dpad'.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00140">xdino.h:140</a></div></div>
+<div class="ttc" id="axdino_8h_html_a2d8f90cf6d81dfad6248897667f8ba7c"><div class="ttname"><a href="xdino_8h.html#a2d8f90cf6d81dfad6248897667f8ba7c">DinoGamepad::mouse_x</a></div><div class="ttdeci">int32_t mouse_x</div><div class="ttdoc">Si clavier : position en pixels.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00145">xdino.h:145</a></div></div>
+<div class="ttc" id="axdino_8h_html_a2e6d69578bed3d312e872e26a21c9435"><div class="ttname"><a href="xdino_8h.html#a2e6d69578bed3d312e872e26a21c9435">XDino_RandomFloat</a></div><div class="ttdeci">float XDino_RandomFloat(float min, float max)</div><div class="ttdoc">Génère un nombre à virgule flottante pseudo-aléatoire entre 'min' inclus et 'max' exclus.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00282">xdino_win64_main.cpp:282</a></div></div>
+<div class="ttc" id="axdino_8h_html_a3472d2d5f1a42c19cdfb8defbbd46a80"><div class="ttname"><a href="xdino_8h.html#a3472d2d5f1a42c19cdfb8defbbd46a80">DinoGamepad::stick_right_x</a></div><div class="ttdeci">float stick_right_x</div><div class="ttdoc">Entre -1 et 1. Si clavier : dérivé de 'btn'.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00142">xdino.h:142</a></div></div>
+<div class="ttc" id="axdino_8h_html_a34e4cc788612f46dea16beb4b24dd0ab"><div class="ttname"><a href="xdino_8h.html#a34e4cc788612f46dea16beb4b24dd0ab">Dino_GameInit</a></div><div class="ttdeci">void Dino_GameInit()</div><div class="ttdoc">Appelé au tout début, pour initialiser la logique de jeu.</div><div class="ttdef"><b>Definition</b> <a href="dino__game_8cpp_source.html#l00019">dino_game.cpp:19</a></div></div>
+<div class="ttc" id="axdino_8h_html_a3d6ec0f401e24873eea2e55dbe5a3ff9"><div class="ttname"><a href="xdino_8h.html#a3d6ec0f401e24873eea2e55dbe5a3ff9">DinoColor_GREY</a></div><div class="ttdeci">constexpr DinoColor DinoColor_GREY</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00054">xdino.h:54</a></div></div>
+<div class="ttc" id="axdino_8h_html_a43d3801d1a03c930499cd939692d786e"><div class="ttname"><a href="xdino_8h.html#a43d3801d1a03c930499cd939692d786e">DinoColor_RED</a></div><div class="ttdeci">constexpr DinoColor DinoColor_RED</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00059">xdino.h:59</a></div></div>
+<div class="ttc" id="axdino_8h_html_a4ded9317bd5f35f70b1473c729e56d1a"><div class="ttname"><a href="xdino_8h.html#a4ded9317bd5f35f70b1473c729e56d1a">XDino_GetRenderSize</a></div><div class="ttdeci">DinoVec2 XDino_GetRenderSize()</div><div class="ttdoc">Taille du rendu. Attention, différent de la résolution affichée à l'écran !</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__rdr_8cpp_source.html#l00571">xdino_win64_rdr.cpp:571</a></div></div>
+<div class="ttc" id="axdino_8h_html_a502324cbd76f6f735a0d604bb192846e"><div class="ttname"><a href="xdino_8h.html#a502324cbd76f6f735a0d604bb192846e">DinoGamepad::mouse_y</a></div><div class="ttdeci">int32_t mouse_y</div><div class="ttdoc">Si clavier : position en pixels.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00146">xdino.h:146</a></div></div>
+<div class="ttc" id="axdino_8h_html_a57ea716600a49f61ffff0bd33bd78a7d"><div class="ttname"><a href="xdino_8h.html#a57ea716600a49f61ffff0bd33bd78a7d">XDino_SetRenderSize</a></div><div class="ttdeci">void XDino_SetRenderSize(DinoVec2 renderSize)</div><div class="ttdoc">Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__rdr_8cpp_source.html#l00576">xdino_win64_rdr.cpp:576</a></div></div>
+<div class="ttc" id="axdino_8h_html_a5b09673eed3acb0308baece1136979cc"><div class="ttname"><a href="xdino_8h.html#a5b09673eed3acb0308baece1136979cc">DinoGamepad::stick_right_y</a></div><div class="ttdeci">float stick_right_y</div><div class="ttdoc">Entre -1 et 1. Si clavier : dérivé de 'btn'.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00143">xdino.h:143</a></div></div>
+<div class="ttc" id="axdino_8h_html_a61f7d6f6d88b9eb5ae07c6f2bd4a87c5"><div class="ttname"><a href="xdino_8h.html#a61f7d6f6d88b9eb5ae07c6f2bd4a87c5">DinoGamepad::select</a></div><div class="ttdeci">bool select</div><div class="ttdoc">Si clavier : SHIFT.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00136">xdino.h:136</a></div></div>
+<div class="ttc" id="axdino_8h_html_a631d358f2de291da38e0fe933d6a5c85"><div class="ttname"><a href="xdino_8h.html#a631d358f2de291da38e0fe933d6a5c85">DinoGamepadIdx_ALL</a></div><div class="ttdeci">constexpr DinoGamepadIdx DinoGamepadIdx_ALL[]</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00117">xdino.h:117</a></div></div>
+<div class="ttc" id="axdino_8h_html_a633e7eb91888670d439d5cc124a36e7d"><div class="ttname"><a href="xdino_8h.html#a633e7eb91888670d439d5cc124a36e7d">XDino_RandomUnitVec2</a></div><div class="ttdeci">DinoVec2 XDino_RandomUnitVec2()</div><div class="ttdoc">Génère un vecteur unitaire dans une direction aléatoire.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00288">xdino_win64_main.cpp:288</a></div></div>
+<div class="ttc" id="axdino_8h_html_a68646c879bb2deb348cfa0ae2fc53b92"><div class="ttname"><a href="xdino_8h.html#a68646c879bb2deb348cfa0ae2fc53b92">XDino_GetGamepad</a></div><div class="ttdeci">bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad &amp;outGamepad)</div><div class="ttdoc">Récupère l'état de la manette concernée.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00189">xdino_win64_main.cpp:189</a></div></div>
+<div class="ttc" id="axdino_8h_html_a68ce502c39ff890b21efeeec7e1b4907"><div class="ttname"><a href="xdino_8h.html#a68ce502c39ff890b21efeeec7e1b4907">DinoDrawCall::textureName</a></div><div class="ttdeci">std::string textureName</div><div class="ttdoc">Nom de la texture à utiliser, ou vide pour une texture complètement blanche et opaque.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00080">xdino.h:80</a></div></div>
+<div class="ttc" id="axdino_8h_html_a6ea620672513e369f4f0ee0070825d29"><div class="ttname"><a href="xdino_8h.html#a6ea620672513e369f4f0ee0070825d29">DinoGamepad::shoulder_left</a></div><div class="ttdeci">bool shoulder_left</div><div class="ttdoc">Si clavier : CTRL.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00137">xdino.h:137</a></div></div>
+<div class="ttc" id="axdino_8h_html_a757c774b402277a01602e48daf0fd724"><div class="ttname"><a href="xdino_8h.html#a757c774b402277a01602e48daf0fd724">DinoGamepad::btn_up</a></div><div class="ttdeci">bool btn_up</div><div class="ttdoc">Si clavier : Z ou W.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00131">xdino.h:131</a></div></div>
+<div class="ttc" id="axdino_8h_html_a7af8819cdc2d1e8d809ab6168bc09166"><div class="ttname"><a href="xdino_8h.html#a7af8819cdc2d1e8d809ab6168bc09166">DinoColor_GREEN</a></div><div class="ttdeci">constexpr DinoColor DinoColor_GREEN</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00061">xdino.h:61</a></div></div>
+<div class="ttc" id="axdino_8h_html_a7e29774181e395f2cec3b976d0538e8c"><div class="ttname"><a href="xdino_8h.html#a7e29774181e395f2cec3b976d0538e8c">DinoGamepad::btn_left</a></div><div class="ttdeci">bool btn_left</div><div class="ttdoc">Si clavier : Q ou A.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00132">xdino.h:132</a></div></div>
+<div class="ttc" id="axdino_8h_html_a847ecb99f82286c5ba044e4e50d6ca2c"><div class="ttname"><a href="xdino_8h.html#a847ecb99f82286c5ba044e4e50d6ca2c">XDino_ProfileEnd</a></div><div class="ttdeci">void XDino_ProfileEnd()</div><div class="ttdoc">Finit un intervalle de profiling.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00178">xdino_win64_main.cpp:178</a></div></div>
+<div class="ttc" id="axdino_8h_html_a8fb3a63e6442dd880092baee74243dd3"><div class="ttname"><a href="xdino_8h.html#a8fb3a63e6442dd880092baee74243dd3">XDino_GetWindowSize</a></div><div class="ttdeci">DinoVec2 XDino_GetWindowSize()</div><div class="ttdoc">Taille de la fenêtre sur l'écran. Attention, différent de la résolution du rendu !</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__rdr_8cpp_source.html#l00561">xdino_win64_rdr.cpp:561</a></div></div>
+<div class="ttc" id="axdino_8h_html_a93188dac74427f4871d050d62876b29d"><div class="ttname"><a href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">DinoColor_INVISIBLE</a></div><div class="ttdeci">constexpr DinoColor DinoColor_INVISIBLE</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00057">xdino.h:57</a></div></div>
+<div class="ttc" id="axdino_8h_html_a999458b1b81234a920711e6223057193"><div class="ttname"><a href="xdino_8h.html#a999458b1b81234a920711e6223057193">DinoGamepad::dpad_down</a></div><div class="ttdeci">bool dpad_down</div><div class="ttdoc">Si clavier : Flèche du bas.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00130">xdino.h:130</a></div></div>
+<div class="ttc" id="axdino_8h_html_aaed9eedb63b05d95c3d0a288a6ee87d0"><div class="ttname"><a href="xdino_8h.html#aaed9eedb63b05d95c3d0a288a6ee87d0">DinoVertex::v</a></div><div class="ttdeci">uint16_t v</div><div class="ttdoc">Coordonnée Y du pixel correspondant dans la texture mise avec XDino_BindTexture().</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00070">xdino.h:70</a></div></div>
+<div class="ttc" id="axdino_8h_html_ab1e47711c13f7a5bcd381aa5996d7fe2"><div class="ttname"><a href="xdino_8h.html#ab1e47711c13f7a5bcd381aa5996d7fe2">DinoVertex::u</a></div><div class="ttdeci">uint16_t u</div><div class="ttdoc">Coordonnée X du pixel correspondant dans la texture mise avec XDino_BindTexture().</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00068">xdino.h:68</a></div></div>
+<div class="ttc" id="axdino_8h_html_ab3f2fbf44d464753d0c9cea2ada1ba34"><div class="ttname"><a href="xdino_8h.html#ab3f2fbf44d464753d0c9cea2ada1ba34">DinoGamepad::dpad_left</a></div><div class="ttdeci">bool dpad_left</div><div class="ttdoc">Si clavier : Flèche gauche.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00128">xdino.h:128</a></div></div>
+<div class="ttc" id="axdino_8h_html_ab579fc5249712eea9dab54bbad4808f0"><div class="ttname"><a href="xdino_8h.html#ab579fc5249712eea9dab54bbad4808f0">XDino_ProfileBegin</a></div><div class="ttdeci">void XDino_ProfileBegin(DinoColor color, char const *msg)</div><div class="ttdoc">Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l'un d...</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00173">xdino_win64_main.cpp:173</a></div></div>
+<div class="ttc" id="axdino_8h_html_ab8139914fa51566caf3d7e059af7d125"><div class="ttname"><a href="xdino_8h.html#ab8139914fa51566caf3d7e059af7d125">DinoColor_YELLOW</a></div><div class="ttdeci">constexpr DinoColor DinoColor_YELLOW</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00060">xdino.h:60</a></div></div>
+<div class="ttc" id="axdino_8h_html_abb311146ea82c7137cbc18fcbdfcc036"><div class="ttname"><a href="xdino_8h.html#abb311146ea82c7137cbc18fcbdfcc036">DinoVec2::y</a></div><div class="ttdeci">float y</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00038">xdino.h:38</a></div></div>
+<div class="ttc" id="axdino_8h_html_abded2f43911a4a13d4742539b59797e0"><div class="ttname"><a href="xdino_8h.html#abded2f43911a4a13d4742539b59797e0">XDino_SetClearColor</a></div><div class="ttdeci">void XDino_SetClearColor(DinoColor color)</div><div class="ttdoc">Pour indiquer la couleur d'arrière-plan.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__rdr_8cpp_source.html#l00566">xdino_win64_rdr.cpp:566</a></div></div>
+<div class="ttc" id="axdino_8h_html_ac725e856d310901f99f7cfbff36e100c"><div class="ttname"><a href="xdino_8h.html#ac725e856d310901f99f7cfbff36e100c">DinoGamepad::start</a></div><div class="ttdeci">bool start</div><div class="ttdoc">Si clavier : ESPACE ou ENTREE.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00135">xdino.h:135</a></div></div>
+<div class="ttc" id="axdino_8h_html_ac7336d7a0cef47c62cd1ea2a321be2d3"><div class="ttname"><a href="xdino_8h.html#ac7336d7a0cef47c62cd1ea2a321be2d3">_impl_XDino_Critical</a></div><div class="ttdeci">void _impl_XDino_Critical(char const *pFunc, int line, char const *msg)</div><div class="ttdoc">Détail d'implémentation, .</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00165">xdino_win64_main.cpp:165</a></div></div>
+<div class="ttc" id="axdino_8h_html_ac7b7408f18b3729af2f6e7f405f238e7"><div class="ttname"><a href="xdino_8h.html#ac7b7408f18b3729af2f6e7f405f238e7">Dino_GameFrame</a></div><div class="ttdeci">void Dino_GameFrame(double timeSinceStart)</div><div class="ttdoc">Appelé pour générer chaque frame. Doit lireles entrées de jeu avec XDino_GetGamepad(),...</div><div class="ttdef"><b>Definition</b> <a href="dino__game_8cpp_source.html#l00032">dino_game.cpp:32</a></div></div>
+<div class="ttc" id="axdino_8h_html_ac82f66ffa9a47fc4e107b6ba10d2254e"><div class="ttname"><a href="xdino_8h.html#ac82f66ffa9a47fc4e107b6ba10d2254e">DinoVec2::x</a></div><div class="ttdeci">float x</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00037">xdino.h:37</a></div></div>
+<div class="ttc" id="axdino_8h_html_ad80a6949b45365d63b3862f933b5d564"><div class="ttname"><a href="xdino_8h.html#ad80a6949b45365d63b3862f933b5d564">DinoGamepad::stick_left_y</a></div><div class="ttdeci">float stick_left_y</div><div class="ttdoc">Entre -1 et 1. Si clavier : dérivdé de 'dpad'.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00141">xdino.h:141</a></div></div>
+<div class="ttc" id="axdino_8h_html_ae1e2c3f1246534b117fd0d28b40fe25f"><div class="ttname"><a href="xdino_8h.html#ae1e2c3f1246534b117fd0d28b40fe25f">DinoDrawCall::scale</a></div><div class="ttdeci">double scale</div><div class="ttdoc">Mise à l'échelle.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00086">xdino.h:86</a></div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0">DinoGamepadIdx</a></div><div class="ttdeci">DinoGamepadIdx</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00109">xdino.h:109</a></div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a14fca82f42713015c6cba4f27057dcab">DinoGamepadIdx::Gamepad1</a></div><div class="ttdeci">@ Gamepad1</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a5b84d4a629f39ed38b457ae827a67bb9">DinoGamepadIdx::Gamepad4</a></div><div class="ttdeci">@ Gamepad4</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">DinoGamepadIdx::Keyboard</a></div><div class="ttdeci">@ Keyboard</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0aa1aa12abfbc64281399c131bec36f304">DinoGamepadIdx::Gamepad3</a></div><div class="ttdeci">@ Gamepad3</div></div>
+<div class="ttc" id="axdino_8h_html_ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec"><div class="ttname"><a href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0ad158e445f77505032b2787fff48c3fec">DinoGamepadIdx::Gamepad2</a></div><div class="ttdeci">@ Gamepad2</div></div>
+<div class="ttc" id="axdino_8h_html_ae61e4fce79f41d23dc826ef73e40c19a"><div class="ttname"><a href="xdino_8h.html#ae61e4fce79f41d23dc826ef73e40c19a">DinoColor_TRANSPARENT</a></div><div class="ttdeci">constexpr DinoColor DinoColor_TRANSPARENT</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00056">xdino.h:56</a></div></div>
+<div class="ttc" id="axdino_8h_html_ae8f6895a97795d2f871f447f222ecb8c"><div class="ttname"><a href="xdino_8h.html#ae8f6895a97795d2f871f447f222ecb8c">DinoGamepad::dpad_up</a></div><div class="ttdeci">bool dpad_up</div><div class="ttdoc">Si clavier : Flèche du haut.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00127">xdino.h:127</a></div></div>
+<div class="ttc" id="axdino_8h_html_aeb4d6e016bd75b441e9f60f7350b60ce"><div class="ttname"><a href="xdino_8h.html#aeb4d6e016bd75b441e9f60f7350b60ce">DinoDrawCall::translation</a></div><div class="ttdeci">DinoVec2 translation</div><div class="ttdoc">Décalage en pixels depuis l'angle en haut à gauche.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00082">xdino.h:82</a></div></div>
+<div class="ttc" id="axdino_8h_html_af5be2c6012bb9e2650a622d88c610fd6"><div class="ttname"><a href="xdino_8h.html#af5be2c6012bb9e2650a622d88c610fd6">Dino_GameShut</a></div><div class="ttdeci">void Dino_GameShut()</div><div class="ttdoc">Appelé quand l'utilisateur demande à quitter le jeu (touche ECHAP).</div><div class="ttdef"><b>Definition</b> <a href="dino__game_8cpp_source.html#l00141">dino_game.cpp:141</a></div></div>
+<div class="ttc" id="axdino_8h_html_af6f41148f29d2c60fc4f9e51449436fa"><div class="ttname"><a href="xdino_8h.html#af6f41148f29d2c60fc4f9e51449436fa">XDino_Draw</a></div><div class="ttdeci">void XDino_Draw(DinoDrawCall drawCall)</div><div class="ttdoc">Transfère les triangles à dessiner à la carte graphique.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__rdr_8cpp_source.html#l00586">xdino_win64_rdr.cpp:586</a></div></div>
+<div class="ttc" id="axdino_8h_html_afe24d415c32e02761cd69c10d8949075"><div class="ttname"><a href="xdino_8h.html#afe24d415c32e02761cd69c10d8949075">XDino_RandomUint32</a></div><div class="ttdeci">uint32_t XDino_RandomUint32(uint32_t min, uint32_t max)</div><div class="ttdoc">Génère un entier 32-bit non-signé pseudo-aléatoire entre 'min' et 'max' inclus.</div><div class="ttdef"><b>Definition</b> <a href="xdino__win64__main_8cpp_source.html#l00270">xdino_win64_main.cpp:270</a></div></div>
+<div class="ttc" id="axdino_8h_html_structDinoDrawCall"><div class="ttname"><a href="xdino_8h.html#structDinoDrawCall">DinoDrawCall</a></div><div class="ttdoc">Représente une demande de dessin à la carte graphique.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00076">xdino.h:76</a></div></div>
+<div class="ttc" id="axdino_8h_html_structDinoGamepad"><div class="ttname"><a href="xdino_8h.html#structDinoGamepad">DinoGamepad</a></div><div class="ttdoc">Structure contenant l'état d'une manette (ou du clavier utilisé comme manette).</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00126">xdino.h:126</a></div></div>
+<div class="ttc" id="axdino_8h_html_structDinoVec2"><div class="ttname"><a href="xdino_8h.html#structDinoVec2">DinoVec2</a></div><div class="ttdoc">Représente une coordonnée 2D en pixels.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00036">xdino.h:36</a></div></div>
+<div class="ttc" id="axdino_8h_html_structDinoVertex"><div class="ttname"><a href="xdino_8h.html#structDinoVertex">DinoVertex</a></div><div class="ttdoc">Représente un des sommets d'un triangle envoyé à la carte graphique.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00064">xdino.h:64</a></div></div>
+<div class="ttc" id="axdino_8h_html_unionDinoColor"><div class="ttname"><a href="xdino_8h.html#unionDinoColor">DinoColor</a></div><div class="ttdoc">Représente une couleur de pixels, utilisée pour moduler l'affichage d'une texture.</div><div class="ttdef"><b>Definition</b> <a href="xdino_8h_source.html#l00042">xdino.h:42</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

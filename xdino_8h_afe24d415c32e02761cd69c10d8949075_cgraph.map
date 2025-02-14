@@ -1,0 +1,5 @@
+<map id="XDino_RandomUint32" name="XDino_RandomUint32">
+<area shape="rect" id="Node000001" title="Génère un entier 32&#45;bit non&#45;signé pseudo&#45;aléatoire entre &#39;min&#39; et &#39;max&#39; inclus." alt="" coords="5,5,155,31"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1" title=" " alt="" coords="203,5,291,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,16,187,16,187,21,155,21"/>
+</map>

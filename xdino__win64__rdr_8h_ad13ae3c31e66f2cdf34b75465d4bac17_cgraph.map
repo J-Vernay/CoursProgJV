@@ -1,0 +1,9 @@
+<map id="XDino_Win64_EndDraw" name="XDino_Win64_EndDraw">
+<area shape="rect" id="Node000001" title="Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique." alt="" coords="5,55,164,80"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__main_8cpp.html#ab579fc5249712eea9dab54bbad4808f0" title="Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l&#39;un d..." alt="" coords="239,5,372,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,51,229,32,230,38,146,57"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__main_8cpp.html#a847ecb99f82286c5ba044e4e50d6ca2c" title="Finit un intervalle de profiling." alt="" coords="245,55,366,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,65,229,65,229,70,164,70"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__rdr_8cpp.html#af0297fec7b8843bff04ad8b0e7477845" title="Spécifique à la plateforme. Charge une texture." alt="" coords="212,104,399,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,78,230,97,229,103,145,84"/>
+</map>
