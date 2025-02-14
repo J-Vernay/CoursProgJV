@@ -55,7 +55,7 @@ void Dino_GameFrame(double timeSinceStart)
     terrainB.y = terrainA.y + terrainSize.y;
 
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
-    if (timeSinceLastSpawn > 0.1) {
+    if (timeSinceLastSpawn > 1) {
         g_AnimalLastSpawnTime = timeSinceStart;
         g_Animals.emplace_back();
         g_Animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
@@ -131,11 +131,7 @@ void Dino_GameFrame(double timeSinceStart)
     
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
-        int sizeVec2 = sizeof(DinoVec2);
-        int sizeColor = sizeof(DinoColor);
-        int sizeVertex = sizeof(DinoVertex);
-        std::string text = std::format("sizeVec2={}  sizeColor={}  sizeVertex={}", sizeVec2, sizeColor, sizeVertex);
-        //std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+        std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         drawCall.scale = 2;
         XDino_Draw(drawCall);
