@@ -12,7 +12,7 @@ void DinoAnimal::Init(DinoVec2 initPos, int32_t idxAnimal)
     m_idxAnimal = idxAnimal;
 }
 
-void DinoAnimal::UpdateAnimal(float deltaTime)
+void DinoAnimal::Update(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
 
@@ -35,7 +35,7 @@ void DinoAnimal::UpdateAnimal(float deltaTime)
         m_bMirror = m_dir.x > 0;
 }
 
-void DinoAnimal::DrawAnimal(double timeSinceStart)
+void DinoAnimal::Draw(double timeSinceStart)
 {
     // Copier-coller de l'ancien code.
 
@@ -96,27 +96,9 @@ void DinoAnimal::DrawAnimal(double timeSinceStart)
     XDino_Draw(drawCall);
 }
 
-void DinoAnimal::ApplyTerrain(DinoVec2 a, DinoVec2 b)
+void DinoAnimal::OnTerrainBorder()
 {
-    bool bTerrainCollide = false;
-    if (m_pos.y < a.y) {
-        m_pos.y = a.y;
-        bTerrainCollide = true;
-    }
-    if (m_pos.y > b.y) {
-        m_pos.y = b.y;
-        bTerrainCollide = true;
-    }
-    if (m_pos.x < a.x) {
-        m_pos.x = a.x;
-        bTerrainCollide = true;
-    }
-    if (m_pos.x > b.x) {
-        m_pos.x = b.x;
-        bTerrainCollide = true;
-    }
-    if (bTerrainCollide)
-        m_dir = XDino_RandomUnitVec2();
+    m_dir = XDino_RandomUnitVec2();
 }
 
 /* TODO

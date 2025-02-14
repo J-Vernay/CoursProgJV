@@ -1,3 +1,6 @@
+#include "dino_draw_utils.h"
+#include "dino_geometry.h"
+
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 
@@ -6,14 +9,15 @@ constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une secon
 constexpr DinoVec2 SCREEN_SIZE = {480, 360};
 
 
-void DinoPlayer::Init(DinoVec2 initPos, int32_t idxPlayer, DinoGamepadIdx idxGamepad)
+void DinoPlayer::Init(DinoVec2 initm_pos, int32_t idxPlayer, DinoGamepadIdx idxGamepad, DinoColor lassoColor)
 {
-    m_pos = initPos;
+    m_pos = initm_pos;
     m_idxPlayer = idxPlayer;
     m_idxGamepad = idxGamepad;
+    m_lassoColor = lassoColor;
 }
 
-void DinoPlayer::UpdatePlayer(float deltaTime)
+void DinoPlayer::Update(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
 
@@ -44,10 +48,40 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
         else
             this->bWalking = true;
     }
+    m_lasso.emplace_back(m_pos);
+    if (m_lasso.size() > 120) {
+        m_lasso.erase(m_lasso.begin());
+    }
 
+     
+    // Détecter les collisions des segments du lasso
+    // m_lasso.size() points
+    // m_lasso.size() - 1 segments
+    if (m_lasso.size()  >= 4) {
+        DinoVec2 C = m_lasso[m_lasso.size() - 2];
+        DinoVec2 D = m_lasso[m_lasso.size() - 1];
+        for (int idxSegment1 = 0; idxSegment1 < m_lasso.size() - 3; ++idxSegment1) {
+            DinoVec2 A = m_lasso[idxSegment1];
+            DinoVec2 B = m_lasso[idxSegment1 + 1];
+            
+            if (Dino_IntersectSegment(A, B, C, D)) {
+                // Collision du lasso avec lui-même
+                m_lasso.erase(m_lasso.begin() + idxSegment1 + 1, m_lasso.end() - 1);
+            }
+        }
+    }
+    
 }
 
-void DinoPlayer::DrawPlayer(double timeSinceStart)
+void DinoPlayer::DrawLasso()
+{
+    // Lasso
+    DinoDrawCall drawCallLasso = Dino_CreateDrawCall_Polyline(m_lasso, 4, m_lassoColor);
+    XDino_Draw(drawCallLasso);
+}
+
+
+void DinoPlayer::Draw(double timeSinceStart)
 {
 
     DinoDrawCall drawCall;
@@ -98,16 +132,4 @@ void DinoPlayer::DrawPlayer(double timeSinceStart)
 bool DinoPlayer::IsAbove(DinoPlayer& other)
 {
     return m_pos.y < other.m_pos.y;
-}
-
-void DinoPlayer::ApplyTerrain(DinoVec2 a, DinoVec2 b)
-{
-    if (m_pos.y < a.y)
-        m_pos.y = a.y;
-    if (m_pos.y > b.y)
-        m_pos.y = b.y;
-    if (m_pos.x < a.x)
-        m_pos.x = a.x;
-    if (m_pos.x > b.x)
-        m_pos.x = b.x;
 }

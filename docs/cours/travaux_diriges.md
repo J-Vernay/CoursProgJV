@@ -203,7 +203,8 @@ e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers
 
 > build/%{cfg.platform}/%{cfg.buildcfg} --> dossier contenant l'exe
 > includedirs { "src", "external" } #include <dino/dino_player.h>
-> files { "external/.cpp", "external/.h" } files { "src/dino/" } files { "src/dino/x64-windows/" } Où sont les .H et les .CPP
+> files { "external/.cpp", "external/.h" } files { "src/dino/" } files { "src/dino/x64-windows/" } Où sont les .H et les
+> .CPP
 
 f) Quels sont les liens entre :
 
@@ -325,7 +326,7 @@ c) Comment détecter si deux cercles à des positions données sont en collision
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> 
+>
 
 e) Implémentez la fonctionnalité F5.3 .
 
@@ -341,7 +342,7 @@ L'appliquer dans la base de code.
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> 
+>
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.

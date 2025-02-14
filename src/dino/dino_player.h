@@ -2,7 +2,7 @@
 
 #include <dino/xdino.h>
 
-class DinoPlayer : DinoEntity {
+class DinoPlayer : public DinoEntity {
 private:
     bool bMirror = false;
     bool bIdle = false;
@@ -10,15 +10,21 @@ private:
     bool bRunning = false;
 
     int m_idxPlayer = 0;
+    
     DinoGamepadIdx m_idxGamepad;
 
+    std::vector<DinoVec2> m_lasso;
+    DinoColor m_lassoColor;
+    
+
 public:
-    void Init(DinoVec2 initPos, int32_t idxPlayer, DinoGamepadIdx idxGamepad);
-    void UpdatePlayer(float deltaTime);
-    void DrawPlayer(double timeSinceStart);
+    void DinoPlayer::Init(DinoVec2 initm_pos, int32_t idxPlayer, DinoGamepadIdx idxGamepad, DinoColor lassoColor)
+    void Update(float deltaTime) override;
+    void Draw(double timeSinceStart) override;
+
+    /// Ne dessine que le lasso.
+    void DrawLasso();
 
     bool IsAbove(DinoPlayer& other);
 
-    void ApplyTerrain(DinoVec2 a, DinoVec2 b);
-    
 };
