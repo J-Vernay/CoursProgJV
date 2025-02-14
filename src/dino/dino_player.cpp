@@ -49,6 +49,9 @@ void dino_player::Update(float deltaTime)
     }
 
     lasso.emplace_back(pos);
+    if (lasso.size() > 120) {
+        lasso.erase(lasso.begin());
+    }
 }
 
 void dino_player::DrawLasso()

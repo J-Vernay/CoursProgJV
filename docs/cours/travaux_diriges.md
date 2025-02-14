@@ -346,7 +346,11 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Qu'est-ce que la fonctionnalité implique pour les octets en mémoire qui représente le lasso ?
 
-> ...
+> Le .erase implique pour les octets en mémoire que nous allons supprimer le premier élément, mais on garde la même
+> allocation mémoire et du coup il fait une copie de l'élément suivant pour qu'il remplace l'élément 0 et décaler chaque
+> élément au range inférieur. Leur adresse n'est plus la même mais un grand vers la gauche. Il y a un emplacement qui va
+> être vide, std::vector va garder cet emplacement en interne et au prochain push (emplace_back) il va réutiliser cette
+> case pour éviter de perdre quelques micro secondes.
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 
