@@ -477,7 +477,9 @@ Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations 
 f) Double-cliquez sur un rectangle **Frame**, puis cliquez en bas à gauche sur **Graph Duration in Metrics View**.
 Quelle est le temps moyen d'une frame ? Le temps minimum ? Le temps maximum ?
 
-> ...
+> Le temps moyen d'une frame est de 16 592 268 ns.
+>
+> Le minimum est de 4 424 700 ns et le maximum est de 40 096 200 ns.
 
 g) Les rectangles dans la timeline PIX sont créés dans le code par des appels à XDino_ProfileBegin()
 et XDino_ProfileEnd() . Ces appels de fonctions peuvent être imbriqués. Utilisez ces fonctions
