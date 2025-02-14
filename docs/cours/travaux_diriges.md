@@ -301,7 +301,8 @@ Que veut dire réinterpréter un pointeur ?
 > Un type est un outil de langage de programmation pour garder l'information de comment interpréter ne suite de bits et
 > quelles opérations sont autorisées. Le typag statique : le compilateur connait les types associés aux emplacements
 > mémoire, donc il peut détecter les erreurs logiques. Un pointeur est une adresse mémoire. Réinterpréter un pointeur
-> c'est changer le
+> c'est changer le fait de dire au compilateur "fait moi confiance, je sais ce que je fais" en mettant devant la valeur
+> du pointeur le type que l'on veut. Par exemple : int* pA = &a et float* pB (float*)&A.
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
@@ -322,18 +323,21 @@ h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> OS commence le programme .exe et dans le fichier exe, il y a la taille nécessaire pour les variables globales. Il crée
-> une correspondance dans notre espace mémoire pour les variables globales, au tout début. L'OS alloue la stack (pile en
-> français). Les variables locales sont allouées à chaque appel de fonction. La stack ne fait qu'une seule grosse
-> allocation, elle est allouée à chaque appel de fonction et nous "grignotons" dedans, à chaque return nus rendons la
-> mémoire. Les std::vector sont alloués à chaque appel de fonction.
+> L'OS commence le programme .exe et dans le fichier exe, il y a la taille nécessaire pour les variables globales. Il
+> crée une correspondance dans notre espace mémoire pour les variables globales, au tout début. L'OS alloue la stack (
+> pile en français). Les variables locales sont allouées à chaque appel de fonction. La stack ne fait qu'une seule
+> grosse allocation, elle est allouée à chaque appel de fonction et nous "grignotons" dedans, à chaque return nus
+> rendons la mémoire. Les std::vector sont alloués à chaque appel de fonction, c'est un tableau contigu. Il y a une
+> limitation, nous sommes obligés de stocker des éléments du même type.
 
 i) Implémentez la fonctionnalité F3.3. Cela implique de trier un tableau qui peut contenir à la fois
 des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
 
-> ...
+> Mettre de côté
 
 j) Implémentez la fonctionnalité F3.4.
+
+> Mettre de côté
 
 ## 6. Programmation des lassos
 

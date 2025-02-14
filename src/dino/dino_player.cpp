@@ -49,7 +49,7 @@ void dino_player::UpdatePlayer(float deltaTime)
 void dino_player::DrawPlayer(double timeSinceStart)
 {
     DinoDrawCall drawCall;
-    drawCall.textureName = "dinosaurs.png"; // Ici on change en dinosaurs pour avoir accès au sprite sheet. 
+    drawCall.textureName = "dinosaurs.png"; // Ici on accède au fichier dinosaurs.png, le sprite sheet des dinosaures.
     drawCall.vertices.reserve(6);
 
     DinoVec2 posA = {0, 0};

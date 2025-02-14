@@ -27,7 +27,6 @@ bool CompareAnimalPos(dino_animal& a, dino_animal& b)
 
 void Dino_GameInit()
 {
-    // DinoVec2 windowSize = XDino_GetWindowSize();
     DinoVec2 renderSize = {480, 360};
     XDino_SetRenderSize(renderSize);
     dinoPlayers.resize(4);

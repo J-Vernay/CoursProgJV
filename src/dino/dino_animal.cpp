@@ -8,7 +8,7 @@ void dino_animal::Init(DinoVec2 initPos, int32_t indexAnimal)
 {
     pos = initPos;
     direction = XDino_RandomUnitVec2();
-    indexAnimal = indexAnimal;
+    idxAnimal = indexAnimal;
 }
 
 void dino_animal::UpdateAnimal(float deltaTime)
@@ -25,7 +25,7 @@ void dino_animal::UpdateAnimal(float deltaTime)
 void dino_animal::DrawAnimal(double timeSinceStart)
 {
     DinoDrawCall drawCall;
-    drawCall.textureName = "animals.png";
+    drawCall.textureName = "animals.png"; // Ici on accède au fichier animals.png, le sprite sheet des animaux.
     DinoVec2 posA = {0, 0};
     DinoVec2 posB = {32, 0};
     DinoVec2 posC = {0, 32};
