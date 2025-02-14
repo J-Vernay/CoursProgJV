@@ -500,7 +500,10 @@ void XDino_Win64_EndDraw()
 
         // Envoyer les sommets de triangle à la carte graphique.
 
-        XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF},
+        XDino_ProfileBegin({0x44,
+                           0x44,
+                           0x44,
+                           0xFF},
                            std::format("Map {} vertices ({})", drawCall.vertices.size(), drawCall.textureName).c_str());
         gXDino_context->Map(gXDino_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
         memcpy(resource.pData, drawCall.vertices.data(), drawCall.vertices.size() * sizeof(DinoVertex));

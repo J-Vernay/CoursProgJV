@@ -156,7 +156,9 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On utilise le terme méthode ou fonction membre.
+> L'encapsulation avec les modificateurs d'accès (private, protected, public)
+> Elle permet de protéger l'intégrité des données, de contrôler l'accès aux données, de réduire les dépendances.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -165,13 +167,15 @@ e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances 
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 
-> ...
+> for (DinoPlayer& player : players) -> On itère sur tous les player dans players, avec la valeur de player qui change a
+> chaque itération.
 
 f) Implémentez F1.6 : Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
 Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
 Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
 
-> ...
+> On peut faire une méthode public qui retourne le champ privé de la position du dinosaure, on ne pourra donc pas
+> modifier la position du dinosaure.
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
@@ -326,7 +330,12 @@ c) Comment détecter si deux cercles à des positions données sont en collision
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> Il faut qu'on trouve un vecteur V (et son inverse) de déplacement sur lequel on peut déplacer un les deux objets en
+> collision et qu'il soit a nouveau a 2 rayons de distance. Pour la distance, on veut donc que 2v + AB = 2r.
+> On peut ensuite déplacer nos object une fois qu'on a trouvé la norme de V ansi que sa direction.
+> Le seul cas ou le repoussement n'est pas résoluble est celui ou les deux objets sont exactement a la même position,
+> car
+> il provoque des divisions par 0 dans les calculs.
 
 e) Implémentez la fonctionnalité F5.3 .
 

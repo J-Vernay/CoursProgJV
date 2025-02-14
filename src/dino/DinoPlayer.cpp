@@ -1,18 +1,15 @@
 #include "DinoPlayer.h"
 
-#include <iostream>
-
 DinoPlayer::DinoPlayer()
 {
-
 }
 
 void DinoPlayer::Initialize(DinoGamepadIdx gamepadIdx, DinoVec2 pos)
 {
     m_gamepadIdx = gamepadIdx;
-    std::cout << (int)gamepadIdx;
     m_pos = pos;
     m_movementSpeed = 300;
+    m_state = Idle;
 }
 
 void DinoPlayer::Update(float deltaTime)
@@ -56,7 +53,6 @@ void DinoPlayer::Draw(double timeSinceStart)
     DinoVec2 posB = {24, 0};
     DinoVec2 posC = {0, 24};
     DinoVec2 posD = {24, 24};
-    DinoColor color = DinoColor_WHITE;
 
     int spriteOffsetY = static_cast<int>(m_gamepadIdx) * 24;
 

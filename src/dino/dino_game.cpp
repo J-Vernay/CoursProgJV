@@ -2,21 +2,25 @@
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
 #include "DinoPlayer.h"
+#include "DinoTerrain.h"
 
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 
 #include <format>
+#include <iostream>
 
 // Variables globales.
 double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
+DinoVec2 renderSize = {480, 360};
 DinoVec2 windowSize;
 
 // Constantes.
-constexpr float speed = 300.f;
+constexpr float SPEED = 300.f;
 constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
+constexpr DinoVec2 LAND_SIZE = {256, 192};
 
 // Forwards Declarations
 void InitDinoPlayers(DinoVec2 windowSize);
@@ -25,21 +29,13 @@ DinoVec2 GetSpawnPos(int index, DinoVec2 windowSize);
 // Variables
 std::vector<DinoPlayer> players = {};
 DinoPlayer dinoPlayer = DinoPlayer();
+DinoTerrain dinoTerrain = DinoTerrain();
 
 void Dino_GameInit()
 {
     windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize({480, 360});
+    XDino_SetRenderSize(renderSize);
     InitDinoPlayers(windowSize);
-
-    DinoDrawCall drawCall;
-    drawCall.textureName = "terrain.png";
-    drawCall.vertices.reserve(6);
-
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {16, 0};
-    DinoVec2 posC = {0, 16};
-    DinoVec2 posD = {16, 16};
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -47,15 +43,13 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
+    dinoTerrain.DrawWater(renderSize);
+    dinoTerrain.DrawLand(renderSize, LAND_SIZE);
+
     for (DinoPlayer& player : players) {
         player.Update(deltaTime);
         player.Draw(timeSinceStart);
     }
-
-    // DISPLAY
-
-    // Default Color
-    XDino_SetClearColor(CLEAR_COLOR);
 
     // Affichage du nom et prénom en bas a droite de l'écran.
     {
@@ -82,22 +76,23 @@ void InitDinoPlayers(DinoVec2 windowSize)
     players = std::vector<DinoPlayer>(4);
     for (int i = 0; i < players.size(); i++) {
         DinoPlayer player = DinoPlayer();
-        player.Initialize(static_cast<DinoGamepadIdx>(i), GetSpawnPos(i, windowSize));
+        player.Initialize(static_cast<DinoGamepadIdx>(i), GetSpawnPos(i, renderSize));
         players[i] = player;
     }
 }
 
 DinoVec2 GetSpawnPos(int index, DinoVec2 windowSize)
 {
-    return {windowSize.x * index / 4, windowSize.y / 2};
+    float x = index % 2 == 0 ? windowSize.x * 0.25f : windowSize.x * 0.75f;
+    float y = index <= 1 ? windowSize.y * 0.25f : windowSize.y * 0.75f;
+
+    x -= 12;
+    y -= 12;
+
+    return {x, y};
 }
 
-void DrawTerrain()
-{
-    
-}
-
-void Dino_GameShut(DinoVec2 windowSize)
+void Dino_GameShut()
 {
 
 }

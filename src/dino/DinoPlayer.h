@@ -1,9 +1,6 @@
 #pragma once
 
-#include "x64-windows/xdino_win64_rdr.h"
-
 #include <dino/xdino.h>
-#include <dino/dino_draw_utils.h>
 
 enum DinoState {
     Idle,
