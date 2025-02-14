@@ -1,9 +1,9 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
-
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_movement.h>
+#include <dino/dino_player.h>
 
 #include <format>
 
@@ -11,29 +11,21 @@
 double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
-DinoVec2 circlePos = {};
 std::vector<DinoVec2> polyline;
 DinoVec2 textNamePos;
 
-float counter, animCounter, lastDirection;
-int animWalkIndicatorCounter = 0;
-bool facingLeft = false;
-
 //Dino Variables
-DinoDrawCall drawCallDino;
+DinosaurPlayer dinosaurPlayer1(4);
 
 // Constantes.
-constexpr float CIRCLE_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
-constexpr float timeUntilDoubleSpeed = 1; //Tome until Speeds up
-constexpr float timeUntilAnimFrameChange = 4;
 constexpr int posWalkAnimArray[12] = {25,52,76,106,124,148,172,196,220,244,268,292};
 
 void Dino_GameInit()
 {
-    InstantiateDinoVerticles(&drawCallDino);
+    InstantiateDinoVerticles(&dinosaurPlayer1.drawCallDino);
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    circlePos = {windowSize.x / 2, windowSize.y / 2};
+    dinosaurPlayer1.dinoPos = {windowSize.x / 2, windowSize.y / 2};
 
     polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
@@ -76,19 +68,7 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.btn_right && !gamepad.btn_left)
             rotation -= 90.0 * deltaTime;
     }
-    //Detect if movement isnt null & superior to timeUntilDoubleSpeed
-    if(movementRegistered) {
-        counter+= 0.1f;
-        float cSpeed = CIRCLE_SPEED;
-        if (counter > timeUntilDoubleSpeed) {
-            cSpeed*=2;
-        }
-        circlePos.x += xMovement * cSpeed;
-        circlePos.y += yMovement * cSpeed;
-    }
-    else {
-        counter = 0;
-    }
+    DetectMovement(dinosaurPlayer1, movementRegistered, xMovement,yMovement); //Detect if movement isnt null & superior to timeUntilDoubleSpeed
 
     // Affichage
 
@@ -155,59 +135,7 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     // Dessin du cercle que l'on peut bouger./Dessin du Dino.
-    {
-
-        if (xMovement != 0 || yMovement != 0)
-        {
-            animCounter ++;
-            if (animCounter > timeUntilAnimFrameChange) {
-                animCounter = 0;
-                animWalkIndicatorCounter++;
-
-                if ((animWalkIndicatorCounter < 10)) {
-                    drawCallDino.vertices[0].u += 24;
-                    drawCallDino.vertices[1].u += 24;
-                    drawCallDino.vertices[2].u += 24;
-                    drawCallDino.vertices[3].u += 24;
-                    drawCallDino.vertices[4].u += 24;
-                    drawCallDino.vertices[5].u += 24;
-                }
-                else {
-                    animWalkIndicatorCounter = 1;
-                    drawCallDino.vertices[0].u -= 192;
-                    drawCallDino.vertices[1].u -= 192;
-                    drawCallDino.vertices[2].u -= 192;
-                    drawCallDino.vertices[3].u -= 192;
-                    drawCallDino.vertices[4].u -= 192;
-                    drawCallDino.vertices[5].u -= 192;
-                }
-                if (xMovement < 0) {
-                    if (!facingLeft) {
-                        facingLeft = true;
-                        SwitchDinoRotation(&drawCallDino);
-                    }
-                }else if (facingLeft == true)
-                {
-                    facingLeft = false;
-                    SwitchDinoRotation(&drawCallDino);
-                }
-            }
-            lastDirection = xMovement;
-        }
-        else {
-            InstantiateDinoVerticles(&drawCallDino);
-            animWalkIndicatorCounter = 0;
-            animCounter = 0;
-            if(lastDirection < 0)SwitchDinoRotation(&drawCallDino);
-        }
-
-        drawCallDino.textureName = "dinosaurs.png";
-        
-        //Dino_CreateDrawCall_Circle(20);
-        drawCallDino.translation = circlePos;
-        drawCallDino.scale = 2.5f;
-        XDino_Draw(drawCallDino);
-    }
+    dinosaurPlayer1.DinoMove(xMovement, yMovement);
 
     //0.h Affichage du Texte nom et prénom
     {

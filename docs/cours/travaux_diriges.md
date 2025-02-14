@@ -15,7 +15,7 @@ a) Résumez en une phrase le rôle des fichiers suivants :
 
 > `xdino.h` : L'API d'Intéraction entre le Moteur du Jeu et la Logique du jeu, va aussi renvoyer différents types de valeurs et créer de nombreuses fonctions définies pour d'autres fichiers.
 > 
-> `xdino_win64_main.cpp` : Implémente la création et la destruction de la fenetre, en plus de communiquer directement avec Windows.
+> `xdino_win64_main.cpp   ` : Implémente la création et la destruction de la fenetre, en plus de communiquer directement avec Windows.
 >
 > `xdino_win64_rdr.cpp` : Implémente le rendu graphique sur Windows, en plus d'utiliser des bibliothèques externes et des fonctions permettant de changer le contenu graphique.
 >
@@ -98,20 +98,25 @@ d) Implémentez la fonctionnalité F1.4 .
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper et en avoir plusieurs instances ?
 
-> ...
+> En créant des classes "Dinosaures" qui contiennent les variables et Fonctions affectant directement ces objets.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
 N'oubliez pas de relancer le script `SetupWorkspace.bat`.
 
+> Done!
+
 c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un type de données ?
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On appelle cela des Méthodes. Pour modifier directement un type de donnée dans ce genre de fonctions, on utilise des pointeurs.
+> Des outils qui permettent de renseigner directement la valeur cherchée au lieu de prendre cette valeur et en faire une copie.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
+
+> Done!
 
 e) Implémentez F1.5 : Créez quatre dinosaures, c'est-à-dire quatre instances de la classe `DinoPlayer`.
 Utilisez `std::vector` de la bibliothèque standard pour stocker ces instances.

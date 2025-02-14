@@ -39,3 +39,20 @@ bool TakeHit(DinoDrawCall* drawCallDino, float* timeToWait)
     //Need to Do
     return true;
 }
+
+void DetectMovement(DinosaurPlayer& dinosaur, bool movementRegistered, float xMovement, float yMovement){
+    if(movementRegistered) {
+        dinosaur.counter+= 0.1f;
+        
+        float cSpeed = dinosaur.speed;
+        
+        if (dinosaur.counter > dinosaur.timeUntilDoubleSpeed) {
+            cSpeed*=2;
+        }
+        dinosaur.dinoPos.x += xMovement * cSpeed;
+        dinosaur.dinoPos.y += yMovement * cSpeed;
+    }
+    else {
+        dinosaur.counter = 0;
+    }
+}
