@@ -98,10 +98,10 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 windowSize = XDino_GetRenderSize();
     XDino_SetRenderSize({480, 360});
     SetBackground(windowSize);
-    
+
     DinoVec2 terA, terB;
-    terA.x = (windowSize.x - 256 )/2;
-    terA.y = (windowSize.y - 192)/2;
+    terA.x = (windowSize.x - 256) / 2;
+    terA.y = (windowSize.y - 192) / 2;
     terB.x = terA.x + 256;
     terB.y = terA.y + 192;
 
@@ -112,6 +112,7 @@ void Dino_GameFrame(double timeSinceStart)
     }
     for (DinoAnimal& animal : animals) {
         animal.DrawAnimal(timeSinceStart);
+        animal.ApplyTerrain(terA, terB);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.

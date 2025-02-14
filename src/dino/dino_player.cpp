@@ -39,7 +39,6 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
         speed = baseSpeed;
         this->isRunning = false;
     }
-
     this->playerPos.x += gamepad.stick_left_x * speed * deltaTime;
     this->playerPos.y += gamepad.stick_left_y * speed * deltaTime;
     this->g_bMiror = bMiror;

@@ -357,12 +357,14 @@ b) Implémentez la fonctionnalité F5.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> En connaissant leur rayon, on peut vérifier via un calcul si les deux cercles sont en collsiion
 
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> On cherche un vecteur V décalant les cercles jusqu'à ce qu'il ne collide plus en utilisant la meme distance vu
+> precedemment qui nous avais permi de vérifier si les deux cercles étaient en collision
+> Néanmoins, on ne peut pas utiliser ce calcul dans le cas où les deux cercles sont au même endroit
 
 e) Implémentez la fonctionnalité F5.3 .
 
