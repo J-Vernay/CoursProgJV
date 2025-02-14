@@ -87,6 +87,18 @@ void Dino_GameFrame(double timeSinceStart)
             actor->update(deltaTime);
         }
 
+        if (actors.size() > 1) {
+            auto actorIterator = actors.begin();
+            while (actorIterator < actors.end() - 1) {
+                auto otherIterator = actorIterator + 1;
+                while (otherIterator < actors.end()) {
+                    actorIterator[0]->handleActorCollision(otherIterator[0]);
+                    ++otherIterator;
+                }
+                ++actorIterator;
+            }
+        }
+
         for (DinoActor* actor : actors) {
             actor->handleTerrainCollision();
         }

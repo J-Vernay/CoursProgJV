@@ -1,8 +1,8 @@
 /// @file dino_actor.cpp
 /// @brief Implémentation de la classe DinoActor.
 
-
 #include <dino/xdino.h>
+#include <dino/dino_geometry.h>
 #include <dino/dino_terrain.h>
 #include <dino/dino_actor.h>
 
@@ -37,4 +37,9 @@ void DinoActor::handleTerrainCollision()
         position.y = terrainMax.y - ACTOR_SIZE;
         onTerrainCollide();
     }
+}
+
+void DinoActor::handleActorCollision(DinoActor* other)
+{
+    Dino_CollideCircles(&position, &other->position, 16);
 }

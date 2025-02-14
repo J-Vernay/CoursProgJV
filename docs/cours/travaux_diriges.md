@@ -414,22 +414,24 @@ e) Implémentez la fonctionnalité F5.3 .
 
 f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Théoriquement parce que on a implémenté 3 fois la même logique de collision pour différent types de données.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> L'héritage est une fonctionnalité qui permettrait de rassembler la logique de collision dans une seule
+> classe `DinoActor`.
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Les fonctions virtuelles permetted cela, en changeant le comportement de la fonction dans les classes héritant de la
+> classe qui déclare cette fonction.
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> Les méthodes `update()` et `draw()` peuvent ainsi être également mises en commun. 
 
 j) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 

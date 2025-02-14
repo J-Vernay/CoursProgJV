@@ -29,12 +29,16 @@ public:
     /// Déssine l'acteur à l'écran.
     virtual void draw() const = 0;
 
+    /// Détecte et résout la collision de l'acteur avec les bords du terrain de jeu.
+    void handleTerrainCollision();
+
+    /// Détecte et résout la collison entre deux acteurs
+    void handleActorCollision(DinoActor* other);
+
     /// Compare la position verticale de deux acteurs.
     /// @param first Le premier acteur à comparer.
     /// @param second Le second acteur à comparer.
     static bool compareHeight(const DinoActor* first, const DinoActor* second);
-
-    void handleTerrainCollision();
 
 protected:
     virtual void onTerrainCollide()

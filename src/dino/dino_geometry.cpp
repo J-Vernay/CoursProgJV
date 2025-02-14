@@ -29,3 +29,19 @@ bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)
         return 0 <= dot_AB_AD && dot_AB_AC <= dot_AB_AB;
     return 0 <= dot_AB_AC && dot_AB_AD <= dot_AB_AB;
 }
+
+bool Dino_CollideCircles(DinoVec2* a, DinoVec2* b, float collisionDistance)
+{
+    DinoVec2 diff = {a->x - b->x, a->y - b->y};
+    float distance = sqrtf(powf(a->x - b->x, 2) + powf(a->y - b->y, 2));
+    if (distance > collisionDistance)
+        return false;
+    DinoVec2 normal = {diff.x / distance, diff.y / distance};
+    float offset = (collisionDistance - distance) / 2;
+
+    a->x += normal.x * offset;
+    a->y += normal.y * offset;
+    b->x -= normal.x * offset;
+    b->y -= normal.y * offset;
+    return true;
+}

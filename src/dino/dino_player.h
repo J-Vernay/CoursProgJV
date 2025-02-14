@@ -55,6 +55,7 @@ public:
     /// Frappe le joueur et l'immobilise.
     void hit();
 
+    /// Retourne la couleur RGBA associée à la couleur du dinosaure.
     DinoColor getColor() const;
 
 private:
