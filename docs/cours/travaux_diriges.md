@@ -382,7 +382,8 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Qu'est-ce que la fonctionnalité implique pour les octets en mémoire qui représente le lasso ?
 
-> ...
+> La quantité d'octets nécessaires à la représentation du lasso se retrouve limité à un nombre fixe sitôt que le lasso
+> atteint sa taille maximum.
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 
