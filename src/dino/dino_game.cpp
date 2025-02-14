@@ -6,6 +6,9 @@
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
+#include <dino/dino_geometry.h>
+
+#include <dino/dino_entity.h>
 
 #include <algorithm>
 #include <format>
@@ -23,10 +26,9 @@ std::vector<DinoAnimal> animals;
 // Constantes.
 constexpr float Dino_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
-bool ComparePlayerPos(DinoPlayer& a, DinoPlayer& b)
+bool CompareEntitiesPos(DinoEntity* pEntity1, DinoEntity* pEntity2)
 {
-    //return a.pos.y < b.pos.y;
-    return a.IsAbove(b);
+    return pEntity1->GetPos().y < pEntity2->GetPos().y;
 }
 
 void Dino_GameInit()
@@ -62,9 +64,6 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 terrainSize = {renderSize.x / 2, renderSize.y / 2};
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    for (DinoPlayer& player : players) {
-        player.UpdatePlayer(deltaTime, renderSize, terrainSize);
-    }
     double timeSinceLastSpawn = timeSinceStart - animalLastSpawnTime;
     if (timeSinceLastSpawn > 1) {
         animals.emplace_back();
@@ -73,10 +72,26 @@ void Dino_GameFrame(double timeSinceStart)
                                    terrainSize);
         animalLastSpawnTime = timeSinceStart;
     }
+    std::vector<DinoEntity*> pEntities;
+    for (DinoPlayer& player : players)
+        pEntities.emplace_back(&player);
+    for (DinoAnimal& animal : animals)
+        pEntities.emplace_back(&animal);
 
-    for (DinoAnimal& animal : animals) {
-        animal.UpdateAnimal(deltaTime, renderSize, terrainSize);
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->Update(deltaTime, renderSize, terrainSize);
+
+    // Gérer les collisions entre animaux.
+    for (DinoEntity* pEntity1 : pEntities) {
+        for (DinoEntity* pEntity2 : pEntities) {
+            DinoVec2 a = pEntity1->GetPos();
+            DinoVec2 b = pEntity2->GetPos();
+            Dino_ResolveCircleCollision(a, b, 8);
+            pEntity1->SetPos(a);
+            pEntity2->SetPos(b);
+        }
     }
+
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -96,6 +111,10 @@ void Dino_GameFrame(double timeSinceStart)
     posC.y = posA.y + terrainSize.y;
     posD.x = posA.x + terrainSize.x;
     posD.y = posA.y + terrainSize.y;
+
+    /*for (DinoEntity* pEntity : pEntities)
+        pEntity->ApplyTerrain(posA, posB);*/
+
     // Océan en fond
     drawCall.vertices.emplace_back(DinoVec2{0, 0}, 0, 0);
     drawCall.vertices.emplace_back(DinoVec2{renderSize.x, 0}, 16, 0);
@@ -112,15 +131,9 @@ void Dino_GameFrame(double timeSinceStart)
     drawCall.vertices.emplace_back(posD, 32, 16);
     XDino_Draw(drawCall);
 
-    std::sort(players.begin(), players.end(), ComparePlayerPos);
-
-    for (DinoPlayer& player : players) {
-        player.DrawPlayer(timeSinceStart);
-    }
-
-    for (DinoAnimal& animal : animals) {
-        animal.DrawAnimal(timeSinceStart);
-    }
+    std::sort(pEntities.begin(), pEntities.end(), CompareEntitiesPos);
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->Draw(timeSinceStart);
 
     XDino_SetRenderSize(renderSize);
 

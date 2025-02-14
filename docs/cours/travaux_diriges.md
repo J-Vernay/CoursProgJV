@@ -319,17 +319,17 @@ e) Implémentez la fonctionnalité F5.3 .
 
 f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> car ils ne sont pas le meme nombre ou peuvent avoir des tailles différentes
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
-
-> ...
+> En utilisant une classe mère qui va contenir les deux comme pour une interface elles peuvent heriter d'une autre
+> classe
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> les methodes virtuelles/overridables permettent de changer un petit peu le comportement a partir d'un appel commun
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.

@@ -1,6 +1,6 @@
 #include "dino_animal.h"
 
-void DinoAnimal::UpdateAnimal(float deltaTime, DinoVec2 windowSize, DinoVec2 terrainSize)
+void DinoAnimal::Update(float deltaTime, DinoVec2 windowSize, DinoVec2 terrainSize)
 {
     if (speed != 0) {
         float nextPosX = pos.x + (dir.x * speed * deltaTime);
@@ -30,7 +30,7 @@ void DinoAnimal::UpdateAnimal(float deltaTime, DinoVec2 windowSize, DinoVec2 ter
 
 }
 
-void DinoAnimal::DrawAnimal(double timeSinceStart)
+void DinoAnimal::Draw(double timeSinceStart)
 {
     DinoDrawCall drawCall;
     float radiusX = 12;
@@ -76,6 +76,11 @@ void DinoAnimal::SpawnAnimal(int type, DinoVec2 renderSize, DinoVec2 terrainSize
         dir = XDino_RandomUnitVec2();
         speed = (float)XDino_RandomInt32(10, 50);
     }
+}
+
+void DinoAnimal::OnTerrainBorder()
+{
+    dir = XDino_RandomUnitVec2();
 }
 
 bool DinoAnimal::IsAbove(DinoAnimal& player)

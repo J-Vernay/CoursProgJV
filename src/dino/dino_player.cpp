@@ -2,7 +2,7 @@
 
 #include "x64-windows/xdino_win64_rdr.h"
 
-void DinoPlayer::UpdatePlayer(float deltaTime, DinoVec2 windowSize, DinoVec2 terrainSize)
+void DinoPlayer::Update(float deltaTime, DinoVec2 windowSize, DinoVec2 terrainSize)
 {
     this->idle = false;
     this->walking = false;
@@ -46,7 +46,7 @@ void DinoPlayer::UpdatePlayer(float deltaTime, DinoVec2 windowSize, DinoVec2 ter
     }
 }
 
-void DinoPlayer::DrawPlayer(double timeSinceStart)
+void DinoPlayer::Draw(double timeSinceStart)
 {
     DinoDrawCall drawCall;
     float radiusX = 12;
@@ -94,6 +94,7 @@ void DinoPlayer::Init(int idx, DinoVec2 posInit)
     pos = posInit;
     playerIndex = idx;
 }
+
 
 bool DinoPlayer::IsAbove(DinoPlayer& player)
 {
