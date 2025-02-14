@@ -55,21 +55,26 @@ void Dino_GameFrame(double timeSinceStart)
     terrainB.y = terrainA.y + terrainSize.y;
 
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
-    if (timeSinceLastSpawn > 1) {
+    if (timeSinceLastSpawn > 0.01) {
         g_AnimalLastSpawnTime = timeSinceStart;
         g_Animals.emplace_back();
         g_Animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
     }
 
+    XDino_ProfileBegin(DinoColor_RED, "Collecter les entites");
     std::vector<DinoEntity*> pEntities;
     for (DinoPlayer& player : g_Players)
         pEntities.emplace_back(&player);
     for (DinoAnimal& animal : g_Animals)
         pEntities.emplace_back(&animal);
+    XDino_ProfileEnd();
 
+    XDino_ProfileBegin(DinoColor_BLUE, "Update des entites");
     for (DinoEntity* pEntity : pEntities)
         pEntity->Update(deltaTime);
+    XDino_ProfileEnd();
     
+    XDino_ProfileBegin(DinoColor_YELLOW, "Collisions");
     // Gérer les collisions entre animaux.
     for (DinoEntity* pEntity1 : pEntities) {
         for (DinoEntity* pEntity2 : pEntities) {
@@ -80,9 +85,12 @@ void Dino_GameFrame(double timeSinceStart)
             pEntity2->SetPos(b);
         }
     }
+    XDino_ProfileEnd();
     
+    XDino_ProfileBegin(DinoColor_YELLOW, "Interaction avec le terrain");
     for (DinoEntity* pEntity : pEntities)
         pEntity->ApplyTerrain(terrainA, terrainB);
+    XDino_ProfileEnd();
     
     // Affichage
 
