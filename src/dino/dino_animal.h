@@ -35,19 +35,24 @@ private:
     AnimalType type;
     AnimatorState<AnimationId> animatorState;
     float appearTimer;
+    bool alive;
 
 public:
     /// Le constructeur de l'acteur.
     /// @param position La position où placer l'acteur à son apparition.
     explicit DinoAnimal(DinoVec2 position)
         : DinoActor(position), type(static_cast<AnimalType>(XDino_RandomInt32(0, MAX - 1))),
-          animatorState({0, 0, WALK_SIDE}), appearTimer(0)
+          animatorState({0, 0, WALK_SIDE}), appearTimer(0), alive(true)
     {
         choose_random_direction();
     }
 
     void update(float deltaTime) override;
     void draw() const override;
+
+    void hit() override;
+    bool isAlive() override;
+    bool isInteractable() override {return alive;}
 
 protected:
     void onTerrainCollide() override;

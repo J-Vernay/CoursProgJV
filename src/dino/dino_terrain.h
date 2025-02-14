@@ -21,8 +21,7 @@ private:
     float timer = 0;
     int frame = 0;
     Season season = SPRING;
-
-    int16_t decorations[TERRAIN_WIDTH * TERRAIN_HEIGHT];
+    int16_t decorations[TERRAIN_WIDTH * TERRAIN_HEIGHT] = {};
 
 public:
     void init(); ///< Initialise le terrain, choisis la saison et positionne les décorations.

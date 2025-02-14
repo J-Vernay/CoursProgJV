@@ -1,5 +1,5 @@
 ﻿/// @file dino_player.cpp
-/// @brief Implémentation du joueur.
+/// @brief Implémentation de `DinoPlayer`.
 
 #include <dino/dino_player.h>
 #include <dino/dino_draw_utils.h>
@@ -24,12 +24,10 @@ constexpr DinoColor colors[] = {
 
 void DinoPlayer::update(float deltaTime)
 {
+    DinoActor::update(deltaTime);
+    
     DinoGamepad gamepad;
     XDino_GetGamepad(gamepadIdx, gamepad);
-
-    if (gamepad.btn_down) {
-        hit();
-    }
 
     updateHit(deltaTime);
 
@@ -73,7 +71,6 @@ void DinoPlayer::updateHit(float deltaTime)
 
 void DinoPlayer::updateMovement(float deltaTime, const DinoGamepad& gamepad)
 {
-    lastPosition = position;
     float speed = gamepad.btn_right ? RUN_SPEED : WALK_SPEED;
 
     position.x += gamepad.stick_left_x * speed * deltaTime;

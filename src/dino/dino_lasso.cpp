@@ -1,5 +1,8 @@
-#include "dino_player.h"
+/// @file dino_lasso.cpp
+/// @brief Implémentation de `DinoLasso`.
 
+#include <functional>
+#include <dino/dino_player.h>
 #include <dino/dino_geometry.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_lasso.h>
@@ -10,7 +13,6 @@ void DinoLasso::update(float deltaTime, DinoActor* actor)
 {
     handleAddingPoints(actor->position);
     handleRemovingPoints(deltaTime);
-    handleSelfIntersection();
 }
 
 void DinoLasso::draw(DinoColor color) const
@@ -19,14 +21,14 @@ void DinoLasso::draw(DinoColor color) const
     XDino_Draw(drawCall);
 }
 
-void DinoLasso::handlePlayerCollision(DinoPlayer* player)
+void DinoLasso::handleActorCollision(DinoActor* actor)
 {
     if (linePoints.size() <= 2)
         return;
     auto point = linePoints.begin();
 
     while (point < linePoints.end() - 1) {
-        if (!Dino_IntersectSegment(player->position, player->lastPosition, point[0], point[1])) {
+        if (!Dino_IntersectSegment(actor->position, actor->lastPosition, point[0], point[1])) {
             ++point;
             continue;
         }
@@ -65,7 +67,7 @@ void DinoLasso::handleRemovingPoints(float deltaTime)
     } while (deleteTimer < 1 / 60.0f);
 }
 
-void DinoLasso::handleSelfIntersection()
+void DinoLasso::handleSelfIntersection(const intersection_callback& callback)
 {
     if (linePoints.size() < 4)
         return;
@@ -76,6 +78,10 @@ void DinoLasso::handleSelfIntersection()
         if (!Dino_IntersectSegment(linePoints.begin()[0], linePoints.begin()[1], point[0], point[1])) {
             ++point;
             continue;
+        }
+
+        if (callback != nullptr) {
+            callback(linePoints.begin(), point + 1);
         }
 
         deleteTimer -= static_cast<float>(point - linePoints.begin() - 1) / 60.0f;

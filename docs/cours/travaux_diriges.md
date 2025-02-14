@@ -440,8 +440,6 @@ j) Comment détecter qu'une position est à l'intérieur d'un contour fermé dé
 
 k) Implémentez F5.5 et F5.6 via une logique commune, comme mentionné par (g).
 
-> ...
-
 ## 8. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.

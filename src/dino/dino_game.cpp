@@ -1,14 +1,13 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include <format>
 #include <algorithm>
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 #include <dino/dino_animal.h>
-
-#include <format>
 
 // Variables globales.
 double lastTime = 0;
@@ -68,8 +67,22 @@ void Dino_GameFrame(double timeSinceStart)
 
             DinoVec2 minPosition = terrain.get_terrain_min_position();
             DinoVec2 maxPosition = terrain.get_terrain_max_position();
-            animals.push_back(DinoAnimal({XDino_RandomFloat(minPosition.x, maxPosition.x),
-                                          XDino_RandomFloat(minPosition.y, maxPosition.y)}));
+
+            DinoAnimal spawnedAnimal = DinoAnimal({XDino_RandomFloat(minPosition.x, maxPosition.x),
+                                          XDino_RandomFloat(minPosition.y, maxPosition.y)});
+
+            bool spawned = false;
+            
+            for (int i = 0; i < animals.size(); i++) {
+                if (animals[i].isAlive()) continue;
+                animals[i] = spawnedAnimal;
+                spawned = true;
+                break;
+            }
+
+            if (!spawned) {
+                animals.push_back(spawnedAnimal);
+            }
         }
     }
 
@@ -108,10 +121,19 @@ void Dino_GameFrame(double timeSinceStart)
             for (int j = 0; j < lassos.size(); j++) {
                 if (i == j)
                     continue;
-                lassos[i].handlePlayerCollision(&players[j]);
+                lassos[i].handleActorCollision(&players[j]);
             }
 
-            lassos[i].update(deltaTime, &players[i]);
+            DinoPlayer* playerPointer = &players[i];
+            lassos[i].update(deltaTime, playerPointer);
+            lassos[i].handleSelfIntersection([playerPointer](auto first, auto second) {
+                for (DinoActor* actor : actors) {
+                    if (actor == playerPointer)
+                        continue;
+
+                    actor->handleActorCircled(first, second);
+                }
+            });
         }
     }
 

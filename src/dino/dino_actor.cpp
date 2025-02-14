@@ -1,5 +1,5 @@
 /// @file dino_actor.cpp
-/// @brief Implémentation de la classe DinoActor.
+/// @brief Implémentation de `DinoActor`.
 
 #include <dino/xdino.h>
 #include <dino/dino_geometry.h>
@@ -41,5 +41,23 @@ void DinoActor::handleTerrainCollision()
 
 void DinoActor::handleActorCollision(DinoActor* other)
 {
+    if (!isInteractable() || !other->isInteractable()) return;
     Dino_CollideCircles(&position, &other->position, 16);
+}
+
+void DinoActor::handleActorCircled(std::vector<DinoVec2>::iterator first, std::vector<DinoVec2>::iterator second)
+{
+    if (!isInteractable()) return;
+    
+    int intersectionCount = 0;
+
+    while (first < second - 1) {
+        if (Dino_IntersectSegment({0, 0}, position, first[0], first[1])) {
+            intersectionCount++;
+        }
+        ++first;
+    }
+    
+    if ((intersectionCount & 1) == 0) return;
+    hit();
 }

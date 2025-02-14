@@ -12,8 +12,6 @@
 /// Joueur dinosaure
 /// @brief Un acteur controllable par un utilisateur.
 class DinoPlayer : public DinoActor {
-    friend DinoLasso;
-
 public:
     /// Couleur d'un dinosaure
     enum Color {
@@ -36,7 +34,6 @@ private:
     bool direction;
     float hitTimer;
     Color color;
-    DinoVec2 lastPosition;
     AnimatorState<AnimationId> animatorState = {0, 0, IDLE};
 
 public:
@@ -45,18 +42,18 @@ public:
     /// @param gamepadIdx Indentificateur du gamepad lié au joueur.
     /// @param color Couleur du dinosaure.
     explicit DinoPlayer(DinoVec2 position, DinoGamepadIdx gamepadIdx, Color color)
-        : DinoActor(position), gamepadIdx(gamepadIdx), direction(false), hitTimer(0), color(color),
-          lastPosition(position)
+        : DinoActor(position), gamepadIdx(gamepadIdx), direction(false), hitTimer(0), color(color)
     {
     }
 
     void update(float deltaTime) override;
     void draw() const override;
-    /// Frappe le joueur et l'immobilise.
-    void hit();
 
     /// Retourne la couleur RGBA associée à la couleur du dinosaure.
     DinoColor getColor() const;
+
+protected:
+    void hit() override;
 
 private:
     void updateHit(float deltaTime);

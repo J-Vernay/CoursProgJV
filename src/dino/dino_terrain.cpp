@@ -1,5 +1,5 @@
 /// @file dino_terrain.cpp
-/// @brief Implémentation de la logique lié au terrain.
+/// @brief Implémentation de `DinoTerrain`.
 
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
