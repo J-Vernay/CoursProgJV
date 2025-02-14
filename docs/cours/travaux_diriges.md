@@ -398,7 +398,7 @@ comme la réaction à un événement du type "limite du terrain" ? L'appliquer d
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> Pour les méthodes Draw et Update.
 
 j) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 

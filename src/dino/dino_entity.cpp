@@ -44,3 +44,13 @@ void dino_entity::OnTerrainBorder()
 {
     //Ne fait rien
 }
+
+void dino_entity::Update(float deltaTime)
+{
+    //Ne fait rien
+}
+
+void dino_entity::Draw(double timeSinceStart)
+{
+    //Ne fait rien
+}

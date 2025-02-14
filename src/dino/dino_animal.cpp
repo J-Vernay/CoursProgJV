@@ -11,7 +11,7 @@ void dino_animal::Init(DinoVec2 initPos, int32_t indexAnimal)
     idxAnimal = indexAnimal;
 }
 
-void dino_animal::UpdateAnimal(float deltaTime)
+void dino_animal::Update(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
 
@@ -22,7 +22,7 @@ void dino_animal::UpdateAnimal(float deltaTime)
         isMirror = direction.x > 0;
 }
 
-void dino_animal::DrawAnimal(double timeSinceStart)
+void dino_animal::Draw(double timeSinceStart)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = "animals.png"; // Ici on accède au fichier animals.png, le sprite sheet des animaux.
@@ -77,12 +77,12 @@ void dino_animal::DrawAnimal(double timeSinceStart)
     XDino_Draw(drawCall);
 }
 
-bool dino_animal::IsAbove(dino_animal& other)
-{
-    return pos.y < other.pos.y;
-}
-
 void dino_animal::OnTerrainBorder()
 {
     direction = XDino_RandomUnitVec2();
+}
+
+bool dino_animal::IsAbove(dino_animal& other)
+{
+    return pos.y < other.pos.y;
 }
