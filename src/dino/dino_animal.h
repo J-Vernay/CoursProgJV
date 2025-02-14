@@ -48,7 +48,8 @@ public:
 
     void update(float deltaTime) override;
     void draw() const override;
-
+protected:
+    void onTerrainCollide() override;
 private:
     void update_appear(float deltaTime);
     void update_movement(float deltaTime);

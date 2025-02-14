@@ -32,6 +32,11 @@ void DinoAnimal::draw() const
     XDino_Draw(drawCall);
 }
 
+void DinoAnimal::onTerrainCollide()
+{
+    choose_random_direction();
+}
+
 void DinoAnimal::update_appear(float deltaTime)
 {
     if (appearTimer >= APPEAR_TIME) return;

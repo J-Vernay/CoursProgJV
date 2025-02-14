@@ -35,4 +35,7 @@ public:
     static bool compareHeight(const DinoActor* first, const DinoActor* second);
     
     void handleTerrainCollision();
+
+protected:
+    virtual void onTerrainCollide(){}
 };

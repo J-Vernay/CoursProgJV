@@ -20,17 +20,21 @@ void DinoActor::handleTerrainCollision()
 
     if (position.x - ACTOR_SIZE < terrainMin.x) {
         position.x = terrainMin.x + ACTOR_SIZE;
+        onTerrainCollide();
     }
 
     if (position.x + ACTOR_SIZE > terrainMax.x) {
         position.x = terrainMax.x - ACTOR_SIZE;
+        onTerrainCollide();
     }
 
     if (position.y - ACTOR_SIZE < terrainMin.y) {
         position.y = terrainMin.y + ACTOR_SIZE;
+        onTerrainCollide();
     }
 
     if (position.y + ACTOR_SIZE > terrainMax.y) {
         position.y = terrainMax.y - ACTOR_SIZE;
+        onTerrainCollide();
     }
 }
