@@ -4,5 +4,5 @@
 
 class dino_terrain {
 public:
-    void DrawTerrain(DinoVec2 renderSize);
+    void DrawTerrain(DinoVec2 renderSize, DinoVec2 terrainSize);
 };

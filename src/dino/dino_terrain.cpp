@@ -2,9 +2,8 @@
 #include <dino/xdino.h>
 
 // Fonction pour dessiner le terrain.
-void dino_terrain::DrawTerrain(DinoVec2 renderSize)
+void dino_terrain::DrawTerrain(DinoVec2 renderSize, DinoVec2 terrainSize)
 {
-    DinoVec2 terrainSize = {256, 192};
     DinoDrawCall drawCall;
     drawCall.textureName = "terrain.png";
 
