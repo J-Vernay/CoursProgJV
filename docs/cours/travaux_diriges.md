@@ -406,7 +406,9 @@ c) Comment détecter si deux cercles à des positions données sont en collision
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> En prenant le vecteur normal entre les centres des deux cercles on peut bouger chacun des cercles sur ce vecteur mais
+> dans deux directions opposées, de manière à ce que chaque cercle soit bougé de la moitié de la distance de pénetration
+> entre les deux cercles. On ne peut pas résoudre le cas où les deux points centraux sont précisément au même endroit.
 
 e) Implémentez la fonctionnalité F5.3 .
 
