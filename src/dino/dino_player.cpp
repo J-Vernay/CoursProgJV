@@ -12,7 +12,7 @@ void DinoPlayer::Init(DinoVec2 initm_pos, int32_t idxPlayer, DinoGamepadIdx idxG
     m_idxGamepad = idxGamepad;
 }
 
-void DinoPlayer::UpdatePlayer(float deltaTime)
+void DinoPlayer::Update(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
     
@@ -44,7 +44,7 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
     }
 }
 
-void DinoPlayer::DrawPlayer(double timeSinceStart)
+void DinoPlayer::Draw(double timeSinceStart)
 {
     // Copier-coller de l'ancien code.
     

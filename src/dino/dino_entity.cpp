@@ -41,4 +41,13 @@ void DinoEntity::OnTerrainBorder()
     // Ne fait rien par défaut.
 }
 
+void DinoEntity::Update(float deltaTime)
+{
+    // Ne fait rien par défaut.
+}
+
+void DinoEntity::Draw(double timeSinceStart)
+{
+    // Ne fait rien par défaut.
+}
 

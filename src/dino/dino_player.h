@@ -19,10 +19,10 @@ public:
     void Init(DinoVec2 initPos, int32_t idxPlayer, DinoGamepadIdx idxGamepad);
 
     /// Met à jour la position du joueur et sa logique d'animation.
-    void UpdatePlayer(float deltaTime);
+    void Update(float deltaTime) override;
 
     /// Affiche le joueur à l'écran.
-    void DrawPlayer(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
 
     /// Compare la position de deux joueurs pour savoir lequel afficher devant l'autre.
     bool IsAbove(DinoPlayer& other);

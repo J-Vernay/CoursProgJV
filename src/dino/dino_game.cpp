@@ -17,9 +17,9 @@ double lastTime = 0;
 std::vector<DinoPlayer> g_Players;
 std::vector<DinoAnimal> g_Animals;
 
-bool ComparePlayersPos(DinoPlayer& a, DinoPlayer& b)
+bool CompareEntitiesPos(DinoEntity* pEntity1, DinoEntity* pEntity2)
 {
-    return a.IsAbove(b);
+    return pEntity1->GetPos().y < pEntity2->GetPos().y;
 }
 
 void Dino_GameInit()
@@ -53,10 +53,6 @@ void Dino_GameFrame(double timeSinceStart)
     terrainA.y = (renderSize.y - terrainSize.y) / 2;
     terrainB.x = terrainA.x + terrainSize.x;
     terrainB.y = terrainA.y + terrainSize.y;
-    
-	for (DinoPlayer& player : g_Players) {
-	    player.UpdatePlayer(deltaTime);
-	}
 
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
     if (timeSinceLastSpawn > 0.1) {
@@ -64,15 +60,15 @@ void Dino_GameFrame(double timeSinceStart)
         g_Animals.emplace_back();
         g_Animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
     }
-    for (DinoAnimal& animal : g_Animals) {
-        animal.UpdateAnimal(deltaTime);
-    }
 
     std::vector<DinoEntity*> pEntities;
     for (DinoPlayer& player : g_Players)
         pEntities.emplace_back(&player);
     for (DinoAnimal& animal : g_Animals)
         pEntities.emplace_back(&animal);
+
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->Update(deltaTime);
     
     // Gérer les collisions entre animaux.
     for (DinoEntity* pEntity1 : pEntities) {
@@ -87,15 +83,6 @@ void Dino_GameFrame(double timeSinceStart)
     
     for (DinoEntity* pEntity : pEntities)
         pEntity->ApplyTerrain(terrainA, terrainB);
-
-    /*
-    for (DinoPlayer& player : g_Players) {
-        player.ApplyTerrain(terrainA, terrainB);
-    }
-    
-    for (DinoAnimal& animal : g_Animals) {
-        animal.ApplyTerrain(terrainA, terrainB);
-    }*/
     
     // Affichage
 
@@ -135,12 +122,9 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(drawCall);
     }
 
-    std::sort(g_Players.begin(), g_Players.end(), ComparePlayersPos);
-    for (DinoPlayer& player : g_Players)
-        player.DrawPlayer(timeSinceStart);
-    
-    for (DinoAnimal& animal : g_Animals)
-        animal.DrawAnimal(timeSinceStart);
+    std::sort(pEntities.begin(), pEntities.end(), CompareEntitiesPos);
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->Draw(timeSinceStart);
     
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
