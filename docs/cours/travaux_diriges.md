@@ -325,23 +325,23 @@ c) Comment détecter si deux cercles à des positions données sont en collision
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> 
 
 e) Implémentez la fonctionnalité F5.3 .
 
 f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Parce que les animaux et les players utilisent le meme code
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> Faire de l'héritage de classe
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> 
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.

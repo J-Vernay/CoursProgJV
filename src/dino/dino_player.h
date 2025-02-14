@@ -1,8 +1,9 @@
+#include "dino_entity.h"
+
 #include <dino/xdino.h>
 
-class DinoPlayer {
+class DinoPlayer : DinoEntity {
 private:
-    DinoVec2 pos = {};
     bool bMirror = false;
     bool bIdle = false;
     bool bWalking = false;
@@ -17,4 +18,7 @@ public:
     void DrawPlayer(double timeSinceStart);
 
     bool IsAbove(DinoPlayer& other);
+
+    void ApplyTerrain(DinoVec2 a, DinoVec2 b);
+    
 };
