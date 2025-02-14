@@ -2,6 +2,7 @@
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 #include <dino/dino_draw_utils.h>
+#include <dino/dino_geometry.h>
 
 // Constantes.
 constexpr float CIRCLE_SPEED = 100.f; // Nombre de pixels parcourus en une seconde.
@@ -49,6 +50,30 @@ void DinoPlayer::Update(float deltaTime)
     if (m_lasso.size() > 120) {
         m_lasso.erase(m_lasso.begin());
     }
+    
+    // Détecter les collisions des segments du lasso
+
+    // m_lasso.size() points
+    // m_lasso.size() - 1 segments
+
+    for (int idxSegment1 = 0; idxSegment1 < m_lasso.size() - 1; ++idxSegment1) {
+        DinoVec2 A = m_lasso[idxSegment1];
+        DinoVec2 B = m_lasso[idxSegment1 + 1];
+
+        for (int idxSegment2 = idxSegment1 + 2; idxSegment2 < m_lasso.size() - 1; ++idxSegment2) {
+            DinoVec2 C = m_lasso[idxSegment2];
+            DinoVec2 D = m_lasso[idxSegment2 + 1];
+            
+            if (Dino_IntersectSegment(A, B, C, D)) {
+                // Collision du lasso avec lui-même
+                // [AB] et [CD] collisionne, on enlève tout entre B et C, on garde juste AD.
+                // B : idxSegment1 + 1
+                // C : idxSegment2 --> le second argument de erase() est EXCLU de l'intervalle, donc on doit faire + 1
+                m_lasso.erase(m_lasso.begin() + idxSegment1 + 1, m_lasso.begin() + idxSegment2 + 1);
+            }
+        }
+    }
+    
 }
 
 void DinoPlayer::DrawLasso()
