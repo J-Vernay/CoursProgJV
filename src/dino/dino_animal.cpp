@@ -29,10 +29,10 @@ void DinoAnimal::DrawAnimal(double timeSinceStart)
     
     DinoDrawCall drawCall;
     drawCall.textureName = "animals.png";
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {32, 0};
-    DinoVec2 posC = {0, 32};
-    DinoVec2 posD = {32, 32};
+    DinoVec2 posA = {-16, -32};
+    DinoVec2 posB = {16, -32};
+    DinoVec2 posC = {-16, 0};
+    DinoVec2 posD = {16, 0};
 
     int idxFrame = int(timeSinceStart * 8) % 4;
     int u = 32 * idxFrame;
@@ -82,6 +82,30 @@ void DinoAnimal::DrawAnimal(double timeSinceStart)
     drawCall.scale = 1;
     drawCall.translation = m_pos;
     XDino_Draw(drawCall);
+}
+
+void DinoAnimal::ApplyTerrain(DinoVec2 a, DinoVec2 b)
+{
+    bool bTerrainCollide = false;
+    if (m_pos.y < a.y) {
+        m_pos.y = a.y;
+        bTerrainCollide = true;
+    }
+    if (m_pos.y > b.y) {
+        m_pos.y = b.y;
+        bTerrainCollide = true;
+    }
+    if (m_pos.x < a.x) {
+        m_pos.x = a.x;
+        bTerrainCollide = true;
+    }
+    if (m_pos.x > b.x) {
+        m_pos.x = b.x;
+        bTerrainCollide = true;
+    }
+
+    if (bTerrainCollide)
+        m_dir = XDino_RandomUnitVec2();
 }
 
 /* TODO

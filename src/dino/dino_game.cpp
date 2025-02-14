@@ -63,8 +63,10 @@ void Dino_GameFrame(double timeSinceStart)
         g_Animals.emplace_back();
         g_Animals.back().Init({renderSize.x / 2, renderSize.y / 2}, XDino_RandomInt32(0, 7));
     }
-    for (DinoAnimal& animal : g_Animals)
+    for (DinoAnimal& animal : g_Animals) {
         animal.UpdateAnimal(deltaTime);
+        animal.ApplyTerrain(terrainA, terrainB);
+    }
     
     // Affichage
 
