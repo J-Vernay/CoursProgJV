@@ -14,12 +14,18 @@ private:
     int indexPlayer = 0;
     DinoGamepadIdx indexGamepad;
 
+    std::vector<DinoVec2> lasso;
+    DinoColor lassoColor;
+
 public:
     /// Configure le joueur pour repondre à une manette en particulier
-    void Init(DinoVec2 posInit, int32_t index, DinoGamepadIdx idxGamepad);
+    void Init(DinoVec2 posInit, int32_t index, DinoGamepadIdx idxGamepad, DinoColor colorLasso);
 
     /// Met à jour la position du joueur et sa logique d'animation.
     void Update(float deltaTime) override;
+
+    /// Ne dessine que le lasso du joueur.
+    void DrawLasso();
 
     /// Affiche le joueur à l'écran.
     void Draw(double timeSinceStart) override;

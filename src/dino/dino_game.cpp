@@ -31,10 +31,10 @@ void Dino_GameInit()
     DinoVec2 renderSize = {480, 360};
     XDino_SetRenderSize(renderSize);
     dinoPlayers.resize(4);
-    dinoPlayers[0].Init({renderSize.x / 2 - 50, renderSize.y / 2 - 50}, 0, DinoGamepadIdx::Gamepad1);
-    dinoPlayers[1].Init({renderSize.x / 2 - 50, renderSize.y / 2 + 50}, 1, DinoGamepadIdx::Gamepad2);
-    dinoPlayers[2].Init({renderSize.x / 2 + 50, renderSize.y / 2 - 50}, 2, DinoGamepadIdx::Gamepad3);
-    dinoPlayers[3].Init({renderSize.x / 2 + 50, renderSize.y / 2 + 50}, 3, DinoGamepadIdx::Gamepad4);
+    dinoPlayers[0].Init({renderSize.x / 2 - 50, renderSize.y / 2 - 50}, 0, DinoGamepadIdx::Gamepad1, DinoColor_BLUE);
+    dinoPlayers[1].Init({renderSize.x / 2 - 50, renderSize.y / 2 + 50}, 1, DinoGamepadIdx::Gamepad2, DinoColor_RED);
+    dinoPlayers[2].Init({renderSize.x / 2 + 50, renderSize.y / 2 - 50}, 2, DinoGamepadIdx::Gamepad3, DinoColor_YELLOW);
+    dinoPlayers[3].Init({renderSize.x / 2 + 50, renderSize.y / 2 + 50}, 3, DinoGamepadIdx::Gamepad4, DinoColor_GREEN);
 }
 
 double animalLastSpawnTime = 0;
@@ -93,6 +93,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
     terrain.DrawTerrain(renderSize, terrainSize);
+
+    for (dino_player& player : dinoPlayers)
+        player.DrawLasso();
 
     std::sort(pEntities.begin(), pEntities.end(), CompareEntitiesPos);
     for (dino_entity* pEntity : pEntities)

@@ -1,14 +1,16 @@
 #include <dino/xdino.h>
 #include "dino_player.h"
+#include <dino/dino_draw_utils.h>
 
 // Constantes.
-constexpr float speed = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
-void dino_player::Init(DinoVec2 posInit, int index, DinoGamepadIdx idxGamepad)
+void dino_player::Init(DinoVec2 posInit, int index, DinoGamepadIdx idxGamepad, DinoColor colorLasso)
 {
     pos = posInit;
     indexPlayer = index;
     indexGamepad = idxGamepad;
+    lassoColor = colorLasso;
 }
 
 void dino_player::Update(float deltaTime)
@@ -24,7 +26,7 @@ void dino_player::Update(float deltaTime)
     if (!bSuccess)
         gamepad = {}; // Laisser vide, on considère le joueur immobile
 
-    float playerSpeed = speed;
+    float playerSpeed = SPEED;
 
     if (gamepad.btn_right) {
         playerSpeed *= 2.f;
@@ -45,6 +47,15 @@ void dino_player::Update(float deltaTime)
             this->isWalking = true;
         }
     }
+
+    lasso.emplace_back(pos);
+}
+
+void dino_player::DrawLasso()
+{
+    // Lasso
+    DinoDrawCall drawCallLasso = Dino_CreateDrawCall_Polyline(lasso, 4, lassoColor);
+    XDino_Draw(drawCallLasso);
 }
 
 void dino_player::Draw(double timeSinceStart)

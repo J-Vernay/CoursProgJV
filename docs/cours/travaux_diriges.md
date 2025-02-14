@@ -402,7 +402,8 @@ L'appliquer dans la base de code.
 
 j) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> Via la méthode Dino_IntersectSegment de la classe dino_geometry. Un lasso est une suite de points appelé Polyligne ou
+> ligne cassée. Pour l'implémenter nous allons utiliser std:: vector<DinoVec2> pour chaque joueur.
 
 k) Implémentez F5.5 et F5.6 via une logique commune, comme mentionné par (g).
 
