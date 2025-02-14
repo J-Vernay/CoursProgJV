@@ -1,4 +1,7 @@
 #include "dino_player.h"
+
+#include "dino_draw_utils.h"
+#include "dino_geometry.h"
 #include "dino/xdino.h"
 
 
@@ -32,7 +35,43 @@ void DinoPlayer::Update(float deltaTime)
         else
             this->isWalking = true;
     }
+
+    m_lasso.emplace_back(playerPos);
+    if (m_lasso.size() > 120) {
+        m_lasso.erase(m_lasso.begin());
+    }
+
+    // Détecter les collisions des segments du lasso
+
+    // m_lasso.size() points
+    // m_lasso.size() - 1 segments
+
+    for (int idxSegment1 = 0; idxSegment1 < m_lasso.size() - 1; ++idxSegment1) {
+        DinoVec2 A = m_lasso[idxSegment1];
+        DinoVec2 B = m_lasso[idxSegment1 + 1];
+
+        for (int idxSegment2 = idxSegment1 + 2; idxSegment2 < m_lasso.size() - 1; ++idxSegment2) {
+            DinoVec2 C = m_lasso[idxSegment2];
+            DinoVec2 D = m_lasso[idxSegment2 + 1];
+
+            if (Dino_IntersectSegment(A, B, C, D)) {
+                // Collision du lasso avec lui-même
+                // [AB] et [CD] collisionne, on enlève tout entre B et C, on garde juste AD.
+                // B : idxSegment1 + 1
+                // C : idxSegment2 --> le second argument de erase() est EXCLU de l'intervalle, donc on doit faire + 1
+                m_lasso.erase(m_lasso.begin() + idxSegment1 + 1, m_lasso.begin() + idxSegment2 + 1);
+            }
+        }
+    }
 }
+
+void DinoPlayer::DrawLasso()
+{
+    // Lasso
+    DinoDrawCall drawCallLasso = Dino_CreateDrawCall_Polyline(m_lasso, 4, color);
+    XDino_Draw(drawCallLasso);
+}
+
 
 void DinoPlayer::Draw(double time)
 {
@@ -43,14 +82,6 @@ void DinoPlayer::Draw(double time)
     DinoVec2 posB = {12, -22};
     DinoVec2 posC = {-12, 2};
     DinoVec2 posD = {12, 2};
-
-    DinoColor color = indexG == 0
-                          ? DinoColor_RED
-                          : indexG == 1
-                          ? DinoColor_BLUE
-                          : indexG == 2
-                          ? DinoColor_YELLOW
-                          : DinoColor_GREEN;
 
     int u = 0;
     if (this->isIdle) {
@@ -95,5 +126,11 @@ void DinoPlayer::Init(DinoVec2 pos, DinoGamepadIdx idx, int indexGraph = 0)
 {
     playerPos = pos;
     gamepadIdx = idx;
-    indexG = indexGraph;
+    color = indexGraph == 0
+                ? DinoColor_RED
+                : indexGraph == 1
+                ? DinoColor_BLUE
+                : indexGraph == 2
+                ? DinoColor_YELLOW
+                : DinoColor_GREEN;
 }

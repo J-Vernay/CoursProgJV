@@ -108,6 +108,7 @@ void Dino_GameFrame(double timeSinceStart)
         animals.emplace_back();
         animals.back().Init({windowSize.x / 2, windowSize.y / 2}, XDino_RandomInt32(0, 7));
     }
+
     std::vector<DinoEntity*> pEntities;
     for (DinoPlayer& player : players)
         pEntities.emplace_back(&player);
@@ -116,6 +117,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (DinoEntity* pEntity : pEntities)
         pEntity->Update(deltaTime);
+
+    for (DinoPlayer& player : players)
+        player.DrawLasso();
 
     for (DinoEntity* pEntity1 : pEntities) {
         for (DinoEntity* pEntity2 : pEntities) {
@@ -144,12 +148,12 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
     {
-        std::string text = std::format("FARIN Pix", timeSinceStart * 1000.0);
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_BLUE, DinoColor_RED);
+        std::string text = "Pix Farin";
+        DinoVec2 textSize;
+        DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_BLACK, DinoColor_WHITE, &textSize);
+        drawCall.translation.x = windowSize.x - (textSize.x + 15);
+        drawCall.translation.y = windowSize.y - (textSize.y + 10);
         drawCall.scale = 1;
-        drawCall.rotation = 0;
-        drawCall.translation.x = windowSize.x - 2 * windowSize.x;
-        drawCall.translation.y = windowSize.y - 2 * windowSize.y;
         XDino_Draw(drawCall);
     }
 

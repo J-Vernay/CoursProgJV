@@ -385,7 +385,7 @@ comme la réaction à un événement du type "limite du terrain" ? L'appliquer d
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> Draw, Update, etc
 
 j) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
@@ -415,13 +415,15 @@ Dépendamment de la connexion, cela peut prendre plusieurs minutes.
 
 En utilisant Everything, quel type de fichiers se trouvent dans `C:\symcache` ? Quel est leur rôle ?
 
-> ...
+> On y retrouve des fichiers PDB, ils servent à associer les morceau de l'executable à leur fonction afin de pouvoir
+> faire le lien en language machine au code
 
 d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez **Items to show = Sampled functions**.
 
 Quelle part représente `Dino_GameFrame` relativement à `WinMain` ? Quelle autre fonction prend du temps ?
 
-> ...
+> GameFrame prend environ 26 %, WinMain 67, donc 26% de 67, soit 17.42%
+> EndDraw
 
 e) Zoomez sur la timeline (`Ctrl + Molette souris`), jusqu'à voir les frames individuellement.
 Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations de la question précédente.
@@ -429,7 +431,12 @@ Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations 
 f) Double-cliquez sur un rectangle **Frame**, puis cliquez en bas à gauche sur **Graph Duration in Metrics View**.
 Quelle est le temps moyen d'une frame ? Le temps minimum ? Le temps maximum ?
 
-> ...
+> Name: Frame (Duration)
+> Count: 671
+> Min: 9 446 800 ns
+> Max: 53 408 800 ns
+> Average: 16 632 910 ns
+
 
 g) Les rectangles dans la timeline PIX sont créés dans le code par des appels à XDino_ProfileBegin()
 et XDino_ProfileEnd() . Ces appels de fonctions peuvent être imbriqués. Utilisez ces fonctions
