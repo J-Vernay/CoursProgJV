@@ -94,12 +94,8 @@ void Dino_GameFrame(double timeSinceStart)
         }
     }
 
-    for (dino_player& player : dinoPlayers) {
-        player.ApplyTerain(terrainA, terrainB);
-    }
-
-    for (dino_animal& animal : animals) {
-        animal.ApplyTerain(terrainA, terrainB);
+    for (dino_entity* pEntity : pEntities) {
+        pEntity->ApplyTerain(terrainA, terrainB);
     }
 
     // Affichage

@@ -101,18 +101,3 @@ bool dino_player::IsAbove(dino_player& other)
 {
     return pos.y < other.pos.y;
 }
-
-void dino_player::ApplyTerain(DinoVec2 a, DinoVec2 b)
-{
-    if (pos.y < a.y)
-        pos.y = a.y;
-
-    if (pos.y > b.y)
-        pos.y = b.y;
-
-    if (pos.x < a.x)
-        pos.x = a.x;
-
-    if (pos.x > b.x)
-        pos.x = b.x;
-}

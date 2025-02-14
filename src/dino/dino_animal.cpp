@@ -82,31 +82,7 @@ bool dino_animal::IsAbove(dino_animal& other)
     return pos.y < other.pos.y;
 }
 
-void dino_animal::ApplyTerain(DinoVec2 a, DinoVec2 b)
+void dino_animal::OnTerrainBorder()
 {
-    bool terrainCollide = false;
-
-    if (pos.y < a.y) {
-        pos.y = a.y;
-        terrainCollide = true;
-    }
-
-    if (pos.y > b.y) {
-        pos.y = b.y;
-        terrainCollide = true;
-    }
-
-    if (pos.x < a.x) {
-        pos.x = a.x;
-        terrainCollide = true;
-    }
-
-    if (pos.x > b.x) {
-        pos.x = b.x;
-        terrainCollide = true;
-    }
-
-    if (terrainCollide) {
-        direction = XDino_RandomUnitVec2();
-    }
+    direction = XDino_RandomUnitVec2();
 }

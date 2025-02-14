@@ -392,7 +392,8 @@ L'appliquer dans la base de code.
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Le fait d'avoir une fonction virtuelle. Cela permet de définir une fonction dans la classe mère et de la redéfinir (
+> override) dans les classes filles.
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
