@@ -431,11 +431,12 @@ comme la réaction à un événement du type "limite du terrain" ? L'appliquer d
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> Les méthodes `update()` et `draw()` peuvent ainsi être également mises en commun. 
+> Les méthodes `update()` et `draw()` peuvent ainsi être également mises en commun.
 
 j) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> En comptant le nombre d'intersections entre le contour fermé et un segment formé par la position testée et un point en
+> dehors du contour. Si le nombre d'intersections est impair la position est dans la forme, sinon elle est en dehors.
 
 k) Implémentez F5.5 et F5.6 via une logique commune, comme mentionné par (g).
 
