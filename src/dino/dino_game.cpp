@@ -56,7 +56,6 @@ void Dino_GameFrame(double timeSinceStart)
     
 	for (DinoPlayer& player : g_Players) {
 	    player.UpdatePlayer(deltaTime);
-	    player.ApplyTerrain(terrainA, terrainB);
 	}
 
     // Gérer les collisions entre joueurs.
@@ -68,6 +67,10 @@ void Dino_GameFrame(double timeSinceStart)
             player1.SetPos(a);
             player2.SetPos(b);
         }
+    }
+
+    for (DinoPlayer& player : g_Players) {
+        player.ApplyTerrain(terrainA, terrainB);
     }
 
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
