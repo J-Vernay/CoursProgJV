@@ -54,19 +54,19 @@ void dino_player::Update(float deltaTime)
         lasso.erase(lasso.begin());
     }
 
-    for (int idxSegment1 = 0; idxSegment1 < lasso.size() - 1; ++idxSegment1) {
-        DinoVec2 A = lasso[idxSegment1];
-        DinoVec2 B = lasso[idxSegment1 + 1];
-        for (int idxSegment2 = idxSegment1 + 2; idxSegment2 < lasso.size() - 1; ++idxSegment2) {
-            DinoVec2 C = lasso[idxSegment2];
-            DinoVec2 D = lasso[idxSegment2 + 1];
+    if (lasso.size() >= 4) {
+        DinoVec2 C = lasso[lasso.size() - 2];
+        DinoVec2 D = lasso[lasso.size() - 1];
+        for (int idxSegment1 = 0; idxSegment1 < lasso.size() - 3; ++idxSegment1) {
+            DinoVec2 A = lasso[idxSegment1];
+            DinoVec2 B = lasso[idxSegment1 + 1];
 
             if (Dino_IntersectSegment(A, B, C, D)) {
                 // Collision du lasso avec lui-même
                 // [AB] et [CD] collisionne, on enlève tout entre B et C, on garde juste AD.
                 // B : idxSegment1 + 1
                 // C : idxSegment2 --> le second argument de erase() est EXCLU de l'intervalle, donc on doit faire + 1
-                lasso.erase(lasso.begin() + idxSegment1 + 1, lasso.begin() + idxSegment2 + 1);
+                lasso.erase(lasso.begin() + idxSegment1 + 1, lasso.end() - 1);
             }
         }
     }
