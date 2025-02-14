@@ -26,10 +26,10 @@ void dino_animal::DrawAnimal(double timeSinceStart)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = "animals.png"; // Ici on accède au fichier animals.png, le sprite sheet des animaux.
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {32, 0};
-    DinoVec2 posC = {0, 32};
-    DinoVec2 posD = {32, 32};
+    DinoVec2 posA = {-16, -32};
+    DinoVec2 posB = {16, -32};
+    DinoVec2 posC = {-16, 0};
+    DinoVec2 posD = {16, 0};
     int idxFrame = int(timeSinceStart * 8) % 4;
     int u = 32 * idxFrame;
     int v = 0;
@@ -80,4 +80,33 @@ void dino_animal::DrawAnimal(double timeSinceStart)
 bool dino_animal::IsAbove(dino_animal& other)
 {
     return pos.y < other.pos.y;
+}
+
+void dino_animal::ApplyTerain(DinoVec2 a, DinoVec2 b)
+{
+    bool terrainCollide = false;
+
+    if (pos.y < a.y) {
+        pos.y = a.y;
+        terrainCollide = true;
+    }
+
+    if (pos.y > b.y) {
+        pos.y = b.y;
+        terrainCollide = true;
+    }
+
+    if (pos.x < a.x) {
+        pos.x = a.x;
+        terrainCollide = true;
+    }
+
+    if (pos.x > b.x) {
+        pos.x = b.x;
+        terrainCollide = true;
+    }
+
+    if (terrainCollide) {
+        direction = XDino_RandomUnitVec2();
+    }
 }

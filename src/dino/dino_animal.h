@@ -16,4 +16,8 @@ public:
     void UpdateAnimal(float deltaTime);
     void DrawAnimal(double timeSinceStart);
     bool IsAbove(dino_animal& other);
+
+    // Ajuste la position de l'animal pour rester sur le terrain
+    // param a correspond à la position en haut à gauche du terrain et param b la position en bas à droite.
+    void ApplyTerain(DinoVec2 a, DinoVec2 b);
 };

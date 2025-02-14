@@ -52,10 +52,10 @@ void dino_player::DrawPlayer(double timeSinceStart)
     drawCall.textureName = "dinosaurs.png"; // Ici on accède au fichier dinosaurs.png, le sprite sheet des dinosaures.
     drawCall.vertices.reserve(6);
 
-    DinoVec2 posA = {0, 0};
-    DinoVec2 posB = {24, 0};
-    DinoVec2 posC = {0, 24};
-    DinoVec2 posD = {24, 24};
+    DinoVec2 posA = {-12, -22};
+    DinoVec2 posB = {12, -22};
+    DinoVec2 posC = {-12, 2};
+    DinoVec2 posD = {12, 2};
     DinoColor color = DinoColor_WHITE;
 
     int animationIndex = 0;
@@ -100,4 +100,19 @@ void dino_player::DrawPlayer(double timeSinceStart)
 bool dino_player::IsAbove(dino_player& other)
 {
     return playerPos.y < other.playerPos.y;
+}
+
+void dino_player::ApplyTerain(DinoVec2 a, DinoVec2 b)
+{
+    if (playerPos.y < a.y)
+        playerPos.y = a.y;
+
+    if (playerPos.y > b.y)
+        playerPos.y = b.y;
+
+    if (playerPos.x < a.x)
+        playerPos.x = a.x;
+
+    if (playerPos.x > b.x)
+        playerPos.x = b.x;
 }
