@@ -251,7 +251,7 @@ Que veut dire réinterpréter un pointeur ?
 
 > le type sert a interpreter correctement les valeurs de la sequence de bits (ex: int float, color),
 > un pointeur redirige a une adresse
->
+> On change le type d'interpretation du pointeur (float) par exemple -> vigilance
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
@@ -264,6 +264,7 @@ Quelle limitation cela entraîne-t-il ?
 > classe qui stocke le pointeur de debut et de fin d'une liste de valeur,
 > un stockage de données ainsi que des métadonnées permettant de retrouver ces données
 > adresse de but + type*indice
+> il faut que chaque élement fasse la même taille
 
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
@@ -306,12 +307,13 @@ b) Implémentez la fonctionnalité F5.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> si la distance entre leur centre est inférieure ou égale à leur rayon*2
 
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> les repousser dans la direction opposée a l'autre (avec la formule qu'on va implémenter)
+> si les deux cercles sotn exactement au meme point car on peut pas savoir dans quelle direction les pousser
 
 e) Implémentez la fonctionnalité F5.3 .
 

@@ -36,10 +36,10 @@ void Dino_GameInit()
 
     players.resize(4);
 
-    players[0].Init(0, {renderSize.x / 2, renderSize.y / 2});
-    players[1].Init(1, {renderSize.x / 2 + 100, renderSize.y / 2});
-    players[2].Init(2, {renderSize.x / 2, renderSize.y / 2 + 100});
-    players[3].Init(3, {renderSize.x / 2 + 100, renderSize.y / 2 + 100});
+    players[0].Init(0, {renderSize.x / 2 - 50, renderSize.y / 2 - 50});
+    players[1].Init(1, {renderSize.x / 2 - 50, renderSize.y / 2 + 50});
+    players[2].Init(2, {renderSize.x / 2 + 50, renderSize.y / 2 - 50});
+    players[3].Init(3, {renderSize.x / 2 + 50, renderSize.y / 2 + 50});
 
     /*polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
     polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
@@ -57,20 +57,25 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - lastTime);
     lastTime = timeSinceStart;
 
+    DinoVec2 renderSize = {480, 360};
+
+    DinoVec2 terrainSize = {renderSize.x / 2, renderSize.y / 2};
     // Gestion des entrées et mise à jour de la logique de jeu.
 
     for (DinoPlayer& player : players) {
-        player.UpdatePlayer(deltaTime);
+        player.UpdatePlayer(deltaTime, renderSize, terrainSize);
     }
     double timeSinceLastSpawn = timeSinceStart - animalLastSpawnTime;
     if (timeSinceLastSpawn > 1) {
         animals.emplace_back();
-        animals.back().SpawnAnimal(XDino_RandomUint32(0, 7));
+        animals.back().SpawnAnimal(XDino_RandomUint32(0, 7),
+                                   renderSize,
+                                   terrainSize);
         animalLastSpawnTime = timeSinceStart;
     }
 
     for (DinoAnimal& animal : animals) {
-        animal.UpdateAnimal(deltaTime);
+        animal.UpdateAnimal(deltaTime, renderSize, terrainSize);
     }
     // Affichage
 
@@ -78,9 +83,7 @@ void Dino_GameFrame(double timeSinceStart)
     //constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
-    DinoVec2 renderSize = XDino_GetWindowSize();
 
-    DinoVec2 terrainSize = {renderSize.x / 2, renderSize.y / 2};
     DinoDrawCall drawCall;
     drawCall.textureName = "terrain.png";
 
@@ -119,8 +122,7 @@ void Dino_GameFrame(double timeSinceStart)
         animal.DrawAnimal(timeSinceStart);
     }
 
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    XDino_SetRenderSize(renderSize);
 
     /* Dessin de la "polyligne" 
     {
@@ -201,7 +203,7 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.translation.x = renderSize.x - 2 * textSize.x;
         drawCall.translation.y = renderSize.y - 2 * textSize.y;
         drawCall.scale = 2;
-        drawCall.translation = {windowSize.x - textSize.x * 2, windowSize.y - textSize.y * 2};
+        drawCall.translation = {renderSize.x - textSize.x * 2, renderSize.y - textSize.y * 2};
 
         XDino_Draw(drawCall);
     }
