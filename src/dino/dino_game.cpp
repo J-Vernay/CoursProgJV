@@ -27,10 +27,10 @@ void Dino_GameInit()
     DinoVec2 renderSize = {480,360};
     XDino_SetRenderSize(renderSize);
     g_Players.resize(4);
-    g_Players[0].Init({renderSize.x / 2 - 50, renderSize.y / 2 - 50}, 0, DinoGamepadIdx::Keyboard);
-    g_Players[1].Init({renderSize.x / 2 - 50, renderSize.y / 2 + 50}, 1, DinoGamepadIdx::Gamepad1);
-    g_Players[2].Init({renderSize.x / 2 + 50, renderSize.y / 2 - 50}, 2, DinoGamepadIdx::Gamepad2);
-    g_Players[3].Init({renderSize.x / 2 + 50, renderSize.y / 2 + 50}, 3, DinoGamepadIdx::Gamepad3);
+    g_Players[0].Init({renderSize.x / 2 - 50, renderSize.y / 2 - 50}, 0, DinoGamepadIdx::Keyboard, DinoColor_BLUE);
+    g_Players[1].Init({renderSize.x / 2 - 50, renderSize.y / 2 + 50}, 1, DinoGamepadIdx::Gamepad1, DinoColor_RED);
+    g_Players[2].Init({renderSize.x / 2 + 50, renderSize.y / 2 - 50}, 2, DinoGamepadIdx::Gamepad2, DinoColor_YELLOW);
+    g_Players[3].Init({renderSize.x / 2 + 50, renderSize.y / 2 + 50}, 3, DinoGamepadIdx::Gamepad3, DinoColor_GREEN);
 
 }
 
@@ -121,6 +121,9 @@ void Dino_GameFrame(double timeSinceStart)
 
         XDino_Draw(drawCall);
     }
+
+    for (DinoPlayer& player : g_Players)
+        player.DrawLasso();
 
     std::sort(pEntities.begin(), pEntities.end(), CompareEntitiesPos);
     for (DinoEntity* pEntity : pEntities)

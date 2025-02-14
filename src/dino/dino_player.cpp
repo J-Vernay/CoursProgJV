@@ -1,15 +1,17 @@
 
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
+#include <dino/dino_draw_utils.h>
 
 // Constantes.
 constexpr float CIRCLE_SPEED = 100.f; // Nombre de pixels parcourus en une seconde.
 
-void DinoPlayer::Init(DinoVec2 initm_pos, int32_t idxPlayer, DinoGamepadIdx idxGamepad)
+void DinoPlayer::Init(DinoVec2 initm_pos, int32_t idxPlayer, DinoGamepadIdx idxGamepad, DinoColor lassoColor)
 {
     m_pos = initm_pos;
     m_idxPlayer = idxPlayer;
     m_idxGamepad = idxGamepad;
+    m_lassoColor = lassoColor;
 }
 
 void DinoPlayer::Update(float deltaTime)
@@ -42,11 +44,20 @@ void DinoPlayer::Update(float deltaTime)
         else
             this->bWalking = true;
     }
+
+    m_lasso.emplace_back(m_pos);
+}
+
+void DinoPlayer::DrawLasso()
+{
+    // Lasso
+    DinoDrawCall drawCallLasso = Dino_CreateDrawCall_Polyline(m_lasso, 4, m_lassoColor);
+    XDino_Draw(drawCallLasso);
 }
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
-    // Copier-coller de l'ancien code.
+    // Sprite
     
     DinoDrawCall drawCall;
     drawCall.textureName = "dinosaurs.png";
