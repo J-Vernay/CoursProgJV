@@ -84,14 +84,18 @@ void Dino_GameFrame(double timeSinceStart)
             pEntity2->SetPos(b);
         }
     }
+    
+    for (DinoEntity* pEntity : pEntities)
+        pEntity->ApplyTerrain(terrainA, terrainB);
 
+    /*
     for (DinoPlayer& player : g_Players) {
         player.ApplyTerrain(terrainA, terrainB);
     }
     
     for (DinoAnimal& animal : g_Animals) {
         animal.ApplyTerrain(terrainA, terrainB);
-    }
+    }*/
     
     // Affichage
 
