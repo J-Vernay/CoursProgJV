@@ -58,17 +58,6 @@ void Dino_GameFrame(double timeSinceStart)
 	    player.UpdatePlayer(deltaTime);
 	}
 
-    // Gérer les collisions entre joueurs.
-    for (DinoPlayer& player1 : g_Players) {
-        for (DinoPlayer& player2 : g_Players) {
-            DinoVec2 a = player1.GetPos();
-            DinoVec2 b = player2.GetPos();
-            Dino_ResolveCircleCollision(a, b, 8);
-            player1.SetPos(a);
-            player2.SetPos(b);
-        }
-    }
-
     double timeSinceLastSpawn = timeSinceStart - g_AnimalLastSpawnTime;
     if (timeSinceLastSpawn > 0.1) {
         g_AnimalLastSpawnTime = timeSinceStart;
@@ -78,28 +67,23 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals) {
         animal.UpdateAnimal(deltaTime);
     }
+
+    std::vector<DinoEntity*> pEntities;
+    for (DinoPlayer& player : g_Players)
+        pEntities.emplace_back(&player);
+    for (DinoAnimal& animal : g_Animals)
+        pEntities.emplace_back(&animal);
     
     // Gérer les collisions entre animaux.
-    for (DinoAnimal& animal1 : g_Animals) {
-        for (DinoAnimal& animal2 : g_Animals) {
-            DinoVec2 a = animal1.GetPos();
-            DinoVec2 b = animal2.GetPos();
+    for (DinoEntity* pEntity1 : pEntities) {
+        for (DinoEntity* pEntity2 : pEntities) {
+            DinoVec2 a = pEntity1->GetPos();
+            DinoVec2 b = pEntity2->GetPos();
             Dino_ResolveCircleCollision(a, b, 8);
-            animal1.SetPos(a);
-            animal2.SetPos(b);
+            pEntity1->SetPos(a);
+            pEntity2->SetPos(b);
         }
     }
-
-    // Gérer les collisions entre animaux et joueurs
-    for (DinoPlayer& player1 : g_Players) {
-        for (DinoAnimal& animal2 : g_Animals) {
-            DinoVec2 a = player1.GetPos();
-            DinoVec2 b = animal2.GetPos();
-            Dino_ResolveCircleCollision(a, b, 8);
-            player1.SetPos(a);
-            animal2.SetPos(b);
-        }
-    }    
 
     for (DinoPlayer& player : g_Players) {
         player.ApplyTerrain(terrainA, terrainB);

@@ -1,10 +1,11 @@
 
 #include <dino/xdino.h>
 
-/// Représente l'état d'un joueur.
-class DinoAnimal {
+#include <dino/dino_entity.h>
+
+/// Représente l'état d'un animal.
+class DinoAnimal : public DinoEntity {
 private:
-    DinoVec2 m_pos = {};
     DinoVec2 m_dir = {};
     int32_t m_idxAnimal;
     bool m_bMirror = false;
@@ -23,10 +24,6 @@ public:
     /// @param a Position en haut à gauche du terrain
     /// @param b Position en bas à droite du terrain
     void ApplyTerrain(DinoVec2 a, DinoVec2 b);
-    
-    /// Récupérer et modifier les positions (nécessaires pour collisions).
-    DinoVec2 GetPos();
-    void SetPos(DinoVec2 newPos);
     
     /// Compare la position de deux joueurs pour savoir lequel afficher devant l'autre.
     // TODO: bool IsAbove(DinoPlayer& other);

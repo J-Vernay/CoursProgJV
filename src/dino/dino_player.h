@@ -1,10 +1,11 @@
 
 #include <dino/xdino.h>
 
+#include <dino/dino_entity.h>
+
 /// Représente l'état d'un joueur.
-class DinoPlayer {
+class DinoPlayer : public DinoEntity {
 private:
-    DinoVec2 pos = {};
     bool bMirror = false;
 
     bool bIdle = false;
@@ -30,8 +31,4 @@ public:
     /// @param a Position en haut à gauche du terrain
     /// @param b Position en bas à droite du terrain
     void ApplyTerrain(DinoVec2 a, DinoVec2 b);
-
-    /// Récupérer et modifier les positions (nécessaires pour collisions).
-    DinoVec2 GetPos();
-    void SetPos(DinoVec2 newPos);
 };
