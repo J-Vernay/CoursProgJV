@@ -169,7 +169,7 @@ Comment créer cette fonction sans exposer publiquement la position de `DinoPlay
 
 g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
 
->
+> début et fin de la liste
 
 ## 3. Comprendre la compilation des fichiers C++
 
@@ -270,7 +270,7 @@ Est-ce une opération coûteuse ?
 e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> La façon d'interpréter une suite de bits, un pointeur c'est l'adresse dans la mémoire, récupérer la valeur stocké à cette adresse
+> La façon d'interpréter une suite de bits, un pointeur c'est l'adresse dans la mémoire, récupérer la valeur stocké à cette adresse. réinterpréter un poiteur revient a faire un cast pour "changer" le type d'une pointeur
 
 f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
@@ -304,11 +304,12 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Qu'est-ce que la fonctionnalité implique pour les octets en mémoire qui représente le lasso ?
 
-> ...
+> tous les éléments ont été déplacé un crans vers la gauche
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 
-> ...
+> 6786 par joueurs (27 144 au total)
+> Opti -> 120 appel par joueur (480 au total)
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
 
@@ -320,33 +321,40 @@ b) Implémentez la fonctionnalité F5.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> En calculant la distance entre deux cercle par rapport à leur rayon 
 
 d) Comment repousser deux cercles en collision pour qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> vecteur v= &  vecteur AB
+> (Vecteur A - vecteur v) (vecteur B + vecteur v) = 2r
+> 2v + AB = 2r
+> 2&AB+AB = 2r
+> & = (2r-AB) / 2AB
+> Vecteur v = & Vecteur AB = ((2r - AB)/ 2AB) * Vecteur AB
+
+> Quand la position est 0,0
 
 e) Implémentez la fonctionnalité F5.3 .
 
 f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> ce sont 2 class différentes
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> l'héritage
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Override
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+>  Update et Draw
 
 j) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
@@ -376,13 +384,13 @@ Dépendamment de la connexion, cela peut prendre plusieurs minutes.
 
 En utilisant Everything, quel type de fichiers se trouvent dans `C:\symcache` ? Quel est leur rôle ?
 
-> ...
+> .pdb Ils servent à débuguer
 
 d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez **Items to show = Sampled functions**.
 
 Quelle part représente `Dino_GameFrame` relativement à `WinMain` ? Quelle autre fonction prend du temps ?
 
-> ...
+> Dino_GameFrame prend 38% du temps. L'input des controls prend également du temps
 
 e) Zoomez sur la timeline (`Ctrl + Molette souris`), jusqu'à voir les frames individuellement.
 Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations de la question précédente.
@@ -390,7 +398,7 @@ Double-cliquez sur un rectangle **Frame**. Vous devriez revoir les observations 
 f) Double-cliquez sur un rectangle **Frame**, puis cliquez en bas à gauche sur **Graph Duration in Metrics View**.
 Quelle est le temps moyen d'une frame ? Le temps minimum ? Le temps maximum ?
 
-> ...
+> 16ms, 14ms, 18ms
 
 g) Les rectangles dans la timeline PIX sont créés dans le code par des appels à XDino_ProfileBegin()
 et XDino_ProfileEnd() . Ces appels de fonctions peuvent être imbriqués. Utilisez ces fonctions
@@ -398,17 +406,17 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 
 **Temps passé en moyenne pour...**
 
-> **Lire les entrées claviers/manette :** ...
+> **Lire les entrées claviers/manette :** 0.000ms
 > 
-> **Le calcul des DinoDrawCall :** ...
+> **Le calcul des DinoDrawCall :** 0.002
 > 
-> **La logique de jeu (excluant lire les entrées et drawcalls):** ...
+> **La logique de jeu (excluant lire les entrées et drawcalls):** 0.2ms
 > 
-> **Résoudre les collisions :** ...
+> **Résoudre les collisions :** 0.009ms
 >
-> **Calculer les intersections de lasso :** ...
+> **Calculer les intersections de lasso :** 0.18ms
 >
-> **Le calcul des DinoDrawCall des animaux :** ...
+> **Le calcul des DinoDrawCall des animaux :** 0.02ms
 >
-> **Le calcul des DinoDrawCall des lasso :** ...
+> **Le calcul des DinoDrawCall des lasso :** 0.17ms
 

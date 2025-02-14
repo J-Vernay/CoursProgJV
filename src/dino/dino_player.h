@@ -1,20 +1,19 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_entity.h>
 
-class DinoPlayer
+class DinoPlayer : public DinoEntity
 {
     
 public:
-    void UpdatePlayer(float deltaTime);
-    void DisplayPlayer(double timeSinceStart);
-    void DinoPlayerInit(DinoVec2 pos, int idx, DinoGamepadIdx gamepadIdx);
-    void SetPlayerPos(DinoVec2 pos);
+    void Update(float deltaTime) override;
+    void Display(double timeSinceStart ) override;
+    void DrawLasso();
+    void DinoPlayerInit(DinoVec2 pos, int idx, DinoGamepadIdx gamepadIdx, DinoColor lassoColor);
     void SetPlayerIdx(int idx);
-    bool IsAbove(DinoPlayer& other);
     
 private:
-    DinoVec2 player_pos_ = {};
     bool mirror_ = false;
 
     bool d_idle_ = false;
@@ -24,4 +23,7 @@ private:
     int sprite_idx_ = 0;
     int idx_player_ = 0;
     DinoGamepadIdx idx_gamepad_;
+
+    DinoColor lassoColor_;
+    std::vector<DinoVec2> lasso;
 };

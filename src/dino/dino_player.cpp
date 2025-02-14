@@ -1,9 +1,12 @@
 #include "dino_player.h"
 
+#include "dino_draw_utils.h"
+#include "dino_geometry.h"
+
 // Constantes.
 constexpr float PLAYER_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
 
-void DinoPlayer::UpdatePlayer(float deltaTime)
+void DinoPlayer::Update(float deltaTime)
 {
     // Gestion des entrées et mise à jour de la logique de jeu.
 
@@ -18,13 +21,15 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
 
     //Movement
     float speed = PLAYER_SPEED;
+    XDino_ProfileBegin(DinoColor_GREY, "Input");
     if (gamepad.btn_right) 
 
         speed *= 2;
         
-    player_pos_.x += gamepad.stick_left_x * speed * deltaTime;
-    player_pos_.y += gamepad.stick_left_y * speed * deltaTime;
-
+    pos_.x += gamepad.stick_left_x * speed * deltaTime;
+    pos_.y += gamepad.stick_left_y * speed * deltaTime;
+    XDino_ProfileEnd();
+    
     if (gamepad.stick_left_x != 0)
         mirror_ = gamepad.stick_left_x < 0;
         
@@ -35,13 +40,31 @@ void DinoPlayer::UpdatePlayer(float deltaTime)
         else
             d_walking_ = true;
     }
+    lasso.emplace_back(pos_);
+    if (lasso.size() > 4) {
+        DinoVec2 c = lasso[lasso.size() - 2];
+        DinoVec2 d = lasso[lasso.size() - 1];
+
+        for (int idxSegement1 = 0; idxSegement1 < lasso.size() - 3; idxSegement1++)
+        {
+            DinoVec2 a = lasso[idxSegement1];
+            DinoVec2 b = lasso[idxSegement1 + 1];
+
+            if (Dino_IntersectSegment(a, b, c, d))
+            {
+                lasso.erase(lasso.begin() + idxSegement1 + 1, lasso.end() - 1);
+            }
+        }
+    }
 }
 
-void DinoPlayer::DisplayPlayer(double timeSinceStart)
+void DinoPlayer::Display(double timeSinceStart)
 {
     //Afficher le dinosaure
     {
         sprite_idx_ = static_cast<int>(timeSinceStart / 0.12);
+
+XDino_ProfileBegin(DinoColor_GREEN, "Drawcall");
         
         DinoDrawCall drawCall;
         drawCall.textureName = "dinosaurs.png";
@@ -77,30 +100,36 @@ void DinoPlayer::DisplayPlayer(double timeSinceStart)
             drawCall.vertices.emplace_back(posC, pos, 24 + idx_player_ * 24);
             drawCall.vertices.emplace_back(posD, pos + 24, 24 + idx_player_ * 24);
         }
-        
-        drawCall.translation = player_pos_;
+
+        DinoVec2 offset = {12, 20};
+        DinoVec2 newPos = {pos_.x - offset.x, pos_.y - offset.y};
+        drawCall.translation = newPos;
         XDino_Draw(drawCall);
+        XDino_ProfileEnd();
     }
 }
 
-void DinoPlayer::DinoPlayerInit(DinoVec2 pos, int idx, DinoGamepadIdx gamepadIdx)
+void DinoPlayer::DrawLasso()
 {
-    player_pos_ = pos;
-    idx_player_ = idx;
-    idx_gamepad_ = gamepadIdx;
+    XDino_ProfileBegin(DinoColor_WHITE,"Draw Lasso") ;
+    //Lasso
+    DinoDrawCall lassoDrawcall = Dino_CreateDrawCall_Polyline(lasso, 4, lassoColor_);
+    XDino_Draw(lassoDrawcall);
+    XDino_ProfileEnd();
 }
 
-void DinoPlayer::SetPlayerPos(DinoVec2 pos)
+void DinoPlayer::DinoPlayerInit(DinoVec2 pos, int idx, DinoGamepadIdx gamepadIdx, DinoColor lassoColor)
 {
-    player_pos_ = pos;
+    pos_ = pos;
+    idx_player_ = idx;
+    idx_gamepad_ = gamepadIdx;
+    lassoColor_ = lassoColor;
 }
+
 
 void DinoPlayer::SetPlayerIdx(int idx)
 {
     idx_player_ = idx;
 }
 
-bool DinoPlayer::IsAbove(DinoPlayer& other)
-{
-    return player_pos_.y < other.player_pos_.y;
-}
+

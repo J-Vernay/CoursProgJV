@@ -1,19 +1,21 @@
 #pragma once
 
 #include <dino/xdino.h>
-#include "dino_player.h"
+#include <dino/dino_player.h>
+#include <dino/dino_entity.h>
 
-class DinoAnimal
+class DinoAnimal : public DinoEntity
 {
     
 public:
-    void UpdateAnimal(float deltaTime);
-    void DisplayAnimal(double timeSinceStart);
+    void Update(float deltaTime) override;
+    void Display(double timeSinceStart) override;
     void DinoAnimalInit(DinoVec2 pos, int idx);
-    bool IsAbove(DinoPlayer& other);
+
+    void OnTerrainBorder() override;
+
     
 private:
-    DinoVec2 pos_ = {};
     DinoVec2 dir_ = {};
     bool mirror_ = false;
 
