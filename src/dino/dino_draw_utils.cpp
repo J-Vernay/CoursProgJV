@@ -1,4 +1,5 @@
 ﻿#include <dino/dino_draw_utils.h>
+#include <math.h>
 
 DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
 {
@@ -18,8 +19,9 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, DinoColor colorBackground,
-                                      DinoVec2* pOutSize)
+DinoDrawCall Dino_CreateDrawCall_Text(
+    std::string_view text, DinoColor color, DinoColor colorBackground, DinoVec2* pOutSize
+)
 {
     DinoDrawCall drawCall;
     drawCall.textureName = "monogram-bitmap.png";
@@ -31,7 +33,7 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, Di
     if (colorBackground.a > 0)
         drawCall.vertices.resize(6);
 
-    // Dimensions en pixels des lettres dans la texture. 
+    // Dimensions en pixels des lettres dans la texture.
     constexpr uint16_t QUAD_WIDTH = 6;
     constexpr uint16_t QUAD_HEIGHT = 12;
 
@@ -84,12 +86,30 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, Di
 
     if (colorBackground.a > 0) {
         // Les 6 premiers points ont été laissés libres pour le fond.
-        drawCall.vertices[0] = {{0, 0}, 0, 0, colorBackground};
-        drawCall.vertices[1] = {{width, 0}, 0, 0, colorBackground};
-        drawCall.vertices[2] = {{0, height}, 0, 0, colorBackground};
-        drawCall.vertices[3] = {{width, 0}, 0, 0, colorBackground};
-        drawCall.vertices[4] = {{0, height}, 0, 0, colorBackground};
-        drawCall.vertices[5] = {{width, height}, 0, 0, colorBackground};
+        drawCall.vertices[0] = {
+            {0, 0},
+            0, 0, colorBackground
+        };
+        drawCall.vertices[1] = {
+            {width, 0},
+            0, 0, colorBackground
+        };
+        drawCall.vertices[2] = {
+            {0, height},
+            0, 0, colorBackground
+        };
+        drawCall.vertices[3] = {
+            {width, 0},
+            0, 0, colorBackground
+        };
+        drawCall.vertices[4] = {
+            {0, height},
+            0, 0, colorBackground
+        };
+        drawCall.vertices[5] = {
+            {width, height},
+            0, 0, colorBackground
+        };
     }
     if (pOutSize != nullptr)
         *pOutSize = {width, height};
@@ -97,8 +117,7 @@ DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color, Di
     return drawCall;
 }
 
-DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
-                                          DinoColor color)
+DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width, DinoColor color)
 {
     DinoDrawCall drawCall;
 

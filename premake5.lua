@@ -1,7 +1,7 @@
 workspace "CoursProgJV"
 
   -- Les plateformes correspondent à quel type de PC ou console.
-  platforms { "x64-windows" }
+  platforms { "x64-windows", "x64-linux" }
 
   -- Les configurations changent la manière dont les fichiers C++ sont compilés,
   -- par exemple en changeant l'état du préprocesseur, en demandant des optimisations,
@@ -24,7 +24,7 @@ workspace "CoursProgJV"
   -- On demande au compilateur de nous remonter ce qu'il trouve suspect,
   -- et de provoquer une erreur de compilation dès qu'il trouve quelque chose.
   warnings "Default"
-  flags { "FatalWarnings" }
+  fatalwarnings { "All" }
 
   -- Génère des informations de débogage, qui vont servir aux debuggers et profilers.
   symbols "On"
@@ -33,8 +33,13 @@ workspace "CoursProgJV"
   filter "platforms:x64-windows"
     architecture "x86_64"
     defines { "_CRT_SECURE_NO_WARNINGS", "XDINO_X64_WINDOWS=1" }
-    flags { "NoIncrementalLink" }
+    incrementallink "Off"
     editandcontinue "Off"
+  filter {}
+
+  filter "platforms:x64-linux"
+    architecture "x86_64"
+    defines { "XDINO_X64_LINUX=1" }
   filter {}
 
   -- Particularités quand on veut se mettre en débogage
@@ -102,9 +107,19 @@ project "Dino_JulienVernay"
     links { "d3d11.lib", "d3dcompiler.lib", "dxguid.lib", "Xinput.lib" }
   filter {}
 
+  -- Sur Linux, on veut compiler les fichiers correspondants, et on a des dépendances
+  -- sur les bibliothèques système (notamment X pour la fenêtre et GL pour les graphismes)
+  filter "platforms:x64-linux"
+    files { "src/dino/x64-linux/*" }
+    links { "GL", "X11", "Xi", "Xcursor", "dl", "pthread", "m" }
+  filter {}
+
+  -- Pas supporté sur Linux... On se débrouille autrement pour Linux.
+  filter "platforms:x64-windows"
   postbuildcommands {
     "{COPYDIR} %[assets] %[%{prj.location}/assets]",
   }
+  filter {}
 
   -- Autoriser PIX quand on est sur Windows en mode "Profile"
   filter { "platforms:x64-windows", "configurations:Profile" }

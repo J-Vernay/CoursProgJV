@@ -1,0 +1,5 @@
+--std=c++20
+-xc++
+-I.
+-I../external
+-DXDINO_X64_LINUX=1
