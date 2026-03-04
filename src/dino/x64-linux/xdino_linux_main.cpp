@@ -125,6 +125,13 @@ void XDino_Linux_Frame()
     sg_begin_pass(&pass);
     sg_apply_pipeline(gXDino_gfxPipeline);
 
+    float vpscale = std::min(gXDino_windowSize.x / gXDino_renderSize.x, gXDino_windowSize.y / gXDino_renderSize.y);
+    float vpw = vpscale * gXDino_renderSize.x;
+    float vph = vpscale * gXDino_renderSize.y;
+    float vpx = (gXDino_windowSize.x - vpw) / 2;
+    float vpy = (gXDino_windowSize.y - vph) / 2;
+    sg_apply_viewportf(vpx, vpy, vpw, vph, true);
+
     for (DinoDrawCall const& drawCall : gXDino_drawCalls) {
         if (!gXDino_textures.contains(drawCall.textureName)) {
             std::string filePath = "assets/" + drawCall.textureName;

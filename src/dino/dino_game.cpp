@@ -1,8 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
+#include <dino/xdino.h>
 
 #include <format>
 
@@ -64,16 +64,16 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    // Dessin de la "polyligne" 
+    // Dessin de la "polyligne"
     {
         DinoDrawCall drawCall = Dino_CreateDrawCall_Polyline(polyline, 100, POLYLINE_COLOR);
         XDino_Draw(drawCall);
     }
 
-    // On veut avoir une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
+    // DinoVec2 windowSize = XDino_GetWindowSize();
+    // XDino_SetRenderSize(windowSize);
+    DinoVec2 renderSize = XDino_GetRenderSize();
 
     // Dessin de la texture centrale qu'on peut bouger.
     {
@@ -82,8 +82,8 @@ void Dino_GameFrame(double timeSinceStart)
         constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
         constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
 
-        float quarterWidth = windowSize.x / 4;
-        float quarterHeight = windowSize.y / 4;
+        float quarterWidth = renderSize.x / 4;
+        float quarterHeight = renderSize.y / 4;
 
         DinoDrawCall drawCall;
         drawCall.vertices.resize(6);
@@ -100,7 +100,7 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.vertices[5].pos = {quarterWidth, quarterHeight};
         drawCall.vertices[5].color = ORANGE;
 
-        drawCall.translation = {windowSize.x / 2, windowSize.y / 2};
+        drawCall.translation = {renderSize.x / 2, renderSize.y / 2};
         drawCall.rotation = rotation;
         drawCall.scale = scale;
 
@@ -135,10 +135,8 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.scale = 2;
         XDino_Draw(drawCall);
     }
-
 }
 
 void Dino_GameShut()
 {
-
 }
