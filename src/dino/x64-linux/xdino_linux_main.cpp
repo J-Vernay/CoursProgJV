@@ -1,8 +1,15 @@
+#include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 
+#define XDINO_IMPL
+#include <dino/xdino_impl.h>
+
+#include <format>
 #include <random>
 #include <unordered_map>
 #include <vector>
+
+#include <sys/mman.h>
 
 #pragma region Sokol impl
 
@@ -70,6 +77,8 @@ struct alignas(16) XDino_Linux_Uniforms {
 std::unordered_map<std::string, XDino_Linux_Texture> gXDino_textures;
 
 std::vector<DinoDrawCall> gXDino_drawCalls;
+
+std::unordered_map<void*, size_t> gXDino_allocs;
 
 void XDino_Linux_Init()
 {
@@ -327,6 +336,19 @@ void XDino_Draw(DinoDrawCall drawCall)
     gXDino_drawCalls.emplace_back(std::move(drawCall));
 }
 
+int XDino_DrawStats(int scroll, int maxlines, float scale)
+{
+    std::vector<std::string> lines;
+    lines.emplace_back("[Textures]");
+    for (auto& [name, tex] : gXDino_textures) {
+        lines.push_back(
+            std::format("{} ({}x{}, {} bytes)", name, tex.texWidth, tex.texHeight, tex.texWidth * tex.texHeight * 4)
+        );
+    }
+
+    return XDinoImpl_DrawStats(scroll, maxlines, scale, std::move(lines));
+}
+
 bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)
 {
     XDino_Linux_Gamepad& g = gXDino_gamepads[(uint32_t)idx];
@@ -361,7 +383,28 @@ DinoVec2 XDino_RandomUnitVec2()
     float angle = distribution(gXDino_rng);
     return {cosf(angle), sinf(angle)};
 }
-/// Ne pas appeler directement, il faut utiliser `DINO_CRITICAL`.
+
+void* XDino_MemAlloc(size_t size, char const* pLabel)
+{
+    if (size == 0)
+        DINO_CRITICAL("Allouer 0 octets n'a pas de sens.");
+    void* p = mmap(nullptr, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    if (p == MAP_FAILED)
+        DINO_CRITICAL("L'OS a échoué à allouer de la mémoire.");
+    gXDino_allocs.emplace(p, size);
+    return p;
+}
+
+void XDino_MemFree(void* pAlloc)
+{
+    auto it = gXDino_allocs.find(pAlloc);
+    if (it == gXDino_allocs.end())
+        DINO_CRITICAL("Libération de mémoire qui n'a jamais été alloué.");
+    if (it->second == 0)
+        DINO_CRITICAL("Libération de mémoire qui a déjà été allouée.");
+    munmap(pAlloc, it->second);
+}
+
 void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
 {
     slog_func("dino", 1, 0, msg, line, pFunc, nullptr);

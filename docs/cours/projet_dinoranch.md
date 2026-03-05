@@ -20,7 +20,6 @@ Des indications sont données pour accélérer le développement sur les aspects
 3. L'affichage du dinosaure est animé suivant ses déplacements.
 4. Le dinosaure peut se prendre des dégâts (= immobilisation 3 secondes + animation).
 5. 4 dinosaures sont affichables et individuellement déplaçables.
-6. Les dinosaures peuvent être devant les autres et être affichés suivant lequel est devant.
 
 Les images de dinosaures sont dans la spritesheet `dinosaurs.png`, disposées sur une grille
 de **24x24 pixels**.
@@ -45,9 +44,9 @@ Les dinosaures de différentes couleurs correspondent à des positions V :
 ### F2. Le terrain
 
 1. L'océan est affiché sur toute la fenêtre, et une zone centrale de terrain de **256x192 pixels**.
-2. La frontière terrain/océan est dessinée avec le tileset et animée.
+2. Le terrain peut avoir au hasard une des quatre saisons.
 3. Des fleurs sont positionnées sur le terrain aléatoirement à chaque début de partie.
-4. Le terrain peut avoir au hasard une des quatre saisons.
+4. *(PROJET)* La frontière terrain/océan est dessinée avec le tileset et animée.
 
 Les images du terrain sont dans le tileset `terrain.png`.
 
@@ -85,8 +84,7 @@ Pour obtenir les saisons, il faut ajouter dans l'ordre **U += (0, 80, 160, 240)*
 
 1. Des animaux apparaissent au hasard sur le terrain (1 par seconde).
 2. Les animaux se déplacent aléatoirement et sont correctement animés.
-3. Les dinosaures et les animaux sont affichés les uns derrière les autres, suivant leur position verticale.
-4. Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.
+3. Pendant l'apparition, les animaux passent d'invisible à transparent à opaque.
 
 Les images d'animaux sont dans la spritesheet `animals.png`.
 
@@ -126,14 +124,14 @@ Les différents animaux correspondent à des décalage de positions U :
    du terrain, ils prennent une nouvelle direction aléatoirement.
 3. Quand les dinosaures sont en collision (distance < 16 pixels), ils se repoussent.
 4. Les animaux se repoussent entre eux, et aussi les animaux et les dinosaures entre eux.
-5. Quand un dinosaure est dans une boucle de lasso,
+5. Les dinosaures et les animaux sont affichés les uns derrière les autres, suivant leur position verticale.
+6. Quand un dinosaure est dans une boucle de lasso,
    il se prend des dégâts (= immobilisation 3 secondes + animation).
-6. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
+7. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
+8. Un chronomètre de 60 secondes est affiché en haut de l'écran (centré horizontalement) et décroit.
+9. Plus le chronomètre est bas, plus les animaux apparaissent vite.
 
-### F6. Scoring et chronomètre
-
-Un chronomètre de 3 minutes est affiché en haut de l'écran (centré horizontalement) et décroit.
-Plus le chronomètre est bas, plus les animaux apparaissent vite.
+### F6. *(PROJET)* Scoring
 
 Quand le lasso fait une boucle, le score donné au joueur dépend des animaux :
 pour chaque type d'animaux (vache, autruche, cochon et mouton), le premier animal de ce type
@@ -144,10 +142,6 @@ Quand les animaux disparaissent, une petite notification contenant le texte `+10
 à leur emplacement, avec le texte colorié suivant le joueur qui a fermé la boucle.
 
 Sur le côté gauche de l'écran, le score des 4 joueurs est affiché, chacun suivant la couleur du dinosaure.
-
-> **CONSEIL:** Pour pouvoir positionner le texte précisément, modifiez Dino_CreateDrawCall_Text()
-> pour prendre un DinoVec2 en paramètre de sortie (pointeur vers non-const) dans lequel sera stockée
-> la taille en pixels du bloc de texte.
 
 ### F7. Lobby et flow du jeu
 

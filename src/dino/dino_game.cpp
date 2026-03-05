@@ -13,6 +13,10 @@ double scale = 1.0;
 DinoVec2 circlePos = {};
 std::vector<DinoVec2> polyline;
 
+// Variables globales pour l'affichage de debug.
+double debugLastTime = 0;
+int debugScroll = 0;
+
 // Constantes.
 constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
@@ -134,6 +138,24 @@ void Dino_GameFrame(double timeSinceStart)
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         drawCall.scale = 2;
         XDino_Draw(drawCall);
+    }
+
+    // Affichage des statistiques si on appuie sur SHIFT.
+    DinoGamepad keyboard;
+    bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
+    if (bKeyboardOk && keyboard.select) {
+        // On défile les statistiques à une vitesse de 5 lignes par seconde (une toutes les 200ms).
+        if (timeSinceStart - debugLastTime >= 0.2) {
+            int diff = 0;
+            if (keyboard.dpad_up)
+                diff -= 1;
+            if (keyboard.dpad_down)
+                diff += 1;
+            debugScroll += diff;
+            if (diff)
+                debugLastTime = timeSinceStart;
+        }
+        debugScroll = XDino_DrawStats(debugScroll);
     }
 }
 

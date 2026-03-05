@@ -101,6 +101,12 @@ void XDino_SetClearColor(DinoColor color);
 /// Transfère les triangles à dessiner à la carte graphique.
 void XDino_Draw(DinoDrawCall drawCall);
 
+/// Affiche les statistiques de consommation mémoire et de ressources chargées.
+/// - 'maxlines' détermine combien de lignes sont affichés au maximum.
+/// - 'scroll' détermine quelle est la première ligne à afficher.
+/// - Retourne la valeur de scroll adaptée pour être "bloquée" sur les bords de l'affichage.
+int XDino_DrawStats(int scroll, int maxlines = 10, float scale = 2);
+
 /// @}
 
 /// @name API clavier/souris/manette, à appeler à l'intérieur de `Dino_GameUpdate()`.
@@ -168,6 +174,18 @@ float XDino_RandomFloat(float min, float max);
 
 /// Génère un vecteur unitaire dans une direction aléatoire.
 DinoVec2 XDino_RandomUnitVec2();
+
+/// @}
+
+/// @name API d'allocations mémoire
+/// @{
+
+/// Alloue une zone mémoire contenant au moins 'size' octets.
+/// Retourne un pointeur vers le début de cette zone mémoire.
+void* XDino_MemAlloc(size_t size, char const* pLabel);
+
+/// Libère la zone mémoire commençant à 'pAlloc'.
+void XDino_MemFree(void* pAlloc);
 
 /// @}
 
