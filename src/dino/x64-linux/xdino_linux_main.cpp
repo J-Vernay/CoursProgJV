@@ -161,6 +161,8 @@ void XDino_Linux_Init()
     if (texID != XDino_TEXID_FONT)
         DINO_CRITICAL("TEXID_FONT illogique.");
 
+    gXDino_vertexBuffers.emplace(0, "EMPTY");
+
     stm_setup();
     gXDino_initTick = stm_now();
 

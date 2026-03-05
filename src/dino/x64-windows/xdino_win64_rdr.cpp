@@ -325,6 +325,7 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
     hr = gXDino_device->CreateBlendState(&blendDesc, &gXDino_blendState);
     if (FAILED(hr))
         DINO_CRITICAL("CreateBlendState failed");
+
     unsigned char WHITE_TEXTURE[] = {255, 255, 255, 255};
     uint64_t texID = XDino_Win64_CreateTexture("WHITE", 1, 1, WHITE_TEXTURE);
     if (texID != XDino_TEXID_WHITE)
@@ -332,6 +333,8 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
     texID = XDino_CreateGpuTexture("monogram-bitmap.png");
     if (texID != XDino_TEXID_FONT)
         DINO_CRITICAL("TEXID_FONT illogique.");
+
+    gXDino_vertexBuffers.emplace(0, "EMPTY");
 }
 
 void XDino_Win64_ResizeRenderer(int32_t width, int32_t height)
