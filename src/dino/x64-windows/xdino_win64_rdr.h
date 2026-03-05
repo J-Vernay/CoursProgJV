@@ -7,7 +7,7 @@
 
 #include <cstdint>
 #include <string>
-#include <Windows.h>
+#include <windows.h>
 
 /// @name API de rendus propre à la plateforme.
 /// Ces fonctions communiquent avec la carte graphique et sont par conséquent
@@ -21,7 +21,7 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height);
 void XDino_Win64_ResizeRenderer(int32_t width, int32_t height);
 
 /// Spécifique à la plateforme. Charge une texture.
-void XDino_Win64_CreateTexture(std::string const& textureName);
+uint64_t XDino_Win64_CreateTexture(char const* pName, int w, int h, void const* pData);
 
 /// Spécifique à la plateforme. Commence la passe de rendu.
 void XDino_Win64_BeginDraw();

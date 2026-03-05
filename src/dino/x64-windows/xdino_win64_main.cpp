@@ -2,8 +2,8 @@
 /// @brief Implémentation de la fenêtre et des événements sur Windows.
 
 // COMMENTAIRE
-#include <dino/xdino.h>
 #include <dino/x64-windows/xdino_win64_rdr.h>
+#include <dino/xdino.h>
 
 // COMMENTAIRE
 #include <cmath>
@@ -11,8 +11,8 @@
 #include <random>
 
 // COMMENTAIRE
-#include <Windows.h>
-#include <Xinput.h>
+#include <windows.h>
+#include <xinput.h>
 
 // COMMENTAIRE
 #ifdef USE_PIX
@@ -165,7 +165,9 @@ void XDino_Win64_DestroyWindow()
 void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
 {
     char buffer[8192];
-    snprintf(buffer, sizeof(buffer), "%s\n%s (line %d)", msg, pFunc, line);
+    snprintf(buffer, sizeof(buffer), "%s\n%s (line %d)\n", msg, pFunc, line);
+    fputs(buffer, stderr);
+    TerminateProcess(GetCurrentProcess(), -1);
     MessageBoxA(gXDino_hWindow, buffer, "Error", MB_SYSTEMMODAL | MB_SETFOREGROUND | MB_ICONERROR | MB_OK);
 }
 

@@ -57,6 +57,8 @@ struct XDino_Linux_Texture {
     sg_image image;
     sg_view view;
 };
+std::map<uint64_t, XDino_Linux_Texture> gXDino_textures;
+uint64_t gXDino_textureCounter = 0;
 
 struct XDino_Linux_Gamepad {
     bool bValid = false;
@@ -76,8 +78,6 @@ struct alignas(16) XDino_Linux_Uniforms {
     float rot_sin;
     float scale;
 };
-std::map<uint64_t, XDino_Linux_Texture> gXDino_textures;
-uint64_t gXDino_textureCounter = 0;
 
 std::vector<DinoDrawCall> gXDino_drawCalls;
 
