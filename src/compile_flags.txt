@@ -3,3 +3,4 @@
 -I.
 -I../external
 -DXDINO_X64_LINUX=1
+-I/usr/x86_64-w64-mingw32/include

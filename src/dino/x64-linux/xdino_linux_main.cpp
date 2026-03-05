@@ -356,10 +356,10 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID)
         return;
 
     if (vbufID >= gXDino_vertexBufferCounter)
-        DINO_CRITICAL("Destruction d'une texture qui n'a jamais existée.");
+        DINO_CRITICAL("Destruction d'un vertex buffer qui n'a jamais existée.");
     auto it = gXDino_vertexBuffers.find(vbufID);
     if (it == gXDino_vertexBuffers.end())
-        DINO_CRITICAL("Destruction d'une texture déjà détruite.");
+        DINO_CRITICAL("Destruction d'un vertex buffer déjà détruite.");
     sg_destroy_buffer(it->second.buffer);
     gXDino_vertexBuffers.erase(it);
 }
@@ -404,14 +404,14 @@ void XDino_Draw(DinoDrawCall drawCall)
 int XDino_DrawStats(int scroll, int maxlines, float scale)
 {
     std::vector<std::string> lines;
-    lines.emplace_back("[Textures]");
+    lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
     for (auto& [id, tex] : gXDino_textures) {
         lines.push_back(
             std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
         );
     }
     lines.emplace_back();
-    lines.emplace_back("[VertexBuffers]");
+    lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
     for (auto& [id, vbuf] : gXDino_vertexBuffers) {
         lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
     }

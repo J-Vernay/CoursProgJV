@@ -50,7 +50,6 @@ ID3D11RenderTargetView* gXDino_rtv = nullptr;
 ID3D11VertexShader* gXDino_vertexShader = nullptr;
 ID3D11PixelShader* gXDino_pixelShader = nullptr;
 ID3D11InputLayout* gXDino_inputLayout = nullptr;
-ID3D11Buffer* gXDino_vertexBuffer = nullptr;
 ID3D11Buffer* gXDino_constantBuffer = nullptr;
 ID3D11RasterizerState* gXDino_rasterState = nullptr;
 ID3D11BlendState* gXDino_blendState = nullptr;
@@ -67,7 +66,13 @@ struct XDino_Win64_Texture {
 std::map<uint64_t, XDino_Win64_Texture> gXDino_textures;
 uint64_t gXDino_textureCounter = 0;
 
-std::vector<DinoDrawCall> gXDino_drawCalls;
+struct XDino_Win64_VertexBuffer {
+    std::string name;
+    size_t count = 0;
+    ID3D11Buffer* buffer = nullptr;
+};
+std::map<uint64_t, XDino_Win64_VertexBuffer> gXDino_vertexBuffers;
+uint64_t gXDino_vertexBufferCounter = 1;
 
 #pragma endregion
 
@@ -289,16 +294,6 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
     pVertexShaderBlob->Release();
     pPixelShaderBlob->Release();
 
-    D3D11_BUFFER_DESC bufferDesc = {};
-    bufferDesc.ByteWidth = sizeof(DinoVertex) * XDino_VERTEX_BUFFER_COUNT;
-    bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-    bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-    hr = gXDino_device->CreateBuffer(&bufferDesc, nullptr, &gXDino_vertexBuffer);
-    if (FAILED(hr))
-        DINO_CRITICAL("CreateBuffer vertex failed");
-
     D3D11_BUFFER_DESC cbufferDesc = {};
     cbufferDesc.ByteWidth = sizeof(XDino_Win64_CBuffer);
     cbufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -416,21 +411,11 @@ uint64_t XDino_Win64_CreateTexture(char const* pName, int w, int h, void const* 
 
 void XDino_Win64_BeginDraw()
 {
-    gXDino_drawCalls.resize(0);
-}
-
-void XDino_Win64_EndDraw()
-{
-    XDino_ProfileBegin(DinoColor_GREY, "XDino_Win64_EndDraw");
-
     DinoColor color = gXDino_clearColor;
     float clearColor[4] = {color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f};
     gXDino_context->ClearRenderTargetView(gXDino_rtv, clearColor);
 
-    UINT stride = sizeof(DinoVertex);
-    UINT offset = 0;
     gXDino_context->IASetInputLayout(gXDino_inputLayout);
-    gXDino_context->IASetVertexBuffers(0, 1, &gXDino_vertexBuffer, &stride, &offset);
     gXDino_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     gXDino_context->VSSetShader(gXDino_vertexShader, nullptr, 0);
@@ -458,56 +443,10 @@ void XDino_Win64_EndDraw()
     gXDino_context->OMSetRenderTargets(1, &gXDino_rtv, nullptr);
 
     gXDino_context->OMSetBlendState(gXDino_blendState, nullptr, 0xFFFFFFFF);
+}
 
-    for (DinoDrawCall const& drawCall : gXDino_drawCalls) {
-        D3D11_MAPPED_SUBRESOURCE resource;
-
-        // Envoyer la texture à la carte graphique, si elle n'existe pas déjà.
-
-        auto it = gXDino_textures.find(drawCall.texID);
-        if (it == gXDino_textures.end())
-            DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
-        XDino_Win64_Texture const& texture = it->second;
-
-        gXDino_context->PSSetShaderResources(0, 1, &texture.pTextureView);
-        gXDino_context->PSSetSamplers(0, 1, &texture.pTextureSampler);
-
-        // Mettre à jour les transformations.
-
-        double rotationRadians = drawCall.rotation * (std::numbers::pi / 180.0);
-        XDino_Win64_CBuffer cbuffer{};
-        cbuffer.half_vp_size_x = gXDino_rdrWidth / 2.f;
-        cbuffer.half_vp_size_y = gXDino_rdrHeight / 2.f;
-        cbuffer.tex_size_x = static_cast<float>(texture.width);
-        cbuffer.tex_size_y = static_cast<float>(texture.height);
-        cbuffer.offset_x = static_cast<float>(drawCall.translation.x);
-        cbuffer.offset_y = static_cast<float>(drawCall.translation.y);
-        cbuffer.rot_cos = static_cast<float>(std::cos(rotationRadians));
-        cbuffer.rot_sin = static_cast<float>(std::sin(rotationRadians));
-        cbuffer.scale = static_cast<float>(drawCall.scale);
-
-        gXDino_context->Map(gXDino_constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-        memcpy(resource.pData, &cbuffer, sizeof(cbuffer));
-        gXDino_context->Unmap(gXDino_constantBuffer, 0);
-
-        // Envoyer les sommets de triangle à la carte graphique.
-
-        XDino_ProfileBegin(
-            {0x44, 0x44, 0x44, 0xFF},
-            std::format("Map {} vertices ({})", drawCall.vertices.size(), drawCall.textureName).c_str()
-        );
-        gXDino_context->Map(gXDino_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-        memcpy(resource.pData, drawCall.vertices.data(), drawCall.vertices.size() * sizeof(DinoVertex));
-        gXDino_context->Unmap(gXDino_vertexBuffer, 0);
-        XDino_ProfileEnd();
-
-        XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, std::format("Draw {}", drawCall.textureName).c_str());
-        gXDino_context->Draw(static_cast<UINT>(drawCall.vertices.size()), 0);
-        XDino_ProfileEnd();
-    }
-
-    XDino_ProfileEnd();
-
+void XDino_Win64_EndDraw()
+{
     XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, "SwapchainPresent");
     gXDino_swapchain->Present(1, 0);
     XDino_ProfileEnd();
@@ -515,8 +454,6 @@ void XDino_Win64_EndDraw()
 
 void XDino_Win64_DestroyRenderer()
 {
-    gXDino_drawCalls.clear();
-
     for (auto& [name, texture] : gXDino_textures) {
         texture.pTextureSampler->Release();
         texture.pTextureView->Release();
@@ -530,8 +467,6 @@ void XDino_Win64_DestroyRenderer()
     gXDino_rasterState = nullptr;
     gXDino_constantBuffer->Release();
     gXDino_constantBuffer = nullptr;
-    gXDino_vertexBuffer->Release();
-    gXDino_vertexBuffer = nullptr;
     gXDino_inputLayout->Release();
     gXDino_inputLayout = nullptr;
     gXDino_pixelShader->Release();
@@ -604,21 +539,107 @@ void XDino_DestroyGpuTexture(uint64_t texID)
     gXDino_textures.erase(it);
 }
 
+uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
+{
+    XDino_ProfileBegin(
+        {0x44, 0x44, 0x44, 0xFF}, std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
+    );
+    D3D11_BUFFER_DESC bufferDesc = {};
+    bufferDesc.ByteWidth = sizeof(DinoVertex) * vertexCount;
+    bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+    bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+    D3D11_SUBRESOURCE_DATA bufferData = {};
+    bufferData.pSysMem = pVertices;
+
+    ID3D11Buffer* buf = nullptr;
+    HRESULT hr = gXDino_device->CreateBuffer(&bufferDesc, &bufferData, &buf);
+    if (FAILED(hr))
+        DINO_CRITICAL("CreateBuffer vertex failed");
+
+    uint64_t vbufID = gXDino_vertexBufferCounter++;
+    XDino_Win64_VertexBuffer vbuf;
+    vbuf.name = pLabel;
+    vbuf.count = vertexCount;
+    vbuf.buffer = buf;
+    gXDino_vertexBuffers.emplace(vbufID, vbuf);
+    XDino_ProfileEnd();
+    return vbufID;
+}
+
+void XDino_DestroyVertexBuffer(uint64_t vbufID)
+{
+    if (vbufID == 0)
+        return;
+
+    if (vbufID >= gXDino_vertexBufferCounter)
+        DINO_CRITICAL("Destruction d'un vertex buffer qui n'a jamais existée.");
+    auto it = gXDino_vertexBuffers.find(vbufID);
+    if (it == gXDino_vertexBuffers.end())
+        DINO_CRITICAL("Destruction d'un vertex buffer déjà détruite.");
+    it->second.buffer->Release();
+    gXDino_vertexBuffers.erase(it);
+}
+
 void XDino_Draw(DinoDrawCall drawCall)
 {
-    if (drawCall.vertices.empty())
+    XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, std::format("Draw {} {}", texture.name, vbuf.name).c_str());
+    D3D11_MAPPED_SUBRESOURCE resource;
+
+    auto itTex = gXDino_textures.find(drawCall.texID);
+    if (itTex == gXDino_textures.end())
+        DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
+    XDino_Win64_Texture const& texture = itTex->second;
+
+    if (drawCall.vbufID == 0)
         return;
-    gXDino_drawCalls.emplace_back(std::move(drawCall));
+
+    auto itVbuf = gXDino_vertexBuffers.find(drawCall.vbufID);
+    if (itVbuf == gXDino_vertexBuffers.end())
+        DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
+    XDino_Win64_VertexBuffer const& vbuf = itVbuf->second;
+
+    gXDino_context->PSSetShaderResources(0, 1, &texture.pTextureView);
+    gXDino_context->PSSetSamplers(0, 1, &texture.pTextureSampler);
+
+    // Mettre à jour les transformations.
+
+    double rotationRadians = drawCall.rotation * (std::numbers::pi / 180.0);
+    XDino_Win64_CBuffer cbuffer{};
+    cbuffer.half_vp_size_x = gXDino_rdrWidth / 2.f;
+    cbuffer.half_vp_size_y = gXDino_rdrHeight / 2.f;
+    cbuffer.tex_size_x = static_cast<float>(texture.width);
+    cbuffer.tex_size_y = static_cast<float>(texture.height);
+    cbuffer.offset_x = static_cast<float>(drawCall.translation.x);
+    cbuffer.offset_y = static_cast<float>(drawCall.translation.y);
+    cbuffer.rot_cos = static_cast<float>(std::cos(rotationRadians));
+    cbuffer.rot_sin = static_cast<float>(std::sin(rotationRadians));
+    cbuffer.scale = static_cast<float>(drawCall.scale);
+
+    gXDino_context->Map(gXDino_constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+    memcpy(resource.pData, &cbuffer, sizeof(cbuffer));
+    gXDino_context->Unmap(gXDino_constantBuffer, 0);
+
+    UINT stride = sizeof(DinoVertex);
+    UINT offset = 0;
+    gXDino_context->IASetVertexBuffers(0, 1, &vbuf.buffer, &stride, &offset);
+    gXDino_context->Draw(static_cast<UINT>(vbuf.count), 0);
+    XDino_ProfileEnd();
 }
 
 int XDino_DrawStats(int scroll, int maxlines, float scale)
 {
     std::vector<std::string> lines;
-    lines.emplace_back("[Textures]");
+    lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
     for (auto& [id, tex] : gXDino_textures) {
         lines.push_back(
             std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
         );
+    }
+    lines.emplace_back();
+    lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
+    for (auto& [id, vbuf] : gXDino_vertexBuffers) {
+        lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
     }
 
     return XDinoImpl_DrawStats(scroll, maxlines, scale, std::move(lines));
