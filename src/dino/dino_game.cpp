@@ -11,7 +11,10 @@ double lastTime = 0;
 double rotation = 360.0;
 double scale = 1.0;
 DinoVec2 circlePos = {};
-std::vector<DinoVec2> polyline;
+
+DinoDrawCall drawPolyline;
+DinoDrawCall drawImageMilieu;
+DinoDrawCall drawCircle;
 
 // Variables globales pour l'affichage de debug.
 double debugLastTime = 0;
@@ -26,11 +29,59 @@ void Dino_GameInit()
     XDino_SetRenderSize(windowSize);
     circlePos = {windowSize.x / 2, windowSize.y / 2};
 
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-    polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-    polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
+    // Préparation du drawcall de la polyline (zigzag en fond).
+    {
+        constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
+
+        std::vector<DinoVec2> polyline;
+        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
+        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
+        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
+        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
+        polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
+        drawPolyline = Dino_CreateDrawCall_Polyline(polyline, 100, POLYLINE_COLOR);
+    }
+
+    // Préparation du drawcall de l'image au milieu qu'on peut tourner.
+    {
+        constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
+        constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
+        constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
+        constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
+
+        std::vector<DinoVertex> vs;
+        vs.resize(6);
+        vs[0].pos = {-1, -1};
+        vs[0].color = PURPLE;
+        vs[1].pos = {1, -1};
+        vs[1].color = CYAN;
+        vs[2].pos = {-1, 1};
+        vs[2].color = PINK;
+        vs[3].pos = {1, -1};
+        vs[3].color = CYAN;
+        vs[4].pos = {-1, 1};
+        vs[4].color = PINK;
+        vs[5].pos = {1, 1};
+        vs[5].color = ORANGE;
+        vs[0].u = 0;
+        vs[0].v = 0;
+        vs[1].u = 96;
+        vs[1].v = 0;
+        vs[2].u = 0;
+        vs[2].v = 96;
+        vs[3].u = 96;
+        vs[3].v = 0;
+        vs[4].u = 0;
+        vs[4].v = 96;
+        vs[5].u = 96;
+        vs[5].v = 96;
+
+        drawImageMilieu.vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
+        drawImageMilieu.texID = XDino_TEXID_FONT;
+    }
+
+    // Préparation du drawcall du cercle qu'on peut bouger.
+    drawCircle = Dino_CreateDrawCall_Circle(20);
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -64,15 +115,11 @@ void Dino_GameFrame(double timeSinceStart)
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-    constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
 
     // Dessin de la "polyligne"
-    {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Polyline(polyline, 100, POLYLINE_COLOR);
-        XDino_Draw(drawCall);
-    }
+    XDino_Draw(drawPolyline);
 
     // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
     // DinoVec2 windowSize = XDino_GetWindowSize();
@@ -81,55 +128,16 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin de la texture centrale qu'on peut bouger.
     {
-        constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
-        constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
-        constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
-        constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
-
-        float quarterWidth = renderSize.x / 4;
-        float quarterHeight = renderSize.y / 4;
-
-        DinoDrawCall drawCall;
-        drawCall.vertices.resize(6);
-        drawCall.vertices[0].pos = {-quarterWidth, -quarterHeight};
-        drawCall.vertices[0].color = PURPLE;
-        drawCall.vertices[1].pos = {quarterWidth, -quarterHeight};
-        drawCall.vertices[1].color = CYAN;
-        drawCall.vertices[2].pos = {-quarterWidth, quarterHeight};
-        drawCall.vertices[2].color = PINK;
-        drawCall.vertices[3].pos = {quarterWidth, -quarterHeight};
-        drawCall.vertices[3].color = CYAN;
-        drawCall.vertices[4].pos = {-quarterWidth, quarterHeight};
-        drawCall.vertices[4].color = PINK;
-        drawCall.vertices[5].pos = {quarterWidth, quarterHeight};
-        drawCall.vertices[5].color = ORANGE;
-
-        drawCall.translation = {renderSize.x / 2, renderSize.y / 2};
-        drawCall.rotation = rotation;
-        drawCall.scale = scale;
-
-        drawCall.vertices[0].u = 0;
-        drawCall.vertices[0].v = 0;
-        drawCall.vertices[1].u = 96;
-        drawCall.vertices[1].v = 0;
-        drawCall.vertices[2].u = 0;
-        drawCall.vertices[2].v = 96;
-        drawCall.vertices[3].u = 96;
-        drawCall.vertices[3].v = 0;
-        drawCall.vertices[4].u = 0;
-        drawCall.vertices[4].v = 96;
-        drawCall.vertices[5].u = 96;
-        drawCall.vertices[5].v = 96;
-        drawCall.texID = XDino_TEXID_FONT;
-
-        XDino_Draw(drawCall);
+        drawImageMilieu.translation = {renderSize.x / 2, renderSize.y / 2};
+        drawImageMilieu.rotation = rotation;
+        drawImageMilieu.scale = scale * std::min(renderSize.x, renderSize.y) / 4;
+        XDino_Draw(drawImageMilieu);
     }
 
     // Dessin du cercle que l'on peut bouger.
     {
-        DinoDrawCall drawCall = Dino_CreateDrawCall_Circle(20);
-        drawCall.translation = circlePos;
-        XDino_Draw(drawCall);
+        drawCircle.translation = circlePos;
+        XDino_Draw(drawCircle);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
@@ -138,14 +146,15 @@ void Dino_GameFrame(double timeSinceStart)
         DinoDrawCall drawCall = Dino_CreateDrawCall_Text(text, DinoColor_WHITE, DinoColor_GREY);
         drawCall.scale = 2;
         XDino_Draw(drawCall);
+        XDino_DestroyVertexBuffer(drawCall.vbufID);
     }
 
     // Affichage des statistiques si on appuie sur SHIFT.
     DinoGamepad keyboard;
     bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
     if (bKeyboardOk && keyboard.select) {
-        // On défile les statistiques à une vitesse de 5 lignes par seconde (une toutes les 200ms).
-        if (timeSinceStart - debugLastTime >= 0.2) {
+        // On défile les statistiques à une vitesse de 10 lignes par seconde (une toutes les 100ms).
+        if (timeSinceStart - debugLastTime >= 0.1) {
             int diff = 0;
             if (keyboard.dpad_up)
                 diff -= 1;

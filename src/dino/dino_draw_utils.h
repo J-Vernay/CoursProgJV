@@ -5,8 +5,8 @@
 #pragma once
 
 #include <dino/xdino.h>
-#include <string_view>
 #include <span>
+#include <string_view>
 
 /// @name Fonctions CreateDrawCall
 /// Ces fonctions créent des `DinoDrawCall` avec `vertices` et `textureName`.
@@ -17,6 +17,8 @@
 /// La position (0,0) correspond au centre du cercle, qu'il faut décaler grâce à `translation`.
 /// @param radius Rayon du cercle, en pixels.
 /// @param color Couleur du cercle.
+///
+/// @attention Le 'vbufID' retourné a été tout juste créé; l'appelant est responsable de la détruire ensuite !
 DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color = DinoColor_WHITE);
 
 /// Produit un dessin contenant du texte, avec éventuellement une couleur de fond.
@@ -25,14 +27,21 @@ DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color = DinoColo
 /// @param color Couleur du texte.
 /// @param colorBackground Couleur du rectangle affiché derrière le texte.
 /// @param pOutSize Si non-NULL, récupère la taille en pixels du texte.
-DinoDrawCall Dino_CreateDrawCall_Text(std::string_view text, DinoColor color = DinoColor_WHITE,
-                                      DinoColor colorBackground = DinoColor_INVISIBLE, DinoVec2* pOutSize = nullptr);
+///
+/// @attention Le 'vbufID' retourné a été tout juste créé; l'appelant est responsable de la détruire ensuite !
+DinoDrawCall Dino_CreateDrawCall_Text(
+    std::string_view text, DinoColor color = DinoColor_WHITE, DinoColor colorBackground = DinoColor_INVISIBLE,
+    DinoVec2* pOutSize = nullptr
+);
 
 /// Produit un dessin contenant une liste de segments, tous reliés.
 /// @param points Liste de points par lesquels la polyligne passe.
 /// @param width Epaisseur du trait, en pixels.
 /// @param color Couleur du trait.
-DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width,
-                                          DinoColor color = DinoColor_WHITE);
+///
+/// @attention Le 'vbufID' retourné a été tout juste créé; l'appelant est responsable de la détruire ensuite !
+DinoDrawCall Dino_CreateDrawCall_Polyline(
+    std::span<DinoVec2 const> points, float width, DinoColor color = DinoColor_WHITE
+);
 
 /// @}

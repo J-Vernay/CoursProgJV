@@ -1,21 +1,24 @@
-﻿#include <dino/dino_draw_utils.h>
+﻿#include "dino/xdino.h"
+#include <dino/dino_draw_utils.h>
 #include <math.h>
 
 DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
 {
     DinoDrawCall drawCall;
     drawCall.texID = XDino_TEXID_FONT;
-    drawCall.vertices.reserve(6);
+    std::vector<DinoVertex> vs;
+    vs.reserve(6);
     DinoVec2 posA = {-radius, -radius};
     DinoVec2 posB = {radius, -radius};
     DinoVec2 posC = {-radius, radius};
     DinoVec2 posD = {radius, radius};
-    drawCall.vertices.emplace_back(posA, 72, 0, color);
-    drawCall.vertices.emplace_back(posB, 96, 0, color);
-    drawCall.vertices.emplace_back(posC, 72, 24, color);
-    drawCall.vertices.emplace_back(posB, 96, 0, color);
-    drawCall.vertices.emplace_back(posC, 72, 24, color);
-    drawCall.vertices.emplace_back(posD, 96, 24, color);
+    vs.emplace_back(posA, 72, 0, color);
+    vs.emplace_back(posB, 96, 0, color);
+    vs.emplace_back(posC, 72, 24, color);
+    vs.emplace_back(posB, 96, 0, color);
+    vs.emplace_back(posC, 72, 24, color);
+    vs.emplace_back(posD, 96, 24, color);
+    drawCall.vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
     return drawCall;
 }
 
@@ -26,12 +29,13 @@ DinoDrawCall Dino_CreateDrawCall_Text(
     DinoDrawCall drawCall;
     drawCall.texID = XDino_TEXID_FONT;
     // Il y a au maximum un quad = deux triangles pour chaque octet du texte, et un quad pour le fond.
-    drawCall.vertices.reserve(6 + 6 * text.size());
+    std::vector<DinoVertex> vs;
+    vs.reserve(6 + 6 * text.size());
 
     // On laisse les 6 premiers vertices pour le fond, pour qu'il soit dessiné en premier.
     // On donnera les positions à la fin, car on ne connait pas encore la taille du texte.
     if (colorBackground.a > 0)
-        drawCall.vertices.resize(6);
+        vs.resize(6);
 
     // Dimensions en pixels des lettres dans la texture.
     constexpr uint16_t QUAD_WIDTH = 6;
@@ -69,12 +73,12 @@ DinoDrawCall Dino_CreateDrawCall_Text(
             DinoVec2 posB = {static_cast<float>(x + QUAD_WIDTH), static_cast<float>(y)};
             DinoVec2 posC = {static_cast<float>(x), static_cast<float>(y + QUAD_HEIGHT)};
             DinoVec2 posD = {static_cast<float>(x + QUAD_WIDTH), static_cast<float>(y + QUAD_HEIGHT)};
-            drawCall.vertices.emplace_back(posA, u, v, color);
-            drawCall.vertices.emplace_back(posB, u + QUAD_WIDTH, v, color);
-            drawCall.vertices.emplace_back(posC, u, v + QUAD_HEIGHT, color);
-            drawCall.vertices.emplace_back(posB, u + QUAD_WIDTH, v, color);
-            drawCall.vertices.emplace_back(posC, u, v + QUAD_HEIGHT, color);
-            drawCall.vertices.emplace_back(posD, u + QUAD_WIDTH, v + QUAD_HEIGHT, color);
+            vs.emplace_back(posA, u, v, color);
+            vs.emplace_back(posB, u + QUAD_WIDTH, v, color);
+            vs.emplace_back(posC, u, v + QUAD_HEIGHT, color);
+            vs.emplace_back(posB, u + QUAD_WIDTH, v, color);
+            vs.emplace_back(posC, u, v + QUAD_HEIGHT, color);
+            vs.emplace_back(posD, u + QUAD_WIDTH, v + QUAD_HEIGHT, color);
 
             x += QUAD_WIDTH;
         }
@@ -86,27 +90,27 @@ DinoDrawCall Dino_CreateDrawCall_Text(
 
     if (colorBackground.a > 0) {
         // Les 6 premiers points ont été laissés libres pour le fond.
-        drawCall.vertices[0] = {
+        vs[0] = {
             {0, 0},
             0, 0, colorBackground
         };
-        drawCall.vertices[1] = {
+        vs[1] = {
             {width, 0},
             0, 0, colorBackground
         };
-        drawCall.vertices[2] = {
+        vs[2] = {
             {0, height},
             0, 0, colorBackground
         };
-        drawCall.vertices[3] = {
+        vs[3] = {
             {width, 0},
             0, 0, colorBackground
         };
-        drawCall.vertices[4] = {
+        vs[4] = {
             {0, height},
             0, 0, colorBackground
         };
-        drawCall.vertices[5] = {
+        vs[5] = {
             {width, height},
             0, 0, colorBackground
         };
@@ -114,6 +118,7 @@ DinoDrawCall Dino_CreateDrawCall_Text(
     if (pOutSize != nullptr)
         *pOutSize = {width, height};
 
+    drawCall.vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Text");
     return drawCall;
 }
 
@@ -152,6 +157,7 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
     if (lenAB == 0)
         return {}; // Degenerate case: all points are identical.
 
+    std::vector<DinoVertex> vs;
     for (; idxPoint <= points.size(); idxPoint += 1) {
 
         // Get next point C such that B and C are distinct.
@@ -181,12 +187,12 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
         DinoVec2 A2p{B.x - xAA1, B.y - yAA1};
 
         // Encode quad for segment AB as two triangles.
-        drawCall.vertices.emplace_back(A1, 0, 0, color);
-        drawCall.vertices.emplace_back(A2, 0, 0, color);
-        drawCall.vertices.emplace_back(A1p, 0, 0, color);
-        drawCall.vertices.emplace_back(A2, 0, 0, color);
-        drawCall.vertices.emplace_back(A1p, 0, 0, color);
-        drawCall.vertices.emplace_back(A2p, 0, 0, color);
+        vs.emplace_back(A1, 0, 0, color);
+        vs.emplace_back(A2, 0, 0, color);
+        vs.emplace_back(A1p, 0, 0, color);
+        vs.emplace_back(A2, 0, 0, color);
+        vs.emplace_back(A1p, 0, 0, color);
+        vs.emplace_back(A2p, 0, 0, color);
 
         // Determine the ABC angle's orientation.
 
@@ -204,14 +210,14 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
 
             // Generate Bevel join triangle.
             if (zAB_BC < 0) {
-                drawCall.vertices.emplace_back(B, 0, 0, color);
-                drawCall.vertices.emplace_back(A1p, 0, 0, color);
-                drawCall.vertices.emplace_back(B1, 0, 0, color);
+                vs.emplace_back(B, 0, 0, color);
+                vs.emplace_back(A1p, 0, 0, color);
+                vs.emplace_back(B1, 0, 0, color);
             }
             else {
-                drawCall.vertices.emplace_back(B, 0, 0, color);
-                drawCall.vertices.emplace_back(A2p, 0, 0, color);
-                drawCall.vertices.emplace_back(B2, 0, 0, color);
+                vs.emplace_back(B, 0, 0, color);
+                vs.emplace_back(A2p, 0, 0, color);
+                vs.emplace_back(B2, 0, 0, color);
             }
         }
         // Prepare for next segment.
@@ -220,5 +226,6 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
         lenAB = lenBC;
     }
 
+    drawCall.vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
     return drawCall;
 }

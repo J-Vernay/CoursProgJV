@@ -31,6 +31,7 @@ int XDinoImpl_DrawStats(int scroll, int maxlines, float scale, std::vector<std::
         d.scale = scale;
         XDino_Draw(std::move(d));
         pos.y += size.y * scale;
+        XDino_DestroyVertexBuffer(d.vbufID);
     }
     return scroll;
 }

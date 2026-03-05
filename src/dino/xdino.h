@@ -61,6 +61,7 @@ constexpr DinoColor DinoColor_YELLOW{0xFD, 0xC7, 0x60, 0xFF};
 constexpr DinoColor DinoColor_GREEN{0x88, 0xA0, 0x43, 0xFF};
 
 /// Charge une texture nommée 'pName' depuis le disque jusqu'à la carte graphique.
+/// Retourne l'identifiant unique de la texture.
 uint64_t XDino_CreateGpuTexture(char const* pName);
 
 /// Décharge la texture identifiée par 'texID' de la carte graphique.
@@ -84,10 +85,21 @@ struct DinoVertex {
     DinoColor color = DinoColor_WHITE;
 };
 
+/// Copie une liste de sommets de triangles texturés sur la carte graphique.
+/// Retourne l'identifiant unique de la liste de sommets.
+/// 'pLabel' est seulement utile pour avoir un nom de debug dans les statistiques.
+uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
+
+/// Décharge la liste de sommets identifiée par 'vbufID' de la carte graphique.
+void XDino_DestroyVertexBuffer(uint64_t vbufID);
+
+/// Liste de sommets qui ne contient rien, toujours valide.
+constexpr uint64_t XDino_VBUFID_EMPTY = 0;
+
 /// Représente une demande de dessin à la carte graphique.
 struct DinoDrawCall {
-    /// Sommets des triangles à envoyer à la carte graphique.
-    std::vector<DinoVertex> vertices;
+    /// Identifiant de la liste de sommets à utiliser.
+    uint64_t vbufID = XDino_VBUFID_EMPTY;
     /// Identifiant de la texture à utiliser, ou 0 une texture complètement blanche et opaque.
     uint64_t texID = XDino_TEXID_WHITE;
     /// Décalage en pixels depuis l'angle en haut à gauche.

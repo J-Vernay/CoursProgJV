@@ -60,6 +60,14 @@ struct XDino_Linux_Texture {
 std::map<uint64_t, XDino_Linux_Texture> gXDino_textures;
 uint64_t gXDino_textureCounter = 0;
 
+struct XDino_Linux_VertexBuffer {
+    std::string name;
+    size_t count = 0;
+    sg_buffer buffer;
+};
+std::map<uint64_t, XDino_Linux_VertexBuffer> gXDino_vertexBuffers;
+uint64_t gXDino_vertexBufferCounter = 1;
+
 struct XDino_Linux_Gamepad {
     bool bValid = false;
     int fd = -1;
@@ -113,6 +121,7 @@ uint64_t XDino_Linux_CreateTexture(char const* pName, int w, int h, void const* 
 void XDino_Linux_Init()
 {
     sg_desc desc{};
+    desc.buffer_pool_size = 16384;
     desc.environment = sglue_environment();
     desc.logger.func = slog_func;
     sg_setup(&desc);
@@ -163,9 +172,6 @@ void XDino_Linux_Init()
 
 void XDino_Linux_Frame()
 {
-    gXDino_drawCalls.resize(0);
-    Dino_GameFrame(stm_sec(stm_since(gXDino_initTick)));
-
     sg_pass pass{};
     pass.action = gXDino_gfxPassAction;
     pass.swapchain = sglue_swapchain();
@@ -179,41 +185,8 @@ void XDino_Linux_Frame()
     float vpy = (gXDino_windowSize.y - vph) / 2;
     sg_apply_viewportf(vpx, vpy, vpw, vph, true);
 
-    for (DinoDrawCall const& drawCall : gXDino_drawCalls) {
-        auto it = gXDino_textures.find(drawCall.texID);
-        if (it == gXDino_textures.end())
-            DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
-        XDino_Linux_Texture const& tex = it->second;
+    Dino_GameFrame(stm_sec(stm_since(gXDino_initTick)));
 
-        sg_buffer_desc desc{};
-        desc.data.ptr = drawCall.vertices.data();
-        desc.data.size = drawCall.vertices.size() * sizeof(DinoVertex);
-        desc.usage.vertex_buffer = true;
-        desc.usage.immutable = true;
-        sg_buffer buf = sg_make_buffer(&desc);
-
-        sg_bindings bindings{};
-        bindings.vertex_buffers[0] = buf;
-        bindings.views[VIEW_uTexture] = tex.view;
-        bindings.samplers[SMP_uSampler] = gXDino_gfxSampler;
-        sg_apply_bindings(&bindings);
-
-        double rotationRadians = drawCall.rotation * (std::numbers::pi / 180.0);
-        XDino_Linux_Uniforms u;
-        u.half_vp_size_x = gXDino_renderSize.x / 2.f;
-        u.half_vp_size_y = gXDino_renderSize.y / 2.f;
-        u.tex_size_x = static_cast<float>(tex.width);
-        u.tex_size_y = static_cast<float>(tex.height);
-        u.offset_x = static_cast<float>(drawCall.translation.x);
-        u.offset_y = static_cast<float>(drawCall.translation.y);
-        u.rot_cos = static_cast<float>(std::cos(rotationRadians));
-        u.rot_sin = static_cast<float>(std::sin(rotationRadians));
-        u.scale = static_cast<float>(drawCall.scale);
-
-        sg_apply_uniforms(UB_u, {&u, sizeof(u)});
-        sg_draw(0, drawCall.vertices.size(), 1);
-        sg_destroy_buffer(buf);
-    }
     sg_end_pass();
     sg_commit();
 }
@@ -359,11 +332,70 @@ void XDino_DestroyGpuTexture(uint64_t texID)
     gXDino_textures.erase(it);
 }
 
+uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
+{
+    sg_buffer_desc desc{};
+    desc.data.ptr = pVertices;
+    desc.data.size = vertexCount * sizeof(DinoVertex);
+    desc.usage.vertex_buffer = true;
+    desc.usage.immutable = true;
+    sg_buffer buf = sg_make_buffer(&desc);
+
+    uint64_t vbufID = gXDino_vertexBufferCounter++;
+    XDino_Linux_VertexBuffer vbuf;
+    vbuf.name = pLabel;
+    vbuf.count = vertexCount;
+    vbuf.buffer = buf;
+    gXDino_vertexBuffers.emplace(vbufID, vbuf);
+    return vbufID;
+}
+
+void XDino_DestroyVertexBuffer(uint64_t vbufID)
+{
+    if (vbufID >= gXDino_vertexBufferCounter)
+        DINO_CRITICAL("Destruction d'une texture qui n'a jamais existée.");
+    auto it = gXDino_vertexBuffers.find(vbufID);
+    if (it == gXDino_vertexBuffers.end())
+        DINO_CRITICAL("Destruction d'une texture déjà détruite.");
+    sg_destroy_buffer(it->second.buffer);
+    gXDino_vertexBuffers.erase(it);
+}
+
 void XDino_Draw(DinoDrawCall drawCall)
 {
-    if (drawCall.vertices.empty())
+    auto itTex = gXDino_textures.find(drawCall.texID);
+    if (itTex == gXDino_textures.end())
+        DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
+    XDino_Linux_Texture const& tex = itTex->second;
+
+    if (drawCall.vbufID == 0)
         return;
-    gXDino_drawCalls.emplace_back(std::move(drawCall));
+
+    auto itVbuf = gXDino_vertexBuffers.find(drawCall.vbufID);
+    if (itVbuf == gXDino_vertexBuffers.end())
+        DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
+    XDino_Linux_VertexBuffer const& vbuf = itVbuf->second;
+
+    sg_bindings bindings{};
+    bindings.vertex_buffers[0] = vbuf.buffer;
+    bindings.views[VIEW_uTexture] = tex.view;
+    bindings.samplers[SMP_uSampler] = gXDino_gfxSampler;
+    sg_apply_bindings(&bindings);
+
+    double rotationRadians = drawCall.rotation * (std::numbers::pi / 180.0);
+    XDino_Linux_Uniforms u;
+    u.half_vp_size_x = gXDino_renderSize.x / 2.f;
+    u.half_vp_size_y = gXDino_renderSize.y / 2.f;
+    u.tex_size_x = static_cast<float>(tex.width);
+    u.tex_size_y = static_cast<float>(tex.height);
+    u.offset_x = static_cast<float>(drawCall.translation.x);
+    u.offset_y = static_cast<float>(drawCall.translation.y);
+    u.rot_cos = static_cast<float>(std::cos(rotationRadians));
+    u.rot_sin = static_cast<float>(std::sin(rotationRadians));
+    u.scale = static_cast<float>(drawCall.scale);
+
+    sg_apply_uniforms(UB_u, {&u, sizeof(u)});
+    sg_draw(0, vbuf.count, 1);
 }
 
 int XDino_DrawStats(int scroll, int maxlines, float scale)
@@ -374,6 +406,11 @@ int XDino_DrawStats(int scroll, int maxlines, float scale)
         lines.push_back(
             std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
         );
+    }
+    lines.emplace_back();
+    lines.emplace_back("[VertexBuffers]");
+    for (auto& [id, vbuf] : gXDino_vertexBuffers) {
+        lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
     }
 
     return XDinoImpl_DrawStats(scroll, maxlines, scale, std::move(lines));
