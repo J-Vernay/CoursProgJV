@@ -170,4 +170,7 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
+    XDino_DestroyVertexBuffer(drawCircle.vbufID);
+    XDino_DestroyVertexBuffer(drawImageMilieu.vbufID);
+    XDino_DestroyVertexBuffer(drawPolyline.vbufID);
 }

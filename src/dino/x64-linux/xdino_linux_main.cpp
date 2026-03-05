@@ -352,6 +352,9 @@ uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCoun
 
 void XDino_DestroyVertexBuffer(uint64_t vbufID)
 {
+    if (vbufID == 0)
+        return;
+
     if (vbufID >= gXDino_vertexBufferCounter)
         DINO_CRITICAL("Destruction d'une texture qui n'a jamais existée.");
     auto it = gXDino_vertexBuffers.find(vbufID);
