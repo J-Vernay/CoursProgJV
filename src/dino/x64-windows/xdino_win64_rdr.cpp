@@ -584,7 +584,7 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID)
     gXDino_vertexBuffers.erase(it);
 }
 
-void XDino_Draw(DinoDrawCall drawCall)
+void XDino_Draw(DinoDrawCall const& drawCall)
 {
     XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, std::format("Draw {} {}", texture.name, vbuf.name).c_str());
     D3D11_MAPPED_SUBRESOURCE resource;

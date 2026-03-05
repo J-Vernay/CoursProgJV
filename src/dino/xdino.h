@@ -123,7 +123,7 @@ void XDino_SetRenderSize(DinoVec2 renderSize);
 void XDino_SetClearColor(DinoColor color);
 
 /// Transfère les triangles à dessiner à la carte graphique.
-void XDino_Draw(DinoDrawCall drawCall);
+void XDino_Draw(DinoDrawCall const& drawCall);
 
 /// Affiche les statistiques de consommation mémoire et de ressources chargées.
 /// - 'maxlines' détermine combien de lignes sont affichés au maximum.

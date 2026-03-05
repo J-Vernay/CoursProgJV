@@ -366,7 +366,7 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID)
     gXDino_vertexBuffers.erase(it);
 }
 
-void XDino_Draw(DinoDrawCall drawCall)
+void XDino_Draw(DinoDrawCall const& drawCall)
 {
     auto itTex = gXDino_textures.find(drawCall.texID);
     if (itTex == gXDino_textures.end())
