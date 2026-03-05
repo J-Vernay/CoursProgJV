@@ -60,6 +60,18 @@ constexpr DinoColor DinoColor_RED{0xBC, 0x4D, 0x4F, 0xFF};
 constexpr DinoColor DinoColor_YELLOW{0xFD, 0xC7, 0x60, 0xFF};
 constexpr DinoColor DinoColor_GREEN{0x88, 0xA0, 0x43, 0xFF};
 
+/// Charge une texture nommée 'pName' depuis le disque jusqu'à la carte graphique.
+uint64_t XDino_CreateGpuTexture(char const* pName);
+
+/// Décharge la texture identifiée par 'texID' de la carte graphique.
+void XDino_DestroyGpuTexture(uint64_t texID);
+
+/// Texture complètement blanche, préchargée automatiquement.
+constexpr uint64_t XDino_TEXID_WHITE = 0;
+
+/// Texture correspondant à 'monogram-bitmap.png', préchargée automatiquement.
+constexpr uint64_t XDino_TEXID_FONT = 1;
+
 /// Représente un des sommets d'un triangle envoyé à la carte graphique.
 struct DinoVertex {
     /// Position à l'écran (décalée suivant `XDino_SetTransform()`)
@@ -76,8 +88,8 @@ struct DinoVertex {
 struct DinoDrawCall {
     /// Sommets des triangles à envoyer à la carte graphique.
     std::vector<DinoVertex> vertices;
-    /// Nom de la texture à utiliser, ou vide pour une texture complètement blanche et opaque.
-    std::string textureName;
+    /// Identifiant de la texture à utiliser, ou 0 une texture complètement blanche et opaque.
+    uint64_t texID = XDino_TEXID_WHITE;
     /// Décalage en pixels depuis l'angle en haut à gauche.
     DinoVec2 translation = DinoVec2{0.0f, 0.0f};
     /// Rotation en degrés.

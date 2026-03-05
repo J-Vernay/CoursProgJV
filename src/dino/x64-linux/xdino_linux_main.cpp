@@ -5,6 +5,7 @@
 #include <dino/xdino_impl.h>
 
 #include <format>
+#include <map>
 #include <random>
 #include <unordered_map>
 #include <vector>
@@ -50,8 +51,9 @@ std::random_device gXDino_randomDevice;
 std::mt19937 gXDino_rng(gXDino_randomDevice());
 
 struct XDino_Linux_Texture {
-    uint16_t texWidth = 1;
-    uint16_t texHeight = 1;
+    std::string name;
+    uint16_t width = 1;
+    uint16_t height = 1;
     sg_image image;
     sg_view view;
 };
@@ -74,11 +76,39 @@ struct alignas(16) XDino_Linux_Uniforms {
     float rot_sin;
     float scale;
 };
-std::unordered_map<std::string, XDino_Linux_Texture> gXDino_textures;
+std::map<uint64_t, XDino_Linux_Texture> gXDino_textures;
+uint64_t gXDino_textureCounter = 0;
 
 std::vector<DinoDrawCall> gXDino_drawCalls;
 
 std::unordered_map<void*, size_t> gXDino_allocs;
+
+uint64_t XDino_Linux_CreateTexture(char const* pName, int w, int h, void const* pData)
+{
+    sg_image_desc idesc{};
+    idesc.width = w;
+    idesc.height = h;
+    idesc.num_slices = 1;
+    idesc.num_mipmaps = 1;
+    idesc.pixel_format = SG_PIXELFORMAT_RGBA8;
+    idesc.data.mip_levels[0].ptr = pData;
+    idesc.data.mip_levels[0].size = 4 * w * h;
+    sg_image i = sg_make_image(&idesc);
+
+    sg_view_desc vdesc{};
+    vdesc.texture.image = i;
+    sg_view v = sg_make_view(&vdesc);
+
+    uint64_t texID = gXDino_textureCounter++;
+    XDino_Linux_Texture tex;
+    tex.name = pName;
+    tex.width = w;
+    tex.height = h;
+    tex.image = i;
+    tex.view = v;
+    gXDino_textures.emplace(texID, tex);
+    return texID;
+}
 
 void XDino_Linux_Init()
 {
@@ -114,6 +144,14 @@ void XDino_Linux_Init()
     gXDino_gfxPassAction.colors[0].load_action = SG_LOADACTION_CLEAR;
     gXDino_gfxPassAction.colors[0].clear_value = {0, 0, 0, 1};
 
+    unsigned char WHITE_TEXTURE[] = {255, 255, 255, 255};
+    uint64_t texID = XDino_Linux_CreateTexture("WHITE", 1, 1, WHITE_TEXTURE);
+    if (texID != XDino_TEXID_WHITE)
+        DINO_CRITICAL("TEXID_WHITE illogique.");
+    texID = XDino_CreateGpuTexture("monogram-bitmap.png");
+    if (texID != XDino_TEXID_FONT)
+        DINO_CRITICAL("TEXID_FONT illogique.");
+
     stm_setup();
     gXDino_initTick = stm_now();
 
@@ -142,42 +180,10 @@ void XDino_Linux_Frame()
     sg_apply_viewportf(vpx, vpy, vpw, vph, true);
 
     for (DinoDrawCall const& drawCall : gXDino_drawCalls) {
-        if (!gXDino_textures.contains(drawCall.textureName)) {
-            std::string filePath = "assets/" + drawCall.textureName;
-            int w, h, n;
-            unsigned char WHITE_TEXTURE[] = {255, 255, 255, 255};
-            unsigned char* pData = stbi_load(filePath.c_str(), &w, &h, &n, 4);
-            if (pData == nullptr) {
-                w = 1;
-                h = 1;
-                pData = WHITE_TEXTURE;
-            }
-
-            sg_image_desc idesc{};
-            idesc.width = w;
-            idesc.height = h;
-            idesc.num_slices = 1;
-            idesc.num_mipmaps = 1;
-            idesc.pixel_format = SG_PIXELFORMAT_RGBA8;
-            idesc.data.mip_levels[0].ptr = pData;
-            idesc.data.mip_levels[0].size = 4 * w * h;
-            sg_image i = sg_make_image(&idesc);
-            if (pData != WHITE_TEXTURE)
-                stbi_image_free(pData);
-
-            sg_view_desc vdesc{};
-            vdesc.texture.image = i;
-            sg_view v = sg_make_view(&vdesc);
-
-            XDino_Linux_Texture tex;
-            tex.texWidth = w;
-            tex.texHeight = h;
-            tex.image = i;
-            tex.view = v;
-            gXDino_textures.emplace(drawCall.textureName, tex);
-        }
-
-        XDino_Linux_Texture const& tex = gXDino_textures[drawCall.textureName];
+        auto it = gXDino_textures.find(drawCall.texID);
+        if (it == gXDino_textures.end())
+            DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
+        XDino_Linux_Texture const& tex = it->second;
 
         sg_buffer_desc desc{};
         desc.data.ptr = drawCall.vertices.data();
@@ -196,8 +202,8 @@ void XDino_Linux_Frame()
         XDino_Linux_Uniforms u;
         u.half_vp_size_x = gXDino_renderSize.x / 2.f;
         u.half_vp_size_y = gXDino_renderSize.y / 2.f;
-        u.tex_size_x = static_cast<float>(tex.texWidth);
-        u.tex_size_y = static_cast<float>(tex.texHeight);
+        u.tex_size_x = static_cast<float>(tex.width);
+        u.tex_size_y = static_cast<float>(tex.height);
         u.offset_x = static_cast<float>(drawCall.translation.x);
         u.offset_y = static_cast<float>(drawCall.translation.y);
         u.rot_cos = static_cast<float>(std::cos(rotationRadians));
@@ -317,7 +323,6 @@ void XDino_SetRenderSize(DinoVec2 renderSize)
     gXDino_renderSize = renderSize;
 }
 
-/// Pour indiquer la couleur d'arrière-plan.
 void XDino_SetClearColor(DinoColor color)
 {
     constexpr float kScale = 1.f / UINT8_MAX;
@@ -327,6 +332,31 @@ void XDino_SetClearColor(DinoColor color)
     c.g = color.g * kScale;
     c.b = color.b * kScale;
     c.a = color.a * kScale;
+}
+
+uint64_t XDino_CreateGpuTexture(char const* pName)
+{
+    std::string filePath = std::format("assets/{}", pName);
+    int w, h, n;
+    unsigned char* pData = stbi_load(filePath.c_str(), &w, &h, &n, 4);
+    if (pData == nullptr)
+        DINO_CRITICAL("Impossible de créer la texture.");
+
+    uint64_t texID = XDino_Linux_CreateTexture(pName, w, h, pData);
+    stbi_image_free(pData);
+    return texID;
+}
+
+void XDino_DestroyGpuTexture(uint64_t texID)
+{
+    if (texID >= gXDino_textureCounter)
+        DINO_CRITICAL("Destruction d'une texture qui n'a jamais existée.");
+    auto it = gXDino_textures.find(texID);
+    if (it == gXDino_textures.end())
+        DINO_CRITICAL("Destruction d'une texture déjà détruite.");
+    sg_destroy_view(it->second.view);
+    sg_destroy_image(it->second.image);
+    gXDino_textures.erase(it);
 }
 
 void XDino_Draw(DinoDrawCall drawCall)
@@ -340,9 +370,9 @@ int XDino_DrawStats(int scroll, int maxlines, float scale)
 {
     std::vector<std::string> lines;
     lines.emplace_back("[Textures]");
-    for (auto& [name, tex] : gXDino_textures) {
+    for (auto& [id, tex] : gXDino_textures) {
         lines.push_back(
-            std::format("{} ({}x{}, {} bytes)", name, tex.texWidth, tex.texHeight, tex.texWidth * tex.texHeight * 4)
+            std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
         );
     }
 

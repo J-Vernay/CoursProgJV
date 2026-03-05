@@ -120,7 +120,7 @@ void Dino_GameFrame(double timeSinceStart)
         drawCall.vertices[4].v = 96;
         drawCall.vertices[5].u = 96;
         drawCall.vertices[5].v = 96;
-        drawCall.textureName = "monogram-bitmap.png";
+        drawCall.texID = XDino_TEXID_FONT;
 
         XDino_Draw(drawCall);
     }

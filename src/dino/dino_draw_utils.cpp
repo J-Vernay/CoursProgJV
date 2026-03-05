@@ -4,7 +4,7 @@
 DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
 {
     DinoDrawCall drawCall;
-    drawCall.textureName = "monogram-bitmap.png";
+    drawCall.texID = XDino_TEXID_FONT;
     drawCall.vertices.reserve(6);
     DinoVec2 posA = {-radius, -radius};
     DinoVec2 posB = {radius, -radius};
@@ -24,7 +24,7 @@ DinoDrawCall Dino_CreateDrawCall_Text(
 )
 {
     DinoDrawCall drawCall;
-    drawCall.textureName = "monogram-bitmap.png";
+    drawCall.texID = XDino_TEXID_FONT;
     // Il y a au maximum un quad = deux triangles pour chaque octet du texte, et un quad pour le fond.
     drawCall.vertices.reserve(6 + 6 * text.size());
 
