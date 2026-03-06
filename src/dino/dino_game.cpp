@@ -16,8 +16,7 @@ DinoDrawCall drawPolyline;
 DinoDrawCall drawImageMilieu;
 DinoDrawCall drawCircle;
 
-// Variables globales pour l'affichage de debug.
-double debugLastTime = 0;
+// Variable globale pour l'affichage de debug.
 int debugScroll = 0;
 
 // Constantes.
@@ -153,17 +152,12 @@ void Dino_GameFrame(double timeSinceStart)
     DinoGamepad keyboard;
     bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
     if (bKeyboardOk && keyboard.select) {
-        // On défile les statistiques à une vitesse de 10 lignes par seconde (une toutes les 100ms).
-        if (timeSinceStart - debugLastTime >= 0.1) {
-            int diff = 0;
-            if (keyboard.dpad_up)
-                diff -= 1;
-            if (keyboard.dpad_down)
-                diff += 1;
-            debugScroll += diff;
-            if (diff)
-                debugLastTime = timeSinceStart;
-        }
+        int diff = 0;
+        if (keyboard.dpad_up)
+            diff -= 1;
+        if (keyboard.dpad_down)
+            diff += 1;
+        debugScroll += diff;
         debugScroll = XDino_DrawStats(debugScroll);
     }
 }
