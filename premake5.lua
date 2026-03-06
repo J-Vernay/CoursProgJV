@@ -35,6 +35,7 @@ workspace "CoursProgJV"
     defines { "_CRT_SECURE_NO_WARNINGS", "XDINO_X64_WINDOWS=1" }
     incrementallink "Off"
     editandcontinue "Off"
+    disablewarnings { "4267", "4244" } -- Conversion de nombres
   filter {}
 
   filter "platforms:x64-linux"
