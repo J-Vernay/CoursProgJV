@@ -18,10 +18,11 @@ int XDinoImpl_DrawStats(int scroll, int maxlines, float scale, std::vector<std::
 {
     if (scroll < 0)
         scroll = 0;
-    if (maxlines > lines.size())
-        maxlines = lines.size();
-    if (scroll >= lines.size() - maxlines)
-        scroll = lines.size() - maxlines;
+    int lineCount = static_cast<int>(lines.size());
+    if (maxlines > lineCount)
+        maxlines = lineCount;
+    if (scroll >= lineCount - maxlines)
+        scroll = lineCount - maxlines;
 
     DinoVec2 pos = {};
     for (int i = 0; i < maxlines; ++i) {

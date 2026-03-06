@@ -548,7 +548,7 @@ uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCoun
         {0x44, 0x44, 0x44, 0xFF}, std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
     );
     D3D11_BUFFER_DESC bufferDesc = {};
-    bufferDesc.ByteWidth = sizeof(DinoVertex) * vertexCount;
+    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(DinoVertex) * vertexCount);
     bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
     bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
