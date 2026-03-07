@@ -161,8 +161,7 @@ void Dino_GameFrame(double timeSinceStart)
             diff -= 1;
         if (keyboard.dpad_down)
             diff += 1;
-        g_debugScroll += diff;
-        g_debugScroll = XDino_DrawStats(g_debugScroll);
+        XDino_DrawStats(diff);
     }
 }
 

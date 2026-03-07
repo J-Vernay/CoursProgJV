@@ -56,6 +56,7 @@ struct XDino_Linux_Texture {
     uint16_t height = 1;
     sg_image image;
     sg_view view;
+    bool bDestroy = false;
 };
 std::map<uint64_t, XDino_Linux_Texture> gXDino_textures;
 uint64_t gXDino_textureCounter = 0;
@@ -64,6 +65,7 @@ struct XDino_Linux_VertexBuffer {
     std::string name;
     size_t count = 0;
     sg_buffer buffer;
+    bool bDestroy = false;
 };
 std::map<uint64_t, XDino_Linux_VertexBuffer> gXDino_vertexBuffers;
 uint64_t gXDino_vertexBufferCounter = 1;
@@ -87,9 +89,11 @@ struct alignas(16) XDino_Linux_Uniforms {
     float scale;
 };
 
-std::vector<DinoDrawCall> gXDino_drawCalls;
-
 std::unordered_map<void*, size_t> gXDino_allocs;
+
+bool gXDino_bDrawStats = false;
+int gXDino_statScroll = 0;
+int gXDino_statScrollUser = 0;
 
 uint64_t XDino_Linux_CreateTexture(char const* pName, int w, int h, void const* pData)
 {
@@ -189,6 +193,38 @@ void XDino_Linux_Frame()
 
     Dino_GameFrame(stm_sec(stm_since(gXDino_initTick)));
 
+    if (gXDino_bDrawStats) {
+        std::vector<std::string> lines;
+        lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
+        for (auto& [id, tex] : gXDino_textures) {
+            lines.push_back(
+                std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
+            );
+        }
+        lines.emplace_back();
+        lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
+        for (auto& [id, vbuf] : gXDino_vertexBuffers) {
+            lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
+        }
+
+        gXDino_statScroll += gXDino_statScrollUser;
+        gXDino_statScroll = XDinoImpl_DrawStats(gXDino_statScroll, gXDino_renderSize.y, 1, std::move(lines));
+
+        gXDino_bDrawStats = false;
+    }
+
+    for (auto it = gXDino_textures.begin(); it != gXDino_textures.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_textures.erase(it);
+        else
+            ++it;
+    }
+    for (auto it = gXDino_vertexBuffers.begin(); it != gXDino_vertexBuffers.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_vertexBuffers.erase(it);
+        else
+            ++it;
+    }
     sg_end_pass();
     sg_commit();
 }
@@ -327,7 +363,7 @@ DinoVec2 XDino_GetGpuTextureSize(uint64_t texID)
     if (texID >= gXDino_textureCounter)
         DINO_CRITICAL("Accès à une texture qui n'a jamais existée.");
     auto it = gXDino_textures.find(texID);
-    if (it == gXDino_textures.end())
+    if (it == gXDino_textures.end() || it->second.bDestroy)
         DINO_CRITICAL("Accès à une texture déjà détruite.");
     return DinoVec2{it->second.width, it->second.height};
 }
@@ -341,7 +377,7 @@ void XDino_DestroyGpuTexture(uint64_t texID)
         DINO_CRITICAL("Destruction d'une texture déjà détruite.");
     sg_destroy_view(it->second.view);
     sg_destroy_image(it->second.image);
-    gXDino_textures.erase(it);
+    it->second.bDestroy = true;
 }
 
 uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char const* pLabel)
@@ -373,13 +409,13 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID)
     if (it == gXDino_vertexBuffers.end())
         DINO_CRITICAL("Destruction d'un vertex buffer déjà détruite.");
     sg_destroy_buffer(it->second.buffer);
-    gXDino_vertexBuffers.erase(it);
+    it->second.bDestroy = true;
 }
 
 void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double scale, double rotation)
 {
     auto itTex = gXDino_textures.find(texID);
-    if (itTex == gXDino_textures.end())
+    if (itTex == gXDino_textures.end() || itTex->second.bDestroy)
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Linux_Texture const& tex = itTex->second;
 
@@ -387,7 +423,7 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
         return;
 
     auto itVbuf = gXDino_vertexBuffers.find(vbufID);
-    if (itVbuf == gXDino_vertexBuffers.end())
+    if (itVbuf == gXDino_vertexBuffers.end() || itVbuf->second.bDestroy)
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Linux_VertexBuffer const& vbuf = itVbuf->second;
 
@@ -413,22 +449,10 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
     sg_draw(0, vbuf.count, 1);
 }
 
-int XDino_DrawStats(int scroll, int maxlines, float scale)
+void XDino_DrawStats(int diffScroll)
 {
-    std::vector<std::string> lines;
-    lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
-    for (auto& [id, tex] : gXDino_textures) {
-        lines.push_back(
-            std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
-        );
-    }
-    lines.emplace_back();
-    lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
-    for (auto& [id, vbuf] : gXDino_vertexBuffers) {
-        lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
-    }
-
-    return XDinoImpl_DrawStats(scroll, maxlines, scale, std::move(lines));
+    gXDino_bDrawStats = true;
+    gXDino_statScrollUser = diffScroll;
 }
 
 bool XDino_GetGamepad(DinoGamepadIdx idx, DinoGamepad& outGamepad)

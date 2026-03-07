@@ -120,10 +120,8 @@ void XDino_SetClearColor(DinoColor color);
 void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation = {}, double scale = 1.0, double rotation = 0.0);
 
 /// Affiche les statistiques de consommation mémoire et de ressources chargées.
-/// - 'maxlines' détermine combien de lignes sont affichés au maximum.
-/// - 'scroll' détermine quelle est la première ligne à afficher.
-/// - Retourne la valeur de scroll adaptée pour être "bloquée" sur les bords de l'affichage.
-int XDino_DrawStats(int scroll, int maxlines = 10, float scale = 2);
+/// - 'diffScroll' détermine de combien de lignes il faut faire défiler l'entrée (négatif en haut, positif en bas).
+void XDino_DrawStats(int diffScroll);
 
 /// @}
 
