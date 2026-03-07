@@ -7,10 +7,10 @@
 #include <format>
 
 // Variables globales.
-double lastTime = 0;
-double rotation = 360.0;
-double scale = 1.0;
-DinoVec2 circlePos = {};
+double g_lastTime = 0;
+double g_rotation = 360.0;
+double g_scale = 1.0;
+DinoVec2 g_circlePos = {};
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
@@ -18,7 +18,7 @@ uint64_t vbufID_circle;
 uint64_t texID_imageMilieu;
 
 // Variable globale pour l'affichage de debug.
-int debugScroll = 0;
+int g_debugScroll = 0;
 
 // Constantes.
 constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
@@ -27,7 +27,7 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    circlePos = {windowSize.x / 2, windowSize.y / 2};
+    g_circlePos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -96,8 +96,8 @@ void Dino_GameFrame(double timeSinceStart)
 {
     // Prendre en compte le temps qui passe.
 
-    float deltaTime = static_cast<float>(timeSinceStart - lastTime);
-    lastTime = timeSinceStart;
+    float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
+    g_lastTime = timeSinceStart;
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
@@ -108,16 +108,16 @@ void Dino_GameFrame(double timeSinceStart)
             continue;
 
         if (gamepad.btn_down && !gamepad.btn_up)
-            scale /= 1.01;
+            g_scale /= 1.01;
         if (gamepad.btn_up && !gamepad.btn_down)
-            scale *= 1.01;
+            g_scale *= 1.01;
         if (gamepad.btn_left && !gamepad.btn_right)
-            rotation += 90.0 * deltaTime;
+            g_rotation += 90.0 * deltaTime;
         if (gamepad.btn_right && !gamepad.btn_left)
-            rotation -= 90.0 * deltaTime;
+            g_rotation -= 90.0 * deltaTime;
 
-        circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
+        g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
     }
 
     // Affichage
@@ -127,10 +127,7 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_SetClearColor(CLEAR_COLOR);
 
     // Dessin de la "polyligne"
-    DinoDrawCall dc{};
-    dc.vbufID = vbufID_polyline;
-    dc.texID = XDino_TEXID_WHITE;
-    XDino_Draw(dc);
+    XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
 
     // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
     // DinoVec2 windowSize = XDino_GetWindowSize();
@@ -138,32 +135,21 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 renderSize = XDino_GetRenderSize();
 
     // Dessin de la texture centrale qu'on peut bouger.
-    dc = {};
-    dc.vbufID = vbufID_imageMilieu;
-    dc.texID = texID_imageMilieu;
-    dc.translation = {renderSize.x / 2, renderSize.y / 2};
-    dc.rotation = rotation;
-    dc.scale = scale * std::min(renderSize.x, renderSize.y) / 4;
-    XDino_Draw(dc);
+    DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
+    double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
+    XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
 
     // Dessin du cercle que l'on peut bouger.
-    dc = {};
-    dc.vbufID = vbufID_circle;
-    dc.texID = XDino_TEXID_FONT;
-    dc.translation = circlePos;
-    XDino_Draw(dc);
+    XDino_Draw(vbufID_circle, XDino_TEXID_FONT, g_circlePos);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        dc = {};
-        dc.vbufID = XDino_CreateVertexBuffer(vs, "dTime");
-        dc.texID = XDino_TEXID_FONT;
-        dc.scale = 2;
-        XDino_Draw(dc);
-        XDino_DestroyVertexBuffer(dc.vbufID);
+        uint64_t vbufID = XDino_CreateVertexBuffer(vs, "dTime");
+        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
+        XDino_DestroyVertexBuffer(vbufID);
     }
 
     // Affichage des statistiques si on appuie sur SHIFT.
@@ -175,8 +161,8 @@ void Dino_GameFrame(double timeSinceStart)
             diff -= 1;
         if (keyboard.dpad_down)
             diff += 1;
-        debugScroll += diff;
-        debugScroll = XDino_DrawStats(debugScroll);
+        g_debugScroll += diff;
+        g_debugScroll = XDino_DrawStats(g_debugScroll);
     }
 }
 

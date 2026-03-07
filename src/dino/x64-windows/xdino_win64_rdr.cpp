@@ -594,20 +594,20 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID)
     gXDino_vertexBuffers.erase(it);
 }
 
-void XDino_Draw(DinoDrawCall const& drawCall)
+void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double scale, double rotation)
 {
     XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, std::format("Draw {} {}", texture.name, vbuf.name).c_str());
     D3D11_MAPPED_SUBRESOURCE resource;
 
-    auto itTex = gXDino_textures.find(drawCall.texID);
+    auto itTex = gXDino_textures.find(texID);
     if (itTex == gXDino_textures.end())
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Win64_Texture const& texture = itTex->second;
 
-    if (drawCall.vbufID == 0)
+    if (vbufID == 0)
         return;
 
-    auto itVbuf = gXDino_vertexBuffers.find(drawCall.vbufID);
+    auto itVbuf = gXDino_vertexBuffers.find(vbufID);
     if (itVbuf == gXDino_vertexBuffers.end())
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Win64_VertexBuffer const& vbuf = itVbuf->second;
@@ -617,17 +617,17 @@ void XDino_Draw(DinoDrawCall const& drawCall)
 
     // Mettre à jour les transformations.
 
-    double rotationRadians = drawCall.rotation * (std::numbers::pi / 180.0);
+    double rotationRadians = rotation * (std::numbers::pi / 180.0);
     XDino_Win64_CBuffer cbuffer{};
     cbuffer.half_vp_size_x = gXDino_rdrWidth / 2.f;
     cbuffer.half_vp_size_y = gXDino_rdrHeight / 2.f;
     cbuffer.tex_size_x = static_cast<float>(texture.width);
     cbuffer.tex_size_y = static_cast<float>(texture.height);
-    cbuffer.offset_x = static_cast<float>(drawCall.translation.x);
-    cbuffer.offset_y = static_cast<float>(drawCall.translation.y);
+    cbuffer.offset_x = static_cast<float>(translation.x);
+    cbuffer.offset_y = static_cast<float>(translation.y);
     cbuffer.rot_cos = static_cast<float>(std::cos(rotationRadians));
     cbuffer.rot_sin = static_cast<float>(std::sin(rotationRadians));
-    cbuffer.scale = static_cast<float>(drawCall.scale);
+    cbuffer.scale = static_cast<float>(scale);
 
     gXDino_context->Map(gXDino_constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
     memcpy(resource.pData, &cbuffer, sizeof(cbuffer));

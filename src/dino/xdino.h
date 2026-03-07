@@ -99,20 +99,6 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID);
 /// Liste de sommets qui ne contient rien, toujours valide.
 constexpr uint64_t XDino_VBUFID_EMPTY = 0;
 
-/// Représente une demande de dessin à la carte graphique.
-struct DinoDrawCall {
-    /// Identifiant de la liste de sommets à utiliser.
-    uint64_t vbufID = XDino_VBUFID_EMPTY;
-    /// Identifiant de la texture à utiliser, ou 0 une texture complètement blanche et opaque.
-    uint64_t texID = XDino_TEXID_WHITE;
-    /// Décalage en pixels depuis l'angle en haut à gauche.
-    DinoVec2 translation = DinoVec2{0.0f, 0.0f};
-    /// Rotation en degrés.
-    double rotation = 0.0;
-    /// Mise à l'échelle.
-    double scale = 1.0;
-};
-
 /// Taille de la fenêtre sur l'écran. Attention, différent de la résolution du rendu !
 DinoVec2 XDino_GetWindowSize();
 
@@ -126,7 +112,12 @@ void XDino_SetRenderSize(DinoVec2 renderSize);
 void XDino_SetClearColor(DinoColor color);
 
 /// Transfère les triangles à dessiner à la carte graphique.
-void XDino_Draw(DinoDrawCall const& drawCall);
+/// @param vbufID Identifiant de la liste de sommets à utiliser, obtenu avec XDino_CreateVertexBuffer().
+/// @param texID Identifiant de la texture à utiliser, obtenu avec XDino_CreateGpuTexture().
+/// @param translation Décalage en pixels depuis le coin en haut à gauche.
+/// @param scale Mise à l'échelle.
+/// @param rotation Rotation en degrés.
+void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation = {}, double scale = 1.0, double rotation = 0.0);
 
 /// Affiche les statistiques de consommation mémoire et de ressources chargées.
 /// - 'maxlines' détermine combien de lignes sont affichés au maximum.

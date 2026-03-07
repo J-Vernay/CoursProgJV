@@ -376,17 +376,17 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID)
     gXDino_vertexBuffers.erase(it);
 }
 
-void XDino_Draw(DinoDrawCall const& drawCall)
+void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double scale, double rotation)
 {
-    auto itTex = gXDino_textures.find(drawCall.texID);
+    auto itTex = gXDino_textures.find(texID);
     if (itTex == gXDino_textures.end())
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Linux_Texture const& tex = itTex->second;
 
-    if (drawCall.vbufID == 0)
+    if (vbufID == 0)
         return;
 
-    auto itVbuf = gXDino_vertexBuffers.find(drawCall.vbufID);
+    auto itVbuf = gXDino_vertexBuffers.find(vbufID);
     if (itVbuf == gXDino_vertexBuffers.end())
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Linux_VertexBuffer const& vbuf = itVbuf->second;
@@ -397,17 +397,17 @@ void XDino_Draw(DinoDrawCall const& drawCall)
     bindings.samplers[SMP_uSampler] = gXDino_gfxSampler;
     sg_apply_bindings(&bindings);
 
-    double rotationRadians = drawCall.rotation * (std::numbers::pi / 180.0);
+    double rotationRadians = rotation * (std::numbers::pi / 180.0);
     XDino_Linux_Uniforms u;
     u.half_vp_size_x = gXDino_renderSize.x / 2.f;
     u.half_vp_size_y = gXDino_renderSize.y / 2.f;
     u.tex_size_x = static_cast<float>(tex.width);
     u.tex_size_y = static_cast<float>(tex.height);
-    u.offset_x = static_cast<float>(drawCall.translation.x);
-    u.offset_y = static_cast<float>(drawCall.translation.y);
+    u.offset_x = static_cast<float>(translation.x);
+    u.offset_y = static_cast<float>(translation.y);
     u.rot_cos = static_cast<float>(std::cos(rotationRadians));
     u.rot_sin = static_cast<float>(std::sin(rotationRadians));
-    u.scale = static_cast<float>(drawCall.scale);
+    u.scale = static_cast<float>(scale);
 
     sg_apply_uniforms(UB_u, {&u, sizeof(u)});
     sg_draw(0, vbuf.count, 1);
