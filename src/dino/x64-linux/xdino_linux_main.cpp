@@ -322,6 +322,16 @@ uint64_t XDino_CreateGpuTexture(char const* pName)
     return texID;
 }
 
+DinoVec2 XDino_GetGpuTextureSize(uint64_t texID)
+{
+    if (texID >= gXDino_textureCounter)
+        DINO_CRITICAL("Accès à une texture qui n'a jamais existée.");
+    auto it = gXDino_textures.find(texID);
+    if (it == gXDino_textures.end())
+        DINO_CRITICAL("Accès à une texture déjà détruite.");
+    return DinoVec2{it->second.width, it->second.height};
+}
+
 void XDino_DestroyGpuTexture(uint64_t texID)
 {
     if (texID >= gXDino_textureCounter)
@@ -334,11 +344,11 @@ void XDino_DestroyGpuTexture(uint64_t texID)
     gXDino_textures.erase(it);
 }
 
-uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
+uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char const* pLabel)
 {
     sg_buffer_desc desc{};
-    desc.data.ptr = pVertices;
-    desc.data.size = vertexCount * sizeof(DinoVertex);
+    desc.data.ptr = vertices.data();
+    desc.data.size = vertices.size() * sizeof(DinoVertex);
     desc.usage.vertex_buffer = true;
     desc.usage.immutable = true;
     sg_buffer buf = sg_make_buffer(&desc);
@@ -346,7 +356,7 @@ uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCoun
     uint64_t vbufID = gXDino_vertexBufferCounter++;
     XDino_Linux_VertexBuffer vbuf;
     vbuf.name = pLabel;
-    vbuf.count = vertexCount;
+    vbuf.count = vertices.size();
     vbuf.buffer = buf;
     gXDino_vertexBuffers.emplace(vbufID, vbuf);
     return vbufID;

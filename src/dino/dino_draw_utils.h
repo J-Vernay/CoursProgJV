@@ -8,40 +8,43 @@
 #include <span>
 #include <string_view>
 
-/// @name Fonctions CreateDrawCall
-/// Ces fonctions créent des `DinoDrawCall` avec `vertices` et `textureName`.
-/// On peut ensuite modifier `translation`, `rotation` et `scale`.
+/// @name Fonctions GenVertices
+/// Ces fonctions génèrent des sommets dans 'out', pour être ensuite ajouté à des draw calls avec
+/// des texIDs particuliers, et avec `translation`, `rotation` et `scale`.
 /// @{
 
 /// Produit un dessin de cercle avec la couleur spécifiée.
-/// La position (0,0) correspond au centre du cercle, qu'il faut décaler grâce à `translation`.
+/// Les sommets doivent être dessiné avec XDino_TEXID_FONT.
+///
+/// @param out Destination dans laquelle sont ajoutés les sommets.
 /// @param radius Rayon du cercle, en pixels.
 /// @param color Couleur du cercle.
-///
-/// @attention Le 'vbufID' retourné a été tout juste créé; l'appelant est responsable de la détruire ensuite !
-DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color = DinoColor_WHITE);
+/// @param pos Position du coin supérieur gauche, en pixels.
+void Dino_GenVertices_Circle(std::vector<DinoVertex>& out, float radius, DinoColor color = DinoColor_WHITE);
 
 /// Produit un dessin contenant du texte, avec éventuellement une couleur de fond.
-/// La position (0,0) correspond au coin en haut à gauche, qu'il faut décaler grâce à `translation`.
+/// Les sommets doivent être dessiné avec XDino_TEXID_FONT.
+///
+/// @param out Destination dans laquelle sont ajoutés les sommets.
 /// @param text Caractères à afficher.
 /// @param color Couleur du texte.
 /// @param colorBackground Couleur du rectangle affiché derrière le texte.
-/// @param pOutSize Si non-NULL, récupère la taille en pixels du texte.
-///
-/// @attention Le 'vbufID' retourné a été tout juste créé; l'appelant est responsable de la détruire ensuite !
-DinoDrawCall Dino_CreateDrawCall_Text(
-    std::string_view text, DinoColor color = DinoColor_WHITE, DinoColor colorBackground = DinoColor_INVISIBLE,
-    DinoVec2* pOutSize = nullptr
+/// @param pos Position du coin supérieur gauche, en pixels.
+/// @return La taille en pixels de la zone de texte.
+DinoVec2 Dino_GenVertices_Text(
+    std::vector<DinoVertex>& out, std::string_view text, DinoColor color = DinoColor_WHITE,
+    DinoColor colorBackground = DinoColor_INVISIBLE, DinoVec2 pos = {0, 0}
 );
 
 /// Produit un dessin contenant une liste de segments, tous reliés.
+/// Les sommets doivent être dessiné avec XDino_TEXID_WHITE.
+///
+/// @param out Destination dans laquelle sont ajoutés les sommets.
 /// @param points Liste de points par lesquels la polyligne passe.
 /// @param width Epaisseur du trait, en pixels.
 /// @param color Couleur du trait.
-///
-/// @attention Le 'vbufID' retourné a été tout juste créé; l'appelant est responsable de la détruire ensuite !
-DinoDrawCall Dino_CreateDrawCall_Polyline(
-    std::span<DinoVec2 const> points, float width, DinoColor color = DinoColor_WHITE
+void Dino_GenVertices_Polyline(
+    std::vector<DinoVertex>& out, std::vector<DinoVec2> const& points, float width, DinoColor color = DinoColor_WHITE
 );
 
 /// @}

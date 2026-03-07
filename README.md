@@ -58,7 +58,7 @@ la fenêtre suivante :
 
 Vérifiez que les entrées clavier/souris/manette fonctionnent bien :
 
-* Les touches `ZQSD` doivent transformer le texte (rotation et mise à l'échelle).
+* Les touches `ZQSD` doivent transformer les animaux colorés (rotation et mise à l'échelle).
 * Les flèches du clavier doivent faire bouger le cercle blanc.
 * Les boutons `ABXY` de la manette doivent aussi transformer le texte.
 * Le stick gauche de la manette doit aussi faire bouger le cercle blanc.

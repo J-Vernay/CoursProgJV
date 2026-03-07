@@ -41,6 +41,7 @@ workspace "CoursProgJV"
   filter "platforms:x64-linux"
     architecture "x86_64"
     defines { "XDINO_X64_LINUX=1" }
+    disablewarnings { "narrowing" } -- Conversion de nombres
   filter {}
 
   -- Particularités quand on veut se mettre en débogage

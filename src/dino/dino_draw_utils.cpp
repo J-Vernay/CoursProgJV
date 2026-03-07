@@ -1,41 +1,35 @@
 ﻿#include "dino/xdino.h"
 #include <dino/dino_draw_utils.h>
 #include <math.h>
+#include <string.h>
 
-DinoDrawCall Dino_CreateDrawCall_Circle(float radius, DinoColor color)
+void Dino_GenVertices_Circle(std::vector<DinoVertex>& out, float radius, DinoColor color)
 {
-    DinoDrawCall drawCall;
-    drawCall.texID = XDino_TEXID_FONT;
-    std::vector<DinoVertex> vs;
-    vs.reserve(6);
+    out.reserve(6);
     DinoVec2 posA = {-radius, -radius};
     DinoVec2 posB = {radius, -radius};
     DinoVec2 posC = {-radius, radius};
     DinoVec2 posD = {radius, radius};
-    vs.emplace_back(posA, 72, 0, color);
-    vs.emplace_back(posB, 96, 0, color);
-    vs.emplace_back(posC, 72, 24, color);
-    vs.emplace_back(posB, 96, 0, color);
-    vs.emplace_back(posC, 72, 24, color);
-    vs.emplace_back(posD, 96, 24, color);
-    drawCall.vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
-    return drawCall;
+    out.emplace_back(posA, 72, 0, color);
+    out.emplace_back(posB, 96, 0, color);
+    out.emplace_back(posC, 72, 24, color);
+    out.emplace_back(posB, 96, 0, color);
+    out.emplace_back(posC, 72, 24, color);
+    out.emplace_back(posD, 96, 24, color);
 }
 
-DinoDrawCall Dino_CreateDrawCall_Text(
-    std::string_view text, DinoColor color, DinoColor colorBackground, DinoVec2* pOutSize
+DinoVec2 Dino_GenVertices_Text(
+    std::vector<DinoVertex>& out, std::string_view text, DinoColor color, DinoColor colorBackground, DinoVec2 pos
 )
 {
-    DinoDrawCall drawCall;
-    drawCall.texID = XDino_TEXID_FONT;
     // Il y a au maximum un quad = deux triangles pour chaque octet du texte, et un quad pour le fond.
-    std::vector<DinoVertex> vs;
-    vs.reserve(6 + 6 * text.size());
+    size_t oldSize = out.size();
+    out.reserve(oldSize + 6 + 6 * text.size());
 
     // On laisse les 6 premiers vertices pour le fond, pour qu'il soit dessiné en premier.
     // On donnera les positions à la fin, car on ne connait pas encore la taille du texte.
     if (colorBackground.a > 0)
-        vs.resize(6);
+        out.resize(oldSize + 6);
 
     // Dimensions en pixels des lettres dans la texture.
     constexpr uint16_t QUAD_WIDTH = 6;
@@ -69,16 +63,16 @@ DinoDrawCall Dino_CreateDrawCall_Text(
             uint16_t u = static_cast<uint16_t>(xIdx * QUAD_WIDTH);
             uint16_t v = static_cast<uint16_t>(yIdx * QUAD_HEIGHT);
 
-            DinoVec2 posA = {static_cast<float>(x), static_cast<float>(y)};
-            DinoVec2 posB = {static_cast<float>(x + QUAD_WIDTH), static_cast<float>(y)};
-            DinoVec2 posC = {static_cast<float>(x), static_cast<float>(y + QUAD_HEIGHT)};
-            DinoVec2 posD = {static_cast<float>(x + QUAD_WIDTH), static_cast<float>(y + QUAD_HEIGHT)};
-            vs.emplace_back(posA, u, v, color);
-            vs.emplace_back(posB, u + QUAD_WIDTH, v, color);
-            vs.emplace_back(posC, u, v + QUAD_HEIGHT, color);
-            vs.emplace_back(posB, u + QUAD_WIDTH, v, color);
-            vs.emplace_back(posC, u, v + QUAD_HEIGHT, color);
-            vs.emplace_back(posD, u + QUAD_WIDTH, v + QUAD_HEIGHT, color);
+            DinoVec2 posA = {x + pos.x, y + pos.y};
+            DinoVec2 posB = {x + pos.x + QUAD_WIDTH, y + pos.y};
+            DinoVec2 posC = {x + pos.x, y + pos.y + QUAD_HEIGHT};
+            DinoVec2 posD = {x + pos.x + QUAD_WIDTH, y + pos.y + QUAD_HEIGHT};
+            out.emplace_back(posA, u, v, color);
+            out.emplace_back(posB, u + QUAD_WIDTH, v, color);
+            out.emplace_back(posC, u, v + QUAD_HEIGHT, color);
+            out.emplace_back(posB, u + QUAD_WIDTH, v, color);
+            out.emplace_back(posC, u, v + QUAD_HEIGHT, color);
+            out.emplace_back(posD, u + QUAD_WIDTH, v + QUAD_HEIGHT, color);
 
             x += QUAD_WIDTH;
         }
@@ -90,52 +84,45 @@ DinoDrawCall Dino_CreateDrawCall_Text(
 
     if (colorBackground.a > 0) {
         // Les 6 premiers points ont été laissés libres pour le fond.
-        vs[0] = {
-            {0, 0},
+        out[oldSize + 0] = {pos, 0, 0, colorBackground};
+        out[oldSize + 1] = {
+            {pos.x + width, pos.y},
             0, 0, colorBackground
         };
-        vs[1] = {
-            {width, 0},
+        out[oldSize + 2] = {
+            {pos.x, pos.y + height},
             0, 0, colorBackground
         };
-        vs[2] = {
-            {0, height},
+        out[oldSize + 3] = {
+            {pos.x + width, pos.y},
             0, 0, colorBackground
         };
-        vs[3] = {
-            {width, 0},
+        out[oldSize + 4] = {
+            {pos.x, pos.y + height},
             0, 0, colorBackground
         };
-        vs[4] = {
-            {0, height},
-            0, 0, colorBackground
-        };
-        vs[5] = {
-            {width, height},
+        out[oldSize + 5] = {
+            {pos.x + width, pos.y + height},
             0, 0, colorBackground
         };
     }
-    if (pOutSize != nullptr)
-        *pOutSize = {width, height};
-
-    drawCall.vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Text");
-    return drawCall;
+    return {width, height};
 }
 
-DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, float width, DinoColor color)
+void Dino_GenVertices_Polyline(
+    std::vector<DinoVertex>& out, std::vector<DinoVec2> const& points, float width, DinoColor color
+)
 {
-    DinoDrawCall drawCall;
-
     // En bonus, pour plus d'infos sur l'algorithme, voir :
     // https://jvernay.fr/en/blog/points-triangulation/
 
     // On ne supporte pas les couleurs transparentes, désolé.
     if (color.a == 0)
-        return drawCall; // Invisible.
+        return; // Invisible.
     color.a = 255;
 
     if (points.size() <= 1)
-        return drawCall; // Degenerate case: cannot trace a line from 0 or 1 point.
+        return; // Degenerate case: cannot trace a line from 0 or 1 point.
 
     // Only compute these constants once.
     float halfWidth = width / 2;
@@ -155,9 +142,8 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
         idxPoint += 1;
     }
     if (lenAB == 0)
-        return {}; // Degenerate case: all points are identical.
+        return; // Degenerate case: all points are identical.
 
-    std::vector<DinoVertex> vs;
     for (; idxPoint <= points.size(); idxPoint += 1) {
 
         // Get next point C such that B and C are distinct.
@@ -187,12 +173,12 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
         DinoVec2 A2p{B.x - xAA1, B.y - yAA1};
 
         // Encode quad for segment AB as two triangles.
-        vs.emplace_back(A1, 0, 0, color);
-        vs.emplace_back(A2, 0, 0, color);
-        vs.emplace_back(A1p, 0, 0, color);
-        vs.emplace_back(A2, 0, 0, color);
-        vs.emplace_back(A1p, 0, 0, color);
-        vs.emplace_back(A2p, 0, 0, color);
+        out.emplace_back(A1, 0, 0, color);
+        out.emplace_back(A2, 0, 0, color);
+        out.emplace_back(A1p, 0, 0, color);
+        out.emplace_back(A2, 0, 0, color);
+        out.emplace_back(A1p, 0, 0, color);
+        out.emplace_back(A2p, 0, 0, color);
 
         // Determine the ABC angle's orientation.
 
@@ -210,14 +196,14 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
 
             // Generate Bevel join triangle.
             if (zAB_BC < 0) {
-                vs.emplace_back(B, 0, 0, color);
-                vs.emplace_back(A1p, 0, 0, color);
-                vs.emplace_back(B1, 0, 0, color);
+                out.emplace_back(B, 0, 0, color);
+                out.emplace_back(A1p, 0, 0, color);
+                out.emplace_back(B1, 0, 0, color);
             }
             else {
-                vs.emplace_back(B, 0, 0, color);
-                vs.emplace_back(A2p, 0, 0, color);
-                vs.emplace_back(B2, 0, 0, color);
+                out.emplace_back(B, 0, 0, color);
+                out.emplace_back(A2p, 0, 0, color);
+                out.emplace_back(B2, 0, 0, color);
             }
         }
         // Prepare for next segment.
@@ -225,7 +211,4 @@ DinoDrawCall Dino_CreateDrawCall_Polyline(std::span<DinoVec2 const> points, floa
         B = C;
         lenAB = lenBC;
     }
-
-    drawCall.vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
-    return drawCall;
 }

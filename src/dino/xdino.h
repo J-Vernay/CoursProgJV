@@ -64,6 +64,9 @@ constexpr DinoColor DinoColor_GREEN{0x88, 0xA0, 0x43, 0xFF};
 /// Retourne l'identifiant unique de la texture.
 uint64_t XDino_CreateGpuTexture(char const* pName);
 
+/// Retourne la taille en pixels de la texture chargée sur la carte graphique.
+DinoVec2 XDino_GetGpuTextureSize(uint64_t texID);
+
 /// Décharge la texture identifiée par 'texID' de la carte graphique.
 void XDino_DestroyGpuTexture(uint64_t texID);
 
@@ -88,7 +91,7 @@ struct DinoVertex {
 /// Copie une liste de sommets de triangles texturés sur la carte graphique.
 /// Retourne l'identifiant unique de la liste de sommets.
 /// 'pLabel' est seulement utile pour avoir un nom de debug dans les statistiques.
-uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
+uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char const* pLabel);
 
 /// Décharge la liste de sommets identifiée par 'vbufID' de la carte graphique.
 void XDino_DestroyVertexBuffer(uint64_t vbufID);

@@ -528,6 +528,16 @@ uint64_t XDino_CreateGpuTexture(char const* pName)
     return texID;
 }
 
+DinoVec2 XDino_GetGpuTextureSize(uint64_t texID)
+{
+    if (texID >= gXDino_textureCounter)
+        DINO_CRITICAL("Accès à une texture qui n'a jamais existée.");
+    auto it = gXDino_textures.find(texID);
+    if (it == gXDino_textures.end())
+        DINO_CRITICAL("Accès à une texture déjà détruite.");
+    return DinoVec2{it->second.width, it->second.height};
+}
+
 void XDino_DestroyGpuTexture(uint64_t texID)
 {
     if (texID >= gXDino_textureCounter)
@@ -542,18 +552,18 @@ void XDino_DestroyGpuTexture(uint64_t texID)
     gXDino_textures.erase(it);
 }
 
-uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
+uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char const* pLabel)
 {
     XDino_ProfileBegin(
         {0x44, 0x44, 0x44, 0xFF}, std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
     );
     D3D11_BUFFER_DESC bufferDesc = {};
-    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(DinoVertex) * vertexCount);
+    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(DinoVertex) * vertices.size());
     bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
     bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
     D3D11_SUBRESOURCE_DATA bufferData = {};
-    bufferData.pSysMem = pVertices;
+    bufferData.pSysMem = vertices.data();
 
     ID3D11Buffer* buf = nullptr;
     HRESULT hr = gXDino_device->CreateBuffer(&bufferDesc, &bufferData, &buf);
@@ -563,7 +573,7 @@ uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCoun
     uint64_t vbufID = gXDino_vertexBufferCounter++;
     XDino_Win64_VertexBuffer vbuf;
     vbuf.name = pLabel;
-    vbuf.count = vertexCount;
+    vbuf.count = vertices.size();
     vbuf.buffer = buf;
     gXDino_vertexBuffers.emplace(vbufID, vbuf);
     XDino_ProfileEnd();

@@ -26,13 +26,16 @@ int XDinoImpl_DrawStats(int scroll, int maxlines, float scale, std::vector<std::
 
     DinoVec2 pos = {};
     for (int i = 0; i < maxlines; ++i) {
-        DinoVec2 size;
-        DinoDrawCall d = Dino_CreateDrawCall_Text(lines[scroll + i], DinoColor_WHITE, DinoColor_BLACK, &size);
-        d.translation = pos;
-        d.scale = scale;
-        XDino_Draw(std::move(d));
+        std::vector<DinoVertex> vs;
+        DinoVec2 size = Dino_GenVertices_Text(vs, lines[scroll + i], DinoColor_WHITE, DinoColor_BLACK);
+        DinoDrawCall dc{};
+        dc.vbufID = XDino_CreateVertexBuffer(vs, "DrawStats");
+        dc.texID = XDino_TEXID_FONT;
+        dc.translation = pos;
+        dc.scale = scale;
+        XDino_Draw(dc);
         pos.y += size.y * scale;
-        XDino_DestroyVertexBuffer(d.vbufID);
+        XDino_DestroyVertexBuffer(dc.vbufID);
     }
     return scroll;
 }
