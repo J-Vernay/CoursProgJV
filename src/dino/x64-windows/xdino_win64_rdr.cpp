@@ -635,21 +635,21 @@ void XDino_DestroyGpuTexture(uint64_t texID)
     it->second.bDestroy = true;
 }
 
-uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char const* pLabel)
+uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
 {
     XDino_ProfileBegin(
         {0x44, 0x44, 0x44, 0xFF}, std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
     );
 
     ID3D11Buffer* buf = nullptr;
-    if (vertices.size() > 0) {
+    if (vertexCount > 0) {
         D3D11_BUFFER_DESC bufferDesc = {};
-        bufferDesc.ByteWidth = static_cast<UINT>(sizeof(DinoVertex) * vertices.size());
+        bufferDesc.ByteWidth = static_cast<UINT>(sizeof(DinoVertex) * vertexCount);
         bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
         bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
         D3D11_SUBRESOURCE_DATA bufferData = {};
-        bufferData.pSysMem = vertices.data();
+        bufferData.pSysMem = pVertices;
 
         HRESULT hr = gXDino_device->CreateBuffer(&bufferDesc, &bufferData, &buf);
         if (FAILED(hr))
@@ -659,7 +659,7 @@ uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char 
     uint64_t vbufID = gXDino_vertexBufferCounter++;
     XDino_Win64_VertexBuffer vbuf;
     vbuf.name = pLabel;
-    vbuf.count = vertices.size();
+    vbuf.count = vertexCount;
     vbuf.buffer = buf;
     gXDino_vertexBuffers.emplace(vbufID, vbuf);
     XDino_ProfileEnd();

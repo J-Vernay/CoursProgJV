@@ -26,7 +26,7 @@ int XDinoImpl_DrawStats(int scroll, float maxY, float scale, std::vector<std::st
     for (int i = scroll; i < lineCount; ++i) {
         std::vector<DinoVertex> vs;
         DinoVec2 size = Dino_GenVertices_Text(vs, lines[i], DinoColor_WHITE, DinoColor_BLACK);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs, "DrawStats");
+        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "DrawStats");
         XDino_Draw(vbufID, XDino_TEXID_FONT, pos, scale);
         XDino_DestroyVertexBuffer(vbufID);
         pos.y += size.y * scale;

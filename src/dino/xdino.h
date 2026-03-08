@@ -91,7 +91,7 @@ struct DinoVertex {
 /// Copie une liste de sommets de triangles texturés sur la carte graphique.
 /// Retourne l'identifiant unique de la liste de sommets.
 /// 'pLabel' est seulement utile pour avoir un nom de debug dans les statistiques.
-uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char const* pLabel);
+uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
 
 /// Décharge la liste de sommets identifiée par 'vbufID' de la carte graphique.
 void XDino_DestroyVertexBuffer(uint64_t vbufID);
