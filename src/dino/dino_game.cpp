@@ -41,7 +41,7 @@ void Dino_GameInit()
         polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Polyline(vs, polyline, 100, POLYLINE_COLOR);
-        vbufID_polyline = XDino_CreateVertexBuffer(vs, "Polyline");
+        vbufID_polyline = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
     }
 
     // Préparation du drawcall de l'image au milieu qu'on peut tourner.
@@ -81,14 +81,14 @@ void Dino_GameInit()
         vs[5].u = texSize.x;
         vs[5].v = texSize.y;
 
-        vbufID_imageMilieu = XDino_CreateVertexBuffer(vs, "ImageMilieu");
+        vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
     }
 
     // Préparation du drawcall du cercle qu'on peut bouger.
     {
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Circle(vs, 20);
-        vbufID_circle = XDino_CreateVertexBuffer(vs, "Circle");
+        vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
     }
 }
 
@@ -147,7 +147,7 @@ void Dino_GameFrame(double timeSinceStart)
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs, "dTime");
+        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
         XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
         XDino_DestroyVertexBuffer(vbufID);
     }
