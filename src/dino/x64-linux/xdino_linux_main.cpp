@@ -89,11 +89,41 @@ struct alignas(16) XDino_Linux_Uniforms {
     float scale;
 };
 
-std::unordered_map<void*, size_t> gXDino_allocs;
+struct XDino_Linux_Alloc {
+    size_t size;
+    std::string name;
+    bool bDestroy = false;
+};
+std::map<void*, XDino_Linux_Alloc> gXDino_allocs;
 
 bool gXDino_bDrawStats = false;
 int gXDino_statScroll = 0;
 int gXDino_statScrollUser = 0;
+
+std::vector<std::string> XDino_Linux_CollectRessources(bool bIncludeTemp = false)
+{
+    std::vector<std::string> lines;
+    lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
+    for (auto& [id, tex] : gXDino_textures) {
+        if (bIncludeTemp || !tex.bDestroy)
+            lines.push_back(
+                std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
+            );
+    }
+    lines.emplace_back();
+    lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
+    for (auto& [id, vbuf] : gXDino_vertexBuffers) {
+        if (bIncludeTemp || !vbuf.bDestroy)
+            lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
+    }
+    lines.emplace_back();
+    lines.emplace_back(std::format("[{} MemAllocs]", gXDino_allocs.size()));
+    for (auto& [id, alloc] : gXDino_allocs) {
+        if (bIncludeTemp || !alloc.bDestroy)
+            lines.push_back(std::format("{}. {} ({} bytes)", id, alloc.name, alloc.size));
+    }
+    return lines;
+}
 
 uint64_t XDino_Linux_CreateTexture(char const* pName, int w, int h, void const* pData)
 {
@@ -194,18 +224,7 @@ void XDino_Linux_Frame()
     Dino_GameFrame(stm_sec(stm_since(gXDino_initTick)));
 
     if (gXDino_bDrawStats) {
-        std::vector<std::string> lines;
-        lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
-        for (auto& [id, tex] : gXDino_textures) {
-            lines.push_back(
-                std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
-            );
-        }
-        lines.emplace_back();
-        lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
-        for (auto& [id, vbuf] : gXDino_vertexBuffers) {
-            lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
-        }
+        std::vector<std::string> lines = XDino_Linux_CollectRessources(true);
 
         gXDino_statScroll += gXDino_statScrollUser;
         gXDino_statScroll = XDinoImpl_DrawStats(gXDino_statScroll, gXDino_renderSize.y, 1, std::move(lines));
@@ -225,6 +244,12 @@ void XDino_Linux_Frame()
         else
             ++it;
     }
+    for (auto it = gXDino_allocs.begin(); it != gXDino_allocs.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_allocs.erase(it);
+        else
+            ++it;
+    }
     sg_end_pass();
     sg_commit();
 }
@@ -232,6 +257,11 @@ void XDino_Linux_Frame()
 void XDino_Linux_Cleanup()
 {
     Dino_GameShut();
+    std::puts("--- RESOURCES ALIVE BEGIN ---");
+    for (std::string s : XDino_Win64_CollectRessources())
+        std::puts(s.c_str());
+    std::puts("--- RESOURCES ALIVE END ---");
+
     sg_shutdown();
 }
 
@@ -497,18 +527,23 @@ void* XDino_MemAlloc(size_t size, char const* pLabel)
     void* p = mmap(nullptr, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     if (p == MAP_FAILED)
         DINO_CRITICAL("L'OS a échoué à allouer de la mémoire.");
-    gXDino_allocs.emplace(p, size);
+    XDino_Linux_Alloc& a = gXDino_allocs[p];
+    a.size = size;
+    a.name = pLabel;
     return p;
 }
 
 void XDino_MemFree(void* pAlloc)
 {
+    if (!pAlloc)
+        return;
     auto it = gXDino_allocs.find(pAlloc);
     if (it == gXDino_allocs.end())
         DINO_CRITICAL("Libération de mémoire qui n'a jamais été alloué.");
-    if (it->second == 0)
+    if (it->second.size == 0)
         DINO_CRITICAL("Libération de mémoire qui a déjà été allouée.");
-    munmap(pAlloc, it->second);
+    munmap(pAlloc, it->second.size);
+    it->second.bDestroy = true;
 }
 
 void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)

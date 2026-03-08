@@ -76,9 +76,41 @@ struct XDino_Win64_VertexBuffer {
 std::map<uint64_t, XDino_Win64_VertexBuffer> gXDino_vertexBuffers;
 uint64_t gXDino_vertexBufferCounter = 1;
 
+struct XDino_Win64_Alloc {
+    size_t size;
+    std::string name;
+    bool bDestroy = false;
+};
+std::map<void*, XDino_Win64_Alloc> gXDino_allocs;
+
 bool gXDino_bDrawStats = false;
 int gXDino_statScroll = 0;
 int gXDino_statScrollUser = 0;
+
+std::vector<std::string> XDino_Win64_CollectRessources(bool bIncludeTemp = false)
+{
+    std::vector<std::string> lines;
+    lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
+    for (auto& [id, tex] : gXDino_textures) {
+        if (bIncludeTemp || !tex.bDestroy)
+            lines.push_back(
+                std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
+            );
+    }
+    lines.emplace_back();
+    lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
+    for (auto& [id, vbuf] : gXDino_vertexBuffers) {
+        if (bIncludeTemp || !vbuf.bDestroy)
+            lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
+    }
+    lines.emplace_back();
+    lines.emplace_back(std::format("[{} MemAllocs]", gXDino_allocs.size()));
+    for (auto& [id, alloc] : gXDino_allocs) {
+        if (bIncludeTemp || !alloc.bDestroy)
+            lines.push_back(std::format("{}. {} ({} bytes)", id, alloc.name, alloc.size));
+    }
+    return lines;
+}
 
 #pragma endregion
 
@@ -457,18 +489,7 @@ void XDino_Win64_BeginDraw()
 void XDino_Win64_EndDraw()
 {
     if (gXDino_bDrawStats) {
-        std::vector<std::string> lines;
-        lines.emplace_back(std::format("[{} Textures]", gXDino_textures.size()));
-        for (auto& [id, tex] : gXDino_textures) {
-            lines.push_back(
-                std::format("{}. {} ({}x{}, {} bytes)", id, tex.name, tex.width, tex.height, tex.width * tex.height * 4)
-            );
-        }
-        lines.emplace_back();
-        lines.emplace_back(std::format("[{} VertexBuffers]", gXDino_vertexBuffers.size()));
-        for (auto& [id, vbuf] : gXDino_vertexBuffers) {
-            lines.push_back(std::format("{}. {} ({} vertices)", id, vbuf.name, vbuf.count));
-        }
+        std::vector<std::string> lines = XDino_Win64_CollectRessources(true);
 
         gXDino_statScroll += gXDino_statScrollUser;
         gXDino_statScroll = XDinoImpl_DrawStats(gXDino_statScroll, gXDino_rdrHeight, 1, std::move(lines));
@@ -488,6 +509,12 @@ void XDino_Win64_EndDraw()
         else
             ++it;
     }
+    for (auto it = gXDino_allocs.begin(); it != gXDino_allocs.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_allocs.erase(it);
+        else
+            ++it;
+    }
 
     XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, "SwapchainPresent");
     gXDino_swapchain->Present(1, 0);
@@ -496,6 +523,11 @@ void XDino_Win64_EndDraw()
 
 void XDino_Win64_DestroyRenderer()
 {
+    std::puts("--- RESOURCES ALIVE BEGIN ---");
+    for (std::string s : XDino_Win64_CollectRessources())
+        std::puts(s.c_str());
+    std::puts("--- RESOURCES ALIVE END ---");
+
     for (auto& [name, texture] : gXDino_textures) {
         texture.pTextureSampler->Release();
         texture.pTextureView->Release();
@@ -683,6 +715,36 @@ void XDino_DrawStats(int diffScroll)
 {
     gXDino_bDrawStats = true;
     gXDino_statScrollUser = diffScroll;
+}
+
+#pragma endregion
+
+#pragma region Memory allocations
+
+void* XDino_MemAlloc(size_t size, char const* pLabel)
+{
+    if (size == 0)
+        DINO_CRITICAL("Allouer 0 octets n'a pas de sens.");
+    void* p = VirtualAlloc(nullptr, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    if (!p)
+        DINO_CRITICAL("L'OS a échoué à allouer de la mémoire.");
+    XDino_Win64_Alloc& a = gXDino_allocs[p];
+    a.size = size;
+    a.name = pLabel;
+    return p;
+}
+
+void XDino_MemFree(void* pAlloc)
+{
+    if (!pAlloc)
+        return;
+    auto it = gXDino_allocs.find(pAlloc);
+    if (it == gXDino_allocs.end())
+        DINO_CRITICAL("Libération de mémoire qui n'a jamais été alloué.");
+    if (it->second.size == 0)
+        DINO_CRITICAL("Libération de mémoire qui a déjà été allouée.");
+    VirtualFree(pAlloc, 0, MEM_RELEASE);
+    it->second.bDestroy = true;
 }
 
 #pragma endregion
