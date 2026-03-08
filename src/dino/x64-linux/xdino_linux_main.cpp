@@ -125,6 +125,28 @@ std::vector<std::string> XDino_Linux_CollectRessources(bool bIncludeTemp = false
     return lines;
 }
 
+void XDino_Linux_PurgeDeadResources()
+{
+    for (auto it = gXDino_textures.begin(); it != gXDino_textures.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_textures.erase(it);
+        else
+            ++it;
+    }
+    for (auto it = gXDino_vertexBuffers.begin(); it != gXDino_vertexBuffers.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_vertexBuffers.erase(it);
+        else
+            ++it;
+    }
+    for (auto it = gXDino_allocs.begin(); it != gXDino_allocs.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_allocs.erase(it);
+        else
+            ++it;
+    }
+}
+
 uint64_t XDino_Linux_CreateTexture(char const* pName, int w, int h, void const* pData)
 {
     sg_image_desc idesc{};
@@ -231,25 +253,7 @@ void XDino_Linux_Frame()
 
         gXDino_bDrawStats = false;
     }
-
-    for (auto it = gXDino_textures.begin(); it != gXDino_textures.end();) {
-        if (it->second.bDestroy)
-            it = gXDino_textures.erase(it);
-        else
-            ++it;
-    }
-    for (auto it = gXDino_vertexBuffers.begin(); it != gXDino_vertexBuffers.end();) {
-        if (it->second.bDestroy)
-            it = gXDino_vertexBuffers.erase(it);
-        else
-            ++it;
-    }
-    for (auto it = gXDino_allocs.begin(); it != gXDino_allocs.end();) {
-        if (it->second.bDestroy)
-            it = gXDino_allocs.erase(it);
-        else
-            ++it;
-    }
+    XDino_Linux_PurgeDeadResources();
     sg_end_pass();
     sg_commit();
 }
@@ -257,6 +261,10 @@ void XDino_Linux_Frame()
 void XDino_Linux_Cleanup()
 {
     Dino_GameShut();
+    XDino_DestroyVertexBuffer(XDino_VBUFID_EMPTY);
+    XDino_DestroyGpuTexture(XDino_TEXID_FONT);
+    XDino_DestroyGpuTexture(XDino_TEXID_WHITE);
+    XDino_Linux_PurgeDeadResources();
     std::puts("--- RESOURCES ALIVE BEGIN ---");
     for (std::string s : XDino_Linux_CollectRessources())
         std::puts(s.c_str());
@@ -412,12 +420,15 @@ void XDino_DestroyGpuTexture(uint64_t texID)
 
 uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char const* pLabel)
 {
-    sg_buffer_desc desc{};
-    desc.data.ptr = vertices.data();
-    desc.data.size = vertices.size() * sizeof(DinoVertex);
-    desc.usage.vertex_buffer = true;
-    desc.usage.immutable = true;
-    sg_buffer buf = sg_make_buffer(&desc);
+    sg_buffer buf = {};
+    if (vertices.size() > 0) {
+        sg_buffer_desc desc{};
+        desc.data.ptr = vertices.data();
+        desc.data.size = vertices.size() * sizeof(DinoVertex);
+        desc.usage.vertex_buffer = true;
+        desc.usage.immutable = true;
+        buf = sg_make_buffer(&desc);
+    }
 
     uint64_t vbufID = gXDino_vertexBufferCounter++;
     XDino_Linux_VertexBuffer vbuf;
@@ -430,15 +441,13 @@ uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char 
 
 void XDino_DestroyVertexBuffer(uint64_t vbufID)
 {
-    if (vbufID == 0)
-        return;
-
     if (vbufID >= gXDino_vertexBufferCounter)
         DINO_CRITICAL("Destruction d'un vertex buffer qui n'a jamais existée.");
     auto it = gXDino_vertexBuffers.find(vbufID);
     if (it == gXDino_vertexBuffers.end())
         DINO_CRITICAL("Destruction d'un vertex buffer déjà détruite.");
-    sg_destroy_buffer(it->second.buffer);
+    if (it->second.count > 0)
+        sg_destroy_buffer(it->second.buffer);
     it->second.bDestroy = true;
 }
 
@@ -456,6 +465,9 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
     if (itVbuf == gXDino_vertexBuffers.end() || itVbuf->second.bDestroy)
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Linux_VertexBuffer const& vbuf = itVbuf->second;
+
+    if (vbuf.count == 0)
+        return;
 
     sg_bindings bindings{};
     bindings.vertex_buffers[0] = vbuf.buffer;

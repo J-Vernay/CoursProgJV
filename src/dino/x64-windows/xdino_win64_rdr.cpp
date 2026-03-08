@@ -112,6 +112,28 @@ std::vector<std::string> XDino_Win64_CollectRessources(bool bIncludeTemp = false
     return lines;
 }
 
+void XDino_Win64_PurgeDeadResources()
+{
+    for (auto it = gXDino_textures.begin(); it != gXDino_textures.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_textures.erase(it);
+        else
+            ++it;
+    }
+    for (auto it = gXDino_vertexBuffers.begin(); it != gXDino_vertexBuffers.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_vertexBuffers.erase(it);
+        else
+            ++it;
+    }
+    for (auto it = gXDino_allocs.begin(); it != gXDino_allocs.end();) {
+        if (it->second.bDestroy)
+            it = gXDino_allocs.erase(it);
+        else
+            ++it;
+    }
+}
+
 #pragma endregion
 
 #pragma region Code source des shaders
@@ -496,26 +518,7 @@ void XDino_Win64_EndDraw()
 
         gXDino_bDrawStats = false;
     }
-
-    for (auto it = gXDino_textures.begin(); it != gXDino_textures.end();) {
-        if (it->second.bDestroy)
-            it = gXDino_textures.erase(it);
-        else
-            ++it;
-    }
-    for (auto it = gXDino_vertexBuffers.begin(); it != gXDino_vertexBuffers.end();) {
-        if (it->second.bDestroy)
-            it = gXDino_vertexBuffers.erase(it);
-        else
-            ++it;
-    }
-    for (auto it = gXDino_allocs.begin(); it != gXDino_allocs.end();) {
-        if (it->second.bDestroy)
-            it = gXDino_allocs.erase(it);
-        else
-            ++it;
-    }
-
+    XDino_Win64_PurgeDeadResources();
     XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, "SwapchainPresent");
     gXDino_swapchain->Present(1, 0);
     XDino_ProfileEnd();
@@ -523,6 +526,11 @@ void XDino_Win64_EndDraw()
 
 void XDino_Win64_DestroyRenderer()
 {
+    XDino_DestroyVertexBuffer(XDino_VBUFID_EMPTY);
+    XDino_DestroyGpuTexture(XDino_TEXID_FONT);
+    XDino_DestroyGpuTexture(XDino_TEXID_WHITE);
+    XDino_Win64_PurgeDeadResources();
+
     OutputDebugStringA("--- RESOURCES ALIVE BEGIN ---");
     for (std::string const& s : XDino_Win64_CollectRessources())
         OutputDebugStringA((s + "\n").c_str());
@@ -632,18 +640,21 @@ uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char 
     XDino_ProfileBegin(
         {0x44, 0x44, 0x44, 0xFF}, std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
     );
-    D3D11_BUFFER_DESC bufferDesc = {};
-    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(DinoVertex) * vertices.size());
-    bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-    bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-    D3D11_SUBRESOURCE_DATA bufferData = {};
-    bufferData.pSysMem = vertices.data();
 
     ID3D11Buffer* buf = nullptr;
-    HRESULT hr = gXDino_device->CreateBuffer(&bufferDesc, &bufferData, &buf);
-    if (FAILED(hr))
-        DINO_CRITICAL("CreateBuffer vertex failed");
+    if (vertices.size() > 0) {
+        D3D11_BUFFER_DESC bufferDesc = {};
+        bufferDesc.ByteWidth = static_cast<UINT>(sizeof(DinoVertex) * vertices.size());
+        bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+        bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA bufferData = {};
+        bufferData.pSysMem = vertices.data();
+
+        HRESULT hr = gXDino_device->CreateBuffer(&bufferDesc, &bufferData, &buf);
+        if (FAILED(hr))
+            DINO_CRITICAL("CreateBuffer vertex failed");
+    }
 
     uint64_t vbufID = gXDino_vertexBufferCounter++;
     XDino_Win64_VertexBuffer vbuf;
@@ -657,15 +668,13 @@ uint64_t XDino_CreateVertexBuffer(std::vector<DinoVertex> const& vertices, char 
 
 void XDino_DestroyVertexBuffer(uint64_t vbufID)
 {
-    if (vbufID == 0)
-        return;
-
     if (vbufID >= gXDino_vertexBufferCounter)
         DINO_CRITICAL("Destruction d'un vertex buffer qui n'a jamais existée.");
     auto it = gXDino_vertexBuffers.find(vbufID);
     if (it == gXDino_vertexBuffers.end() || it->second.bDestroy)
         DINO_CRITICAL("Destruction d'un vertex buffer déjà détruite.");
-    it->second.buffer->Release();
+    if (it->second.count > 0)
+        it->second.buffer->Release();
     it->second.bDestroy = true;
 }
 
@@ -686,6 +695,9 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
     if (itVbuf == gXDino_vertexBuffers.end() || itVbuf->second.bDestroy)
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
     XDino_Win64_VertexBuffer const& vbuf = itVbuf->second;
+
+    if (vbuf.count == 0)
+        return;
 
     gXDino_context->PSSetShaderResources(0, 1, &texture.pTextureView);
     gXDino_context->PSSetSamplers(0, 1, &texture.pTextureSampler);
