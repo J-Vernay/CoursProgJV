@@ -527,6 +527,10 @@ void XDino_Win64_DestroyRenderer()
     for (std::string const& s : XDino_Win64_CollectRessources())
         OutputDebugStringA((s + "\n").c_str());
     OutputDebugStringA("--- RESOURCES ALIVE END ---");
+    std::puts("--- RESOURCES ALIVE BEGIN ---");
+    for (std::string s : XDino_Win64_CollectRessources())
+        std::puts(s.c_str());
+    std::puts("--- RESOURCES ALIVE END ---");
 
     for (auto& [name, texture] : gXDino_textures) {
         texture.pTextureSampler->Release();
