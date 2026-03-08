@@ -496,8 +496,3 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 > **Le calcul des DinoDrawCall des animaux :** ...
 >
 > **Le calcul des DinoDrawCall des lasso :** ...
-
-## 11. Polish
-
-Cette section est à faire par soi-même (ou en prenant de l'avance sur le cours).
-
