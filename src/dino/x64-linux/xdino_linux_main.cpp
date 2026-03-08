@@ -258,7 +258,7 @@ void XDino_Linux_Cleanup()
 {
     Dino_GameShut();
     std::puts("--- RESOURCES ALIVE BEGIN ---");
-    for (std::string s : XDino_Win64_CollectRessources())
+    for (std::string s : XDino_Linux_CollectRessources())
         std::puts(s.c_str());
     std::puts("--- RESOURCES ALIVE END ---");
 
