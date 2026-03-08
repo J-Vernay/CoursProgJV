@@ -5,19 +5,19 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 ## 0. Prise en main de la base de code
 
-a) Résumez en une phrase le rôle des fichiers suivants :
+a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `xdino.h` : ...
+> `dino/xdino.h` : ...
 >
-> `xdino_win64_main.cpp` : ...
+> `dino/x64-windows/` : ...
 >
-> `xdino_win64_rdr.cpp` : ...
+> `dino/x64-linux/` : ...
 >
-> `dino_game.cpp` : ...
+> `dino/dino_game.cpp` : ...
 >
-> `dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : ...
 >
-> `dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : ...
 >
 > `premake5.lua` : ...
 
@@ -38,7 +38,7 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 // La fenêtre graphique vient d'être construite,
 // on initialise des variables globales et le moteur de rendu.
 
-// Gère les événements que nous communique le système d'exploitation.
+// Foncfion qui gère les événements que nous communique le système d'exploitation.
 
 // Initialisation de la fenêtre graphique.
 
@@ -65,7 +65,8 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 
 // Variables globales, accédées dans ce fichier.
 
-// Communique avec le système d'exploitation pour créer la fenêtre graphique principale de rendu.
+// Fonction qui communique avec le système d'exploitation
+// pour créer la fenêtre graphique principale de rendu.
 
 // Expose les fonctions du système d'exploitation Windows.
 ```
@@ -92,21 +93,31 @@ f) Par quoi est définit un triangle texturé ?
 
 > ...
 
-g) Qu'est-ce qu'un "draw call" ?
+g) Qu'est-ce qu'est un "draw call" ?
 
 > ...
 
-h) À quoi servent les configurations Debug|Profile|Release ?
+h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
+Dans la sortie textuelle quand on quitte le jeu ?
 
 > ...
 
-i) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
+i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
+
+> ...
+
+j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
-j) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
-Comment utiliser cet espace ? Est-ce souhaitable ?
+k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
+Dans quelle catégorie est située cette page ? 
+
+> ...
+
+l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
+dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
 
 > ...
 
@@ -124,16 +135,16 @@ Comment peut-on mettre en miroir le sprite du dinosaure ?
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
-Comment récupérer les coordonnées UV de la bonne animation ?
+Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?
 
 > ...
 
-d) Implémentez la fonctionnalité F1.4 .
+d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
 ## 2. Introduction à la programmation orientée objet en C++ (F1.5-F1.6)
 
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
-pour les regrouper et en avoir plusieurs instances ?
+pour les regrouper ? L'appliquer.
 
 > ...
 
@@ -153,20 +164,34 @@ qui représentent le dinosaure.
 e) Créez quatre dinosaures, c'est-à-dire quatre instances de la classe `DinoPlayer`.
 Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standard.
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
+Comment s'appelle cette syntaxe ?
 
 > ...
 
-f) Utilisez `std::sort` pour que les dinosaures soient affichés de haut en bas, l'un devant l'autre.
-Pour se faire, créez une fonction qui permet de comparer deux `DinoPlayer` suivant leur position verticale.
-Comment créer cette fonction sans exposer publiquement la position de `DinoPlayer` ?
+## 3. Programmation du terrain
+
+a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
 > ...
 
-g) Que retournent, et à quoi servent, `.begin()` et `.end()` dans l'utilisation de `std::sort` ?
+b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
+
+c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
+Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
 > ...
 
-## 3. Comprendre la compilation des fichiers C++
+d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
+qui contiendront la logique du terrain.
+
+e) Implémentez la fonctionnalité F2.2 .
+
+f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
+Expliquez les étapes de votre algorithme.
+
+> ...
+
+## 4. Comprendre la compilation des fichiers C++
 
 Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
@@ -212,46 +237,98 @@ h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichi
 
 > ...
 
-## 4. Programmation du terrain
-
-a) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
-
-b) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
-Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
-
-> ...
-
-c) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
-qui contiendront la logique du terrain.
-
-d) Implémentez la fonctionnalité F2.2 .
-
 ## 5. Programmation des animaux
 
 a) Implémentez la fonctionnalité F3.1 .
 
 b) Implémentez la fonctionnalité F3.2 .
 
-c) Sur votre machine, combien de RAM est disponible ?
+c) Implémentez la fonctionnalité F3.3 .
+
+## 6. Physique de jeu
+
+a) Implémentez la fonctionnalité F4.1 .
+
+b) Implémentez la fonctionnalité F4.2 .
+
+c) Comment détecter si deux cercles à des positions données sont en collision ?
+
+> ...
+
+d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
+Quel cas particulier n'est pas résoluble ?
+
+> ...
+
+e) Implémentez la fonctionnalité F4.3 .
+
+f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
+
+> ...
+
+g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
+L'appliquer dans la base de code.
+
+> ...
+
+h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
+comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
+
+> ...
+
+i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
+L'appliquer dans la base de code.
+
+> ...
+
+j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
+
+> ...
+
+## 7. Programmation des lassos
+
+a) Implémentez la fonctionnalité F4.1 .
+
+b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
+Quelle méthode de `std::vector` utiliser ?
+
+> ...
+
+c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de `std::vector` utiliser ?
+
+> ...
+
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+
+e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
+
+> ...
+
+f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
+
+
+## 7. S'intéresser à la mémoire
+
+a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
 > ...
 
-d) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
+b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
 > ...
 
-e) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
+c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
 > ...
 
-f) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
+d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
 > ...
 
-g) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
+e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
@@ -263,22 +340,7 @@ Quand et qui alloue la mémoire des `std::vector` ?
 
 > ...
 
-## 6. Programmation des lassos
-
-a) Implémentez la fonctionnalité F4.1 .
-
-b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
-Qu'est-ce que la fonctionnalité implique pour les octets en mémoire qui représente le lasso ?
-
-> ...
-
-c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
-
-> ...
-
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
-
-## 7. Notre propre implémentation de std::vector
+## 8. Notre propre implémentation de std::vector
 
 Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des lassos.
 
@@ -300,7 +362,7 @@ Combien d'allocation système, c'est-à-dire des appels à `XDino_MemAlloc()` so
 
 > ...
 
-e) Limiter le nombre de copie et d'allocation système en implémentation une "capacité",
+e) Limiter le nombre de copie et d'allocation système en implémentant une "capacité",
 Quelle est la différence entre la taille et la capacité de notre tableau ?
 
 > ...
@@ -322,63 +384,64 @@ Quelles fonctions C++ doivent être définies pour se prémunir du problème ?
 
 > ...
 
-j) Utilisez la syntaxe des template `template<typename T>` pour transformer la classe
-`DinoArrayVec2` en classe générique `DinoArray`. Remplacez les usages de `std::vector`.
+j) Itérez sur tous les `DinoVec2` d'un `DinoArray<DinoVec2>` avec une boucle for-range,
+pour décaler chaque point du lasso d'une petite distance avant de dessigner le lasso,
+pour imiter un effet gribouillage. Quelles méthodes devez-vous implémenter pour que la syntaxe
+de la boucle for-range soit acceptée par le compilateur ?
+
+k) Utilisez la syntaxe des template `template<typename T>` pour transformer la classe
+`DinoArrayVec2` en classe générique `DinoArray`.
 Pourquoi l'implémentation de `DinoArray` doit forcément être dans un fichier header ?
 
 > ...
 
-## 8. Interactions
+l) Remplacez les usages de `std::vector<DinoVertex>` en `DinoArray<DinoVertex>`.
 
-a) Implémentez la fonctionnalité F5.1 .
-
-b) Implémentez la fonctionnalité F5.2 .
-
-c) Comment détecter si deux cercles à des positions données sont en collision ?
+m) Remplacez les usages de `std::vector<DinoPlayer>` en `DinoArray<DinoPlayer>`.
+Quel problème se pose ? Fixer l'implémentation de `DinoArray` pour utiliser placement-new.
 
 > ...
 
-d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
-Quel cas particulier n'est pas résoluble ?
+## 9. Flow de jeu
+
+a) Implémentez F6.1 et F6.2 .
+
+b) Implémentez F6.3.
+
+c) Implémentez F6.4.
+
+d) Implémentez F6.5.
+
+e) Implémentez F6.6.
+
+h) Implémentez F6.7.
+
+j) Implémentez F6.8.
+
+k) Sous quelle forme peut-on réorganiser toute cette logique ? Pourquoi ?
 
 > ...
 
-e) Implémentez la fonctionnalité F5.3 .
-
-f) Implémentez la fonctionnalité F5.4 . Pourquoi y a-t-il duplication de code ?
-
-> ...
-
-g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
-L'appliquer dans la base de code.
+l) Utilisez le polymorphisme pour gérer l'état actuel du jeu.
+Qu'est-ce que cela entraîne nécessairement pour le stockage ?
 
 > ...
 
-h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
-comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
+m) Utilisez `std::unique_ptr<T>`. En quoi son usage est pratique ?
 
 > ...
 
-i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
-L'appliquer dans la base de code.
+n) Que veut dire `std::move` ?
+
+> ...
+
+o) Implémentez des move-operators sur `DinoArray`.
+Comment démontrez-vous qu'ils fonctionnent ?
 
 > ...
 
 
-j) Implémentez la fonctionnalité F5.5. Cela implique de trier un tableau qui peut contenir à la fois
-des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
-
-> ...
-
-k) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
-
-> ...
-
-l) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné par (g).
-
-m) Implémentez F5.8 et F5.9 .
-
-## 9. Profiling
+## 10. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
 
@@ -433,3 +496,8 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 > **Le calcul des DinoDrawCall des animaux :** ...
 >
 > **Le calcul des DinoDrawCall des lasso :** ...
+
+## 11. Polish
+
+Cette section est à faire par soi-même (ou en prenant de l'avance sur le cours).
+

@@ -46,7 +46,7 @@ Les dinosaures de différentes couleurs correspondent à des positions V :
 1. L'océan est affiché sur toute la fenêtre, et une zone centrale de terrain de **256x192 pixels**.
 2. Le terrain peut avoir au hasard une des quatre saisons.
 3. Des fleurs sont positionnées sur le terrain aléatoirement à chaque début de partie.
-4. *(PROJET)* La frontière terrain/océan est dessinée avec le tileset et animée.
+4. *(BONUS)* La frontière terrain/océan est dessinée avec le tileset et animée.
 
 Les images du terrain sont dans le tileset `terrain.png`.
 
@@ -108,16 +108,7 @@ Les différents animaux correspondent à des décalage de positions U :
 - **U += 512 ou 640** pour les deux types de mouton.
 - **U += 768 ou 896** pour les deux types d'autruche.
 
-### F4. Lasso
-
-1. Des suites de points dessinées correspondant aux positions passées
-   des dinosaures, aux couleurs des dinosaures.
-2. Les suites de points sont tronquées à une longueur maximale.
-3. Quand deux segments se coupent et sont du même joueur, la boucle
-   est retirée du lasso (mais la partie avant la boucle existe toujours).
-4. Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.
-
-### F5. Interactions
+### F4. Physique de jeu
 
 1. Les dinosaures ne peuvent pas sortir des limites du terrain.
 2. Les animaux ne peuvent pas sortir des limites du terrain. Quand ils atteignent le bord
@@ -125,13 +116,35 @@ Les différents animaux correspondent à des décalage de positions U :
 3. Quand les dinosaures sont en collision (distance < 16 pixels), ils se repoussent.
 4. Les animaux se repoussent entre eux, et aussi les animaux et les dinosaures entre eux.
 5. Les dinosaures et les animaux sont affichés les uns derrière les autres, suivant leur position verticale.
-6. Quand un dinosaure est dans une boucle de lasso,
-   il se prend des dégâts (= immobilisation 3 secondes + animation).
-7. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
-8. Un chronomètre de 60 secondes est affiché en haut de l'écran (centré horizontalement) et décroit.
-9. Plus le chronomètre est bas, plus les animaux apparaissent vite.
 
-### F6. *(PROJET)* Scoring
+### F5. Lasso
+
+1. Des suites de points sont dessinées correspondant aux positions passées
+   des dinosaures, aux couleurs des dinosaures.
+2. Les suites de points sont tronquées à une longueur maximale de deux secondes.
+3. Quand deux segments se coupent et sont du même joueur, la boucle
+   est retirée du lasso (mais la partie avant la boucle existe toujours).
+4. Quand un joueur passe par dessus le lasso d'un autre joueur, le début du lasso est détruit jusqu'à l'intersection.
+5. Quand un dinosaure est dans une boucle de lasso,
+   il se prend des dégâts (= immobilisation 3 secondes + animation).
+6. Quand des animaux sont dans une boucle de lasso, ils disparaissent.
+
+### F6. Flow du jeu
+
+1. Un chronomètre de 60 secondes est affiché en haut de l'écran (centré horizontalement) et décroit.
+2. Plus le chronomètre est bas, plus les animaux apparaissent vite.
+3. En cours de partie, n'importe quel joueur peut mettre en pause avec `start`.
+4. En pause, les animaux, joueurs, et le chronomètre, ne bougent pas.
+5. Avant la première partie, les joueurs sont dans l'état de "lobby"
+   et peuvent se connecter (`start`) ou se déconnecter (`select`).
+6. Un arbre de chaque saison est affiché sur le lobby ; n'importe quel joueur
+   peut en entourer un pour lancer la partie avec un terrain correspondant à cette saison.
+7. Les joueurs ne peuvent se connecter/déconnecter que sur le lobby.
+   Les joueurs ne peuvent mettre en pause que quand le jeu est en cours.
+8. Quand le chronomètre expire, on est de retour dans l'état "lobby".
+   Les arbres sont translucides pendant 5 secondes et ne peuvent pas être sélectionnés.
+
+### F7. Scoring
 
 Quand le lasso fait une boucle, le score donné au joueur dépend des animaux :
 pour chaque type d'animaux (vache, autruche, cochon et mouton), le premier animal de ce type
@@ -142,24 +155,17 @@ Quand les animaux disparaissent, une petite notification contenant le texte `+10
 à leur emplacement, avec le texte colorié suivant le joueur qui a fermé la boucle.
 
 Sur le côté gauche de l'écran, le score des 4 joueurs est affiché, chacun suivant la couleur du dinosaure.
+Ce score reste visible pendant le temps où les joueurs sont sur le lobby.
 
-### F7. Lobby et flow du jeu
+## F8. Menu d'options
 
-Quand le programme est lancé, un terrain vide est affiché avec une saison aléatoire "le lobby".
-Du texte est affiché en haut de l'écran, centré, pour expliquer le gameplay.
-Quand on détecte un input sur le stick gauche (correspond aux flèches sur le clavier),
-un joueur apparaît, correspondant à la manette/clavier de l'input.
-Les joueurs ont un lasso et peuvent interagir entre eux.
-Quatre arbres sont sur le terrain, chacun représentant une saison.
-Quand un des joueurs entourent un arbre, le terrain change pour la saison correspondante,
-et la partie se lance. En partie, on ne peut plus ajouter de nouveaux joueurs.
-Quand le chronomètre est à zéro, la partie est terminée, et les joueurs
-sont de nouveau dans le lobby. Le score de la partie précédente est toujours affiché,
-jusqu'à qu'une nouvelle partie soit relancée.
+Quand la partie est mis en pause, l'écran de pause continue d'afficher le jeu en arrière-plan,
+et propose les choix suivants :
 
-> **CONSEIL** : Rapatriez les variables globales et la logique de jeu de `dino_game.cpp`
-> à une classe dédiée (on l'appelle souvent une scène). Découpez la logique de jeu en plusieurs étapes.
-> Identifiez quelles étapes doivent être exécutées pendant le lobby, et quelles étapes
-> doivent être exécutées pendant la partie. Identifiez quels changements dans les variables membres
-> doivent être réalisées quand on transitionne du lobby à la partie et de la partie au lobby.
+- Recommencer : fait réapparaître les joueurs sur le même terrain, avec le chronomètre réinitialisé.
+- Retour au lobby : finit la partie, les scores ne sont plus affichés.
+- Chrono : avec les flèches de gauche/droite, le chronomètre peut être avancé/réculé de 10 secondes.
+- Reprendre : continue la partie, permet de sortir de la pause.
 
+Sur l'écran de pause, tous les joueurs peuvent contrôler le menu.
+L'écran de pause est contrôle avec les boutons `dpad` et `btn_right`.

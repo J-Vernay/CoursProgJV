@@ -69,3 +69,7 @@ est opérationnel ! 😎
 * [Suivre le sujet de travaux dirigés](docs/cours/travaux_diriges.md)
 
 * [Prendre connaissance du projet du cours](docs/cours/projet_dinoranch.md)
+
+* [Modalités d'évaluation](docs/cours/evaluation.md)
+
+* [Documentation cppreference.com (à garder sous la main)](https://cppreference.com/w/cpp.html)

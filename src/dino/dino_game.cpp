@@ -152,10 +152,11 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_DestroyVertexBuffer(vbufID);
     }
 
+#if !XDINO_RELEASE
     // Affichage des statistiques si on appuie sur SHIFT.
     DinoGamepad keyboard;
     bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
-    if (bKeyboardOk && keyboard.select) {
+    if (bKeyboardOk && keyboard.shoulder_left) {
         int diff = 0;
         if (keyboard.dpad_up)
             diff -= 1;
@@ -163,6 +164,7 @@ void Dino_GameFrame(double timeSinceStart)
             diff += 1;
         XDino_DrawStats(diff);
     }
+#endif
 }
 
 void Dino_GameShut()
