@@ -531,10 +531,10 @@ void XDino_Win64_DestroyRenderer()
     XDino_DestroyGpuTexture(XDino_TEXID_WHITE);
     XDino_Win64_PurgeDeadResources();
 
-    OutputDebugStringA("--- RESOURCES ALIVE BEGIN ---");
+    OutputDebugStringA("--- RESOURCES ALIVE BEGIN ---\n");
     for (std::string const& s : XDino_Win64_CollectRessources())
         OutputDebugStringA((s + "\n").c_str());
-    OutputDebugStringA("--- RESOURCES ALIVE END ---");
+    OutputDebugStringA("--- RESOURCES ALIVE END ---\n");
     std::puts("--- RESOURCES ALIVE BEGIN ---");
     for (std::string s : XDino_Win64_CollectRessources())
         std::puts(s.c_str());
