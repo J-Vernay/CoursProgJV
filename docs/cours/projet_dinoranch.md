@@ -157,7 +157,7 @@ Quand les animaux disparaissent, une petite notification contenant le texte `+10
 Sur le côté gauche de l'écran, le score des 4 joueurs est affiché, chacun suivant la couleur du dinosaure.
 Ce score reste visible pendant le temps où les joueurs sont sur le lobby.
 
-## F8. Menu d'options
+### F8. Menu d'options
 
 Quand la partie est mis en pause, l'écran de pause continue d'afficher le jeu en arrière-plan,
 et propose les choix suivants :
