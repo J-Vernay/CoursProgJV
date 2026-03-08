@@ -523,10 +523,10 @@ void XDino_Win64_EndDraw()
 
 void XDino_Win64_DestroyRenderer()
 {
-    std::puts("--- RESOURCES ALIVE BEGIN ---");
-    for (std::string s : XDino_Win64_CollectRessources())
-        std::puts(s.c_str());
-    std::puts("--- RESOURCES ALIVE END ---");
+    OutputDebugStringA("--- RESOURCES ALIVE BEGIN ---");
+    for (std::string const& s : XDino_Win64_CollectRessources())
+        OutputDebugStringA((s + "\n").c_str());
+    OutputDebugStringA("--- RESOURCES ALIVE END ---");
 
     for (auto& [name, texture] : gXDino_textures) {
         texture.pTextureSampler->Release();
@@ -606,7 +606,7 @@ DinoVec2 XDino_GetGpuTextureSize(uint64_t texID)
     auto it = gXDino_textures.find(texID);
     if (it == gXDino_textures.end() || it->second.bDestroy)
         DINO_CRITICAL("Accès à une texture déjà détruite.");
-    return DinoVec2{it->second.width, it->second.height};
+    return DinoVec2(it->second.width, it->second.height);
 }
 
 void XDino_DestroyGpuTexture(uint64_t texID)
