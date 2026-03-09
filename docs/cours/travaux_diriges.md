@@ -49,20 +49,22 @@ au bout d'une seconde ?
 
 f) Par quoi est définit un triangle texturé ?
 
-> un triangle avec 3 sommet dans l'espace, des coordonnées pour les uv et une texture 
+> un triangle avec 3 sommet dans l'espace, des coordonnées pour les uv et une texture
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> un draw call c'est quand le cpu envois des informations du mat/mesh sur le gpu pour le rendu graphique 
+> un draw call c'est quand le cpu envois des informations du mat/mesh sur le gpu pour le rendu graphique
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> affiche une fenetre debug des ressources sur les textures et les vertexs buffer
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
-> ...
+> le nomage a été fait de manière arbitraire
+> ils possède des comportements différent de macro du compilateur
+> permet par exemple de compiler certains bout de code ou pas en fct des config
 
 j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
