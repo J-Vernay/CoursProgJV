@@ -10,12 +10,13 @@
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
-DinoVec2 g_circlePos = {};
+DinoVec2 g_dinoPos = {};
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
-uint64_t vbufID_circle;
+uint64_t vbufID_dino;
 uint64_t texID_imageMilieu;
+uint64_t texID_dino;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -30,7 +31,7 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_circlePos = {windowSize.x / 2, windowSize.y / 2};
+    g_dinoPos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -71,17 +72,17 @@ void Dino_GameInit()
         vs[4].color = PINK;
         vs[5].pos = {2, 1};
         vs[5].color = ORANGE;
-        vs[0].u = 0;
+        vs[0].u = 128;
         vs[0].v = 0;
-        vs[1].u = texSize.x;
+        vs[1].u = texSize.x / 4 + 128;
         vs[1].v = 0;
-        vs[2].u = 0;
+        vs[2].u = 128;
         vs[2].v = texSize.y;
-        vs[3].u = texSize.x;
+        vs[3].u = texSize.x / 4 + 128;
         vs[3].v = 0;
-        vs[4].u = 0;
+        vs[4].u = 128;
         vs[4].v = texSize.y;
-        vs[5].u = texSize.x;
+        vs[5].u = texSize.x / 4 + 128;
         vs[5].v = texSize.y;
 
         vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
@@ -89,9 +90,29 @@ void Dino_GameInit()
 
     // Préparation du drawcall du cercle qu'on peut bouger.
     {
+        texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
+
         std::vector<DinoVertex> vs;
-        Dino_GenVertices_Circle(vs, 20);
-        vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
+        vs.resize(6);
+        vs[0].pos = {0, 0};
+        vs[0].u = 0;
+        vs[0].v = 0;
+        vs[1].pos = {24, 0};
+        vs[1].u = 24;
+        vs[1].v = 0;
+        vs[2].pos = {0, 24};
+        vs[2].u = 0;
+        vs[2].v = 24;
+        vs[3].pos = {24, 0};
+        vs[3].u = 24;
+        vs[3].v = 0;
+        vs[4].pos = {0, 24};
+        vs[4].u = 0;
+        vs[4].v = 24;
+        vs[5].pos = {24, 24};
+        vs[5].u = 24;
+        vs[5].v = 24;
+        vbufID_dino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
     }
 
     // Préparation du drawcall du prénom
@@ -117,17 +138,12 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        if (gamepad.btn_down && !gamepad.btn_up)
-            g_scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            g_scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            g_rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            g_rotation -= 90.0 * deltaTime;
+        float speed = CIRCLE_SPEED;
+        if (gamepad.btn_right)
+            speed = CIRCLE_SPEED * 2;
 
-        g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
+        g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
     }
 
     // Affichage
@@ -150,7 +166,7 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
 
     // Dessin du cercle que l'on peut bouger.
-    XDino_Draw(vbufID_circle, XDino_TEXID_FONT, g_circlePos);
+    XDino_Draw(vbufID_dino, texID_dino, g_dinoPos, 4);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -187,7 +203,7 @@ void Dino_GameFrame(double timeSinceStart)
 void Dino_GameShut()
 {
     XDino_DestroyVertexBuffer(vbufID_prenom);
-    XDino_DestroyVertexBuffer(vbufID_circle);
+    XDino_DestroyVertexBuffer(vbufID_dino);
     XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyGpuTexture(texID_imageMilieu);
