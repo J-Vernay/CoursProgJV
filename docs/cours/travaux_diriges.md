@@ -80,28 +80,37 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 6 pixels (20ms -> 50fps -> 300px / 50fps = 6px/fps)
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Comme l'origine est en haut à gauche, on se dirige vers le coin inférieur gauche (sud / sud-ouest)
+> Le vecteur de déplacement (-30,40) est de magnitude 50 (√(-30² + 40²) = √(900 + 1600) = √(2500) = 50).
+> 10ms correspond à 100FPS, soit 5000px/s (50px/f * 100fps)
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> d = 100px, et dx et dy sont égaux car en diagonal
+> d = √(dx² + dy²) = √(2dx²) = √2 * |dx|
+> |dx| = d / √2 ≈ 100 / 1.41 ≈71px
+> |dx| = |dy|
+> vec d = (|dx|, -|dy|) = (71,-71)
+> vec B = vec A + vec d = (100,200) + (71,-71) = (171,129)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé est défini par un ensemble de 3 vertex, qui ont chacuns une position à l'écran et des coordonnées
+> UV, et une texture appliquée selon ces coordonnées UV
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> ...
+> Le Draw Call demande de faire les opérations sur les géométries et textures qui ont été envoyée au préalable par le 
+> CPU (RAM) au GPU (VRAM)
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
