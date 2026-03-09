@@ -62,7 +62,7 @@ constexpr DinoColor DinoColor_GREEN{0x88, 0xA0, 0x43, 0xFF};
 
 /// Charge une texture nommée 'pName' depuis le disque jusqu'à la carte graphique.
 /// Retourne l'identifiant unique de la texture.
-uint64_t XDino_CreateGpuTexture(char const* pName);
+uint64_t XDino_CreateGpuTexture(const char* pName);
 
 /// Retourne la taille en pixels de la texture chargée sur la carte graphique.
 DinoVec2 XDino_GetGpuTextureSize(uint64_t texID);
@@ -91,7 +91,7 @@ struct DinoVertex {
 /// Copie une liste de sommets de triangles texturés sur la carte graphique.
 /// Retourne l'identifiant unique de la liste de sommets.
 /// 'pLabel' est seulement utile pour avoir un nom de debug dans les statistiques.
-uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
+uint64_t XDino_CreateVertexBuffer(const DinoVertex* pVertices, size_t vertexCount, const char* pLabel);
 
 /// Décharge la liste de sommets identifiée par 'vbufID' de la carte graphique.
 void XDino_DestroyVertexBuffer(uint64_t vbufID);
@@ -146,21 +146,21 @@ constexpr DinoGamepadIdx DinoGamepadIdx_ALL[] = {
 
 /// Structure contenant l'état d'une manette (ou du clavier utilisé comme manette).
 struct DinoGamepad {
-    bool dpad_up : 1;        ///< Si clavier : Flèche du haut
-    bool dpad_left : 1;      ///< Si clavier : Flèche gauche
-    bool dpad_right : 1;     ///< Si clavier : Flèche droite
-    bool dpad_down : 1;      ///< Si clavier : Flèche du bas
-    bool btn_up : 1;         ///< Si clavier : Z ou W
-    bool btn_left : 1;       ///< Si clavier : Q ou A
-    bool btn_right : 1;      ///< Si clavier : D
-    bool btn_down : 1;       ///< Si clavier : S
-    bool start : 1;          ///< Si clavier : ESPACE ou ENTREE
-    bool select : 1;         ///< Si clavier : SHIFT
-    bool shoulder_left : 1;  ///< Si clavier : CTRL
+    bool dpad_up : 1; ///< Si clavier : Flèche du haut
+    bool dpad_left : 1; ///< Si clavier : Flèche gauche
+    bool dpad_right : 1; ///< Si clavier : Flèche droite
+    bool dpad_down : 1; ///< Si clavier : Flèche du bas
+    bool btn_up : 1; ///< Si clavier : Z ou W
+    bool btn_left : 1; ///< Si clavier : Q ou A
+    bool btn_right : 1; ///< Si clavier : D
+    bool btn_down : 1; ///< Si clavier : S
+    bool start : 1; ///< Si clavier : ESPACE ou ENTREE
+    bool select : 1; ///< Si clavier : SHIFT
+    bool shoulder_left : 1; ///< Si clavier : CTRL
     bool shoulder_right : 1; ///< Si clavier : ALT
 
-    float stick_left_x;  ///< Entre -1 et 1. Si clavier : dérivé de 'dpad'
-    float stick_left_y;  ///< Entre -1 et 1. Si clavier : dérivdé de 'dpad'
+    float stick_left_x; ///< Entre -1 et 1. Si clavier : dérivé de 'dpad'
+    float stick_left_y; ///< Entre -1 et 1. Si clavier : dérivdé de 'dpad'
     float stick_right_x; ///< Entre -1 et 1. Si clavier : dérivé de 'btn'
     float stick_right_y; ///< Entre -1 et 1. Si clavier : dérivé de 'btn'
 
@@ -198,7 +198,7 @@ DinoVec2 XDino_RandomUnitVec2();
 
 /// Alloue une zone mémoire contenant au moins 'size' octets.
 /// Retourne un pointeur vers le début de cette zone mémoire.
-void* XDino_MemAlloc(size_t size, char const* pLabel);
+void* XDino_MemAlloc(size_t size, const char* pLabel);
 
 /// Libère la zone mémoire commençant à 'pAlloc'.
 void XDino_MemFree(void* pAlloc);
@@ -233,7 +233,7 @@ void XDino_ProfileEnd();
 /// Détail d'implémentation, .
 
 /// Ne pas appeler directement, il faut utiliser `DINO_CRITICAL`.
-void _impl_XDino_Critical(char const* pFunc, int line, char const* msg);
+void _impl_XDino_Critical(const char* pFunc, int line, const char* msg);
 
 #if XDINO_X64_WINDOWS
 #define XDINO_BREAKPOINT() __debugbreak()

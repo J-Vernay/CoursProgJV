@@ -126,7 +126,8 @@ Dans la sortie textuelle quand on quitte le jeu ?
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
-> ...
+> Cela sert à avoir des mods de compilation différents.
+> par exemple en ajoutant ou retirant des features ou en modifiant des configurations
 
 j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
@@ -136,12 +137,14 @@ et le positionner correctement contre le bas de l'écran grâce à `translation`
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
 Dans quelle catégorie est située cette page ?
 
-> ...
+> Il s'agit d'un tableau à taille dynamique dont on peu spécifier le type
+> par exemple : std::vector<DinoVertex>
 
 l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
 dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
 
-> ...
+> Elle signifie que l'on va utiliser une reference de la valeur,
+> sans l'esperluette cela signifie que l'on utilisera la valeur en elle même (et donc en créer une copie)
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 

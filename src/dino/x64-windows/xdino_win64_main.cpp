@@ -158,7 +158,7 @@ LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LP
         XDino_ProfileEnd();
         return 0;
     }
-    
+
     // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
     return DefWindowProcW(hWnd, uMsg, wParam, lParam);
 }
@@ -169,7 +169,7 @@ void XDino_Win64_DestroyWindow()
 }
 
 // Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
-void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
+void _impl_XDino_Critical(const char* pFunc, int line, const char* msg)
 {
     char buffer[8192];
     snprintf(buffer, sizeof(buffer), "%s\n%s (line %d)\n", msg, pFunc, line);
