@@ -109,9 +109,8 @@ DinoVec2 Dino_GenVertices_Text(
     return {width, height};
 }
 
-void Dino_GenVertices_Polyline(
-    std::vector<DinoVertex>& out, std::vector<DinoVec2> const& points, float width, DinoColor color
-)
+void Dino_GenVertices_Polyline(std::vector<DinoVertex>& out, const std::vector<DinoVec2>& points, float width,
+                               DinoColor color)
 {
     // En bonus, pour plus d'infos sur l'algorithme, voir :
     // https://jvernay.fr/en/blog/points-triangulation/

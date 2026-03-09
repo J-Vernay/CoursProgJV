@@ -7,100 +7,122 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Fichier contenant les définission du moteur XDino.
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` : Dossier contenant les fichiers permettant au moteur de fonctionner correctement sur Windows.
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` : Dossier contenant les fichiers permettant au moteur de fonctionner correctement sur Linux.
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : Fichier contenant la logique principale du jeu.
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Fichier contenant un booléens retournant si des segments sont intersec ou non.
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : Fichier permetant l'implementation graphique de base du moteur.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Fichier contenant des indications pour la bonne exécution de la build.
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des
+`// COMMENTAIRE`.
 
 ```cpp
+Ligne : 197
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
 
+Ligne : 34
 // Déclaration des fonctions qui sont définies plus bas dans le fichier.
 
+Ligne : 49/50
 // Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
 // Tourne en boucle tant que le programme continue.
 
+Ligne : 22
 // Définition des constantes.
 
+Ligne : 60
 // Quand le programme se termine, on libère les ressources associés au programme.
 
+Ligne : 113/114
 // La fenêtre graphique vient d'être construite,
 // on initialise des variables globales et le moteur de rendu.
 
+Ligne : 109
 // Foncfion qui gère les événements que nous communique le système d'exploitation.
 
+Ligne : 43
 // Initialisation de la fenêtre graphique.
 
+Ligne : 142/143
 // L'utilisateur redimensionne la fenêtre.
 // On ajuste le moteur de rendu en conséquence.
 
+Ligne : 4
 // Expose les fonctions de la base de code.
 
+Ligne : 160
 // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
 
+Ligne : 17
 // Expose les fonctions de la bibliothèque tierce PIX.
 
+Ligne : 40
 // Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
 
+Ligne : 148/149
 // Le système d'exploitation demande à redessiner la fenêtre.
 // On demande à la logique de jeu de dessiner une frame.
 
+Ligne :  171
 // Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
 
+Ligne : 136/137
 // L'utilisateur a demandé à détruire la fenêtre.
 // On notifie le système d'exploitation qu'on veut arrêter.
 
+Ligne : 9
 // Expose les fonctions de la bibliothèque standard.
 
+Ligne : 26
 // Variables globales, accédées dans ce fichier.
 
+Ligne : 70/71
 // Fonction qui communique avec le système d'exploitation
 // pour créer la fenêtre graphique principale de rendu.
 
+Ligne : 13
 // Expose les fonctions du système d'exploitation Windows.
 ```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> Il a parcouru 6 pixel (300 * 0.02).
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Il a parcouru 50 pixels en 10 ms donc 5000 pixels par seconde..
+
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> Il se toruvera en environ (171,129).
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Par trois vertice, ayant des information de position, de couleur, de coordonnées UV, de normale.
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> ...
+> Une instruction donnée à la carte graphique par le processeur pour dessiner des choses à l'écran.
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> On a des informations sur les textures, vertexBuffer et allocations de mémoires
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
@@ -112,7 +134,7 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
-Dans quelle catégorie est située cette page ? 
+Dans quelle catégorie est située cette page ?
 
 > ...
 
@@ -135,7 +157,8 @@ Comment peut-on mettre en miroir le sprite du dinosaure ?
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
-Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?
+Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
+jeu ?
 
 > ...
 
@@ -233,7 +256,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -281,7 +305,8 @@ L'appliquer dans la base de code.
 
 > ...
 
-j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
+j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
+des `DinoAnimal`. Comment faire ?
 
 > ...
 
@@ -294,18 +319,19 @@ Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de `std::vector` utiliser ?
+c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
+Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
 > ...
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
-
 
 ## 7. S'intéresser à la mémoire
 
@@ -347,7 +373,7 @@ Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des las
 a) Allouez une zone mémoire avec `XDino_MemAlloc()` pour stocker un point.
 Quel est le type de retour ? Pourquoi la zone mémoire ne peut pas être manipulée telle quelle ?
 
-> ... 
+> ...
 
 b) Faites en sorte de pouvoir ajouter des points à la liste, en allouant une zone mémoire plus grande
 et en copiant l'ancien contenu dans la nouvelle zone mémoire.
@@ -440,7 +466,6 @@ Comment démontrez-vous qu'ils fonctionnent ?
 
 > ...
 
-
 ## 10. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
@@ -484,11 +509,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
