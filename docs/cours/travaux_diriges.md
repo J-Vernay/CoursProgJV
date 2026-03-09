@@ -7,68 +7,74 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Gère le lien entre le jeu et le moteur custom "XDino".
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` : Contient l'ensemble des dépendances liées à Windows.
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` : Contient l'ensemble des dépendances liées à Linux.
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : Implémente la logique principale du jeu. Utilise les fonctions d'initialisation et de fermeture
+> du programme, ainsi que l'"Update" pour gérer la génération des frames.
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Implémente une fonction qui vérifie et retourne vrai si deux segments AB et CD se coupent.
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : Implémente les fonctions qui permettent de dessiner à l'écran. Une pour dessiner un
+> cercle, une autre pour dessiner une boite de dialogue, avec ou sans texte, et enfin une pour dessiner un ensemble de
+> segments reliants un ensemble de points entre eux.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Renseigne l'ensemble des paramètres et configurations ("Système de Build") de la solution, tels que
+> le dossier de Build, les plateformes acceptées, ou encore l'ensemble des configuration possibles (Debug / Profile /
+> Release).
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des
+`// COMMENTAIRE`.
 
 ```cpp
-// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
+// X Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
 
-// Déclaration des fonctions qui sont définies plus bas dans le fichier.
+// X Déclaration des fonctions qui sont définies plus bas dans le fichier.
 
-// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-// Tourne en boucle tant que le programme continue.
+// X Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
+// X Tourne en boucle tant que le programme continue.
 
-// Définition des constantes.
+// X Définition des constantes.
 
-// Quand le programme se termine, on libère les ressources associés au programme.
+// X Quand le programme se termine, on libère les ressources associés au programme.
 
-// La fenêtre graphique vient d'être construite,
-// on initialise des variables globales et le moteur de rendu.
+// X La fenêtre graphique vient d'être construite,
+// X on initialise des variables globales et le moteur de rendu.
 
-// Foncfion qui gère les événements que nous communique le système d'exploitation.
+// X Fonction qui gère les événements que nous communique le système d'exploitation.
 
-// Initialisation de la fenêtre graphique.
+// X Initialisation de la fenêtre graphique.
 
-// L'utilisateur redimensionne la fenêtre.
-// On ajuste le moteur de rendu en conséquence.
+// X L'utilisateur redimensionne la fenêtre.
+// X On ajuste le moteur de rendu en conséquence.
 
-// Expose les fonctions de la base de code.
+// X Expose les fonctions de la base de code.
 
-// Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
+// X Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
 
-// Expose les fonctions de la bibliothèque tierce PIX.
+// X Expose les fonctions de la bibliothèque tierce PIX.
 
-// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
+// X Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
 
-// Le système d'exploitation demande à redessiner la fenêtre.
-// On demande à la logique de jeu de dessiner une frame.
+// X Le système d'exploitation demande à redessiner la fenêtre.
+// X On demande à la logique de jeu de dessiner une frame.
 
-// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
+// X Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
 
-// L'utilisateur a demandé à détruire la fenêtre.
-// On notifie le système d'exploitation qu'on veut arrêter.
+// X L'utilisateur a demandé à détruire la fenêtre.
+// X On notifie le système d'exploitation qu'on veut arrêter.
 
-// Expose les fonctions de la bibliothèque standard.
+// X Expose les fonctions de la bibliothèque standard.
 
-// Variables globales, accédées dans ce fichier.
+// X Variables globales, accédées dans ce fichier.
 
-// Fonction qui communique avec le système d'exploitation
-// pour créer la fenêtre graphique principale de rendu.
+// X Fonction qui communique avec le système d'exploitation
+// X pour créer la fenêtre graphique principale de rendu.
 
-// Expose les fonctions du système d'exploitation Windows.
+// X Expose les fonctions du système d'exploitation Windows.
 ```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
@@ -112,7 +118,7 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
-Dans quelle catégorie est située cette page ? 
+Dans quelle catégorie est située cette page ?
 
 > ...
 
@@ -135,7 +141,8 @@ Comment peut-on mettre en miroir le sprite du dinosaure ?
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
-Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?
+Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
+jeu ?
 
 > ...
 
@@ -233,7 +240,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -281,7 +289,8 @@ L'appliquer dans la base de code.
 
 > ...
 
-j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
+j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
+des `DinoAnimal`. Comment faire ?
 
 > ...
 
@@ -294,18 +303,19 @@ Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de `std::vector` utiliser ?
+c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
+Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
 > ...
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
-
 
 ## 7. S'intéresser à la mémoire
 
@@ -347,7 +357,7 @@ Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des las
 a) Allouez une zone mémoire avec `XDino_MemAlloc()` pour stocker un point.
 Quel est le type de retour ? Pourquoi la zone mémoire ne peut pas être manipulée telle quelle ?
 
-> ... 
+> ...
 
 b) Faites en sorte de pouvoir ajouter des points à la liste, en allouant une zone mémoire plus grande
 et en copiant l'ancien contenu dans la nouvelle zone mémoire.
@@ -440,7 +450,6 @@ Comment démontrez-vous qu'ils fonctionnent ?
 
 > ...
 
-
 ## 10. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
@@ -484,11 +493,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
