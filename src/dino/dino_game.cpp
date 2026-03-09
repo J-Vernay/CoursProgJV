@@ -15,6 +15,7 @@ DinoVec2 g_circlePos = {};
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
 uint64_t vbufID_circle;
+uint64_t textId_circle;
 uint64_t texID_imageMilieu;
 uint64_t vbufID_name;
 DinoVec2 textSize_name;
@@ -24,6 +25,39 @@ int g_debugScroll = 0;
 
 // Constantes.
 constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+
+void Dino_miroir(uint64_t texId, bool left)
+{
+    DinoVec2 texSize = XDino_GetGpuTextureSize(textId_circle);
+
+    std::vector<DinoVertex> vs;
+    vs.resize(6);
+
+    vs[0].pos = {0, 0};
+    vs[1].pos = {24, 0};
+    vs[2].pos = {0, 24};
+    vs[3].pos = {24, 0};
+    vs[4].pos = {0, 24};
+    vs[5].pos = {24, 24};
+
+    float uLeft = left ? 0 : texSize.x / 24; // si miroir, on part du bord droit
+    float uRight = left ? texSize.x / 24 : 0; // et on va vers le bord gauche
+
+    vs[0].u = uLeft;
+    vs[0].v = 0;
+    vs[1].u = uRight;
+    vs[1].v = 0;
+    vs[2].u = uLeft;
+    vs[2].v = texSize.y / 4;
+    vs[3].u = uRight;
+    vs[3].v = 0;
+    vs[4].u = uLeft;
+    vs[4].v = texSize.y / 4;
+    vs[5].u = uRight;
+    vs[5].v = texSize.y / 4;
+
+    vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
+}
 
 void Dino_GameInit()
 {
@@ -88,9 +122,8 @@ void Dino_GameInit()
 
     // Préparation du drawcall du cercle qu'on peut bouger.
     {
-        std::vector<DinoVertex> vs;
-        Dino_GenVertices_Circle(vs, 20);
-        vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
+        textId_circle = XDino_CreateGpuTexture("dinosaurs.png");
+        Dino_miroir(textId_circle, true);
     }
 
     {
@@ -119,13 +152,28 @@ void Dino_GameFrame(double timeSinceStart)
             g_scale /= 1.01;
         if (gamepad.btn_up && !gamepad.btn_down)
             g_scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
+        if (gamepad.btn_left && !gamepad.btn_right) {
             g_rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
+
+        }
+        if (gamepad.btn_right && !gamepad.btn_left) {
             g_rotation -= 90.0 * deltaTime;
 
-        g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        }
+        float speed = CIRCLE_SPEED;
+        if (gamepad.btn_right) {
+            speed = CIRCLE_SPEED * 2;
+        }
+        g_circlePos.x += gamepad.stick_left_x * speed * deltaTime;
+        g_circlePos.y += gamepad.stick_left_y * speed * deltaTime;
+
+        if (gamepad.stick_left_x < 0) {
+            Dino_miroir(textId_circle, false);
+        }
+
+        if (gamepad.stick_left_x > 0) {
+            Dino_miroir(textId_circle, true);
+        }
     }
 
     // Affichage
@@ -147,8 +195,8 @@ void Dino_GameFrame(double timeSinceStart)
     double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
     XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
 
-    // Dessin du cercle que l'on peut bouger.
-    XDino_Draw(vbufID_circle, XDino_TEXID_FONT, g_circlePos);
+    // Dessin du dinosaure qu'on peut bouger
+    XDino_Draw(vbufID_circle, textId_circle, g_circlePos, 2);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

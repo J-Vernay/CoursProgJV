@@ -74,12 +74,14 @@ et le positionner correctement contre le bas de l'écran grâce à `translation`
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
 Dans quelle catégorie est située cette page ?
 
-> ...
+> tableau a taille dynamic de variable.
+> un conteneur de donnée
 
 l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
 dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
 
-> ...
+> C'est une référence a la donnée et si on enlève on fait une copie de la donnée en mémoire.
+>
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
