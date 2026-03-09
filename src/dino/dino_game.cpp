@@ -165,6 +165,7 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.stick_left_x != 0.0f) {
             g_dinoGoingLeft = gamepad.stick_left_x <= 0.0f; // Changes facing orientation based on input
         }
+
     }
 
     // Affichage
@@ -207,9 +208,9 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {.x = tx, .y = ty}, 2);
     }
 
-    // Affichage du dino
-
+    // Choosing Animation based on current player behaviour
     int currAnimLen;
+    int animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
     int firstFrameOfAnim;
 
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
@@ -226,17 +227,20 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.stick_left_x == 0.0f && gamepad.stick_left_y == 0.0f) {
             currAnimLen = ANIM_IDLE_LEN;
             firstFrameOfAnim = 0;
+            animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
         }
         else if (gamepad.btn_right == 0.0f) {
             currAnimLen = ANIM_WALK_LEN;
             firstFrameOfAnim = ANIM_IDLE_LEN;
+            animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
         }
         else {
             currAnimLen = ANIM_RUN_LEN;
             firstFrameOfAnim = ANIM_IDLE_LEN + ANIM_WALK_LEN + ANIM_HURT_LEN + 4 + 1;
+            animationSpeed = DINO_ANIM_FRAMES_PER_SECOND * 2;
         }
 
-        if (g_dinoAnimElapsed > 1.f / DINO_ANIM_FRAMES_PER_SECOND) {
+        if (g_dinoAnimElapsed > 1.f / animationSpeed) {
             g_currFrame = (g_currFrame + 1) % currAnimLen;
             g_dinoAnimElapsed = 0.0f;
         }
@@ -245,6 +249,7 @@ void Dino_GameFrame(double timeSinceStart)
         }
     }
 
+    // Displaying Dino
     {
         std::vector<DinoVertex> vs;
         vs.resize(6);
