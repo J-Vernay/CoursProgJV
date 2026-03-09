@@ -7,21 +7,21 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Le .h contenant les définition de fonctions des fichiers dino_game.cpp et xdino_win64_rdr.
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` : Permet la compatibilité avec l'environnement windows. Contient les fichier de base de rendering sous windows
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` : Permet la compatibilité avec l'environnement linux.
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : Gère le démarage, le Update et la fermeture de la fenetre de jeu
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Gère la supperposition de deux pixel pour n'en afficher qu'un seul
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : permet l'affichage du Debug
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Permet de build le projet en fonction de l'environnement qu'il détecte
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`. $£
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -74,33 +74,34 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 6
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Direction South-South-West 
+> (30,40)*magnitude = 50   /0.01 = 5000 pixel par secondes
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+>  (171,129)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> 3 vertex et une texture appliqué grace au coordoné UV qui lui sont associé
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> ...
+> un appelle pour dessiner un triangle incluant géométrie et texture déjat présente dans le GPU
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> 
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 

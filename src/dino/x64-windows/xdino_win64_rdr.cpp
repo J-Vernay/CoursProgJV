@@ -254,7 +254,7 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
         nullptr,
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
-        D3D11_CREATE_DEVICE_DEBUG,
+        0,
         &featureLevel,
         1,
         D3D11_SDK_VERSION,
