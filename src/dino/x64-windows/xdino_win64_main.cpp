@@ -46,8 +46,8 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
     ShowWindow(gXDino_hWindow, SW_SHOWNORMAL);
     UpdateWindow(gXDino_hWindow);
 
-    // La fenêtre graphique vient d'être construite,
-    // on initialise des variables globales et le moteur de rendu.
+    // Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
+    // Tourne en boucle tant que le programme continue.
     MSG msg;
     BOOL fGotMessage;
     while ((fGotMessage = GetMessageW(&msg, nullptr, 0, 0))) {
@@ -110,8 +110,8 @@ void XDino_Win64_CreateWindow()
 LRESULT CALLBACK XDino_Win64_HandleEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if (uMsg == WM_CREATE) {
-        // Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-        // Tourne en boucle tant que le programme continue.
+        // La fenêtre graphique vient d'être construite,
+        // on initialise des variables globales et le moteur de rendu.
         gXDino_hWindow = hWnd;
 
         LARGE_INTEGER freq;
@@ -173,8 +173,8 @@ void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
     char buffer[8192];
     snprintf(buffer, sizeof(buffer), "%s\n%s (line %d)\n", msg, pFunc, line);
     fputs(buffer, stderr);
-    TerminateProcess(GetCurrentProcess(), -1);
     MessageBoxA(gXDino_hWindow, buffer, "Error", MB_SYSTEMMODAL | MB_SETFOREGROUND | MB_ICONERROR | MB_OK);
+    TerminateProcess(GetCurrentProcess(), -1);
 }
 
 #ifdef USE_PIX
