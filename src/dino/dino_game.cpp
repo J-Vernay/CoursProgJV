@@ -94,6 +94,7 @@ void Dino_GameInit()
         vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
     }
 
+    // Préparation du drawcall du nom en bas à droite
     {
         std::vector<DinoVertex> vs;
         textSize_Prenom = Dino_GenVertices_Text(vs, "Cedric Charrier", DinoColor_WHITE, DinoColor_GREY);
