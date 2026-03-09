@@ -109,20 +109,21 @@ f) Par quoi est définit un triangle texturé ?
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> Le Draw Call demande de faire les opérations sur les géométries et textures qui ont été envoyée au préalable par le 
+> Le Draw Call demande de faire les opérations sur les géométries et textures qui ont été envoyée au préalable par le
 > CPU (RAM) au GPU (VRAM)
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> Un menu de debug avec un ensemble de ligne détaillant par exemple la totalité des vertex des différents objets
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
-> ...
+> Les configurations permettent de choisir comment compiler le code de manière arbitraire. Par exemple on peut intégrer
+> des outils de débug qui n'apparaitront pas lorsque la configuration 'Release' est choisie
 
 j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
-sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
+sur le même modèle que `dTime`. Il vous faudra utiliser la valeur de retour
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
