@@ -101,11 +101,12 @@ g) Qu'est-ce qu'est un "draw call" ?
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> 
+> Affiche un panel de Debug
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
-> ...
+> Permet de différencier les vertion devlloper ou certain outil de Debug sont accesible au vertion publique. 
+> La vertion profiler sert a l'optimisation mais rend le Debug difficile;
 
 j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
@@ -115,12 +116,12 @@ et le positionner correctement contre le bas de l'écran grâce à `translation`
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
 Dans quelle catégorie est située cette page ? 
 
-> ...
+> C'est similaire a une List, a savoir une array dynamique
 
 l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
 dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
 
-> ...
+> Elle représente la valeur du pointeur. Si on l'enlève on ne peut pas la recuperer.
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -132,7 +133,7 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> Opérateur ternaire sur les UV pour inverser la texture du dino
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.

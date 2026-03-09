@@ -5,6 +5,7 @@
 #include <dino/xdino.h>
 
 #include <format>
+#include <map>
 
 // Variables globales.
 double g_lastTime = 0;
@@ -14,8 +15,49 @@ DinoVec2 g_circlePos = {};
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
-uint64_t vbufID_circle;
+//uint64_t vbufID_circle;
 uint64_t texID_imageMilieu;
+
+uint64_t texID_dinoTexture;
+uint64_t vbufID_dinoTexture;
+
+
+//-------------------------------AnimVariable
+
+#include <array>
+
+bool isGoingRigth;
+
+
+enum DinoState
+{
+    idle,      // first 4 frame
+    walk,      // second 6 frame
+    running,   // third 3 frame
+    damage     // fourth 7
+};
+
+struct AnimInfo
+{
+    int animPosStart;
+    int animFramNumber;
+    int animRefresh = 8;
+};
+
+const std::map<DinoState, AnimInfo> animeStateInfo =
+{
+    { idle,    { 0, 4 } },
+    { walk,    { 96, 6 } },
+    { running, { 336, 3 , 16} },
+    { damage,  { 432, 7 } }
+};
+
+#pragma region Les truc du prof
+//myName global variable
+float tx;
+float ty;
+const std::string myName = "VEDRENNE Warrick";
+uint64_t globalVbufID;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -62,12 +104,14 @@ void Dino_GameInit()
         vs[1].color = CYAN;
         vs[2].pos = {-2, 1};
         vs[2].color = PINK;
+        
         vs[3].pos = {2, -1};
         vs[3].color = CYAN;
         vs[4].pos = {-2, 1};
         vs[4].color = PINK;
         vs[5].pos = {2, 1};
         vs[5].color = ORANGE;
+        
         vs[0].u = 0;
         vs[0].v = 0;
         vs[1].u = texSize.x;
@@ -83,64 +127,91 @@ void Dino_GameInit()
 
         vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
     }
+    texID_dinoTexture = XDino_CreateGpuTexture("dinosaurs.png");
 
-    // Préparation du drawcall du cercle qu'on peut bouger.
+    
+    
+    //Affiche mon nom en bas a droite (en principe)
     {
         std::vector<DinoVertex> vs;
-        Dino_GenVertices_Circle(vs, 20);
-        vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, myName, DinoColor_WHITE, DinoColor_GREY);
+        tx = XDino_GetRenderSize().x-textSize.x*2;
+        ty = XDino_GetRenderSize().y-textSize.y*2;
+        globalVbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
     }
 }
 
+#pragma endregion 
 void Dino_GameFrame(double timeSinceStart)
 {
-    // Prendre en compte le temps qui passe.
+#pragma region Les truc du prof
+        // Prendre en compte le temps qui passe.
 
-    float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
-    g_lastTime = timeSinceStart;
+        float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
+        g_lastTime = timeSinceStart;
 
-    // Gestion des entrées et mise à jour de la logique de jeu.
+        // Gestion des entrées et mise à jour de la logique de jeu.
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+        for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
+            DinoGamepad gamepad{};
+            bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
+            if (!bSuccess)
+                continue;
 
-        if (gamepad.btn_down && !gamepad.btn_up)
-            g_scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            g_scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            g_rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            g_rotation -= 90.0 * deltaTime;
+            if (gamepad.btn_down && !gamepad.btn_up)
+                g_scale /= 1.01;
+            if (gamepad.btn_up && !gamepad.btn_down)
+                g_scale *= 1.01;
+            if (gamepad.btn_left && !gamepad.btn_right)
+                g_rotation += 90.0 * deltaTime;
+            if (gamepad.btn_right && !gamepad.btn_left)
+                g_rotation -= 90.0 * deltaTime;
+        
+            float DINO_SPEED= CIRCLE_SPEED;
 
-        g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
-    }
+        
+            bool isRunning = gamepad.btn_right;
+        
+            g_circlePos.x += isRunning? gamepad.stick_left_x * DINO_SPEED * deltaTime * 3: gamepad.stick_left_x * DINO_SPEED * deltaTime;
+            g_circlePos.y += isRunning ? gamepad.stick_left_y * DINO_SPEED * deltaTime * 3: gamepad.stick_left_y * DINO_SPEED * deltaTime;
+        
 
-    // Affichage
+            g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
+            g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+        
 
-    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
+        // Affichage
 
-    XDino_SetClearColor(CLEAR_COLOR);
+        constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
-    // Dessin de la "polyligne"
-    XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
+        XDino_SetClearColor(CLEAR_COLOR);
 
-    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    // DinoVec2 windowSize = XDino_GetWindowSize();
-    // XDino_SetRenderSize(windowSize);
-    DinoVec2 renderSize = XDino_GetRenderSize();
+        // Dessin de la "polyligne"
+        XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
 
-    // Dessin de la texture centrale qu'on peut bouger.
-    DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
-    double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
-    XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
+        // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
+        // DinoVec2 windowSize = XDino_GetWindowSize();
+        // XDino_SetRenderSize(windowSize);
+        DinoVec2 renderSize = XDino_GetRenderSize();
 
+        // Dessin de la texture centrale qu'on peut bouger.
+        DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
+        double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
+        XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
+    } // Les truc du prof
+    //-------------------------------------------------------------MyThings
+    
+   
+
+
+    
     // Dessin du cercle que l'on peut bouger.
-    XDino_Draw(vbufID_circle, XDino_TEXID_FONT, g_circlePos);
+    XDino_Draw(vbufID_dinoTexture, texID_dinoTexture, g_circlePos,24);
+
+
+
+
+    
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -150,6 +221,13 @@ void Dino_GameFrame(double timeSinceStart)
         uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
         XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
         XDino_DestroyVertexBuffer(vbufID);
+    }
+
+    {
+       
+        
+        XDino_Draw(globalVbufID, XDino_TEXID_FONT, {tx,ty}, 2);
+        //XDino_DestroyVertexBuffer(vbufID);
     }
 
 #if !XDINO_RELEASE
@@ -165,12 +243,82 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_DrawStats(diff);
     }
 #endif
+
+#pragma endregion 
+    
+    {
+
+            {
+                bool isInputLeft;
+                bool isInputRight;
+                for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL)
+                {
+                    DinoGamepad gamepad{};
+                    bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
+                    if (!bSuccess)
+                        continue;
+            
+                    isInputLeft = gamepad.dpad_left;
+                    isInputRight=gamepad.dpad_right;
+        
+                    if ( isInputRight && !isGoingRigth)isGoingRigth = true;
+                    if ( isInputLeft && isGoingRigth)isGoingRigth = false;
+                }
+            } // LeftORigthHandler
+
+        
+
+        
+
+            std::vector<DinoVertex> dinoVS;
+            dinoVS.resize(6);
+            dinoVS[0].pos = {-1, -1};
+            dinoVS[0].color = DinoColor_WHITE;
+            dinoVS[1].pos = {1, -1};
+            dinoVS[1].color = DinoColor_WHITE;
+            dinoVS[2].pos = {-1, 1};
+            dinoVS[2].color = DinoColor_WHITE;
+        
+            dinoVS[3].pos = {1, -1};
+            dinoVS[3].color = DinoColor_WHITE;
+            dinoVS[4].pos = {-1, 1};
+            dinoVS[4].color = DinoColor_WHITE;
+            dinoVS[5].pos = {1, 1};
+            dinoVS[5].color = DinoColor_WHITE;
+        
+            //-----------------------Top Triangle
+            dinoVS[0].u = isGoingRigth ? 0  : 24;
+            dinoVS[0].v = 0;
+
+            dinoVS[1].u = isGoingRigth ? 24 : 0;
+            dinoVS[1].v = 0;
+
+            dinoVS[2].u = isGoingRigth ? 0  : 24;
+            dinoVS[2].v = 24;
+
+            //-----------------------
+            dinoVS[3].u = isGoingRigth ? 24 : 0;
+            dinoVS[3].v = 0;
+
+            dinoVS[4].u = isGoingRigth ? 0  : 24;
+            dinoVS[4].v = 24;
+
+            dinoVS[5].u = isGoingRigth ? 24 : 0;
+            dinoVS[5].v = 24;
+
+            //-----------------------Bot Triangle
+
+            vbufID_dinoTexture = XDino_CreateVertexBuffer(dinoVS.data(), dinoVS.size(), "dinoTexture");
+    }
 }
 
 void Dino_GameShut()
 {
-    XDino_DestroyVertexBuffer(vbufID_circle);
     XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
+    
     XDino_DestroyGpuTexture(texID_imageMilieu);
+
+    XDino_DestroyGpuTexture(texID_dinoTexture);
+    XDino_DestroyGpuTexture(vbufID_dinoTexture);
 }
