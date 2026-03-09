@@ -207,4 +207,5 @@ void Dino_GameShut()
     XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyGpuTexture(texID_imageMilieu);
+    XDino_DestroyGpuTexture(texID_dino);
 }
