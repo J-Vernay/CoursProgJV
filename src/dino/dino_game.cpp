@@ -17,6 +17,9 @@ uint64_t vbufID_imageMilieu;
 uint64_t vbufID_circle;
 uint64_t texID_imageMilieu;
 
+uint64_t vbufID_prenom;
+DinoVec2 textSize_prenom;
+
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
@@ -90,6 +93,13 @@ void Dino_GameInit()
         Dino_GenVertices_Circle(vs, 20);
         vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
     }
+
+    // Préparation du drawcall du prénom
+    {
+        std::vector<DinoVertex> vs;
+        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
+    }
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -152,8 +162,15 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_DestroyVertexBuffer(vbufID);
     }
 
+    // Affiche le prénom.
+    {
+        float tx = (renderSize.x - textSize_prenom.x * 2);
+        float ty = (renderSize.y - textSize_prenom.y * 2);
+        XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {tx, ty}, 2);
+    }
+
 #if !XDINO_RELEASE
-    // Affichage des statistiques si on appuie sur SHIFT.
+    // Affichage des statistiques si on appuie sur CTRL.
     DinoGamepad keyboard;
     bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
     if (bKeyboardOk && keyboard.shoulder_left) {
@@ -169,6 +186,7 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
+    XDino_DestroyVertexBuffer(vbufID_prenom);
     XDino_DestroyVertexBuffer(vbufID_circle);
     XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
