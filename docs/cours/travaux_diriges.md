@@ -7,100 +7,67 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Fichier .h qui fait le lien entre le moteur du jeu et la logique du jeu
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` : Fichier concernant le rendu graphique sur Windows
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` : Fichier concernant le rendu graphique sur Linux
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : Code sources de la logique principale du jeu
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Permet d'aligner les différents segments graphiques entre eux pour avoir la meilleure cohérence possible
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : Permet de dessiner les segments graphiques du jeu
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Renseigne les plugins et les parametres généraux du .exe
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 
 ```cpp
-// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
 
-// Déclaration des fonctions qui sont définies plus bas dans le fichier.
-
-// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-// Tourne en boucle tant que le programme continue.
-
-// Définition des constantes.
-
-// Quand le programme se termine, on libère les ressources associés au programme.
-
-// La fenêtre graphique vient d'être construite,
-// on initialise des variables globales et le moteur de rendu.
-
-// Foncfion qui gère les événements que nous communique le système d'exploitation.
-
-// Initialisation de la fenêtre graphique.
-
-// L'utilisateur redimensionne la fenêtre.
-// On ajuste le moteur de rendu en conséquence.
-
-// Expose les fonctions de la base de code.
-
-// Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
-
-// Expose les fonctions de la bibliothèque tierce PIX.
-
-// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
-
-// Le système d'exploitation demande à redessiner la fenêtre.
-// On demande à la logique de jeu de dessiner une frame.
-
-// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
-
-// L'utilisateur a demandé à détruire la fenêtre.
-// On notifie le système d'exploitation qu'on veut arrêter.
-
-// Expose les fonctions de la bibliothèque standard.
-
-// Variables globales, accédées dans ce fichier.
-
-// Fonction qui communique avec le système d'exploitation
-// pour créer la fenêtre graphique principale de rendu.
-
-// Expose les fonctions du système d'exploitation Windows.
 ```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 300 pixels * 0.02 secondes = 6 pixels par frames
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> le cercle s'est déplacé la direction gauche-bas à une vitesse de 5000 pixel par seconde
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> Au bout de 1 seconde, le cercle est a la position (71, -71)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Par 3 sommets contenant chacun une position dans l'espace et des coordonnées pour la texture
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> ...
+> Un draw call est l'appel que le jeu soumets au GPU afin que celui affiche sur l'écran le rendu visuel
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> Quand on quitte le jeu :
+> 
+> --- RESOURCES ALIVE BEGIN ---
+> 
+>[0 Textures]
+> 
+>[0 VertexBuffers]
+> 
+>[0 MemAllocs]
+> 
+> --- RESOURCES ALIVE END ---
+
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
@@ -114,12 +81,14 @@ et le positionner correctement contre le bas de l'écran grâce à `translation`
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
 Dans quelle catégorie est située cette page ? 
 
-> ...
+> std::vector est une class permettant d'encapsuler dynamiquement un tableau
+> Cette page est située dans la catégorie : "container"
 
 l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
 dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
 
-> ...
+>& correspon à l'adresse mémoire de la valeur de std::vector<DinoVertex>
+>Si on l'enlève => Erreur "Hint on symbols that are defined and could potentially match"
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -131,13 +100,17 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> Avec une variable qui qui va checker si on se déplace vers la droite ou vers la gauche et qui va faire échanger les position U en concéquences
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?
 
-> ...
+> animFrame = (animFrame + 1) % numberSpriteCurrentAnim;
+> offset = currentAnimStart + animFrame; 
+>
+> Ce Calcul permet de boucler parmis les animations actuelle suivant le nombre de sprite de ma loop et la première frame de la loop
+
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
