@@ -26,12 +26,14 @@ int g_debugScroll = 0;
 // Constantes.
 constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
-void Dino_miroir(uint64_t texId, bool left)
+void Dino_Draw(uint64_t texId, float decal = 0, bool left)
 {
     DinoVec2 texSize = XDino_GetGpuTextureSize(textId_circle);
 
     std::vector<DinoVertex> vs;
     vs.resize(6);
+
+    float frameOffSet = decal * 24;
 
     vs[0].pos = {0, 0};
     vs[1].pos = {24, 0};
@@ -40,21 +42,15 @@ void Dino_miroir(uint64_t texId, bool left)
     vs[4].pos = {0, 24};
     vs[5].pos = {24, 24};
 
-    float uLeft = left ? 0 : texSize.x / 24; // si miroir, on part du bord droit
-    float uRight = left ? texSize.x / 24 : 0; // et on va vers le bord gauche
+    float uLeft  = left ? frameOffSet : frameOffSet + 24;
+    float uRight = left ? frameOffSet + 24 : frameOffSet;
 
-    vs[0].u = uLeft;
-    vs[0].v = 0;
-    vs[1].u = uRight;
-    vs[1].v = 0;
-    vs[2].u = uLeft;
-    vs[2].v = texSize.y / 4;
-    vs[3].u = uRight;
-    vs[3].v = 0;
-    vs[4].u = uLeft;
-    vs[4].v = texSize.y / 4;
-    vs[5].u = uRight;
-    vs[5].v = texSize.y / 4;
+    vs[0].u = uLeft;  vs[0].v = 0;
+    vs[1].u = uRight; vs[1].v = 0;
+    vs[2].u = uLeft;  vs[2].v = 24;
+    vs[3].u = uRight; vs[3].v = 0;
+    vs[4].u = uLeft;  vs[4].v = 24;
+    vs[5].u = uRight; vs[5].v = 24;
 
     vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
 }
@@ -120,10 +116,10 @@ void Dino_GameInit()
         vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
     }
 
-    // Préparation du drawcall du cercle qu'on peut bouger.
+    // Préparation du drawcall du dino
     {
         textId_circle = XDino_CreateGpuTexture("dinosaurs.png");
-        Dino_miroir(textId_circle, true);
+        Dino_Draw(textId_circle, true);
     }
 
     {
@@ -168,11 +164,17 @@ void Dino_GameFrame(double timeSinceStart)
         g_circlePos.y += gamepad.stick_left_y * speed * deltaTime;
 
         if (gamepad.stick_left_x < 0) {
-            Dino_miroir(textId_circle, false);
+            Dino_Draw(textId_circle, 0, false);
         }
 
         if (gamepad.stick_left_x > 0) {
-            Dino_miroir(textId_circle, true);
+            Dino_Draw(textId_circle, 0, true);
+        }
+
+        if (gamepad.stick_left_x < 0 && gamepad.stick_left_y < 0) {
+            //Animation IDLE
+            float indexFrame = static_cast<int>(deltaTime * 8) % 4;
+            Dino_Draw(textId_circle, indexFrame, true);
         }
     }
 
