@@ -7,21 +7,24 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Fichier header qui stock les déclaration des fonctions et des variables globales
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` Dossier contenant les fichiers qui permetent l'implémentation de la fenetre et des visuels du jeu
+> sur windows
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` Dossier contenant les fichiers qui permetent l'implémentation de la fenetre et des visuels du jeu
+> sur linux
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : Fichier qui implémente les fonctions principale de la logique du jeu
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Fichier avec une helpers methode qui verifie que 2 segments ont une intersection
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : Fichier qui possède divers fonctions qui permettent de dessiner dans le moteur
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Fichier qui donne des indications pour bien executer la build
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des
+`// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -63,10 +66,13 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 
 // Expose les fonctions de la bibliothèque standard.
 
+
 // Variables globales, accédées dans ce fichier.
+
 
 // Fonction qui communique avec le système d'exploitation
 // pour créer la fenêtre graphique principale de rendu.
+
 
 // Expose les fonctions du système d'exploitation Windows.
 ```
@@ -74,37 +80,38 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> La distance parcouru est de 6 pixels (300 * 0.02f)
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> en bas à gauche (x negatif et y positif), à une vitesse de 5000 pixels par secondes
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> Il se trouvera en (171, 129)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Par 3 sommets, ayant des informations de position, une texture, d'uv et de normal.
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> ...
+> Le CPU qui envoie les infos de géométries et de texture à la ram pour pouvoir afficher.
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> une fenetre de debug avec diverses infos (vertexBuffer, texture, allocation de mémoire)
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
-> ...
+> Cela permet d'avoir plusieurs mods de compilation, cela permet d'ajouter et de retirer des features ou modifier des
+> configurations. Elles sont arbitraires et créent en fonction des besoins du projet.
 
 j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
@@ -112,14 +119,15 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
-Dans quelle catégorie est située cette page ? 
+Dans quelle catégorie est située cette page ?
 
-> ...
+> un tableau à taille dynamique de différent types, dans ce cas ce sont des vectors
 
 l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
 dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
 
-> ...
+> Elle signifie que l'on va utiliser une reference de valeur, sans elle cela signifiera qu'on utilisera la valeur en
+> elle meme (et donc en faire une copie)
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -135,7 +143,8 @@ Comment peut-on mettre en miroir le sprite du dinosaure ?
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
-Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?
+Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
+jeu ?
 
 > ...
 
@@ -233,7 +242,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -281,7 +291,8 @@ L'appliquer dans la base de code.
 
 > ...
 
-j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
+j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
+des `DinoAnimal`. Comment faire ?
 
 > ...
 
@@ -294,18 +305,19 @@ Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de `std::vector` utiliser ?
+c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
+Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
 > ...
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
-
 
 ## 7. S'intéresser à la mémoire
 
@@ -347,7 +359,7 @@ Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des las
 a) Allouez une zone mémoire avec `XDino_MemAlloc()` pour stocker un point.
 Quel est le type de retour ? Pourquoi la zone mémoire ne peut pas être manipulée telle quelle ?
 
-> ... 
+> ...
 
 b) Faites en sorte de pouvoir ajouter des points à la liste, en allouant une zone mémoire plus grande
 et en copiant l'ancien contenu dans la nouvelle zone mémoire.
@@ -440,7 +452,6 @@ Comment démontrez-vous qu'ils fonctionnent ?
 
 > ...
 
-
 ## 10. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
@@ -484,11 +495,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
