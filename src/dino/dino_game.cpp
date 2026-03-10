@@ -11,16 +11,22 @@ double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
 
+
 DinoVec2 g_dinoPos = {};
 double g_dinoCurrentSpeed;
 bool g_dinoGoingLeft = false;
+
 float g_dinoAnimElapsed = 0;
+float g_dinoDamageAnimTimer;
 int g_currFrame = 0;
 
-uint64_t vbufID_polyline;
+bool g_dinoCanTakeDamage = true;
+
+
 //uint64_t vbufID_imageMilieu;
 //uint64_t texID_imageMilieu;
 //uint64_t vbufID_circle;
+uint64_t vbufID_polyline;
 uint64_t vbufID_dino;
 uint64_t texID_dino;
 
@@ -143,14 +149,8 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        // if (gamepad.btn_down && !gamepad.btn_up)
-        //     g_scale /= 1.01;
-        // if (gamepad.btn_up && !gamepad.btn_down)
-        //     g_scale *= 1.01;
-        // if (gamepad.btn_left && !gamepad.btn_right)
-        //     g_rotation += 90.0 * deltaTime;
-        // if (gamepad.btn_right && !gamepad.btn_left)
-        //     g_rotation -= 90.0 * deltaTime;
+        if (!g_dinoCanTakeDamage)
+            continue;
 
         // Prevent Diagonal speed boost
         if (gamepad.stick_left_x != 0.0f && gamepad.stick_left_y != 0.0f)
@@ -165,7 +165,6 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.stick_left_x != 0.0f) {
             g_dinoGoingLeft = gamepad.stick_left_x <= 0.0f; // Changes facing orientation based on input
         }
-
     }
 
     // Affichage
@@ -223,8 +222,24 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        // Add hurt anim in first, to always be chosen over the others
-        if (gamepad.stick_left_x == 0.0f && gamepad.stick_left_y == 0.0f) {
+        // Temp condition to test damage
+        if (g_dinoCanTakeDamage && gamepad.btn_left || g_dinoDamageAnimTimer > 0.f) {
+            currAnimLen = ANIM_HURT_LEN;
+            firstFrameOfAnim = ANIM_IDLE_LEN + ANIM_WALK_LEN + 4;
+            animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
+
+            if (g_dinoCanTakeDamage) {
+                g_dinoDamageAnimTimer = ANIM_HURT_LEN;
+                g_dinoCanTakeDamage = false;
+            }
+            else {
+                g_dinoDamageAnimTimer -= deltaTime;
+                if (g_dinoDamageAnimTimer <= 0.f) {
+                    g_dinoCanTakeDamage = true;
+                }
+            }
+        }
+        else if (gamepad.stick_left_x == 0.0f && gamepad.stick_left_y == 0.0f) {
             currAnimLen = ANIM_IDLE_LEN;
             firstFrameOfAnim = 0;
             animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
@@ -303,7 +318,7 @@ void Dino_GameShut()
 {
     //XDino_DestroyVertexBuffer(vbufID_e);
     //XDino_DestroyVertexBuffer(vbufID_imageMilieu);
-    //XDino_DestroyVertexBuffer(vbufID_polyline);
     //XDino_DestroyGpuTexture(texID_imageMilieu);
+    XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyVertexBuffer(vbufID_prenom);
 }
