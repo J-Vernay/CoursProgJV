@@ -13,7 +13,7 @@ double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
 
-DinoPlayer g_Player;
+std::vector<DinoPlayer> g_Players;
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
@@ -30,7 +30,11 @@ void Dino_GameInit()
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
-    g_Player.Init();
+    g_Players.resize(4);
+    g_Players[0].Init(0);
+    g_Players[1].Init(1);
+    g_Players[2].Init(2);
+    g_Players[3].Init(3);
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -104,14 +108,18 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+    DinoGamepad gamepad{};
+    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
+        g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
 
-        g_Player.Update(timeSinceStart, deltaTime, gamepad);
-    }
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
+        g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
+        g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
+        g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
 
     // Affichage
 
@@ -133,11 +141,8 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
 
     // Dessin du dinosaure.
-    {
-        uint64_t vbufID = g_Player.GenerateVertexBuffer(timeSinceStart);
-        XDino_Draw(vbufID, g_Player.m_texID, g_Player.m_pos, 4);
-        XDino_DestroyVertexBuffer(vbufID);
-    }
+    for (DinoPlayer& player : g_Players)
+        player.Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -173,6 +178,10 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
+    // For-range loop
+    for (DinoPlayer& player : g_Players)
+        player.Shut();
+
     XDino_DestroyVertexBuffer(vbufID_prenom);
     XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
