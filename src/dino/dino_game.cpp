@@ -13,7 +13,7 @@ double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
 
-DinoPlayer g_Player;
+std::vector<DinoPlayer> g_Player;
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
@@ -29,8 +29,12 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-
-    g_Player.Init();
+    
+    g_Player[0].Init();
+    g_Player[1].Init();
+    g_Player[2].Init();
+    g_Player[3].Init();
+    
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -134,9 +138,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du dinosaure.
     {
-        uint64_t vbufID = g_Player.GenerateVertexBuffer(timeSinceStart);
-        XDino_Draw(vbufID, g_Player.m_texID, g_Player.m_pos, 4);
-        XDino_DestroyVertexBuffer(vbufID);
+        g_Player.Draw(timeSinceStart);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
@@ -173,6 +175,7 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
+    g_Player.Shut();
     XDino_DestroyVertexBuffer(vbufID_prenom);
     XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);

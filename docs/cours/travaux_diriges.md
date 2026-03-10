@@ -25,70 +25,50 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 `// COMMENTAIRE`.
 
 ```cpp
-Ligne : 197
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
 
-Ligne : 34
 // Déclaration des fonctions qui sont définies plus bas dans le fichier.
 
-Ligne : 49/50
 // Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
 // Tourne en boucle tant que le programme continue.
 
-Ligne : 22
 // Définition des constantes.
 
-Ligne : 60
 // Quand le programme se termine, on libère les ressources associés au programme.
 
-Ligne : 113/114
 // La fenêtre graphique vient d'être construite,
 // on initialise des variables globales et le moteur de rendu.
 
-Ligne : 109
 // Foncfion qui gère les événements que nous communique le système d'exploitation.
 
-Ligne : 43
 // Initialisation de la fenêtre graphique.
 
-Ligne : 142/143
 // L'utilisateur redimensionne la fenêtre.
 // On ajuste le moteur de rendu en conséquence.
 
-Ligne : 4
 // Expose les fonctions de la base de code.
 
-Ligne : 160
 // Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
 
-Ligne : 17
 // Expose les fonctions de la bibliothèque tierce PIX.
 
-Ligne : 40
 // Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
 
-Ligne : 148/149
 // Le système d'exploitation demande à redessiner la fenêtre.
 // On demande à la logique de jeu de dessiner une frame.
 
-Ligne :  171
 // Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
 
-Ligne : 136/137
 // L'utilisateur a demandé à détruire la fenêtre.
 // On notifie le système d'exploitation qu'on veut arrêter.
 
-Ligne : 9
 // Expose les fonctions de la bibliothèque standard.
 
-Ligne : 26
 // Variables globales, accédées dans ce fichier.
 
-Ligne : 70/71
 // Fonction qui communique avec le système d'exploitation
 // pour créer la fenêtre graphique principale de rendu.
 
-Ligne : 13
 // Expose les fonctions du système d'exploitation Windows.
 ```
 
@@ -156,7 +136,7 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> Il faut inverser la position des UV 
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
@@ -172,7 +152,7 @@ d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper ? L'appliquer.
 
-> ...
+> On a créer un struct DinoPlayer regroupant toutes les variables associées à celui-ci.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -182,7 +162,7 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On va utiliser l'encapsulation, une certaine classe qui va contenir toutes les méthodes dont elle a besoin
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
