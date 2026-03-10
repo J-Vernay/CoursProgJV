@@ -43,10 +43,12 @@ constexpr uint16_t player_anim_nbFrames_run = 6;
 constexpr uint16_t player_anim_FPS_run = 16;
 constexpr uint16_t player_anim_base_run = 432;
 
-uint16_t player_anim_nbFrames_current = 0;
-uint16_t player_anim_FPS_current = 0;
+uint16_t player_anim_nbFrames_current = 4;
+uint16_t player_anim_FPS_current = 8;
 uint16_t player_anim_base_current = 0;
 uint16_t indexFrame = 0;
+
+double g_endHurtAnimation = 0;
 
 void Dino_GameInit()
 {
@@ -136,33 +138,51 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        float speed = CIRCLE_SPEED;
-        if (gamepad.btn_right)
-            speed = CIRCLE_SPEED * 2;
-
-        g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
-        g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
-
-        if (gamepad.stick_left_x < 0) {
-            g_bLeft = true;
-            //setupAnim
-            player_anim_nbFrames_current = gamepad.btn_right ? player_anim_nbFrames_walk : player_anim_nbFrames_run;
-            player_anim_FPS_current = gamepad.btn_right ? player_anim_FPS_walk : player_anim_FPS_run;
-            player_anim_base_current = gamepad.btn_right ? player_anim_base_walk : player_anim_base_run;
-        }
-
-        else if (gamepad.stick_left_x > 0) {
-            g_bLeft = false;
-            //setup anim
-            player_anim_nbFrames_current = gamepad.btn_right ? player_anim_nbFrames_walk : player_anim_nbFrames_run;
-            player_anim_FPS_current = gamepad.btn_right ? player_anim_FPS_walk : player_anim_FPS_run;
-            player_anim_base_current = gamepad.btn_right ? player_anim_base_walk : player_anim_base_run;
+        if (g_endHurtAnimation > 0) {
+            player_anim_nbFrames_current = player_anim_nbFrames_hurt;
+            player_anim_FPS_current = player_anim_FPS_Hurt;
+            player_anim_base_current = player_anim_base_hurt;
+            g_endHurtAnimation -= deltaTime;
         }
 
         else {
-            player_anim_nbFrames_current = player_anim_nbFrames_idle;
-            player_anim_FPS_current = player_anim_FPS_idle;
-            player_anim_base_current = player_anim_base_idle;
+            float speed = CIRCLE_SPEED;
+            if (gamepad.btn_right)
+                speed = CIRCLE_SPEED * 2;
+
+            g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
+            g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+
+            if (gamepad.stick_left_x != 0.f || gamepad.stick_left_y != 0.f) {
+                //detecte si le player bouge
+                player_anim_nbFrames_current = gamepad.btn_right ? player_anim_nbFrames_run : player_anim_nbFrames_walk;
+                player_anim_FPS_current = gamepad.btn_right ? player_anim_FPS_run : player_anim_FPS_walk;
+                player_anim_base_current = gamepad.btn_right ? player_anim_base_run : player_anim_base_walk;
+            }
+
+            if (gamepad.stick_left_x < 0) {
+                g_bLeft = true;
+            }
+
+            else if (gamepad.stick_left_x > 0) {
+                g_bLeft = false;
+            }
+
+            else if (gamepad.stick_left_y != 0.f) {
+                player_anim_nbFrames_current = gamepad.btn_right ? player_anim_nbFrames_run : player_anim_nbFrames_walk;
+                player_anim_FPS_current = gamepad.btn_right ? player_anim_FPS_run : player_anim_FPS_walk;
+                player_anim_base_current = gamepad.btn_right ? player_anim_base_run : player_anim_base_walk;
+            }
+
+            else {
+                player_anim_nbFrames_current = player_anim_nbFrames_idle;
+                player_anim_FPS_current = player_anim_FPS_idle;
+                player_anim_base_current = player_anim_base_idle;
+            }
+
+            if (gamepad.btn_left) {
+                g_endHurtAnimation = 3;
+            }
         }
     }
 
@@ -190,12 +210,12 @@ void Dino_GameFrame(double timeSinceStart)
         std::vector<DinoVertex> vs;
         uint16_t umin, umax;
         if (g_bLeft) {
-            umin = 24 * (indexFrame / player_anim_nbFrames_current) + player_anim_base_current;
-            umax = 0 * (indexFrame / player_anim_nbFrames_current) + player_anim_base_current;
+            umin = 24 * indexFrame + player_anim_base_current + 24;
+            umax = 24 * indexFrame + player_anim_base_current;
         }
         else {
-            umin = 0 * (indexFrame / player_anim_nbFrames_current) + player_anim_base_current;
-            umax = 24 * (indexFrame / player_anim_nbFrames_current) + player_anim_base_current;
+            umin = 24 * indexFrame + player_anim_base_current;
+            umax = 24 * indexFrame + player_anim_base_current + 24;
         }
 
         vs.resize(6);
