@@ -30,7 +30,8 @@ int g_debugScroll = 0;
 
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
+    // DinoVec2 windowSize = XDino_GetWindowSize();
+    DinoVec2 windowSize = {480, 360};
     XDino_SetRenderSize(windowSize);
 
     int playerCount = 0;
@@ -40,10 +41,10 @@ void Dino_GameInit()
         if (!bSuccess)
             continue;
 
-        DinoControllerFields& fields = GamepadControllers[gamepadIdx];
-        fields = {};
-        fields.dinoPos = {windowSize.x / 2, windowSize.y / 2};
-        fields.dinoColor = playerCount;
+        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
+        controller = {};
+
+        controller.Init(playerCount);
         playerCount++;
     }
 
@@ -87,12 +88,9 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        DinoControllerFields& fields = GamepadControllers[gamepadIdx];
+        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
 
-        if (!fields.g_dinoCanTakeDamage)
-            continue;
-
-        fields.DinoMovement(gamepad, deltaTime);
+        controller.DinoMovement(gamepad, deltaTime);
     }
 
     // Affichage
@@ -135,10 +133,10 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        DinoControllerFields& fields = GamepadControllers[gamepadIdx];
+        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
 
-        fields.vbufID_dino = fields.DrawDino(gamepad, deltaTime, texID_dino);
-        XDino_DestroyVertexBuffer(fields.vbufID_dino);
+        controller.DrawDino(gamepad, deltaTime, texID_dino);
+        XDino_DestroyVertexBuffer(controller.vbufID_dino);
     }
 
 #if !XDINO_RELEASE
@@ -163,4 +161,6 @@ void Dino_GameShut()
     //XDino_DestroyGpuTexture(texID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyVertexBuffer(vbufID_prenom);
+
+    XDino_DestroyGpuTexture(texID_dino);
 }

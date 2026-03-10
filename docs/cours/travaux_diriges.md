@@ -147,14 +147,18 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> Il suffit d'inverser les UVs selon l'axe horizontal
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
 jeu ?
 
-> ...
+> int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+> La frame est calculée selon la vitesse de l'animation et le temps écoulé, le tout modulo la taille de l'anim (pour
+> s'assurer de bien loop l'anim. Le tout est ensuite multiplié par 24, pour les 24px de chaque sprite. Enfin, on y
+> ajoute la valeur de Ubase qui correspond à la position de la première frame de l'anim, afin de s'assurer de bien se
+> situer au bon endroit de la tilemap
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
@@ -163,7 +167,8 @@ d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper ? L'appliquer.
 
-> ...
+> Pour regrouper l'ensembles des variables qui constituent l'état du dino, il suffit de créer une struct avec l'ensemble
+> de ces variables
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -173,7 +178,10 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On parle de fonction memebres, ou de méthodes
+> Les modificateurs d'accessibilité (private / public) permettent de modifier le scope d'une fonction
+> On appelle cette limitation l'encapsulation, et elle permet de structurer son code pour plus facilement identifier,
+> en cas d'erreurs, les éléments potentiellement responsables
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -183,20 +191,24 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> ...
+> Pour itérer sur l'ensemble des éléments d'un tableau, on utilise un for range :
+> for (MyClass myElementOfTypeMyClass : MyArrayOfElements)
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> On suppose que la résolution de rendu est en format 1:1 (carré) et non pas en format 16:9 (forme de l'écran)
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> Puisque le rectangle est au centre les marges du haut et du bas, et celles de la gauche et de la droite seront égales
+> entre elles
+> Marges à gauche et à droite (axe horizontal) : Mhorizontal = (480 - 256) / 2 = 112
+> Marges du haut et du bas (axe vertical) : Mvertical = (360 - 192) / 2 = 84
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.

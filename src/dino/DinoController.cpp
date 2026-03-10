@@ -20,8 +20,40 @@ constexpr DinoVec2 UPPER_RIGHT = {24, 0};
 constexpr DinoVec2 LOWER_LEFT = {0, 24};
 constexpr DinoVec2 LOWER_RIGHT = {24, 24};
 
+void DinoControllerFields::Init(int playerCount)
+{
+    DinoVec2 windowSize = {480, 360};
+    this->dinoPos = {windowSize.x / 2, windowSize.y / 2};
+    this->dinoColor = playerCount;
+}
 
-uint64_t DinoControllerFields::DrawDino(DinoGamepad gamepad, float deltaTime, uint64_t texID_dino)
+// void DinoControllerFields::Shut()
+// {
+//     
+// }
+
+void DinoControllerFields::DinoMovement(DinoGamepad gamepad, float deltaTime)
+{
+    if (!this->g_dinoCanTakeDamage)
+        return;
+
+    // Prevent Diagonal speed boost
+    if (gamepad.stick_left_x != 0.0f && gamepad.stick_left_y != 0.0f)
+        this->dinoCurrentSpeed = 0.75f * DINO_SPEED;
+    else
+        this->dinoCurrentSpeed = DINO_SPEED;
+
+    DinoVec2 dinoPosDelta = {0, 0};
+    dinoPosDelta.x += gamepad.stick_left_x * (this->dinoCurrentSpeed + gamepad.btn_right * DINO_RUN_SPEED) *
+        deltaTime;
+    dinoPosDelta.y += gamepad.stick_left_y * (this->dinoCurrentSpeed + gamepad.btn_right * DINO_RUN_SPEED) *
+        deltaTime;
+
+    this->dinoPos.x += dinoPosDelta.x;
+    this->dinoPos.y += dinoPosDelta.y;
+}
+
+uint64_t DinoControllerFields::GenDinoVertexBuffer(DinoGamepad gamepad, float deltaTime)
 {
     // Choosing Animation based on current player behaviour
     int currAnimLen;
@@ -104,25 +136,11 @@ uint64_t DinoControllerFields::DrawDino(DinoGamepad gamepad, float deltaTime, ui
     vs[5].v = 24 + this->dinoColor * 24;
 
     this->vbufID_dino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
-    XDino_Draw(this->vbufID_dino, texID_dino, this->dinoPos, DINO_SCALE);
-
     return this->vbufID_dino;
 }
 
-void DinoControllerFields::DinoMovement(DinoGamepad gamepad, float deltaTime)
+void DinoControllerFields::DrawDino(DinoGamepad gamepad, float deltaTime, uint64_t texID_dino)
 {
-    // Prevent Diagonal speed boost
-    if (gamepad.stick_left_x != 0.0f && gamepad.stick_left_y != 0.0f)
-        this->dinoCurrentSpeed = 0.75f * DINO_SPEED;
-    else
-        this->dinoCurrentSpeed = DINO_SPEED;
-
-    DinoVec2 dinoPosDelta = {0, 0};
-    dinoPosDelta.x += gamepad.stick_left_x * (this->dinoCurrentSpeed + gamepad.btn_right * DINO_RUN_SPEED) *
-        deltaTime;
-    dinoPosDelta.y += gamepad.stick_left_y * (this->dinoCurrentSpeed + gamepad.btn_right * DINO_RUN_SPEED) *
-        deltaTime;
-
-    this->dinoPos.x += dinoPosDelta.x;
-    this->dinoPos.y += dinoPosDelta.y;
+    this->vbufID_dino = GenDinoVertexBuffer(gamepad, deltaTime);
+    XDino_Draw(this->vbufID_dino, texID_dino, this->dinoPos, DINO_SCALE);
 }

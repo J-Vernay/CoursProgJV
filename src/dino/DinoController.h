@@ -1,8 +1,11 @@
+#pragma once
+
 #include <dino/xdino.h>
 
 struct DinoControllerFields {
-    uint64_t vbufID_dino;
 
+    // Fields
+private:
     DinoVec2 dinoPos;
     double dinoCurrentSpeed;
     bool dinoGoingLeft = false;
@@ -14,6 +17,17 @@ struct DinoControllerFields {
 
     bool g_dinoCanTakeDamage = true;
 
-    uint64_t DrawDino(DinoGamepad gamepad, float deltaTime, uint64_t texID_dino);
+public:
+    uint64_t vbufID_dino;
+
+    // Methods
+private:
+    uint64_t GenDinoVertexBuffer(DinoGamepad gamepad, float deltaTime);
+
+public:
+    void Init(int playerCount);
+    // void Shut();
+
     void DinoMovement(DinoGamepad gamepad, float deltaTime);
+    void DrawDino(DinoGamepad gamepad, float deltaTime, uint64_t texID_dino);
 };
