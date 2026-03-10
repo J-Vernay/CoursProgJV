@@ -1,7 +1,50 @@
 #include <dino/dino_player.h>
+
 #include <dino/xdino.h>
 
-uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, bool bMoving, bool bPressedRun)
+void DinoPlayer::Init()
+{
+    DinoVec2 windowSize = XDino_GetWindowSize();
+    m_pos = {windowSize.x / 2, windowSize.y / 2};
+    m_texID = XDino_CreateGpuTexture("dinosaurs.png");
+}
+
+void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
+{
+    m_bPressedRun = false;
+    m_bMoving = false;
+
+    constexpr float DINO_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+
+    float speed = DINO_SPEED;
+    if (gamepad.btn_right) {
+        speed = DINO_SPEED * 2;
+        m_bPressedRun = true;
+    }
+    if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
+        m_bMoving = true;
+
+    if (timeSinceStart >= m_endHitAnim) {
+        m_pos.x += gamepad.stick_left_x * speed * deltaTime;
+        m_pos.y += gamepad.stick_left_y * speed * deltaTime;
+    }
+
+    if (gamepad.stick_left_x < 0)
+        m_bLeft = true;
+    if (gamepad.stick_left_x > 0)
+        m_bLeft = false;
+
+    if (gamepad.btn_left) {
+        m_endHitAnim = timeSinceStart + 3;
+    }
+}
+
+void DinoPlayer::Shut()
+{
+    XDino_DestroyGpuTexture(m_texID);
+}
+
+uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
 {
     float animSpeed;
     int frameCount;
@@ -12,8 +55,8 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, bool bMoving, b
         frameCount = 3;
         ubase = 336;
     }
-    else if (bMoving) {
-        if (bPressedRun) {
+    else if (m_bMoving) {
+        if (m_bPressedRun) {
             // ANIM RUN
             animSpeed = 16;
             frameCount = 6;
