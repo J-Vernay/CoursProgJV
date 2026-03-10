@@ -161,7 +161,10 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> on commence par faire une liste de toutes les positions de flaurs possible sous forme de vecteur 2,
+> mon mélange ensuite cette liste
+> on prend les dix premiers elements de cette liste et on y instantie 1 flaur de type 1
+> pour les dix elements suivants de la liste, on prend la flaur 2 etc
 
 ## 4. Comprendre la compilation des fichiers C++
 
