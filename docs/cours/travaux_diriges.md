@@ -7,19 +7,26 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Fichier déclarant les fonctions du gameplay ainsi que les interfaces pour le rendu graphique, les
+> entrées et la gestion mémoire.
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` : Dossier contenant l'implémentation spécifique à Windows du moteur du jeu permettant la gestion
+> de la fenêtre, du rendu et des fichiers nécessaires pour faire fonctionner le moteur sur x64 Windows.
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` : Dossier contenant l'implémentation spécifique à Linux du moteur du jeu permettant la gestion de
+> la fenêtre, du rendu et des fichiers nécessaires pour faire fonctionner le moteur sur x64 Linux.
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : Fichier contenant l'implémentation de la logique de jeu, l'initialisation du jeu, l'update de
+> l'état des objets, la gestion des entrées du joueur...
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Fichier contenant les fonctions géométriques utilitaires utilisées dans la logique du jeu
+> pour la détection de collisions etc.
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : Fichier contenant des fonctions pour générer les sommets (DinoVertex) des formes à
+> dessiner.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Fichier qui décrit comment générer le projet, solutions et configurations, les chemins, fichiers
+> sources à compiler, dépendances externes...
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 
@@ -38,7 +45,7 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 // La fenêtre graphique vient d'être construite,
 // on initialise des variables globales et le moteur de rendu.
 
-// Foncfion qui gère les événements que nous communique le système d'exploitation.
+// Fonction qui gère les événements que nous communique le système d'exploitation.
 
 // Initialisation de la fenêtre graphique.
 
@@ -74,37 +81,41 @@ b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdin
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> Une distance de 6px a été parcouru entre ces deux frames.
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Le cercle s'est déplacé dans la direction bas-gauche. Cela correspond à une vitesse de 5000 pixels par seconde.
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> Le cercle est à la position (171;129) après une seconde.
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé est définit par 3 vertex : DinoVertex. Cela correspond à 3 sommets (positions dans l'espace) et 3
+> coordonnées de texture (UV) associées à ces sommets.
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> ...
+> Un draw call est une instruction envoyée par le CPU au GPU pour demander le rendu d'un objet graphique avec une
+> géométrie et une texture.
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> Quand on maintient cette touche en jeu les ressources actuellement chargées en mémoire dans le moteur graphique sont
+> affichées. Dans la sortie textuelle quand on quitte le jeu on y retrouve les ressources qui ont été libérées.
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
-> ...
+> Deub, profile, release sont des modes de compilation et d'exécution du programme. Exemple : Lancer le jeu en Debug
+> pour vérifier pourquoi le visuel du personnage ne bouge pas.
 
 j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
 sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
@@ -114,12 +125,14 @@ et le positionner correctement contre le bas de l'écran grâce à `translation`
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
 Dans quelle catégorie est située cette page ? 
 
-> ...
+> `std::vector` est un tableau de la bibliothèque standard C++ qui a une taille dynamique. Il stocke des éléments à la
+> suite.
 
 l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
 dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
 
-> ...
+> L'esperluette `&` indique une référence. Si l'esperluette `&` est enlevée, out serait passé par valeur, ce qui
+> signifie qu'une copie du vecteur serait créée. Coût en performarmance possible car une copie est créée à chaque appel.
 
 ## 1. Programmation du déplacement du dinosaure (F1.1-F1.4)
 
@@ -131,13 +144,15 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> Pour mettre en miroir le sprite du dinosaure on peut directement toucher aux UV en inversant les coordonnées U des
+> vertices du carré.
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
-Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?
+Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
+jeu ?
 
-> ...
+> `frameIndex = (timeSinceStart * framesPerSecond) % nbFrames` puis `u = frameIndex * largeur_sprite`.
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
@@ -146,7 +161,7 @@ d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper ? L'appliquer.
 
-> ...
+> On peut créer une classe Dino qui contiendra toutes les variables globales qui définissent l'état du dinosaure.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -156,7 +171,9 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> En C++ on appelle une fonction associée à un type de donnée `une méthode`. Pour limiter la modification d'un type de
+> données à ce genre de fonction on utilise `private`. Cette limitation est appellée `l'encapsulation`. L'intérêt
+> est d'éviter les modifications non désirées, contrôler l'accès et protéger les données.
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -166,20 +183,23 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> ...
+> for each : `range-based for loop`.
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> La résolution du rendu n'est pas adapté, actuellement il reste au format 1:1 (carré) peu importe les modifications
+> apportées à la fenêtre.
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> Il faut calculer la différence de taille et la répartir de chaque côté pour obtenir la bonne taille des marges.
+> Horizontalement : marge = (largeur_fenetre - largeur_rectangle) / 2 = (480 - 256) / 2 = 224 / 2 = 112.
+> Verticalement : marge = (hauteur_fenetre - hauteur_rectangle) / 2 = (360 - 192) / 2 = 168 / 2 = 84.
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
@@ -347,7 +367,7 @@ Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des las
 a) Allouez une zone mémoire avec `XDino_MemAlloc()` pour stocker un point.
 Quel est le type de retour ? Pourquoi la zone mémoire ne peut pas être manipulée telle quelle ?
 
-> ... 
+> ...
 
 b) Faites en sorte de pouvoir ajouter des points à la liste, en allouant une zone mémoire plus grande
 et en copiant l'ancien contenu dans la nouvelle zone mémoire.
@@ -440,7 +460,6 @@ Comment démontrez-vous qu'ils fonctionnent ?
 
 > ...
 
-
 ## 10. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
@@ -484,11 +503,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
