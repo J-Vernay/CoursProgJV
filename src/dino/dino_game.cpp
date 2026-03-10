@@ -12,6 +12,7 @@ double g_rotation = 360.0;
 double g_scale = 1.0;
 DinoVec2 g_dinoPos = {};
 bool g_bLeft = false;
+double g_endHitAnim = 0;
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
@@ -109,6 +110,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
+    bool bMoving = false;
+    bool bPressedRun = false;
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
@@ -116,16 +119,26 @@ void Dino_GameFrame(double timeSinceStart)
             continue;
 
         float speed = CIRCLE_SPEED;
-        if (gamepad.btn_right)
+        if (gamepad.btn_right) {
             speed = CIRCLE_SPEED * 2;
+            bPressedRun = true;
+        }
+        if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
+            bMoving = true;
 
-        g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
-        g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+        if (timeSinceStart >= g_endHitAnim) {
+            g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
+            g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+        }
 
         if (gamepad.stick_left_x < 0)
             g_bLeft = true;
         if (gamepad.stick_left_x > 0)
             g_bLeft = false;
+
+        if (gamepad.btn_left) {
+            g_endHitAnim = timeSinceStart + 3;
+        }
     }
 
     // Affichage
@@ -149,15 +162,47 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du dinosaure.
     {
+        float animSpeed;
+        int frameCount;
+        int ubase;
+        if (timeSinceStart < g_endHitAnim) {
+            // ANIM HIT
+            animSpeed = 8;
+            frameCount = 3;
+            ubase = 336;
+        }
+        else if (bMoving) {
+            if (bPressedRun) {
+                // ANIM RUN
+                animSpeed = 16;
+                frameCount = 6;
+                ubase = 432;
+            }
+            else {
+                // ANIM WALK
+                animSpeed = 8;
+                frameCount = 6;
+                ubase = 96;
+            }
+        }
+        else {
+            // ANIM IDLE
+            animSpeed = 8;
+            frameCount = 4;
+            ubase = 0;
+        }
+
+        int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+
         std::vector<DinoVertex> vs;
         uint16_t umin, umax;
         if (g_bLeft) {
-            umin = 24;
-            umax = 0;
+            umin = uAnim + 24;
+            umax = uAnim + 0;
         }
         else {
-            umin = 0;
-            umax = 24;
+            umin = uAnim + 0;
+            umax = uAnim + 24;
         }
 
         vs.resize(6);
