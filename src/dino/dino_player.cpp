@@ -39,6 +39,13 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     }
 }
 
+void DinoPlayer::Draw(double timeSinceStart)
+{
+    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
+    XDino_Draw(vbufID, m_texID, m_pos, 4);
+    XDino_DestroyVertexBuffer(vbufID);
+}
+
 void DinoPlayer::Shut()
 {
     XDino_DestroyGpuTexture(m_texID);

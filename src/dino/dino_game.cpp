@@ -133,11 +133,7 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
 
     // Dessin du dinosaure.
-    {
-        uint64_t vbufID = g_Player.GenerateVertexBuffer(timeSinceStart);
-        XDino_Draw(vbufID, g_Player.m_texID, g_Player.m_pos, 4);
-        XDino_DestroyVertexBuffer(vbufID);
-    }
+    g_Player.Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
