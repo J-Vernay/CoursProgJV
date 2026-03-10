@@ -1,7 +1,6 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "dino_player.h"
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 
@@ -11,11 +10,12 @@
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
-
-DinoPlayer g_Player;
+DinoVec2 g_dinoPos = {};
+bool g_bLeft = false;
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
+uint64_t vbufID_dino;
 uint64_t texID_imageMilieu;
 uint64_t texID_dino;
 
@@ -28,78 +28,11 @@ int g_debugScroll = 0;
 // Constantes.
 constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
-uint64_t DinoPlayer_GenerateVertexBuffer(DinoPlayer& player, double timeSinceStart, bool bMoving, bool bPressedRun)
-{
-    float animSpeed;
-    int frameCount;
-    int ubase;
-    if (timeSinceStart < player.endHitAnim) {
-        // ANIM HIT
-        animSpeed = 8;
-        frameCount = 3;
-        ubase = 336;
-    }
-    else if (bMoving) {
-        if (bPressedRun) {
-            // ANIM RUN
-            animSpeed = 16;
-            frameCount = 6;
-            ubase = 432;
-        }
-        else {
-            // ANIM WALK
-            animSpeed = 8;
-            frameCount = 6;
-            ubase = 96;
-        }
-    }
-    else {
-        // ANIM IDLE
-        animSpeed = 8;
-        frameCount = 4;
-        ubase = 0;
-    }
-
-    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
-
-    std::vector<DinoVertex> vs;
-    uint16_t umin, umax;
-    if (player.bLeft) {
-        umin = uAnim + 24;
-        umax = uAnim + 0;
-    }
-    else {
-        umin = uAnim + 0;
-        umax = uAnim + 24;
-    }
-
-    vs.resize(6);
-    vs[0].pos = {0, 0};
-    vs[0].u = umin;
-    vs[0].v = 0;
-    vs[1].pos = {24, 0};
-    vs[1].u = umax;
-    vs[1].v = 0;
-    vs[2].pos = {0, 24};
-    vs[2].u = umin;
-    vs[2].v = 24;
-    vs[3].pos = {24, 0};
-    vs[3].u = umax;
-    vs[3].v = 0;
-    vs[4].pos = {0, 24};
-    vs[4].u = umin;
-    vs[4].v = 24;
-    vs[5].pos = {24, 24};
-    vs[5].u = umax;
-    vs[5].v = 24;
-    return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
-}
-
 void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_Player.pos = {windowSize.x / 2, windowSize.y / 2};
+    g_dinoPos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -176,8 +109,6 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    bool bMoving = false;
-    bool bPressedRun = false;
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
@@ -185,26 +116,16 @@ void Dino_GameFrame(double timeSinceStart)
             continue;
 
         float speed = CIRCLE_SPEED;
-        if (gamepad.btn_right) {
+        if (gamepad.btn_right)
             speed = CIRCLE_SPEED * 2;
-            bPressedRun = true;
-        }
-        if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
-            bMoving = true;
 
-        if (timeSinceStart >= g_Player.endHitAnim) {
-            g_Player.pos.x += gamepad.stick_left_x * speed * deltaTime;
-            g_Player.pos.y += gamepad.stick_left_y * speed * deltaTime;
-        }
+        g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
+        g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
 
         if (gamepad.stick_left_x < 0)
-            g_Player.bLeft = true;
+            g_bLeft = true;
         if (gamepad.stick_left_x > 0)
-            g_Player.bLeft = false;
-
-        if (gamepad.btn_left) {
-            g_Player.endHitAnim = timeSinceStart + 3;
-        }
+            g_bLeft = false;
     }
 
     // Affichage
@@ -228,9 +149,39 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du dinosaure.
     {
-        uint64_t vbufID = DinoPlayer_GenerateVertexBuffer(g_Player, timeSinceStart, bMoving, bPressedRun);
-        XDino_Draw(vbufID, texID_dino, g_Player.pos, 4);
-        XDino_DestroyVertexBuffer(vbufID);
+        std::vector<DinoVertex> vs;
+        uint16_t umin, umax;
+        if (g_bLeft) {
+            umin = 24;
+            umax = 0;
+        }
+        else {
+            umin = 0;
+            umax = 24;
+        }
+
+        vs.resize(6);
+        vs[0].pos = {0, 0};
+        vs[0].u = umin;
+        vs[0].v = 0;
+        vs[1].pos = {24, 0};
+        vs[1].u = umax;
+        vs[1].v = 0;
+        vs[2].pos = {0, 24};
+        vs[2].u = umin;
+        vs[2].v = 24;
+        vs[3].pos = {24, 0};
+        vs[3].u = umax;
+        vs[3].v = 0;
+        vs[4].pos = {0, 24};
+        vs[4].u = umin;
+        vs[4].v = 24;
+        vs[5].pos = {24, 24};
+        vs[5].u = umax;
+        vs[5].v = 24;
+        vbufID_dino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
+        XDino_Draw(vbufID_dino, texID_dino, g_dinoPos, 4);
+        XDino_DestroyVertexBuffer(vbufID_dino);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
