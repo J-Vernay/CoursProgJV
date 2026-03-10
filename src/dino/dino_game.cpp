@@ -40,7 +40,8 @@ void Dino_GameInit()
     g_Players[0].Init(0);
     g_gamepadPlayer.insert({DinoGamepadIdx::Keyboard, &g_Players[0]});
 
-    g_Terrain.Init(RENDER_SIZE);
+    int idxSeason = XDino_RandomInt32(0, 3);
+    g_Terrain.Init(RENDER_SIZE, idxSeason);
 
     // Préparation du drawcall du prénom
     {
