@@ -15,7 +15,7 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     m_bPressedRun = false;
     m_bMoving = false;
 
-    constexpr float DINO_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+    constexpr float DINO_SPEED = 100.f; // Nombre de pixels parcourus en une seconde.
 
     float speed = DINO_SPEED;
     if (gamepad.btn_right) {
@@ -43,7 +43,7 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, m_texID, m_pos, 4);
+    XDino_Draw(vbufID, m_texID, m_pos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 
