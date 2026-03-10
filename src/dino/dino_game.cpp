@@ -18,8 +18,8 @@ float g_dinoAnimElapsed = 0;
 int g_currFrame = 0;
 
 uint64_t vbufID_polyline;
-uint64_t vbufID_imageMilieu;
-uint64_t texID_imageMilieu;
+//uint64_t vbufID_imageMilieu;
+//uint64_t texID_imageMilieu;
 //uint64_t vbufID_circle;
 uint64_t vbufID_dino;
 uint64_t texID_dino;
@@ -72,42 +72,42 @@ void Dino_GameInit()
 
     // Préparation du drawcall de l'image au milieu qu'on peut tourner.
     {
-        constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
-        constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
-        constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
-        constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
-
-        texID_imageMilieu = XDino_CreateGpuTexture("animals.png");
-        DinoVec2 texSize = XDino_GetGpuTextureSize(texID_imageMilieu);
-
-        std::vector<DinoVertex> vs;
-        vs.resize(6);
-        vs[0].pos = {-2, -1};
-        vs[0].color = PURPLE;
-        vs[1].pos = {2, -1};
-        vs[1].color = CYAN;
-        vs[2].pos = {-2, 1};
-        vs[2].color = PINK;
-        vs[3].pos = {2, -1};
-        vs[3].color = CYAN;
-        vs[4].pos = {-2, 1};
-        vs[4].color = PINK;
-        vs[5].pos = {2, 1};
-        vs[5].color = ORANGE;
-        vs[0].u = 0;
-        vs[0].v = 0;
-        vs[1].u = texSize.x;
-        vs[1].v = 0;
-        vs[2].u = 0;
-        vs[2].v = texSize.y;
-        vs[3].u = texSize.x;
-        vs[3].v = 0;
-        vs[4].u = 0;
-        vs[4].v = texSize.y;
-        vs[5].u = texSize.x;
-        vs[5].v = texSize.y;
-
-        vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
+        // constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
+        // constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
+        // constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
+        // constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
+        //
+        // texID_imageMilieu = XDino_CreateGpuTexture("animals.png");
+        // DinoVec2 texSize = XDino_GetGpuTextureSize(texID_imageMilieu);
+        //
+        // std::vector<DinoVertex> vs;
+        // vs.resize(6);
+        // vs[0].pos = {-2, -1};
+        // vs[0].color = PURPLE;
+        // vs[1].pos = {2, -1};
+        // vs[1].color = CYAN;
+        // vs[2].pos = {-2, 1};
+        // vs[2].color = PINK;
+        // vs[3].pos = {2, -1};
+        // vs[3].color = CYAN;
+        // vs[4].pos = {-2, 1};
+        // vs[4].color = PINK;
+        // vs[5].pos = {2, 1};
+        // vs[5].color = ORANGE;
+        // vs[0].u = 0;
+        // vs[0].v = 0;
+        // vs[1].u = texSize.x;
+        // vs[1].v = 0;
+        // vs[2].u = 0;
+        // vs[2].v = texSize.y;
+        // vs[3].u = texSize.x;
+        // vs[3].v = 0;
+        // vs[4].u = 0;
+        // vs[4].v = texSize.y;
+        // vs[5].u = texSize.x;
+        // vs[5].v = texSize.y;
+        //
+        // vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
     }
 
     // Préparation du drawcall du cercle qu'on peut bouger.
