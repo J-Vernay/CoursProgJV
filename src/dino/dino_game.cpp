@@ -33,7 +33,8 @@ void Dino_GameInit()
     g_Players[2].Init(2);
     g_Players[3].Init(3);
 
-    g_Terrain.Init(RENDER_SIZE);
+    int idxSeason = XDino_RandomInt32(0, 3);
+    g_Terrain.Init(RENDER_SIZE, idxSeason);
 
     // Préparation du drawcall du prénom
     {

@@ -4,7 +4,7 @@
 
 class DinoTerrain {
 public:
-    void Init(DinoVec2 rdrSize);
+    void Init(DinoVec2 rdrSize, int idxSeason);
     void Draw();
     void Shut();
 
