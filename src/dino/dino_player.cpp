@@ -2,11 +2,12 @@
 
 #include <dino/xdino.h>
 
-void DinoPlayer::Init()
+void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     m_pos = {windowSize.x / 2, windowSize.y / 2};
     m_texID = XDino_CreateGpuTexture("dinosaurs.png");
+    m_idxPlayer = idxPlayer;
 }
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
@@ -37,6 +38,13 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     if (gamepad.btn_left) {
         m_endHitAnim = timeSinceStart + 3;
     }
+}
+
+void DinoPlayer::Draw(double timeSinceStart)
+{
+    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
+    XDino_Draw(vbufID, m_texID, m_pos, 4);
+    XDino_DestroyVertexBuffer(vbufID);
 }
 
 void DinoPlayer::Shut()
@@ -96,24 +104,26 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         umax = uAnim + 24;
     }
 
+    uint16_t vbase = 24 * m_idxPlayer;
+
     vs.resize(6);
     vs[0].pos = {0, 0};
     vs[0].u = umin;
-    vs[0].v = 0;
+    vs[0].v = vbase;
     vs[1].pos = {24, 0};
     vs[1].u = umax;
-    vs[1].v = 0;
+    vs[1].v = vbase;
     vs[2].pos = {0, 24};
     vs[2].u = umin;
-    vs[2].v = 24;
+    vs[2].v = vbase + 24;
     vs[3].pos = {24, 0};
     vs[3].u = umax;
-    vs[3].v = 0;
+    vs[3].v = vbase;
     vs[4].pos = {0, 24};
     vs[4].u = umin;
-    vs[4].v = 24;
+    vs[4].v = vbase + 24;
     vs[5].pos = {24, 24};
     vs[5].u = umax;
-    vs[5].v = 24;
+    vs[5].v = vbase + 24;
     return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
 }
