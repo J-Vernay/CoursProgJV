@@ -186,14 +186,14 @@ Comment s'appelle cette syntaxe ?
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> Car on définit la taille de l'ecran en pixel à l'avance, si on dépasse la taille ce n'est plus affiché
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> dx = (renderingW - rectangleW) / 2 , dy = (rdrH - rectangleH) / 2
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
@@ -203,7 +203,9 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> 1) Generer toutes les positions possibles
+> 2) Melanger aleatoirement le tableau
+> 3) Recuperer les positions des fleurs
 
 ## 4. Comprendre la compilation des fichiers C++
 

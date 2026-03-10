@@ -1,6 +1,7 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include <dino/dino_terrain.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
@@ -16,7 +17,6 @@ uint64_t vbufID_polyline;
 
 uint64_t vbuffID_nom;
 DinoVec2 text_Size_nom;
-
 
 std::vector<anim> anims;
 anim Get_Current_Anim();
@@ -34,22 +34,24 @@ anim Get_Current_Anim(DinoPlayer player)
 
 
 std::vector<DinoPlayer> g_players = {};
-
+DinoTerrain g_terrain;
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
 // Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
-
+constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
 void Dino_GameInit()
 {
+
     g_players.resize(4);
     g_players[0].Init(0);
     g_players[1].Init(1);
     g_players[2].Init(2);
     g_players[3].Init(3);
 
+    int idxSeason = XDino_RandomInt32(0, 3);
+    g_terrain.Init(RENDER_SIZE, idxSeason);
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
@@ -93,6 +95,7 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
+    XDino_SetRenderSize({480, 360});
     // Gestion des entrées et mise à jour de la logique de jeu.
 
     DinoGamepad gamepad{};
@@ -132,6 +135,9 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_DestroyVertexBuffer(vbufID);
     }
 
+    //Affichage de terrain
+    g_terrain.Draw();
+
     // Affichage du nom
     {
         XDino_Draw(vbuffID_nom,
@@ -139,7 +145,7 @@ void Dino_GameFrame(double timeSinceStart)
                    {renderSize.x - text_Size_nom.x * 2, renderSize.y - text_Size_nom.y * 2},
                    2);
     }
-
+    g_terrain.Update(timeSinceStart);
     // Affichage du player
     {
         for (DinoPlayer& player : g_players) {
@@ -170,4 +176,5 @@ void Dino_GameShut()
     }
     XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyVertexBuffer(vbuffID_nom);
+    g_terrain.Shut();
 }

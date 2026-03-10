@@ -11,7 +11,7 @@ void DinoPlayer::Init(int idxPlayer)
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
 {
-    constexpr float Dino_SPEED = 300.f;
+    constexpr float Dino_SPEED = 100.f;
 
     float speed = Dino_SPEED;
     if (gamepad.btn_right) {
@@ -87,7 +87,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, anim current)
 void DinoPlayer::Draw(double timeSinceStart, anim currentAnim)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart, currentAnim);
-    XDino_Draw(vbufID, m_texID, m_pos, 4);
+    XDino_Draw(vbufID, m_texID, m_pos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 
