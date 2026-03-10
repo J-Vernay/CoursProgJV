@@ -3,6 +3,7 @@
 
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
+#include <dino/dino_player.h>
 
 #include <format>
 
@@ -10,34 +11,29 @@
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
-DinoVec2 g_circlePos = {};
 
 uint64_t vbufID_polyline;
-uint64_t vbufID_imageDino;
-uint64_t texID_imageDino;
 
 uint64_t vbuffID_nom;
 DinoVec2 text_Size_nom;
 
-bool lookingRight = true;
-
-enum animState {
-    Idle = 0,
-    Walk = 1,
-    Hit = 2,
-    Run = 3,
-};
-
-struct anim {
-    animState state;
-    float Ubase;
-    float NbFrames;
-    float Speed;
-};
 
 std::vector<anim> anims;
-animState g_currentAnim = Idle;
 anim Get_Current_Anim();
+
+
+anim Get_Current_Anim(DinoPlayer player)
+{
+    for (auto a : anims) {
+        if (a.state == player.m_currentAnim)
+            return a;
+    }
+
+    return anims[0];
+}
+
+
+std::vector<DinoPlayer> g_players = {};
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -45,11 +41,17 @@ int g_debugScroll = 0;
 // Constantes.
 constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
+
 void Dino_GameInit()
 {
+    g_players.resize(4);
+    g_players[0].Init(0);
+    g_players[1].Init(1);
+    g_players[2].Init(2);
+    g_players[3].Init(3);
+
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_circlePos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -66,35 +68,8 @@ void Dino_GameInit()
         vbufID_polyline = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
     }
 
-    // Préparation du drawcall du dino.
+    // Set up Anims.
     {
-
-        texID_imageDino = XDino_CreateGpuTexture("dinosaurs.png");
-        DinoVec2 texSize = XDino_GetGpuTextureSize(texID_imageDino);
-
-        std::vector<DinoVertex> vs;
-        vs.resize(6);
-        vs[0].pos = {0, 0};
-        vs[1].pos = {24, 0};
-        vs[2].pos = {0, 24};
-        vs[3].pos = {24, -0};
-        vs[4].pos = {0, 24};
-        vs[5].pos = {24, 24};
-        vs[0].u = lookingRight ? 0 : 24;
-        vs[0].v = 0;
-        vs[1].u = lookingRight ? 24 : 0;
-        vs[1].v = 0;
-        vs[2].u = lookingRight ? 0 : 24;
-        vs[2].v = 24;
-        vs[3].u = lookingRight ? 24 : 0;
-        vs[3].v = 0;
-        vs[4].u = lookingRight ? 0 : 24;
-        vs[4].v = 24;
-        vs[5].u = lookingRight ? 24 : 0;
-        vs[5].v = 24;
-
-        vbufID_imageDino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageDino");
-
         anims.push_back({Idle, 0, 4, 8});
         anims.push_back({Walk, 96, 6, 8});
         anims.push_back({Hit, 336, 3, 8});
@@ -111,16 +86,6 @@ void Dino_GameInit()
 }
 
 
-anim Get_Current_Anim()
-{
-    for (auto a : anims) {
-        if (a.state == g_currentAnim)
-            return a;
-    }
-
-    return anims[0];
-}
-
 void Dino_GameFrame(double timeSinceStart)
 {
     // Prendre en compte le temps qui passe.
@@ -130,47 +95,18 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+    DinoGamepad gamepad{};
+    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
+        g_players[0].Update(timeSinceStart, deltaTime, gamepad);
 
-        if (gamepad.btn_down && !gamepad.btn_up)
-            g_scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            g_scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right) {
-            g_rotation += 90.0 * deltaTime;
-        }
-        if (gamepad.btn_right && !gamepad.btn_left) {
-            g_rotation -= 90.0 * deltaTime;
-        }
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
+        g_players[1].Update(timeSinceStart, deltaTime, gamepad);
 
-        float speed = CIRCLE_SPEED;
-        if (gamepad.select) {
-            speed *= 2;
-            g_currentAnim = Run;
-        }
-        else {
-            g_currentAnim = Walk;
-        }
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
+        g_players[2].Update(timeSinceStart, deltaTime, gamepad);
 
-        g_circlePos.x += gamepad.stick_left_x * speed * deltaTime;
-        g_circlePos.y += gamepad.stick_left_y * speed * deltaTime;
-
-        if (gamepad.stick_left_x < 0) {
-            lookingRight = false;
-        }
-        if (gamepad.stick_left_x > 0) {
-            lookingRight = true;
-        }
-
-        if (!(gamepad.stick_left_x < 0 || gamepad.stick_left_x > 0 || gamepad.stick_left_y < 0 || gamepad.stick_left_y
-              > 0)) {
-            g_currentAnim = Idle;
-        }
-    }
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
+        g_players[3].Update(timeSinceStart, deltaTime, gamepad);
 
     // Affichage
 
@@ -185,38 +121,6 @@ void Dino_GameFrame(double timeSinceStart)
     // DinoVec2 windowSize = XDino_GetWindowSize();
     // XDino_SetRenderSize(windowSize);
     DinoVec2 renderSize = XDino_GetRenderSize();
-    anim current = Get_Current_Anim();
-
-    int frame = int(timeSinceStart * current.Speed) % int(current.NbFrames);
-
-    float U = current.Ubase + frame * 24;
-    // Dessin de la texture centrale qu'on peut bouger.
-    {
-        std::vector<DinoVertex> vs;
-        vs.resize(6);
-        vs[0].pos = {0, 0};
-        vs[1].pos = {24, 0};
-        vs[2].pos = {0, 24};
-        vs[3].pos = {24, -0};
-        vs[4].pos = {0, 24};
-        vs[5].pos = {24, 24};
-        vs[0].u = lookingRight ? U : U + 24;
-        vs[0].v = 0;
-        vs[1].u = lookingRight ? U + 24 : U;
-        vs[1].v = 0;
-        vs[2].u = lookingRight ? U : U + 24;
-        vs[2].v = 24;
-        vs[3].u = lookingRight ? U + 24 : U;
-        vs[3].v = 0;
-        vs[4].u = lookingRight ? U : U + 24;
-        vs[4].v = 24;
-        vs[5].u = lookingRight ? U + 24 : U;
-        vs[5].v = 24;
-
-        vbufID_imageDino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageDino");
-        XDino_Draw(vbufID_imageDino, texID_imageDino, g_circlePos, 4);
-        XDino_DestroyVertexBuffer(vbufID_imageDino);
-    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -234,7 +138,13 @@ void Dino_GameFrame(double timeSinceStart)
                    XDino_TEXID_FONT,
                    {renderSize.x - text_Size_nom.x * 2, renderSize.y - text_Size_nom.y * 2},
                    2);
+    }
 
+    // Affichage du player
+    {
+        for (DinoPlayer& player : g_players) {
+            player.Draw(timeSinceStart, Get_Current_Anim(player));
+        }
     }
 
 #if !XDINO_RELEASE
@@ -255,7 +165,9 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
+    for (DinoPlayer& player : g_players) {
+        player.Shut();
+    }
     XDino_DestroyVertexBuffer(vbufID_polyline);
-    XDino_DestroyGpuTexture(texID_imageDino);
     XDino_DestroyVertexBuffer(vbuffID_nom);
 }
