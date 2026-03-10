@@ -90,7 +90,7 @@ void DinoTerrain::GenFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoVe
         posCandidates[j] = temp;
     }
 
-    // 3. Générer les sommets.
+    // 3. Générer les sommets. on peut changer ici le nombre de fleurs
     for (int i = 0; i < 10; ++i)
         GenFlower(out, idxSeason, 0, posCandidates[i]);
     for (int i = 10; i < 20; ++i)

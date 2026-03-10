@@ -15,8 +15,6 @@ class DinoPlayer {
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
 public:
-    bool spawned = false;
-
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
     void Draw(double timeSinceStart);

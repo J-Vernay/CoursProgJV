@@ -1,6 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "dino_animals.h"
+
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
@@ -19,7 +21,7 @@ std::vector<DinoPlayer> g_Players;
 std::unordered_map<DinoGamepadIdx, DinoPlayer*> g_gamepadPlayer;
 
 DinoTerrain g_Terrain;
-
+dino_animalsGenerator g_animalsGenerator;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -42,6 +44,8 @@ void Dino_GameInit()
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
+
+    g_animalsGenerator.Init();
 
     // Préparation du drawcall du prénom
     {
@@ -113,6 +117,8 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_SetClearColor(CLEAR_COLOR);
 
     g_Terrain.Draw();
+
+    g_animalsGenerator.Update(deltaTime, timeSinceStart);
 
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
