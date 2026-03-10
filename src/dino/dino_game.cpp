@@ -108,13 +108,6 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-    }
     DinoGamepad gamepad{};
     if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
         g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
