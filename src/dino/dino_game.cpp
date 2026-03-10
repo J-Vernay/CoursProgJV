@@ -3,19 +3,20 @@
 
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
+#include <dino/dino_player.h>
 
 #include <format>
+
 
 // Variables globales.
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
-DinoVec2 g_dinoPos = {};
-bool g_bLeft = false;
+
+DinoPlayer g_Player;
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
-uint64_t vbufID_dino;
 uint64_t texID_imageMilieu;
 uint64_t texID_dino;
 
@@ -32,7 +33,7 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_dinoPos = {windowSize.x / 2, windowSize.y / 2};
+    g_Player.m_pos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -109,6 +110,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
+    bool bMoving = false;
+    bool bPressedRun = false;
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
@@ -116,16 +119,26 @@ void Dino_GameFrame(double timeSinceStart)
             continue;
 
         float speed = CIRCLE_SPEED;
-        if (gamepad.btn_right)
+        if (gamepad.btn_right) {
             speed = CIRCLE_SPEED * 2;
+            bPressedRun = true;
+        }
+        if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
+            bMoving = true;
 
-        g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
-        g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+        if (timeSinceStart >= g_Player.m_endHitAnim) {
+            g_Player.m_pos.x += gamepad.stick_left_x * speed * deltaTime;
+            g_Player.m_pos.y += gamepad.stick_left_y * speed * deltaTime;
+        }
 
         if (gamepad.stick_left_x < 0)
-            g_bLeft = true;
+            g_Player.m_bLeft = true;
         if (gamepad.stick_left_x > 0)
-            g_bLeft = false;
+            g_Player.m_bLeft = false;
+
+        if (gamepad.btn_left) {
+            g_Player.m_endHitAnim = timeSinceStart + 3;
+        }
     }
 
     // Affichage
@@ -149,39 +162,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du dinosaure.
     {
-        std::vector<DinoVertex> vs;
-        uint16_t umin, umax;
-        if (g_bLeft) {
-            umin = 24;
-            umax = 0;
-        }
-        else {
-            umin = 0;
-            umax = 24;
-        }
-
-        vs.resize(6);
-        vs[0].pos = {0, 0};
-        vs[0].u = umin;
-        vs[0].v = 0;
-        vs[1].pos = {24, 0};
-        vs[1].u = umax;
-        vs[1].v = 0;
-        vs[2].pos = {0, 24};
-        vs[2].u = umin;
-        vs[2].v = 24;
-        vs[3].pos = {24, 0};
-        vs[3].u = umax;
-        vs[3].v = 0;
-        vs[4].pos = {0, 24};
-        vs[4].u = umin;
-        vs[4].v = 24;
-        vs[5].pos = {24, 24};
-        vs[5].u = umax;
-        vs[5].v = 24;
-        vbufID_dino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
-        XDino_Draw(vbufID_dino, texID_dino, g_dinoPos, 4);
-        XDino_DestroyVertexBuffer(vbufID_dino);
+        uint64_t vbufID = g_Player.GenerateVertexBuffer(timeSinceStart, bMoving, bPressedRun);
+        XDino_Draw(vbufID, texID_dino, g_Player.m_pos, 4);
+        XDino_DestroyVertexBuffer(vbufID);
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
