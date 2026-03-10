@@ -136,7 +136,7 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> Il faut inverser la position des UV 
+> Il faut inverser la position des UV
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
@@ -172,13 +172,15 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> ...
+> for (Type& typeName : ... )
+> typeName.Shut();
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> parce que l'on défini la taille de l'écran en pixel à l'avance, de ce fait si on dépasse cette limite, ce n'est plus
+> affiché
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 

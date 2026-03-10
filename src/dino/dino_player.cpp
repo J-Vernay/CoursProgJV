@@ -2,6 +2,8 @@
 
 #include <dino/xdino.h>
 
+constexpr float DINO_SPEED = 150.f;
+
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
@@ -14,8 +16,6 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
 {
     m_bPressedRun = false;
     m_bMoving = false;
-
-    constexpr float DINO_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
     float speed = DINO_SPEED;
     if (gamepad.btn_right) {
@@ -40,13 +40,6 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     }
 }
 
-void DinoPlayer::Draw(double timeSinceStart)
-{
-    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, m_texID, m_pos, 4);
-    XDino_DestroyVertexBuffer(vbufID);
-}
-
 void DinoPlayer::Shut()
 {
     XDino_DestroyGpuTexture(m_texID);
@@ -55,7 +48,7 @@ void DinoPlayer::Shut()
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, m_texID, m_pos, 4);
+    XDino_Draw(vbufID, m_texID, m_pos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 
@@ -91,7 +84,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
