@@ -5,6 +5,7 @@
 #include <dino/xdino.h>
 #include <map>
 #include <dino/DinoController.h>
+#include <dino/dino_terrain.h>
 
 #include <format>
 
@@ -12,6 +13,8 @@
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
+
+DinoTerrain g_terrain;
 
 uint64_t texID_dino;
 
@@ -72,6 +75,8 @@ void Dino_GameInit()
 
     // Preparing the texture for the dino
     texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
+
+    g_terrain.Init();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -80,6 +85,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
+
+    g_terrain.DrawBG();
+    g_terrain.DrawTerrain({16, 12});
 
     // Gestion des entrées et mise à jour de la logique de jeu.
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
@@ -136,7 +144,6 @@ void Dino_GameFrame(double timeSinceStart)
         DinoControllerFields& controller = GamepadControllers[gamepadIdx];
 
         controller.DrawDino(gamepad, deltaTime, texID_dino);
-        XDino_DestroyVertexBuffer(controller.vbufID_dino);
     }
 
 #if !XDINO_RELEASE
@@ -163,4 +170,6 @@ void Dino_GameShut()
     XDino_DestroyVertexBuffer(vbufID_prenom);
 
     XDino_DestroyGpuTexture(texID_dino);
+
+    g_terrain.Shut();
 }

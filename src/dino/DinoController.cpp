@@ -4,7 +4,7 @@
 // Constantes.
 constexpr float DINO_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 constexpr float DINO_RUN_SPEED = 0.5f * DINO_SPEED; // Running Speed
-constexpr float DINO_SCALE = 2.f; // Dino Scale
+constexpr float DINO_SCALE = 1.f; // Dino Scale
 
 // - All anims lenght
 constexpr int ANIM_IDLE_LEN = 4;
@@ -143,4 +143,5 @@ void DinoControllerFields::DrawDino(DinoGamepad gamepad, float deltaTime, uint64
 {
     this->vbufID_dino = GenDinoVertexBuffer(gamepad, deltaTime);
     XDino_Draw(this->vbufID_dino, texID_dino, this->dinoPos, DINO_SCALE);
+    XDino_DestroyVertexBuffer(this->vbufID_dino);
 }
