@@ -33,7 +33,8 @@ std::vector<DinoPlayer> players;
 
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
+    //DinoVec2 windowSize = XDino_GetWindowSize();
+    DinoVec2 windowSize = {480, 360};
     XDino_SetRenderSize(windowSize);
 
     for (int i = 0; i < NUMBER_PLAYERS; i++)
