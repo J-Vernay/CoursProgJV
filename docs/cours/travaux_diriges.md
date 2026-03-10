@@ -142,14 +142,14 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> Le sprite du dinaursore peut être mit en miroir et échangeant les valeurs U des vertex de gauches avec ceux de droites
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
 jeu ?
 
-> ...
+> (temps_écoulé * frame_per_secondes) % nombre_de_frames
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
