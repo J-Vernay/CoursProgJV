@@ -106,6 +106,8 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
+    XDino_SetRenderSize({480, 360});
+
     // Gestion des entrées et mise à jour de la logique de jeu.
 
     DinoGamepad gamepad{};
