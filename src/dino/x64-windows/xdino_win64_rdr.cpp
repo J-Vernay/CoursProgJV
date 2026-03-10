@@ -64,6 +64,7 @@ struct XDino_Win64_Texture {
     ID3D11SamplerState* pTextureSampler = nullptr;
     bool bDestroy = false;
 };
+
 std::map<uint64_t, XDino_Win64_Texture> gXDino_textures;
 uint64_t gXDino_textureCounter = 0;
 
@@ -73,6 +74,7 @@ struct XDino_Win64_VertexBuffer {
     ID3D11Buffer* buffer = nullptr;
     bool bDestroy = false;
 };
+
 std::map<uint64_t, XDino_Win64_VertexBuffer> gXDino_vertexBuffers;
 uint64_t gXDino_vertexBufferCounter = 1;
 
@@ -81,6 +83,7 @@ struct XDino_Win64_Alloc {
     std::string name;
     bool bDestroy = false;
 };
+
 std::map<void*, XDino_Win64_Alloc> gXDino_allocs;
 
 bool gXDino_bDrawStats = false;
@@ -254,7 +257,8 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
         nullptr,
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
-        D3D11_CREATE_DEVICE_DEBUG,
+        0,
+        //D3D11_CREATE_DEVICE_DEBUG,
         &featureLevel,
         1,
         D3D11_SDK_VERSION,
@@ -314,13 +318,19 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
         DINO_CRITICAL("D3DCompile pixel failed");
 
     hr = gXDino_device->CreateVertexShader(
-        pVertexShaderBlob->GetBufferPointer(), pVertexShaderBlob->GetBufferSize(), nullptr, &gXDino_vertexShader
+        pVertexShaderBlob->GetBufferPointer(),
+        pVertexShaderBlob->GetBufferSize(),
+        nullptr,
+        &gXDino_vertexShader
     );
     if (FAILED(hr))
         DINO_CRITICAL("CreateVertexShader failed");
 
     hr = gXDino_device->CreatePixelShader(
-        pPixelShaderBlob->GetBufferPointer(), pPixelShaderBlob->GetBufferSize(), nullptr, &gXDino_pixelShader
+        pPixelShaderBlob->GetBufferPointer(),
+        pPixelShaderBlob->GetBufferSize(),
+        nullptr,
+        &gXDino_pixelShader
     );
     if (FAILED(hr))
         DINO_CRITICAL("CreatePixelShader failed");
@@ -346,7 +356,11 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
     inputs[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 
     hr = gXDino_device->CreateInputLayout(
-        inputs, 3, pVertexShaderBlob->GetBufferPointer(), pVertexShaderBlob->GetBufferSize(), &gXDino_inputLayout
+        inputs,
+        3,
+        pVertexShaderBlob->GetBufferPointer(),
+        pVertexShaderBlob->GetBufferSize(),
+        &gXDino_inputLayout
     );
     if (FAILED(hr))
         DINO_CRITICAL("CreateInputLayout failed");
@@ -421,7 +435,7 @@ void XDino_Win64_ResizeRenderer(int32_t width, int32_t height)
     gXDino_height = static_cast<float>(height);
 }
 
-uint64_t XDino_Win64_CreateTexture(char const* pName, int w, int h, void const* pData)
+uint64_t XDino_Win64_CreateTexture(const char* pName, int w, int h, const void* pData)
 {
     HRESULT hr;
 
@@ -532,7 +546,7 @@ void XDino_Win64_DestroyRenderer()
     XDino_Win64_PurgeDeadResources();
 
     OutputDebugStringA("--- RESOURCES ALIVE BEGIN ---\n");
-    for (std::string const& s : XDino_Win64_CollectRessources())
+    for (const std::string& s : XDino_Win64_CollectRessources())
         OutputDebugStringA((s + "\n").c_str());
     OutputDebugStringA("--- RESOURCES ALIVE END ---\n");
     std::puts("--- RESOURCES ALIVE BEGIN ---");
@@ -598,7 +612,7 @@ void XDino_SetRenderSize(DinoVec2 renderSize)
     gXDino_rdrHeight = renderSize.y;
 }
 
-uint64_t XDino_CreateGpuTexture(char const* pName)
+uint64_t XDino_CreateGpuTexture(const char* pName)
 {
     std::string filePath = std::format("assets/{}", pName);
     int w, h, n;
@@ -635,10 +649,14 @@ void XDino_DestroyGpuTexture(uint64_t texID)
     it->second.bDestroy = true;
 }
 
-uint64_t XDino_CreateVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
+uint64_t XDino_CreateVertexBuffer(const DinoVertex* pVertices, size_t vertexCount, const char* pLabel)
 {
     XDino_ProfileBegin(
-        {0x44, 0x44, 0x44, 0xFF}, std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
+        {0x44,
+        0x44,
+        0x44,
+        0xFF},
+        std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
     );
 
     ID3D11Buffer* buf = nullptr;
@@ -686,7 +704,7 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
     auto itTex = gXDino_textures.find(texID);
     if (itTex == gXDino_textures.end() || itTex->second.bDestroy)
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
-    XDino_Win64_Texture const& texture = itTex->second;
+    const XDino_Win64_Texture& texture = itTex->second;
 
     if (vbufID == 0)
         return;
@@ -694,7 +712,7 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
     auto itVbuf = gXDino_vertexBuffers.find(vbufID);
     if (itVbuf == gXDino_vertexBuffers.end() || itVbuf->second.bDestroy)
         DINO_CRITICAL("Impossible de trouver la texture pour le drawcall");
-    XDino_Win64_VertexBuffer const& vbuf = itVbuf->second;
+    const XDino_Win64_VertexBuffer& vbuf = itVbuf->second;
 
     if (vbuf.count == 0)
         return;
@@ -710,8 +728,8 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
     cbuffer.half_vp_size_y = gXDino_rdrHeight / 2.f;
     cbuffer.tex_size_x = static_cast<float>(texture.width);
     cbuffer.tex_size_y = static_cast<float>(texture.height);
-    cbuffer.offset_x = static_cast<float>(translation.x);
-    cbuffer.offset_y = static_cast<float>(translation.y);
+    cbuffer.offset_x = translation.x;
+    cbuffer.offset_y = translation.y;
     cbuffer.rot_cos = static_cast<float>(std::cos(rotationRadians));
     cbuffer.rot_sin = static_cast<float>(std::sin(rotationRadians));
     cbuffer.scale = static_cast<float>(scale);
@@ -737,7 +755,7 @@ void XDino_DrawStats(int diffScroll)
 
 #pragma region Memory allocations
 
-void* XDino_MemAlloc(size_t size, char const* pLabel)
+void* XDino_MemAlloc(size_t size, const char* pLabel)
 {
     if (size == 0)
         DINO_CRITICAL("Allouer 0 octets n'a pas de sens.");
