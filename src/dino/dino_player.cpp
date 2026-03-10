@@ -55,9 +55,6 @@ void Player::Draw(uint64_t texID_dino)
     }
 
     vs.resize(6);
-    // ... (Ton code de remplissage des vs[0..5] reste identique) ...
-    // Note : utilise 'pos' au lieu de 'g_dinoPos'
-
     // Simplification : utilise les coordonnées locales pour vs[i].pos
     vs[0].pos = {0, 0};
     vs[0].u = umin;
@@ -79,6 +76,6 @@ void Player::Draw(uint64_t texID_dino)
     vs[5].v = 24;
 
     uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "DinoPlayer");
-    XDino_Draw(vbufID, texID_dino, pos, 4);
+    XDino_Draw(vbufID, texID_dino, pos, 1);
     XDino_DestroyVertexBuffer(vbufID);
 }

@@ -3,6 +3,7 @@
 
 #include <dino/dino_draw_utils.h>
 #include "dino_player.h"
+#include "dino/dino_terrain.h"
 
 #include <format>
 #include <iostream>
@@ -129,8 +130,10 @@ void Dino_GameInit()
     enum DinoState dinoState = IDLE;
     ChangeState(dinoState);
 
+    
+
     // Préparation du drawcall de la polyline (zigzag en fond).
-    DrawBackgroundLine(windowSize);
+    //DrawBackgroundLine(windowSize);
 
     // Préparation du drawcall de l'image au milieu qu'on peut tourner.
     //DrawDebugImage();
