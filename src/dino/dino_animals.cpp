@@ -1,5 +1,7 @@
 #include "dino_animals.h"
 
+#include <cmath>
+
 float delaySinceLastSpawn;
 
 void dino_animalsGenerator::Init()
@@ -50,10 +52,22 @@ void dino_animal::Init(uint64_t& texID)
 
 }
 
+DinoVec2 Redirect(DinoVec2 pos, DinoVec2 dir)
+{
+    uint32_t rnd = XDino_RandomInt32(-1, 1);
+    if (pos.x < 112 || pos.x > 368) {
+        return DinoVec2(-dir.x, rnd);
+    }
+    return DinoVec2(rnd, -dir.y);
+}
+
 void dino_animal::Update(double deltaTime, double timeSinceStart)
 {
     m_pos.x += m_dir.x * speed * deltaTime;
     m_pos.y += m_dir.y * speed * deltaTime;
+    if (m_pos.x <= 112 || m_pos.x >= 368 || m_pos.y <= 84 || m_pos.y >= 276) {
+        m_dir = Redirect(m_pos, m_dir);
+    }
     Draw(timeSinceStart);
 }
 

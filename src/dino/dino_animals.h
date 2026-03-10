@@ -13,7 +13,7 @@ public:
     void Shut();
 
 private:
-    DinoVec2 m_pos = {100, 100};
+    DinoVec2 m_pos = {200, 200};
     DinoVec2 m_dir = {};
     uint32_t m_type;
     uint64_t GenerateVertexBuffer(double timeSinceStart, uint32_t animalType);
