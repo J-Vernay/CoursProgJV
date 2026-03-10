@@ -1,10 +1,10 @@
 #include <dino/dino_terrain.h>
 
+constexpr DinoVec2 TILE_COUNT = {16, 12};
+constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
+
 void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
 {
-    constexpr DinoVec2 TILE_COUNT = {16, 12};
-    constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
-
     float dx = (rdrSize.x - TERRAIN_SIZE.x) / 2;
     float dy = (rdrSize.y - TERRAIN_SIZE.y) / 2;
 
@@ -57,6 +57,8 @@ void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
     vs[11].u = uBase + 32;
     vs[11].v = 16;
 
+    GenFlowers(vs, idxSeason, {dx, dy});
+
     m_vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Terrain");
     m_texID = XDino_CreateGpuTexture("terrain.png");
 }
@@ -70,4 +72,56 @@ void DinoTerrain::Shut()
 {
     XDino_DestroyVertexBuffer(m_vbufID);
     XDino_DestroyGpuTexture(m_texID);
+}
+
+void DinoTerrain::GenFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 posTopLeft)
+{
+    // 1. Générer toutes les positions possibles.
+    std::vector<DinoVec2> posCandidates;
+    for (int ty = 0; ty < TILE_COUNT.y; ty++)
+        for (int tx = 0; tx < TILE_COUNT.x; tx++)
+            posCandidates.push_back({posTopLeft.x + 16.f * tx, posTopLeft.y + 16.f * ty});
+
+    // 2. Mélanger le tableau.
+    for (int i = 0; i < posCandidates.size(); i++) {
+        int j = XDino_RandomInt32(i, posCandidates.size() - 1);
+        DinoVec2 temp = posCandidates[i];
+        posCandidates[i] = posCandidates[j];
+        posCandidates[j] = temp;
+    }
+
+    // 3. Générer les sommets.
+    for (int i = 0; i < 10; ++i)
+        GenFlower(out, idxSeason, 0, posCandidates[i]);
+    for (int i = 10; i < 20; ++i)
+        GenFlower(out, idxSeason, 1, posCandidates[i]);
+    for (int i = 20; i < 30; ++i)
+        GenFlower(out, idxSeason, 2, posCandidates[i]);
+}
+
+void DinoTerrain::GenFlower(std::vector<DinoVertex>& out, int idxSeason, int idxFlower, DinoVec2 pos)
+{
+    int i = out.size();
+    out.resize(i + 6);
+
+    uint16_t uBase = idxSeason * 80 + idxFlower * 16 + 32;
+    out[i].pos = {pos.x, pos.y};
+    out[i].u = uBase;
+    out[i].v = 0;
+    out[i + 1].pos = {pos.x + 16, pos.y};
+    out[i + 1].u = uBase + 16;
+    out[i + 1].v = 0;
+    out[i + 2].pos = {pos.x, pos.y + 16};
+    out[i + 2].u = uBase;
+    out[i + 2].v = 16;
+
+    out[i + 3].pos = {pos.x + 16, pos.y};
+    out[i + 3].u = uBase + 16;
+    out[i + 3].v = 0;
+    out[i + 4].pos = {pos.x, pos.y + 16};
+    out[i + 4].u = uBase;
+    out[i + 4].v = 16;
+    out[i + 5].pos = {pos.x + 16, pos.y + 16};
+    out[i + 5].u = uBase + 16;
+    out[i + 5].v = 16;
 }
