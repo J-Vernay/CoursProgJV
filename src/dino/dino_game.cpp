@@ -33,7 +33,7 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_Player.pos = {windowSize.x / 2, windowSize.y / 2};
+    g_Player.m_pos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -126,18 +126,18 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
             bMoving = true;
 
-        if (timeSinceStart >= g_Player.endHitAnim) {
-            g_Player.pos.x += gamepad.stick_left_x * speed * deltaTime;
-            g_Player.pos.y += gamepad.stick_left_y * speed * deltaTime;
+        if (timeSinceStart >= g_Player.m_endHitAnim) {
+            g_Player.m_pos.x += gamepad.stick_left_x * speed * deltaTime;
+            g_Player.m_pos.y += gamepad.stick_left_y * speed * deltaTime;
         }
 
         if (gamepad.stick_left_x < 0)
-            g_Player.bLeft = true;
+            g_Player.m_bLeft = true;
         if (gamepad.stick_left_x > 0)
-            g_Player.bLeft = false;
+            g_Player.m_bLeft = false;
 
         if (gamepad.btn_left) {
-            g_Player.endHitAnim = timeSinceStart + 3;
+            g_Player.m_endHitAnim = timeSinceStart + 3;
         }
     }
 
@@ -162,8 +162,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Dessin du dinosaure.
     {
-        uint64_t vbufID = DinoPlayer_GenerateVertexBuffer(g_Player, timeSinceStart, bMoving, bPressedRun);
-        XDino_Draw(vbufID, texID_dino, g_Player.pos, 4);
+        uint64_t vbufID = g_Player.GenerateVertexBuffer(timeSinceStart, bMoving, bPressedRun);
+        XDino_Draw(vbufID, texID_dino, g_Player.m_pos, 4);
         XDino_DestroyVertexBuffer(vbufID);
     }
 

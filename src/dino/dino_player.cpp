@@ -1,13 +1,12 @@
 #include <dino/dino_player.h>
 #include <dino/xdino.h>
 
-uint64_t DinoPlayer_GenerateVertexBuffer(DinoPlayer& player,
-                                         double timeSinceStart, bool bMoving, bool bPressedRun)
+uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, bool bMoving, bool bPressedRun)
 {
     float animSpeed;
     int frameCount;
     int ubase;
-    if (timeSinceStart < player.endHitAnim) {
+    if (timeSinceStart < m_endHitAnim) {
         // ANIM HIT
         animSpeed = 8;
         frameCount = 3;
@@ -38,7 +37,7 @@ uint64_t DinoPlayer_GenerateVertexBuffer(DinoPlayer& player,
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
-    if (player.bLeft) {
+    if (m_bLeft) {
         umin = uAnim + 24;
         umax = uAnim + 0;
     }
