@@ -7,19 +7,19 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Déclarer les information dont le dino aura besoin
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` : Permet de configurer le projet pour Windows
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` : Permet de configurer le projet pour Linux
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : La logique du jeu
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Vérifier les collisions
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : Dessiner à l'écran
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Générer un nouveau projet
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
 
