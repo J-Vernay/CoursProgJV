@@ -1,3 +1,5 @@
+#pragma once
+
 #include <dino/xdino.h>
 
 struct DinoPlayer {

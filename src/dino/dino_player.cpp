@@ -1,4 +1,5 @@
 #include <dino/dino_player.h>
+
 #include <dino/xdino.h>
 
 uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, bool bMoving, bool bPressedRun)
