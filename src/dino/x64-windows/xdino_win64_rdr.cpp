@@ -258,7 +258,7 @@ void XDino_Win64_CreateRenderer(HWND hWindow, int32_t width, int32_t height)
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
         0,
-        // D3D11_CREATE_DEVICE_DEBUG,
+        //D3D11_CREATE_DEVICE_DEBUG,
         &featureLevel,
         1,
         D3D11_SDK_VERSION,
@@ -765,6 +765,7 @@ void* XDino_MemAlloc(size_t size, char const* pLabel)
     XDino_Win64_Alloc& a = gXDino_allocs[p];
     a.size = size;
     a.name = pLabel;
+    a.bDestroy = false;
     return p;
 }
 
@@ -773,8 +774,8 @@ void XDino_MemFree(void* pAlloc)
     if (!pAlloc)
         return;
     auto it = gXDino_allocs.find(pAlloc);
-    if (it == gXDino_allocs.end())
-        DINO_CRITICAL("Libération de mémoire qui n'a jamais été alloué.");
+    if (it == gXDino_allocs.end() || it->second.size == 0 || it->second.bDestroy)
+        DINO_CRITICAL("Libération de mémoire non-allouée.");
     if (it->second.size == 0)
         DINO_CRITICAL("Libération de mémoire qui a déjà été allouée.");
     VirtualFree(pAlloc, 0, MEM_RELEASE);
