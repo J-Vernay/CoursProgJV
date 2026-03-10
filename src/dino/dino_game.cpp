@@ -4,6 +4,7 @@
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
+#include <dino/dino_terrain.h>
 #include <unordered_map>
 
 #include <format>
@@ -17,7 +18,8 @@ double g_scale = 1.0;
 std::vector<DinoPlayer> g_Players;
 std::unordered_map<DinoGamepadIdx, DinoPlayer*> g_gamepadPlayer;
 
-uint64_t vbufID_polyline;
+DinoTerrain g_Terrain;
+
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -25,10 +27,11 @@ DinoVec2 textSize_prenom;
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
+constexpr DinoVec2 RENDER_SIZE = {480, 360};
+
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
+    XDino_SetRenderSize(RENDER_SIZE);
 
     DinoGamepad gamepad{};
     XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad);
@@ -37,25 +40,12 @@ void Dino_GameInit()
     g_Players[0].Init(0);
     g_gamepadPlayer.insert({DinoGamepadIdx::Keyboard, &g_Players[0]});
 
-    // Préparation du drawcall de la polyline (zigzag en fond).
-    {
-        constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
-
-        std::vector<DinoVec2> polyline;
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
-        std::vector<DinoVertex> vs;
-        Dino_GenVertices_Polyline(vs, polyline, 100, POLYLINE_COLOR);
-        vbufID_polyline = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
-    }
+    g_Terrain.Init(RENDER_SIZE);
 
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Barnabe BERGER", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
 }
@@ -121,13 +111,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    // Dessin de la "polyligne"
-    XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
-
-    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    // DinoVec2 windowSize = XDino_GetWindowSize();
-    // XDino_SetRenderSize(windowSize);
-    DinoVec2 renderSize = XDino_GetRenderSize();
+    g_Terrain.Draw();
 
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
@@ -145,8 +129,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Affiche le prénom.
     {
-        float tx = (renderSize.x - textSize_prenom.x * 2);
-        float ty = (renderSize.y - textSize_prenom.y * 2);
+        float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
+        float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
         XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
@@ -171,6 +155,6 @@ void Dino_GameShut()
     for (DinoPlayer& player : g_Players)
         player.Shut();
 
+    g_Terrain.Shut();
     XDino_DestroyVertexBuffer(vbufID_prenom);
-    XDino_DestroyVertexBuffer(vbufID_polyline);
 }
