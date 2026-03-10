@@ -4,6 +4,7 @@
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
+#include <unordered_map>
 
 #include <format>
 
@@ -14,10 +15,9 @@ double g_rotation = 360.0;
 double g_scale = 1.0;
 
 std::vector<DinoPlayer> g_Players;
+std::unordered_map<DinoGamepad, DinoPlayer*> g_gamepadPlayer;
 
 uint64_t vbufID_polyline;
-uint64_t vbufID_imageMilieu;
-uint64_t texID_imageMilieu;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -30,11 +30,12 @@ void Dino_GameInit()
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
-    g_Players.resize(4);
+    DinoGamepad gamepad{};
+    XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad);
+    g_Players.reserve(4);
+    g_Players.resize(1);
     g_Players[0].Init(0);
-    g_Players[1].Init(1);
-    g_Players[2].Init(2);
-    g_Players[3].Init(3);
+    g_gamepadPlayer.insert({gamepad, &g_Players[0]});
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -49,46 +50,6 @@ void Dino_GameInit()
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Polyline(vs, polyline, 100, POLYLINE_COLOR);
         vbufID_polyline = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
-    }
-
-    // Préparation du drawcall de l'image au milieu qu'on peut tourner.
-    {
-        constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
-        constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
-        constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
-        constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
-
-        texID_imageMilieu = XDino_CreateGpuTexture("animals.png");
-        DinoVec2 texSize = XDino_GetGpuTextureSize(texID_imageMilieu);
-
-        std::vector<DinoVertex> vs;
-        vs.resize(6);
-        vs[0].pos = {-2, -1};
-        vs[0].color = PURPLE;
-        vs[1].pos = {2, -1};
-        vs[1].color = CYAN;
-        vs[2].pos = {-2, 1};
-        vs[2].color = PINK;
-        vs[3].pos = {2, -1};
-        vs[3].color = CYAN;
-        vs[4].pos = {-2, 1};
-        vs[4].color = PINK;
-        vs[5].pos = {2, 1};
-        vs[5].color = ORANGE;
-        vs[0].u = 128;
-        vs[0].v = 0;
-        vs[1].u = texSize.x / 4 + 128;
-        vs[1].v = 0;
-        vs[2].u = 128;
-        vs[2].v = texSize.y;
-        vs[3].u = texSize.x / 4 + 128;
-        vs[3].v = 0;
-        vs[4].u = 128;
-        vs[4].v = texSize.y;
-        vs[5].u = texSize.x / 4 + 128;
-        vs[5].v = texSize.y;
-
-        vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
     }
 
     // Préparation du drawcall du prénom
@@ -109,17 +70,48 @@ void Dino_GameFrame(double timeSinceStart)
     // Gestion des entrées et mise à jour de la logique de jeu.
 
     DinoGamepad gamepad{};
-    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
+    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad)) {
         g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
+    }
 
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
-        g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad)) {
+        if (g_gamepadPlayer.contains(gamepad)) {
+            g_gamepadPlayer[gamepad]->Update(timeSinceStart, deltaTime, gamepad);
+        }
+        else {
+            g_Players.emplace_back();
+            DinoPlayer& player = g_Players.back();
 
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
-        g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
+            g_gamepadPlayer.emplace(gamepad, &player);
+            player.Init(g_Players.size());
+        }
+    }
 
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
-        g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad)) {
+        if (g_gamepadPlayer.contains(gamepad)) {
+            g_gamepadPlayer[gamepad]->Update(timeSinceStart, deltaTime, gamepad);
+        }
+        else {
+            g_Players.emplace_back();
+            DinoPlayer& player = g_Players.back();
+
+            g_gamepadPlayer.emplace(gamepad, &player);
+            player.Init(g_Players.size());
+        }
+    }
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad)) {
+        if (g_gamepadPlayer.contains(gamepad)) {
+            g_gamepadPlayer[gamepad]->Update(timeSinceStart, deltaTime, gamepad);
+        }
+        else {
+            g_Players.emplace_back();
+            DinoPlayer& player = g_Players.back();
+
+            g_gamepadPlayer.emplace(gamepad, &player);
+            player.Init(g_Players.size());
+        }
+    }
 
     // Affichage
 
@@ -134,11 +126,6 @@ void Dino_GameFrame(double timeSinceStart)
     // DinoVec2 windowSize = XDino_GetWindowSize();
     // XDino_SetRenderSize(windowSize);
     DinoVec2 renderSize = XDino_GetRenderSize();
-
-    // Dessin de la texture centrale qu'on peut bouger.
-    DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
-    double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
-    XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
 
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
@@ -183,7 +170,5 @@ void Dino_GameShut()
         player.Shut();
 
     XDino_DestroyVertexBuffer(vbufID_prenom);
-    XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
-    XDino_DestroyGpuTexture(texID_imageMilieu);
 }
