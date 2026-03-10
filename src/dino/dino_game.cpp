@@ -37,7 +37,7 @@ struct anim {
 
 std::vector<anim> anims;
 animState g_currentAnim = Idle;
-
+anim Get_Current_Anim();
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -111,7 +111,7 @@ void Dino_GameInit()
 }
 
 
-anim GetCurrentAnim()
+anim Get_Current_Anim()
 {
     for (auto a : anims) {
         if (a.state == g_currentAnim)
@@ -185,7 +185,7 @@ void Dino_GameFrame(double timeSinceStart)
     // DinoVec2 windowSize = XDino_GetWindowSize();
     // XDino_SetRenderSize(windowSize);
     DinoVec2 renderSize = XDino_GetRenderSize();
-    anim current = GetCurrentAnim();
+    anim current = Get_Current_Anim();
 
     int frame = int(timeSinceStart * current.Speed) % int(current.NbFrames);
 
