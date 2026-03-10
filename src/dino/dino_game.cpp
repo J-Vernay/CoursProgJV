@@ -10,9 +10,14 @@
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
-DinoVec2 g_dinoPos = {};
-bool g_bLeft = false;
-double g_endHitAnim = 0;
+
+struct DinoPlayer {
+    DinoVec2 pos = {};
+    bool bLeft = false;
+    double endHitAnim = 0;
+};
+
+DinoPlayer g_Player;
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
@@ -33,7 +38,7 @@ void Dino_GameInit()
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
-    g_dinoPos = {windowSize.x / 2, windowSize.y / 2};
+    g_Player.pos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -126,18 +131,18 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
             bMoving = true;
 
-        if (timeSinceStart >= g_endHitAnim) {
-            g_dinoPos.x += gamepad.stick_left_x * speed * deltaTime;
-            g_dinoPos.y += gamepad.stick_left_y * speed * deltaTime;
+        if (timeSinceStart >= g_Player.endHitAnim) {
+            g_Player.pos.x += gamepad.stick_left_x * speed * deltaTime;
+            g_Player.pos.y += gamepad.stick_left_y * speed * deltaTime;
         }
 
         if (gamepad.stick_left_x < 0)
-            g_bLeft = true;
+            g_Player.bLeft = true;
         if (gamepad.stick_left_x > 0)
-            g_bLeft = false;
+            g_Player.bLeft = false;
 
         if (gamepad.btn_left) {
-            g_endHitAnim = timeSinceStart + 3;
+            g_Player.endHitAnim = timeSinceStart + 3;
         }
     }
 
@@ -165,7 +170,7 @@ void Dino_GameFrame(double timeSinceStart)
         float animSpeed;
         int frameCount;
         int ubase;
-        if (timeSinceStart < g_endHitAnim) {
+        if (timeSinceStart < g_Player.endHitAnim) {
             // ANIM HIT
             animSpeed = 8;
             frameCount = 3;
@@ -196,7 +201,7 @@ void Dino_GameFrame(double timeSinceStart)
 
         std::vector<DinoVertex> vs;
         uint16_t umin, umax;
-        if (g_bLeft) {
+        if (g_Player.bLeft) {
             umin = uAnim + 24;
             umax = uAnim + 0;
         }
@@ -225,7 +230,7 @@ void Dino_GameFrame(double timeSinceStart)
         vs[5].u = umax;
         vs[5].v = 24;
         vbufID_dino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
-        XDino_Draw(vbufID_dino, texID_dino, g_dinoPos, 4);
+        XDino_Draw(vbufID_dino, texID_dino, g_Player.pos, 4);
         XDino_DestroyVertexBuffer(vbufID_dino);
     }
 
