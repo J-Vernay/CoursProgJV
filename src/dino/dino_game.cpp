@@ -94,7 +94,7 @@ void Dino_GameInit()
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Mikha", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
 }
@@ -105,6 +105,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
+
+    XDino_SetRenderSize({480, 360});
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 

@@ -93,14 +93,17 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> On echange la position des UV en U en fonction de si on va a droite ou a gauche.
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
 jeu ?
 
-> ...
+> On connait le nombre de frame par animation donc avec le time dans un update on peut faire défilé l'animation en le
+> décalant
+> dans la texture. Avec un calcule modulo et les bonnes conditions en fonction de l'action du joueur on a la bonne
+> animaiton
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
@@ -109,7 +112,7 @@ d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper ? L'appliquer.
 
-> ...
+> Une classe player avec toutes les variables le concernant directement
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -119,7 +122,7 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On parle d'encapsulation dans une class / struct qui contient des methods membre
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -129,20 +132,20 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> ...
+> avec un foraech, ici on utilise des pointeurs directement sur les éléments dans la mémoire
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> Car les éléments dans le jeu ne sont pas responsive
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> dx = (480 - 256) /2 et dy = (360 - 192) /2 
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
