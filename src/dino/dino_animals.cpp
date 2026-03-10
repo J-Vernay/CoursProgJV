@@ -38,6 +38,16 @@ void dino_animal::Init(uint64_t& texID)
     m_texID = texID;
     uint32_t rnd = XDino_RandomInt32(0, 7);
     m_type = rnd;
+
+    while (m_dir.x == 0 && m_dir.y == 0) {
+        m_dir.x = XDino_RandomInt32(-1, 1);
+        m_dir.y = XDino_RandomInt32(-1, 1);
+    }
+    if (m_dir.x != 0 && m_dir.y != 0) {
+        m_dir.x /= 2;
+        m_dir.y /= 2;
+    }
+
 }
 
 void dino_animal::Update(double deltaTime, double timeSinceStart)
