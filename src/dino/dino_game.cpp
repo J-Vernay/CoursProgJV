@@ -22,16 +22,26 @@ DinoVec2 textSize;
 
 int g_debugScroll = 0;
 bool isLookingRight = true;
-float stepAnim = 24;
 
-float animPos1 = 0;
-float animPos2 = 24;
+enum animState {
+    Idle = 0,
+    Walk = 1,
+    Hit = 2,
+    Run = 3,
+};
 
-float t = 0;
-float animTick = 0.05f;
+struct anim {
+    animState state;
+    float Ubase;
+    float NbFrames;
+    float Speed;
+};
 
+std::vector<anim> anims;
+animState g_currentAnim = Idle;
 
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float DINO_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+
 
 void Dino_GameInit()
 {
@@ -54,6 +64,40 @@ void Dino_GameInit()
     }
 
     {
+
+        texID_imageDino = XDino_CreateGpuTexture("dinosaurs.png");
+        DinoVec2 texSize = XDino_GetGpuTextureSize(texID_imageDino);
+
+        std::vector<DinoVertex> vs;
+        vs.resize(6);
+        vs[0].pos = {0, 0};
+        vs[1].pos = {24, 0};
+        vs[2].pos = {0, 24};
+        vs[3].pos = {24, -0};
+        vs[4].pos = {0, 24};
+        vs[5].pos = {24, 24};
+        vs[0].u = isLookingRight ? 0 : 24;
+        vs[0].v = 0;
+        vs[1].u = isLookingRight ? 24 : 0;
+        vs[1].v = 0;
+        vs[2].u = isLookingRight ? 0 : 24;
+        vs[2].v = 24;
+        vs[3].u = isLookingRight ? 24 : 0;
+        vs[3].v = 0;
+        vs[4].u = isLookingRight ? 0 : 24;
+        vs[4].v = 24;
+        vs[5].u = isLookingRight ? 24 : 0;
+        vs[5].v = 24;
+
+        vbufID_imageDino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageDino");
+
+        anims.push_back({Idle, 0, 4, 8});
+        anims.push_back({Walk, 96, 6, 8});
+        anims.push_back({Hit, 336, 3, 8});
+        anims.push_back({Run, 432, 6, 16});
+    }
+
+    {
         std::string text = std::format("BOULANGER Antoine");
         std::vector<DinoVertex> vs2;
         textSize = Dino_GenVertices_Text(vs2, text, DinoColor_WHITE, DinoColor_GREY);
@@ -62,55 +106,47 @@ void Dino_GameInit()
 
 }
 
-void setDinoSprite()
+anim GetCurrentAnim()
 {
+    for (auto a : anims) {
+        if (a.state == g_currentAnim)
+            return a;
+    }
+
+    return anims[0];
+}
+
+void setDinoSprite(float timeSinceStart)
+{
+    anim current = GetCurrentAnim();
+    int frame = static_cast<int>(timeSinceStart * current.Speed) % static_cast<int>(current.NbFrames);
+    float U = current.Ubase + frame * 24;
     {
-        texID_imageDino = XDino_CreateGpuTexture("dinosaurs.png");
         std::vector<DinoVertex> vs;
         vs.resize(6);
         vs[0].pos = {0, 0};
-        vs[0].u = isLookingRight ? animPos1 : animPos2;
-        vs[0].v = 0;
-
         vs[1].pos = {24, 0};
-        vs[1].u = isLookingRight ? animPos2 : animPos1;
-        vs[1].v = 0;
-
         vs[2].pos = {0, 24};
-        vs[2].u = isLookingRight ? animPos1 : animPos2;
-        vs[2].v = 24;
-
-        vs[3].pos = {24, 0};
-        vs[3].u = isLookingRight ? animPos2 : animPos1;
-        vs[3].v = 0;
-
+        vs[3].pos = {24, -0};
         vs[4].pos = {0, 24};
-        vs[4].u = isLookingRight ? animPos1 : animPos2;
-        vs[4].v = 24;
-
         vs[5].pos = {24, 24};
-        vs[5].u = isLookingRight ? animPos2 : animPos1;
+        vs[0].u = isLookingRight ? U : U + 24;
+        vs[0].v = 0;
+        vs[1].u = isLookingRight ? U + 24 : U;
+        vs[1].v = 0;
+        vs[2].u = isLookingRight ? U : U + 24;
+        vs[2].v = 24;
+        vs[3].u = isLookingRight ? U + 24 : U;
+        vs[3].v = 0;
+        vs[4].u = isLookingRight ? U : U + 24;
+        vs[4].v = 24;
+        vs[5].u = isLookingRight ? U + 24 : U;
         vs[5].v = 24;
 
         vbufID_imageDino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageDino");
         XDino_Draw(vbufID_imageDino, texID_imageDino, g_circlePos, 4);
-        XDino_DestroyGpuTexture(texID_imageDino);
+        XDino_DestroyVertexBuffer(vbufID_imageDino);
     }
-}
-
-void animHandleDino(int step, int start, int maxSetp1, int maxSetp2)
-{
-    int startanimPos = start;
-    int startanimPos2 = start + 24;
-
-    if (t >= animTick) {
-        animPos1 += step;
-        animPos2 += step;
-        if (animPos1 > maxSetp1)animPos1 = startanimPos;
-        if (animPos2 > maxSetp2)animPos2 = startanimPos2;
-        t = 0;
-    }
-
 }
 
 
@@ -135,13 +171,13 @@ void Dino_GameFrame(double timeSinceStart)
         if (gamepad.btn_right && !gamepad.btn_left)
             g_rotation -= 90.0 * deltaTime;
 
+        float speed = DINO_SPEED;
         if (gamepad.select) {
-            g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * 2 * deltaTime;
-            g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * 2 * deltaTime;
+            speed *= 2;
+            g_currentAnim = Run;
         }
         else {
-            g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-            g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+            g_currentAnim = Walk;
         }
 
         if (gamepad.stick_left_x > 0) {
@@ -149,27 +185,26 @@ void Dino_GameFrame(double timeSinceStart)
         }
         else if (gamepad.stick_left_x < 0) {
             isLookingRight = false;
-            
+
         }
 
-        if (gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0) {
-           // animHandleDino(24, 0, 48, 72);
-        }
-        else {
-            animHandleDino(24, 96, 192, 216);
+        g_circlePos.x += gamepad.stick_left_x * speed * deltaTime;
+        g_circlePos.y += gamepad.stick_left_y * speed * deltaTime;
+
+        if (!(gamepad.stick_left_x < 0 || gamepad.stick_left_x > 0 || gamepad.stick_left_y < 0 || gamepad.stick_left_y >
+              0)) {
+            g_currentAnim = Idle;
         }
 
     }
-    t += deltaTime;
-
+    
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
     XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
 
     DinoVec2 renderSize = XDino_GetRenderSize();
-
-    setDinoSprite();
+    setDinoSprite(timeSinceStart);
     XDino_Draw(vbufID_Antoine, XDino_TEXID_FONT, {renderSize.x - (textSize.x * 2), renderSize.y - (textSize.y * 2)}, 2);
 
     {
