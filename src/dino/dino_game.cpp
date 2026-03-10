@@ -5,6 +5,7 @@
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
+#include <dino/dino_animal.h>
 
 #include <format>
 
@@ -35,6 +36,7 @@ anim Get_Current_Anim(DinoPlayer player)
 
 std::vector<DinoPlayer> g_players = {};
 DinoTerrain g_terrain;
+DinoAnimal g_animal;
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
@@ -52,6 +54,7 @@ void Dino_GameInit()
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_terrain.Init(RENDER_SIZE, idxSeason);
+    g_animal.Init(4);
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
@@ -125,6 +128,9 @@ void Dino_GameFrame(double timeSinceStart)
     // XDino_SetRenderSize(windowSize);
     DinoVec2 renderSize = XDino_GetRenderSize();
 
+    //Affichage de terrain
+    g_terrain.Draw();
+
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
@@ -134,9 +140,6 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
         XDino_DestroyVertexBuffer(vbufID);
     }
-
-    //Affichage de terrain
-    g_terrain.Draw();
 
     // Affichage du nom
     {
@@ -152,6 +155,7 @@ void Dino_GameFrame(double timeSinceStart)
             player.Draw(timeSinceStart, Get_Current_Anim(player));
         }
     }
+    g_animal.Draw(timeSinceStart);
 
 #if !XDINO_RELEASE
     // Affichage des statistiques si on appuie sur SHIFT.

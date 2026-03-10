@@ -4,7 +4,7 @@
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
-    m_pos = {-200 + windowSize.x / 2 + idxPlayer * 100, windowSize.y / 2};
+    m_pos = {-150 + windowSize.x / 2 + idxPlayer * 50, windowSize.y / 2};
     m_texID = XDino_CreateGpuTexture("dinosaurs.png");
     m_idxPlayer = idxPlayer;
 }
