@@ -149,7 +149,7 @@ Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
 jeu ?
 
-> (temps_écoulé * frame_per_secondes) % nombre_de_frames
+> ((temps_écoulé * frame_per_secondes) % nombre_de_frames)*24 + U_base
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
@@ -158,7 +158,8 @@ d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper ? L'appliquer.
 
-> ...
+> Les variables relatives au mouvement d'un joueur peuvent être décallées au sein d'une class ou struct. Ainsi, chacune
+> des variables devient propre à chaque joueur.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -168,7 +169,7 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On utilise l'encapsulation, une class/struct contient des method membres
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -178,20 +179,21 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> ...
+> Cette syntax est la for-range loop
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> Car le moteur garde la même résolution en permanence pour que les éléments à l'intérieur ne soient pas déformés.
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> pour Dx = (480 - 256) / 2 <br>
+> pour Dy = (360 - 192) / 2
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
@@ -201,7 +203,12 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> • La première étape consiste a récupérer toutes les positions possibles pour une fleur et de les stocker dans un std::
+> vector. <br>
+> • ensuite, on lance 3 boucle (une par type de fleur). <br>
+> • dans chaque boucle, on choisi une case encore présente dans le std::vector => on prend un randomIndex. <br>
+> • On ajoute la fleur à la position choisie. <br>
+> • On enlève le position du std::vector pour éviter qu'elle soit choisie de nouveau.
 
 ## 4. Comprendre la compilation des fichiers C++
 

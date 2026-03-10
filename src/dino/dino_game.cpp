@@ -1,55 +1,48 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "dino_animal.h"
+#include "dino_player.h"
+#include "dino_terrain.h"
+
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 
 #include <format>
+#include <unordered_map>
 
 // Variables globales.
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
-DinoVec2 g_dinoPos = {};
 
 uint64_t vbufID_polyline;
 uint64_t vbufID_imageMilieu;
 uint64_t texID_imageMilieu;
 
-//dino variables
-uint64_t texID_dino1;
-
-bool isRunning = false;
-bool isGoingLeft = false;
-
-//dino animation variables
-struct Anim {
-    std::vector<int> posU;
-    int framesPerSecond;
-};
-
-Anim* g_currentAnimationPos;
-Anim g_idlePos;
-Anim g_walkPos;
-Anim g_hitPos;
-Anim g_runPos;
-//
+uint64_t texID_dino;
+uint64_t texID_terrain;
+uint64_t texID_animal;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
+
+float g_spawnTimer;
+
+std::unordered_map<DinoGamepadIdx, dino_player> gamepadDino_map;
+std::vector<dino_animal> animals;
+dino_terrain dinoTerrain;
 
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
-// Constantes.
-constexpr float DINO_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
+    //DinoVec2 windowSize = XDino_GetWindowSize();
+    DinoVec2 windowSize = {480, 360};
     XDino_SetRenderSize(windowSize);
-    g_dinoPos = {windowSize.x / 2, windowSize.y / 2};
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -106,10 +99,14 @@ void Dino_GameInit()
         vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
     }
 
-    // Préparation du drawcall du dino qu'on peut bouger.
+    // Préparation des textures.
     {
-        texID_dino1 = XDino_CreateGpuTexture("dinosaurs.png");
+        texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
+        texID_terrain = XDino_CreateGpuTexture("terrain.png");
+        texID_animal = XDino_CreateGpuTexture("animals.png");
     }
+
+    dinoTerrain.DinoTerrain_Init(texID_terrain, XDino_RandomInt32(0, 3));
 
     // Préparation du drawcall du prenom.
     {
@@ -117,29 +114,51 @@ void Dino_GameInit()
         textSize_prenom = Dino_GenVertices_Text(vs, "DEMAGNEE Aloys", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "name");
     }
-
-    //Préparation des variables d'animation
-    {
-        g_currentAnimationPos = &g_idlePos;
-
-        g_idlePos = {{0, 24, 48, 72}, 8};
-        g_walkPos = {{96, 120, 144, 168, 192, 216}, 8};
-        g_hitPos = {{336, 360, 384}, 8};
-        g_runPos = {{432, 456, 480, 504, 528, 552}, 16};
-    }
 }
 
 void Dino_GameFrame(double timeSinceStart)
 {
     // Prendre en compte le temps qui passe.
-
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    bool isStatic = false;
+    // Affichage
+    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
+    XDino_SetClearColor(CLEAR_COLOR);
+
+    // Dessin de la "polyligne"
+    /*XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);*/
+
+    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
+    // DinoVec2 windowSize = XDino_GetWindowSize();
+    // XDino_SetRenderSize(windowSize);
+    DinoVec2 renderSize = XDino_GetRenderSize();
+
+    // Dessin de la texture centrale qu'on peut bouger.
+    /*DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
+    double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
+    XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);*/
+
+    if (g_spawnTimer > 1) {
+        int index = animals.size();
+        animals.push_back(dino_animal());
+        animals[index].DinoAnimal_Spawn(texID_animal, {}, index);
+        g_spawnTimer = 0;
+    }
+    g_spawnTimer += deltaTime;
+
+    for (dino_animal& animal : animals) {
+        if (animal.DinoAnimal_ShouldDying()) {
+            animal.DinoAnimal_Despawn(animals);
+        }
+        else {
+            animal.DinoAnimal_Update(deltaTime);
+        }
+    }
+
+    dinoTerrain.DinoTerrain_Draw();
 
     // Gestion des entrées et mise à jour de la logique de jeu.
-
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
@@ -150,97 +169,27 @@ void Dino_GameFrame(double timeSinceStart)
             g_scale /= 1.01;
         if (gamepad.btn_up && !gamepad.btn_down)
             g_scale *= 1.01;
-        //turning background image
-        /*if (gamepad.btn_left && !gamepad.btn_right)
-            g_rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            g_rotation -= 90.0 * deltaTime;*/
 
-        g_dinoPos.x += isRunning
-                           ? gamepad.stick_left_x * DINO_SPEED * deltaTime * 3
-                           : gamepad.stick_left_x * DINO_SPEED * deltaTime;
-        g_dinoPos.y += isRunning
-                           ? gamepad.stick_left_y * DINO_SPEED * deltaTime * 3
-                           : gamepad.stick_left_y * DINO_SPEED * deltaTime;
+        //DINO_CHARACTER
+        if (!gamepadDino_map.contains(gamepadIdx)
+            && (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
+            //max player amount == 4
+            && gamepadDino_map.size() < 4) {
 
-        //checking if dino is going left or right
-        if (isGoingLeft && gamepad.stick_left_x > 0)
-            isGoingLeft = false;
-        else if (!isGoingLeft && gamepad.stick_left_x < 0)
-            isGoingLeft = true;
-
-        //checking if dino is running
-        isRunning = gamepad.btn_right;
-        isStatic = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
-    }
-
-    // Affichage
-
-    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-
-    XDino_SetClearColor(CLEAR_COLOR);
-
-    // Dessin de la "polyligne"
-    XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
-
-    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    // DinoVec2 windowSize = XDino_GetWindowSize();
-    // XDino_SetRenderSize(windowSize);
-    DinoVec2 renderSize = XDino_GetRenderSize();
-
-    // Dessin de la texture centrale qu'on peut bouger.
-    DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
-    double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
-    XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
-
-    // Dessin du dino1 que l'on peut bouger.
-    {
-        if (isStatic)
-            g_currentAnimationPos = &g_idlePos;
-        else {
-            g_currentAnimationPos = isRunning ? &g_runPos : &g_walkPos;
+            DinoVec2 windowSize = XDino_GetWindowSize();
+            gamepadDino_map.emplace(
+                gamepadIdx,
+                dino_player(
+                    {windowSize.x / 2, windowSize.y / 2},
+                    texID_dino,
+                    gamepadDino_map.size()));
         }
 
-        int index = isGoingLeft
-                        ? (int)(timeSinceStart * g_currentAnimationPos->framesPerSecond) % (
-                              g_currentAnimationPos->posU.size() - 1) + 1
-                        : (int)(timeSinceStart * g_currentAnimationPos->framesPerSecond) % (
-                              g_currentAnimationPos->posU.size() - 1);
-        int u1 = (*g_currentAnimationPos).posU[index];
-        int u2 = isGoingLeft
-                     ? (*g_currentAnimationPos).posU[(index - 1) % g_currentAnimationPos->posU.size()]
-                     : (*g_currentAnimationPos).posU[(index + 1) % g_currentAnimationPos->posU.size()];
-
-        std::vector<DinoVertex> vs;
-        vs.resize(6);
-        vs[0].pos = {-1, -1};
-        vs[0].color = DinoColor_WHITE;
-        vs[1].pos = {1, -1};
-        vs[1].color = DinoColor_WHITE;
-        vs[2].pos = {-1, 1};
-        vs[2].color = DinoColor_WHITE;
-        vs[3].pos = {1, -1};
-        vs[3].color = DinoColor_WHITE;
-        vs[4].pos = {-1, 1};
-        vs[4].color = DinoColor_WHITE;
-        vs[5].pos = {1, 1};
-        vs[5].color = DinoColor_WHITE;
-        vs[0].u = u1;
-        vs[0].v = 0;
-        vs[1].u = u2;
-        vs[1].v = 0;
-        vs[2].u = u1;
-        vs[2].v = 24;
-        vs[3].u = u2;
-        vs[3].v = 0;
-        vs[4].u = u1;
-        vs[4].v = 24;
-        vs[5].u = u2;
-        vs[5].v = 24;
-
-        uint64_t vbufID_dino1 = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino1");
-        XDino_Draw(vbufID_dino1, texID_dino1, g_dinoPos, 48);
-        XDino_DestroyVertexBuffer(vbufID_dino1);
+        if (gamepadDino_map.contains(gamepadIdx)) {
+            gamepadDino_map.at(gamepadIdx).DinoCharacter_ReadGamepad(gamepad, deltaTime);
+            gamepadDino_map.at(gamepadIdx).DinoCharacter_Update(timeSinceStart, deltaTime);
+        }
+        //
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
@@ -274,10 +223,14 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
+    dinoTerrain.DinoTerrain_ShutDown();
 
     XDino_DestroyVertexBuffer(vbufID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyVertexBuffer(vbufID_prenom);
+
     XDino_DestroyGpuTexture(texID_imageMilieu);
-    XDino_DestroyGpuTexture(texID_dino1);
+    XDino_DestroyGpuTexture(texID_dino);
+    XDino_DestroyGpuTexture(texID_terrain);
+    XDino_DestroyGpuTexture(texID_animal);
 }
