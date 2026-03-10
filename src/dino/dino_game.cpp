@@ -15,7 +15,7 @@ double g_rotation = 360.0;
 double g_scale = 1.0;
 
 std::vector<DinoPlayer> g_Players;
-std::unordered_map<DinoGamepad, DinoPlayer*> g_gamepadPlayer;
+std::unordered_map<DinoGamepadIdx, DinoPlayer*> g_gamepadPlayer;
 
 uint64_t vbufID_polyline;
 
@@ -35,7 +35,7 @@ void Dino_GameInit()
     g_Players.reserve(4);
     g_Players.resize(1);
     g_Players[0].Init(0);
-    g_gamepadPlayer.insert({gamepad, &g_Players[0]});
+    g_gamepadPlayer.insert({DinoGamepadIdx::Keyboard, &g_Players[0]});
 
     // Préparation du drawcall de la polyline (zigzag en fond).
     {
@@ -77,40 +77,40 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad)) {
-        if (g_gamepadPlayer.contains(gamepad)) {
-            g_gamepadPlayer[gamepad]->Update(timeSinceStart, deltaTime, gamepad);
+        if (g_gamepadPlayer.contains(DinoGamepadIdx::Gamepad1)) {
+            g_gamepadPlayer[DinoGamepadIdx::Gamepad1]->Update(timeSinceStart, deltaTime, gamepad);
         }
         else {
             g_Players.emplace_back();
             DinoPlayer& player = g_Players.back();
 
-            g_gamepadPlayer.emplace(gamepad, &player);
+            g_gamepadPlayer.emplace(DinoGamepadIdx::Gamepad1, &player);
             player.Init(g_Players.size());
         }
     }
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad)) {
-        if (g_gamepadPlayer.contains(gamepad)) {
-            g_gamepadPlayer[gamepad]->Update(timeSinceStart, deltaTime, gamepad);
+        if (g_gamepadPlayer.contains(DinoGamepadIdx::Gamepad2)) {
+            g_gamepadPlayer[DinoGamepadIdx::Gamepad2]->Update(timeSinceStart, deltaTime, gamepad);
         }
         else {
             g_Players.emplace_back();
             DinoPlayer& player = g_Players.back();
 
-            g_gamepadPlayer.emplace(gamepad, &player);
+            g_gamepadPlayer.emplace(DinoGamepadIdx::Gamepad2, &player);
             player.Init(g_Players.size());
         }
     }
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad)) {
-        if (g_gamepadPlayer.contains(gamepad)) {
-            g_gamepadPlayer[gamepad]->Update(timeSinceStart, deltaTime, gamepad);
+        if (g_gamepadPlayer.contains(DinoGamepadIdx::Gamepad3)) {
+            g_gamepadPlayer[DinoGamepadIdx::Gamepad3]->Update(timeSinceStart, deltaTime, gamepad);
         }
         else {
             g_Players.emplace_back();
             DinoPlayer& player = g_Players.back();
 
-            g_gamepadPlayer.emplace(gamepad, &player);
+            g_gamepadPlayer.emplace(DinoGamepadIdx::Gamepad3, &player);
             player.Init(g_Players.size());
         }
     }
