@@ -1,5 +1,14 @@
 #pragma once
 
-#include "dino\dino_terrain.h"
+#include <dino/xdino.h>
 
-void Dino_Terrain();
+class DinoTerrain {
+public:
+    void Init(DinoVec2 rdrSize);
+    void Draw();
+    void Shut();
+
+private:
+    uint64_t m_vbufID = 0;
+    uint64_t m_texID = 0;
+};
