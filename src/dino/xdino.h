@@ -130,18 +130,18 @@ void XDino_DrawStats(int diffScroll);
 
 enum class DinoGamepadIdx : int32_t {
     Gamepad1,
+    Keyboard,
     Gamepad2,
     Gamepad3,
     Gamepad4,
-    Keyboard,
 };
 
 constexpr DinoGamepadIdx DinoGamepadIdx_ALL[] = {
     DinoGamepadIdx::Gamepad1,
+    DinoGamepadIdx::Keyboard,
     DinoGamepadIdx::Gamepad2,
     DinoGamepadIdx::Gamepad3,
     DinoGamepadIdx::Gamepad4,
-    DinoGamepadIdx::Keyboard,
 };
 
 /// Structure contenant l'état d'une manette (ou du clavier utilisé comme manette).

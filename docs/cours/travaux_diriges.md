@@ -145,7 +145,7 @@ Comment s'appelle cette syntaxe ?
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> L'espace sur les côtés est l'espace qui n'est pas alloué pour le rendu graphique
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
@@ -162,7 +162,13 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> J'ai créer une struct qui va contenir les coordonées des fleurs. Quand je créer un truile basique (pas sur les bords)
+> je récupere sa position dans une liste de ma struct. Une fois le terrain généré, je dessine les fleurs en les positionnant
+> grâce à ma liste de coordonnées. 
+> Pour avoir une répartition équitable des fleurs. Lorsque je boucle dans ma liste de coordonnée,
+> j'ai un int "type" qui décidera de quel type sera quelle fleur. Je calcule aussi le nombre de fleur par type (int flowersPerType = numberFlowers / 3;)
+> et le nombre de fleur que j'ai déjà dessiner. Une fois que j'ai dessiner assez de fleurs dans un même type, j'incrétement la variable "type"
+> et remet mon compteur à 0.
 
 ## 4. Comprendre la compilation des fichiers C++
 
@@ -170,23 +176,24 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
 a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> \dino -- \WinPixEventRuntime -- \sokol -- \stb
 
 b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
 
-> ...
+> \dino -- \sokol -- \stb
 
 c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
 
-> ...
+> Ce sont les même noms que les fichier .cpp (C:\Users\a.bourricaud\Documents\C\CoursProgJV\build\obj\x64-windows\Debug\Bourricaud Antoine)
 
 d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
 
-> ...
+> Bourricaud Antoine.exe (C:\Users\a.bourricaud\Documents\C\CoursProgJV\build\x64-windows\Debug)
+> Dino_JulienVernay.exe (C:\Users\a.bourricaud\Documents\C\CoursProgJV)
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> Les lignes "project"
 
 f) Quels sont les liens entre :
 
@@ -218,6 +225,9 @@ b) Implémentez la fonctionnalité F3.2 .
 
 c) Implémentez la fonctionnalité F3.3 .
 
+> Les déplacements des animaux sont totalement aléatoire. Il se dirige vers une target qui est un point
+> qui appartient au terrain et une fois atteind une nouvelle target est set !
+
 ## 6. Physique de jeu
 
 a) Implémentez la fonctionnalité F4.1 .
@@ -226,37 +236,41 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> on compare la distance entre les 2 cerlces et si la distance est < du rayon de l'un + le rayon de l'autre, il y a collision
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> on peut ajouté la différence de position de la collision à la position des cercles. Par exemple, si 
+> les 2 cercles entre en collision à 20 pixel de position (donc 20 pixel ou ils se chevauchent), on soustrait
+> 10 pixel à la position de chaque cercles.
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Car il n'y a pas d'héritage, la classe Dino et la classe Animal n'ont rien en commun, on doit
+> alors dupliquer le code pour que cela fonctionne.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> Les interface ou l'héritage
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Les fonction override et virtual
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> La méthode update
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
 
-> ...
+> J'utilise la même liste que pour les collions (liste du parent commun à Animal et DinoPlayer) que je trie par rapport
+> à leur position Y. Les fonction de Draw sont ensuite appelé dans l'ordre de la liste !
 
 ## 7. Programmation des lassos
 
@@ -265,7 +279,7 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> La méthode erase, qui permet de supprimer un élément via sa position précise
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de `std::vector` utiliser ?
 
