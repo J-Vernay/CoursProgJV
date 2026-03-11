@@ -41,10 +41,23 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     }
 }
 
+void DinoPlayer::ApplyLimit(DinoVec2 posMin, DinoVec2 posMax)
+{
+    if (m_pos.x < posMin.x)
+        m_pos.x = posMin.x;
+    if (m_pos.x > posMax.x)
+        m_pos.x = posMax.x;
+    if (m_pos.y < posMin.y)
+        m_pos.y = posMin.y;
+    if (m_pos.y > posMax.y)
+        m_pos.y = posMax.y;
+}
+
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, s_texID, m_pos);
+    DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
+    XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 

@@ -18,6 +18,7 @@ private:
 public:
     void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
+    void ApplyLimit(DinoVec2 min, DinoVec2 max);
     void Draw(double timeSinceStart);
     void Shut();
 

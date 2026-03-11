@@ -18,6 +18,7 @@ private:
 public:
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
+    void ApplyLimit(DinoVec2 posMin, DinoVec2 posMax);
     void Draw(double timeSinceStart);
     void Shut();
 
