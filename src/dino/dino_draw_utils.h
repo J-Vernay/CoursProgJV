@@ -44,7 +44,7 @@ DinoVec2 Dino_GenVertices_Text(
 /// @param width Epaisseur du trait, en pixels.
 /// @param color Couleur du trait.
 void Dino_GenVertices_Polyline(
-    std::vector<DinoVertex>& out, std::vector<DinoVec2> const& points, float width, DinoColor color = DinoColor_WHITE
+    std::vector<DinoVertex>& out, const std::vector<DinoVec2>& points, float width, DinoColor color = DinoColor_WHITE
 );
 
 // À bouger dans vos fichiers dino_animal.cpp/dino_animal.h

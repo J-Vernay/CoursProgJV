@@ -1,19 +1,19 @@
 #pragma once
 
-#include "xdino.h"
+#include <dino/xdino.h>
+#include <dino/dino_draw_utils.h>
 
-class DinoAnimaux {
-    DinoVec2 pos = {};
-    bool m_bRight = false;
-    bool m_bUp = false;
-    bool m_bDown = false;
-    double m_endHitAnim = 0;
-    int m_idxAnimaux = 0;
+
+class DinoAnimal {
+    DinoVec2 m_pos = {};
+    DinoVec2 m_dir = {};
+    EAnimalKind m_kind = {};
+    uint64_t m_texID = {};
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
 public:
-    void Init(int idxAnimaux);
+    void Init(EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart);
     void Shut();
