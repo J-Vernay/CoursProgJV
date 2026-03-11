@@ -1,8 +1,17 @@
 ﻿#include "dino_player.h"
+#include <dino/dino_terrain.h>
+
+#include <algorithm>
+#include "Physics.h"
 
 
+void DinoObject::Init()
+{
+    Physics::colliders.push_back(this);
+    collider_radius = 16;
+}
 
-void DinoObject::Update(double timeSinceStart,float deltaTime,DinoGamepad gamepad)
+void DinoObject::Update(double timeSinceStart,float deltaTime, const DinoGamepad& gamepad)
 {
     HandleInput(deltaTime,gamepad);
     AnimTimerUpdate(deltaTime);
@@ -11,30 +20,41 @@ void DinoObject::Update(double timeSinceStart,float deltaTime,DinoGamepad gamepa
 
 
 
-void DinoObject::HandleInput(float deltaTime, DinoGamepad gamepad)
+void DinoObject::HandleInput(float deltaTime, const DinoGamepad& gamepad)
 {
-    // --- Movement ---
+    
     bool isRunning = gamepad.btn_right;
     float speedMultiplier = isRunning ? 3.0f : 1.0f;
 
-    dinoPos.x += gamepad.stick_left_x * dinoSpeed * deltaTime * speedMultiplier;
-    dinoPos.y += gamepad.stick_left_y * dinoSpeed * deltaTime * speedMultiplier;
+    dinoPos.x += gamepad.stick_left_x *dinoSpeed * deltaTime * speedMultiplier;
+    dinoPos.y += gamepad.stick_left_y * dinoSpeed * deltaTime* speedMultiplier;
+
+    
+    float minX = DinoTerrain::FenceStart.x;
+    float maxX = DinoTerrain::FenceStart.x + DinoTerrain::Fence.x;
+
+    float minY = DinoTerrain::FenceStart.y;
+    float maxY = DinoTerrain::FenceStart.y + DinoTerrain::Fence.y;
+
+    dinoPos.x = std::max(dinoPos.x, minX);
+    dinoPos.x = std::min(dinoPos.x, maxX);
+
+    dinoPos.y = std::max(dinoPos.y, minY);
+    dinoPos.y = std::min(dinoPos.y, maxY);
 
     bool isInputLeft  = gamepad.dpad_left;
     bool isInputRight = gamepad.dpad_right;
     bool hasInput     = isInputLeft || isInputRight;
 
-    
     if (gamepad.btn_left)
         damageTimer = damageDuration;
 
-    
     if (damageTimer <= 0.0f)
     {
         if (hasInput)
         {
-            isGoingRigth     = isInputRight;
-            curentDinoState  = isRunning ? running : walk;
+            isGoingRigth    = isInputRight;
+            curentDinoState = isRunning ? running : walk;
         }
         else
         {
@@ -116,6 +136,7 @@ void DinoObject::GenerateVertexBuffer()
     //BOT triangle ----------------------
      vbufID_dinoTexture = XDino_CreateVertexBuffer(dinoVS.data(), dinoVS.size(), "dinoTexture");
      XDino_Draw(vbufID_dinoTexture, texID_dinoTexture, dinoPos, 24);
+    XDino_DestroyVertexBuffer(vbufID_dinoTexture);
     
 }
 
@@ -123,6 +144,5 @@ void DinoObject::GenerateVertexBuffer()
 void DinoObject::DinoShut()
 {
     
-    XDino_DestroyGpuTexture(texID_dinoTexture);
-    XDino_DestroyGpuTexture(vbufID_dinoTexture);
 }
+

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <array>
 #include "dino/xdino.h"
+#include "dino/Collider.h"
 
 
 
@@ -29,7 +30,7 @@ static std::array<AnimInfo, DinoState_Count> animeStateInfo =
 };
 
 
-struct DinoObject
+class DinoObject  : public Collider
 {
     
 
@@ -39,8 +40,19 @@ struct DinoObject
         float damageTimer = 0.f;
         float dinoSpeed = 100;
         int playerId;
-        void Update(double,float,DinoGamepad);
-        void DinoShut(); 
+        void Update(double,float, const DinoGamepad&);
+        void DinoShut();
+        void Init();
+
+    DinoVec2 GetPosition()  override
+    {
+        return dinoPos;
+    }
+
+    void SetPosition(DinoVec2 newPos) override
+    {
+        dinoPos = newPos;
+    }
 
     private:
     
@@ -55,7 +67,7 @@ struct DinoObject
         
         uint64_t vbufID_dinoTexture;
      
-        void HandleInput(float,DinoGamepad);
+        void HandleInput(float, const DinoGamepad&);
         void AnimTimerUpdate(float);
         void GenerateVertexBuffer();
 };

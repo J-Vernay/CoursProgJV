@@ -1,7 +1,9 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "../../build/Animal.h"
+
+#include "Animal.h"
+#include "Physics.h"
 
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
@@ -23,10 +25,10 @@ uint64_t vbufID_imageMilieu;
 uint64_t texID_dinoTexture;
 
 
-
+#include <deque>
 
 DinoTerrain g_Terrain;
-std::vector<Animal> animals;
+std::deque<Animal> animals;
 float spawnClock =1;
 float clockReset = 1;
 
@@ -37,6 +39,8 @@ constexpr DinoVec2 RENDER_SIZE = {480, 360};
 std::array<DinoObject,4> PlayerList;
 uint64_t texID_AnimalTexture;
 
+
+static Physics physics;
 
 
 
@@ -64,10 +68,11 @@ void Dino_GameInit()
     g_Terrain.Init(RENDER_SIZE, rand() % 4);
 
 
+    
 
     
     texID_AnimalTexture = XDino_CreateGpuTexture("animals.png");
-
+    Animal::InitStatic(texID_AnimalTexture);
 
 
     
@@ -80,6 +85,7 @@ void Dino_GameInit()
         PlayerList[i].playerId = i;
         PlayerList[i].texID_dinoTexture = texID_dinoTexture;
         PlayerList[i].dinoPos = {XDino_GetRenderSize().x/2, XDino_GetRenderSize().y/2};
+        PlayerList[i].Init();
     }
 
 
@@ -101,14 +107,14 @@ void Dino_GameInit()
 void Dino_GameFrame(double timeSinceStart)
 {
 #pragma region Les truc du prof
-
+    
     
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
 
     g_Terrain.Draw();
-    
+    physics.Update(deltaTime);
     
    {
         
@@ -128,6 +134,7 @@ void Dino_GameFrame(double timeSinceStart)
    }
 
 
+    
 
     
 
@@ -168,8 +175,7 @@ void Dino_GameFrame(double timeSinceStart)
         spawnClock = clockReset;
 
         animals.emplace_back();
-        animals.back().Init();
-        animals.back().texID_Texture = texID_AnimalTexture;
+        animals.back().Init(texID_AnimalTexture);
     }
 
     
@@ -227,6 +233,7 @@ void Dino_GameShut()
         PlayerList[i].DinoShut();
     }
     g_Terrain.Shut();
-    
+
+    Animal::ShutStatic();
     XDino_DestroyVertexBuffer(vbufID_polyline);
 }

@@ -4,9 +4,12 @@
 
 class DinoTerrain {
 public:
-    void Init(DinoVec2 rdrSize, int idxSeason);
+    void Init(DinoVec2, int);
     void Draw();
     void Shut();
+
+    static DinoVec2 Fence;
+    static DinoVec2 FenceStart;
 
 private:
     uint64_t m_vbufID = 0;

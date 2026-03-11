@@ -3,6 +3,11 @@
 constexpr DinoVec2 TILE_COUNT = {16, 12};
 constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
 
+
+DinoVec2 DinoTerrain:: Fence = {256,192};
+DinoVec2 DinoTerrain:: FenceStart = {112,94};
+
+
 void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
 {
     float dx = (rdrSize.x - TERRAIN_SIZE.x) / 2;
