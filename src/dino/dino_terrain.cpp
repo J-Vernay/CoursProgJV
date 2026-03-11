@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <random>
 
-constexpr DinoVec2 TILE_COUNT = {16, 12};
+constexpr DinoVec2 TILE_COUNT = {20 , 16};
 constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
 
 void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
@@ -58,6 +58,7 @@ void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
     vs[11].v = 16;
 
     m_topLeft = {dx, dy};
+    m_downRight = {dx + (TERRAIN_SIZE.x - 32), dy + (TERRAIN_SIZE.y - 32)};
     DrawFlowers(vs, idxSeason, {dx, dy});
 
     m_vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Terrain");

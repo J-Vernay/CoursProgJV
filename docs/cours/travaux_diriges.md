@@ -187,7 +187,8 @@ b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> On défini le nombre de tile posable dans cette aire, ensuite on calcule la position du corner en haut à gauche,
+> à partir de là il n'y a qu'à poser les tiles.
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
@@ -197,7 +198,10 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> En premiere étape, on crée une liste de toutes les positions possibles.
+> En second, on la mélange.
+> Ensuite, pour chaque espèce de plante, on prend 10 des premieres positions.
+> Et on peux les afficher (en fonction de leur saison on décale les uv etc...).
 
 ## 4. Comprendre la compilation des fichiers C++
 
@@ -206,16 +210,22 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
 Répartissez ces dossiers en 3 catégories.
 
-> ...
+> Les 6 dossiers sont : "external\pix, external\sokol, external\stb,(Pour le code externe qui est utilisé pour le
+> moteur)
+> src\dino (le gameplay), src\dino\x64_linux, src\dino\x64_windows (moteur plateforme)"
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> ...
+> Chaque source à son fichier obj
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
-> ...
+> On Obtien 3 fichiers  : ce sont tous des exécutables du projet, ils ont tous le même nom, mais on les trouves dans les
+> dossiers suivant :
+> src/ external
+> build/obj/x64 windows/debug
+> build/x64-windows/release
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
@@ -242,7 +252,7 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> faire le liens entre les code assembleur contenus dans plusieurs fichiers obj
 
 ## 5. Programmation des animaux
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_terrain.h>
 
 class DinoPlayer {
-private:
     DinoVec2 m_pos = {};
     bool m_bLeft = false;
     double m_endHitAnim = 0;
@@ -16,7 +16,8 @@ private:
 
 public:
     void Init(int idxPlayer);
-    void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
+    static void ResolveCollision(DinoPlayer& A, DinoPlayer& B);
+    void Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad);
     void Draw(double timeSinceStart);
     void Shut();
 };

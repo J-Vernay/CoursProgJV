@@ -14,6 +14,7 @@
 // Variables globales.
 double g_lastTime = 0;
 double g_lastSpawnTime = 0;
+
 float animaSpawnRate = 1;
 
 std::vector<DinoPlayer> g_Players;
@@ -61,22 +62,23 @@ void Dino_GameFrame(double timeSinceStart)
     {
         DinoGamepad gamepad{};
         if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
-            g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
+            g_Players[0].Update(timeSinceStart, deltaTime, g_Terrain, gamepad);
 
         if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
-            g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
+            g_Players[1].Update(timeSinceStart, deltaTime, g_Terrain, gamepad);
 
         if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
-            g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
+            g_Players[2].Update(timeSinceStart, deltaTime, g_Terrain, gamepad);
 
         if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
-            g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
+            g_Players[3].Update(timeSinceStart, deltaTime, g_Terrain, gamepad);
     }
 
-    if (timeSinceStart - g_lastSpawnTime > animaSpawnRate && g_Animals.size() < 8) {
+    if (timeSinceStart - g_lastSpawnTime > animaSpawnRate && g_Animals.size() < 10) {
         //Spawn Logic
         Animal a;
         a.Init();
+        a.m_spawnTime = timeSinceStart;
         g_Animals.push_back(a);
         g_lastSpawnTime = timeSinceStart;
     }
@@ -87,15 +89,22 @@ void Dino_GameFrame(double timeSinceStart)
     g_Terrain.Draw();
     g_Terrain.Update(timeSinceStart);
 
+    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
+            DinoPlayer::ResolveCollision(g_Players[idxA], g_Players[idxB]);
+
+    for (Animal& animal : g_Animals) {
+        animal.Update(deltaTime, timeSinceStart);
+    }
+
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
         player.Draw(timeSinceStart);
 
-    for (Animal& animal : g_Animals) {
-        animal.Draw(timeSinceStart);
-        animal.Update(deltaTime);
-    }
-
+    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
+            Animal::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
+    
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);

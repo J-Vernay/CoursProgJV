@@ -7,6 +7,7 @@ class DinoTerrain {
 public :
     int m_idxSeason;
     DinoVec2 m_topLeft;
+    DinoVec2 m_downRight;
     void Init(DinoVec2 rdrSize, int idx);
     void Draw();
     void Update(double timeSinceStart);

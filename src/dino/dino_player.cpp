@@ -1,3 +1,7 @@
+#include "dino_terrain.h"
+
+#include <__msvc_ostream.hpp>
+#include <iostream>
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
@@ -12,11 +16,28 @@ void DinoPlayer::Init(int idxPlayer)
     m_idxPlayer = idxPlayer;
 }
 
-void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
+void DinoPlayer::ResolveCollision(DinoPlayer& playerA, DinoPlayer& playerB)
+{
+    DinoVec2& a = playerA.m_pos;
+    DinoVec2& b = playerB.m_pos;
+    float ab = sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
+    if (ab == 0 || ab >= 16)
+        return;
+    float dx = (16 - ab) / (2 * ab) * (b.x - a.x);
+    float dy = (16 - ab) / (2 * ab) * (b.y - a.y);
+    a.x -= dx;
+    a.y -= dy;
+    b.x += dx;
+    b.y += dy;
+}
+
+void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad)
 {
     m_bPressedRun = false;
     m_bMoving = false;
 
+    float moveX;
+    float moveY;
     float speed = DINO_SPEED;
     if (gamepad.btn_right) {
         speed = DINO_SPEED * 2;
@@ -25,9 +46,33 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
         m_bMoving = true;
 
+    if ((m_pos.x > terrain.m_downRight.x) && gamepad.stick_left_x > 0) {
+        moveX = 0;
+    }
+    else if ((m_pos.x < terrain.m_topLeft.x) && gamepad.stick_left_x < 0) {
+        moveX = 0;
+    }
+    else {
+        moveX = gamepad.stick_left_x;
+    }
+
+    if ((m_pos.y > terrain.m_downRight.y) && gamepad.stick_left_y > 0) {
+        moveY = 0;
+    }
+    else if ((m_pos.y < terrain.m_topLeft.y) && gamepad.stick_left_y < 0) {
+        moveY = 0;
+    }
+    else {
+        moveY = gamepad.stick_left_y;
+    }
+
+    // if (m_pos.y > terrain.m_downRight.y && m_pos.y < terrain.m_topLeft.y) {
+    //     gamepad.stick_left_y = 0;
+    // }
+
     if (timeSinceStart >= m_endHitAnim) {
-        m_pos.x += gamepad.stick_left_x * speed * deltaTime;
-        m_pos.y += gamepad.stick_left_y * speed * deltaTime;
+        m_pos.x += moveX * speed * deltaTime;
+        m_pos.y += moveY * speed * deltaTime;
     }
 
     if (gamepad.stick_left_x < 0)
