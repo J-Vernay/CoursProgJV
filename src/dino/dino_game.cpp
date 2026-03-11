@@ -76,7 +76,7 @@ void Dino_GameInit()
     // Preparing the texture for the dino
     texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
 
-    g_terrain.Init();
+    g_terrain.Init(DinoVec2{16, 12}, 10);
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -87,7 +87,8 @@ void Dino_GameFrame(double timeSinceStart)
     g_lastTime = timeSinceStart;
 
     g_terrain.DrawBG();
-    g_terrain.DrawTerrain({16, 12});
+    g_terrain.DrawTerrain();
+    g_terrain.DrawFlwrs();
 
     // Gestion des entrées et mise à jour de la logique de jeu.
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {

@@ -218,7 +218,13 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> Lors de la génération du terrain :
+> -- Mélange aléatoire des tuiles, puis vérification si une fleur peut y être posée (si ce n'est aps un bord et que
+> toutes les fleurs n'ont pas été posées)
+> -- Si c'est le cas, enregistrer dans deux vectors la position et l'uv de la fleur
+>
+> Une fois que le terrain a fini de générer, appel de la génération des fleurs avec en paramètres les deux vectors
+> -- Placement de chaque fleur selon la position sauvegardée et l'uv associé
 
 ## 4. Comprendre la compilation des fichiers C++
 

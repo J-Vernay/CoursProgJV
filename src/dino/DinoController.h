@@ -6,16 +6,16 @@ struct DinoControllerFields {
 
     // Fields
 private:
-    DinoVec2 dinoPos;
-    double dinoCurrentSpeed;
-    bool dinoGoingLeft = false;
+    DinoVec2 m_dinoPos;
+    double m_dinoCurrentSpeed;
+    bool m_dinoGoingLeft = false;
 
-    float dinoAnimElapsed = 0;
-    float dinoDamageAnimTimer;
-    int currFrame = 0;
-    int dinoColor = 0;
+    float m_dinoAnimElapsed = 0;
+    float m_dinoDamageAnimTimer;
+    int m_currFrame = 0;
+    int m_dinoColor = 0;
 
-    bool g_dinoCanTakeDamage = true;
+    bool m_dinoCanTakeDamage = true;
 
 public:
     uint64_t vbufID_dino;
