@@ -2,7 +2,8 @@
 
 **Veillez à travailler dans une branche Git à votre nom : NOM_Prenom**.
 
-**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point qde travaux dirigés que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
+**Après chaque point, veuillez (git add + git commit) votre base de code avec dans le message le nom du point qde
+travaux dirigés que vous venez de faire.** (par exemple: `git add .` puis `git commit -m "0.a"`)
 
 **A la fin de chaque séance, veuillez push votre branche sur le dépôt GitHub** (`git push`)
 
@@ -19,10 +20,10 @@ et à aller chercher les réponses proactivement.
 
 ## Examen papier (30%)
 
-Dans les deux semaines après le cours (à vérifier avec la scolarité quand),
-vous réaliserez un examen sur papier
-qui reprend ce qui a été vu le long du cours. `travaux_diriges.md`
-contient une partie des questions papier.
+Vous réaliserez un examen sur papier le mardi 24 mars de 10h à 11h.
+Cet examen reprend ce qui a été vu le long du cours,
+que ce soit dans le code écrit en cours (dans la branche VERNAY_Julien sur GitHub),
+dans les questions de `travaux_diriges.md`, et dans les notes de cours (en PDF dans le dépôt).
 
 ## Rendu du logiciel (40%)
 
@@ -39,7 +40,7 @@ Seront jugés le bon fonctionnement des fonctionnalités (50%), et l'état globa
 * Code lisible (variables bien nommées)
 * Les seules variables globales autorisées sont dans `dino_game.cpp`.
 * Architecture du code clair :
-  * Chaque variable a un unique "parent" responsable de sa durée de vie.
-  * Une variable ne devrait pas avoir besoin de connaître son "parent".
-  * De préférence, passer les informations via les paramètres de fonctions
-    et valeurs de retour des fonctions/méthodes (plutôt que callbacks et variables globales/membres).
+    * Chaque variable a un unique "parent" responsable de sa durée de vie.
+    * Une variable ne devrait pas avoir besoin de connaître son "parent".
+    * De préférence, passer les informations via les paramètres de fonctions
+      et valeurs de retour des fonctions/méthodes (plutôt que callbacks et variables globales/membres).
