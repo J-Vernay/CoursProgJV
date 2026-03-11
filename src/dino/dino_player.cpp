@@ -97,7 +97,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
@@ -142,19 +142,4 @@ void DinoPlayer::InitStatic()
 void DinoPlayer::ShutStatic()
 {
     XDino_DestroyGpuTexture(s_texID);
-}
-
-void DinoPlayer::ResolveCollision(DinoPlayer& playerA, DinoPlayer& playerB)
-{
-    DinoVec2& a = playerA.m_pos;
-    DinoVec2& b = playerB.m_pos;
-    float ab = sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
-    if (ab == 0 || ab >= 16)
-        return;
-    float dx = (16 - ab) / (2 * ab) * (b.x - a.x);
-    float dy = (16 - ab) / (2 * ab) * (b.y - a.y);
-    a.x -= dx;
-    a.y -= dy;
-    b.x += dx;
-    b.y += dy;
 }

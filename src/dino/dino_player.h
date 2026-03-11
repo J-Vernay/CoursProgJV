@@ -1,9 +1,10 @@
 #pragma once
 
+#include "dino_entity.h"
+
 #include <dino/xdino.h>
 
-class DinoPlayer {
-private:
+class DinoPlayer : public DinoEntity {
     DinoVec2 m_pos = {};
     bool m_bLeft = false;
     double m_endHitAnim = 0;
@@ -24,6 +25,4 @@ public:
 
     static void InitStatic();
     static void ShutStatic();
-
-    static void ResolveCollision(DinoPlayer& playerA, DinoPlayer& playerB);
 };

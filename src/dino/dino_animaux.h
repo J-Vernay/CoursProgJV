@@ -1,10 +1,11 @@
 #pragma once
 
+#include "dino_entity.h"
+
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 
-
-class DinoAnimal {
+class DinoAnimal : public DinoEntity {
     DinoVec2 m_pos = {};
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
