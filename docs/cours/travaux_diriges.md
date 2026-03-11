@@ -169,7 +169,8 @@ Répartissez ces dossiers en 3 catégories.
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> Chaque fichier source a son fichier obj (source external et build obj) 
+> Chaque fichier source a son fichier obj (source external et build obj)
+> il y a obj pour chaque platforme et configuration
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
@@ -179,23 +180,24 @@ Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leu
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
 > src\External pour les .h et .cpp
-> Build\obj\x64-windows\Debug Relase pour les .obj 
-> Build\x64-windows\DebugRelease pour les .exe 
+> Build\obj\x64-windows\Debug Relase pour les .obj
+> Build\x64-windows\DebugRelease pour les .exe
 
 f) Quels sont les liens entre :
 
 > **Fichiers `.h` et `.cpp` :** ...
-> Etape préprocesseur qui transforme les includes/ define/ if endif / pragma 
-> les # → directive de précesseur 
+> Etape préprocesseur qui transforme les includes/ define/ if endif / pragma
+> les # → directive de précesseur
 > **Fichiers `.cpp` et `.obj` :** ...
-> Le compilateur vérifie les règles du cpp, transformation du code cpp en code assembleur (code natif) 
+> Le compilateur vérifie les règles du cpp, transformation du code cpp en code assembleur (code natif)
 > **Fichiers `.obj` et `.lib` :** ...
-> archanvage 
+> archivage:  les fichiers .lib sont un archivage des .obj
 > **Fichiers `.obj` et `.dll` :** ...
->
+> edition des liens :  les .dll sont comparables au .exe mais sans 'main', ils ne peuvent donc pas être executé seuls
 > **Fichiers `.obj` et `.exe` :** ...
-> editions des liens :
+> editions des liens : le .exe est créé à partir des .obj lorsqu'on fais une "edition des liens static"
 > **Fichiers `.dll` et `.exe` :** ...
+> edition de liens dynamique :  certains .exe peuvent utiliser des .dll lors de leur execution
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
