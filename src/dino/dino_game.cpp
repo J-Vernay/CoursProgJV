@@ -36,7 +36,7 @@ anim Get_Current_Anim(DinoPlayer player)
 
 std::vector<DinoPlayer> g_players = {};
 DinoTerrain g_terrain;
-DinoAnimal g_animal;
+DinoAnimalSpawner g_spawner;
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
@@ -54,7 +54,7 @@ void Dino_GameInit()
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_terrain.Init(RENDER_SIZE, idxSeason);
-    g_animal.Init(4);
+    g_spawner.Init();
     DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(windowSize);
 
@@ -155,7 +155,7 @@ void Dino_GameFrame(double timeSinceStart)
             player.Draw(timeSinceStart, Get_Current_Anim(player));
         }
     }
-    g_animal.Draw(timeSinceStart);
+    g_spawner.Update(timeSinceStart);
 
 #if !XDINO_RELEASE
     // Affichage des statistiques si on appuie sur SHIFT.
@@ -180,5 +180,6 @@ void Dino_GameShut()
     }
     XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyVertexBuffer(vbuffID_nom);
+    g_spawner.Shut();
     g_terrain.Shut();
 }
