@@ -85,7 +85,7 @@ void Dino_GameFrame(double timeSinceStart)
         float x = XDino_RandomFloat(min.x, max.x);
         float y = XDino_RandomFloat(min.y, max.y);
 
-        animal.Init(kind, {x, y});
+        animal.Init(timeSinceStart, kind, {x, y});
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
     for (DinoAnimal& animal : g_Animals)

@@ -2,11 +2,12 @@
 
 uint64_t DinoAnimal::s_texID = 0;
 
-void DinoAnimal::Init(EAnimalKind animal, DinoVec2 pos)
+void DinoAnimal::Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos)
 {
     m_pos = pos;
     m_dir = XDino_RandomUnitVec2();
     m_kind = animal;
+    m_spawnTime = timeSinceStart;
 }
 
 void DinoAnimal::Update(double timeSinceStart, float deltaTime)
@@ -34,8 +35,16 @@ void DinoAnimal::Draw(double timeSinceStart)
             anim = EAnimalAnim::Up;
     }
 
+    constexpr float TIME_FADEIN = 1;
+    double timeAlive = timeSinceStart - m_spawnTime;
+    uint8_t alpha = 255;
+    if (timeAlive < TIME_FADEIN)
+        alpha = (timeAlive * 255) / TIME_FADEIN;
+
     std::vector<DinoVertex> vs;
     Dino_GenVertices_Animal(vs, m_kind, anim, timeSinceStart);
+    for (DinoVertex& v : vs)
+        v.color = {255, 255, 255, alpha};
     uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Animal");
     XDino_Draw(vbufID, s_texID, m_pos);
     XDino_DestroyVertexBuffer(vbufID);
