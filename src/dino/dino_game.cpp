@@ -97,10 +97,16 @@ void Dino_GameFrame(double timeSinceStart)
         animal.Init(timeSinceStart, kind, {x, y});
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
-    for (DinoAnimal& animal : g_Animals) {
+
+    for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
+
+    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
+            DinoAnimal::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
+
+    for (DinoAnimal& animal : g_Animals)
         animal.ApplyLimit(terrainMin, terrainMax);
-    }
 
     // Affichage
 

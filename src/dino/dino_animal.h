@@ -24,4 +24,6 @@ public:
 
     static void InitStatic();
     static void ShutStatic();
+
+    static void ResolveCollision(DinoAnimal& animalA, DinoAnimal& animalB);
 };
