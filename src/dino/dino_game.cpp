@@ -82,7 +82,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
-        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+        auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
@@ -91,8 +91,10 @@ void Dino_GameFrame(double timeSinceStart)
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
 
-    for (DinoAnimal& animal : g_Animals)
+    for (DinoAnimal& animal : g_Animals) {
         animal.Update(timeSinceStart, deltaTime);
+        animal.ApplyLimit(terrainMin, terrainMax);
+    }
 
     // Collision joueur-joueur
     for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
