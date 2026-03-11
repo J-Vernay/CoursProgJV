@@ -214,16 +214,20 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
 Répartissez ces dossiers en 3 catégories.
 
-> ...
+> Les 6 dossiers sont : "external\pix, external\sokol, external\stb,(Pour le code externe qui est utilisé pour le
+> moteur) src\dino (le gameplay), src\dino\x64_linux, src\dino\x64_windows (moteur plateforme)"
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> ...
+> Ils sont dans build/obj et src/external. Chaque src à son fichier obj. La suite de leur path dépend de la platforme et
+> de la configuration.
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
-> ...
+> On obtient 3 excutables (demo, debug et release) ils sont l'un à al racine de cours prog et les 2 autres dans
+> build\x64-windows\debug et release respectivement.
+>
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
@@ -273,18 +277,19 @@ c) Comment détecter si deux cercles à des positions données sont en collision
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> d = ((Ra+rb) - ab) / pas eu le temps de noter
+> Le risque est la division par zero si les 2 sont parfaitement au meme endroit
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Ce sont des types différents
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> C'est l'héritage
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.

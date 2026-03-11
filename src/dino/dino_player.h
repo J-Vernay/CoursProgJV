@@ -1,6 +1,7 @@
 #pragma once
-
+#include <dino/dino_terrain.h>
 #include <dino/xdino.h>
+#include "dino_entity.h"
 
 
 enum animState {
@@ -17,8 +18,7 @@ struct anim {
     float Speed;
 };
 
-struct DinoPlayer {
-    DinoVec2 m_pos = {};
+struct DinoPlayer : public DinoEntity {
     bool m_bRight = false;
     double m_endHitAnim = 0;
     animState m_currentAnim = Idle;
@@ -26,7 +26,7 @@ struct DinoPlayer {
     int m_idxPlayer = 0;
 
     void Init(int idxPlayer);
-    void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
+    void Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad);
     void Draw(double timeSinceStart, anim currentAnim);
     void Shut();
 

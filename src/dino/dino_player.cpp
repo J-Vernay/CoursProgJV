@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 
@@ -9,7 +10,7 @@ void DinoPlayer::Init(int idxPlayer)
     m_idxPlayer = idxPlayer;
 }
 
-void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
+void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad)
 {
     constexpr float Dino_SPEED = 100.f;
 
@@ -46,6 +47,11 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     if (timeSinceStart < m_endHitAnim) {
         m_currentAnim = Hit;
     }
+
+    DinoVec2 topLeft = terrain.GetTopLeft();
+    m_pos.x = std::clamp(m_pos.x, topLeft.x + 12, topLeft.x + TERRAIN_SIZE.x - 12);
+    m_pos.y = std::clamp(m_pos.y, topLeft.y + 12, topLeft.y + TERRAIN_SIZE.y - 12);
+
 }
 
 uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, anim current)
@@ -87,7 +93,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, anim current)
 void DinoPlayer::Draw(double timeSinceStart, anim currentAnim)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart, currentAnim);
-    XDino_Draw(vbufID, m_texID, m_pos);
+    XDino_Draw(vbufID, m_texID, {m_pos.x - 12, m_pos.y - 20});
     XDino_DestroyVertexBuffer(vbufID);
 }
 

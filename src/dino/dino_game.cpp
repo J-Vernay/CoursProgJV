@@ -6,6 +6,7 @@
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 #include <dino/dino_animal.h>
+#include <iostream>
 
 #include <format>
 
@@ -39,6 +40,7 @@ DinoTerrain g_terrain;
 DinoAnimalSpawner g_spawner;
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
+
 
 // Constantes.
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
@@ -103,17 +105,28 @@ void Dino_GameFrame(double timeSinceStart)
 
     DinoGamepad gamepad{};
     if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
-        g_players[0].Update(timeSinceStart, deltaTime, gamepad);
+        g_players[0].Update(timeSinceStart, deltaTime, g_terrain, gamepad);
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
-        g_players[1].Update(timeSinceStart, deltaTime, gamepad);
+        g_players[1].Update(timeSinceStart, deltaTime, g_terrain, gamepad);
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
-        g_players[2].Update(timeSinceStart, deltaTime, gamepad);
+        g_players[2].Update(timeSinceStart, deltaTime, g_terrain, gamepad);
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
-        g_players[3].Update(timeSinceStart, deltaTime, gamepad);
+        g_players[3].Update(timeSinceStart, deltaTime, g_terrain, gamepad);
 
+    for (size_t idxA = 0; idxA < g_players.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_players.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_players[idxA], g_players[idxB]);
+
+    for (size_t idxA = 0; idxA < g_spawner.m_animals.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_spawner.m_animals.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_spawner.m_animals[idxA], g_spawner.m_animals[idxB]);
+
+    for (size_t idxA = 0; idxA < g_players.size(); ++idxA)
+        for (size_t idxB = 0; idxB < g_spawner.m_animals.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_players[idxA], g_spawner.m_animals[idxB]);
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -149,13 +162,15 @@ void Dino_GameFrame(double timeSinceStart)
                    2);
     }
     g_terrain.Update(timeSinceStart);
+
+    g_spawner.Update(deltaTime, timeSinceStart);
+
     // Affichage du player
     {
         for (DinoPlayer& player : g_players) {
             player.Draw(timeSinceStart, Get_Current_Anim(player));
         }
     }
-    g_spawner.Update(timeSinceStart);
 
 #if !XDINO_RELEASE
     // Affichage des statistiques si on appuie sur SHIFT.

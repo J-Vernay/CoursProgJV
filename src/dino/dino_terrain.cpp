@@ -3,14 +3,13 @@
 #include <algorithm>
 #include <random>
 
-constexpr DinoVec2 TILE_COUNT = {20, 16};
-constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
 
 void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
 {
+
     m_idxSeason = idxSeason;
-    float dx = (rdrSize.x - TERRAIN_SIZE.x) / 2;
-    float dy = (rdrSize.y - TERRAIN_SIZE.y) / 2;
+    m_dx = (rdrSize.x - TERRAIN_SIZE.x) / 2;
+    m_dy = (rdrSize.y - TERRAIN_SIZE.y) / 2;
 
     uint64_t uBase = idxSeason * 80;
 
@@ -37,28 +36,28 @@ void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
     vs[5].u = uBase + 16;
     vs[5].v = 16;
     // 1er triangle terrain
-    vs[6].pos = {dx, dy};
+    vs[6].pos = {m_dx, m_dy};
     vs[6].u = uBase + 16;
     vs[6].v = 0;
-    vs[7].pos = {dx + TERRAIN_SIZE.x, dy};
+    vs[7].pos = {m_dx + TERRAIN_SIZE.x, m_dy};
     vs[7].u = uBase + 32;
     vs[7].v = 0;
-    vs[8].pos = {dx, dy + TERRAIN_SIZE.y};
+    vs[8].pos = {m_dx, m_dy + TERRAIN_SIZE.y};
     vs[8].u = uBase + 16;
     vs[8].v = 16;
     // 2eme triangle terrain
-    vs[9].pos = {dx + TERRAIN_SIZE.x, dy};
+    vs[9].pos = {m_dx + TERRAIN_SIZE.x, m_dy};
     vs[9].u = uBase + 32;
     vs[9].v = 0;
-    vs[10].pos = {dx, dy + TERRAIN_SIZE.y};
+    vs[10].pos = {m_dx, m_dy + TERRAIN_SIZE.y};
     vs[10].u = uBase + 16;
     vs[10].v = 16;
-    vs[11].pos = {dx + TERRAIN_SIZE.x, dy + TERRAIN_SIZE.y};
+    vs[11].pos = {m_dx + TERRAIN_SIZE.x, m_dy + TERRAIN_SIZE.y};
     vs[11].u = uBase + 32;
     vs[11].v = 16;
 
-    m_posTopLeft = {dx, dy};
-    SpawnFlowers(vs, idxSeason, {dx, dy});
+    m_posTopLeft = {m_dx, m_dy};
+    SpawnFlowers(vs, idxSeason, {m_dx, m_dy});
     m_vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Terrain");
     m_texID = XDino_CreateGpuTexture("terrain.png");
 
@@ -71,7 +70,7 @@ void DinoTerrain::Draw()
 
 void DinoTerrain::Update(double timeSinceStart)
 {
-    int idxAnim = int(timeSinceStart * 2) % 4;
+    int idxAnim = int(timeSinceStart * 3) % 4;
     uint64_t vbufID = CreateEdges(m_idxSeason, idxAnim, m_posTopLeft);
     XDino_Draw(vbufID, m_texID);
     XDino_DestroyVertexBuffer(vbufID);
@@ -191,4 +190,14 @@ void DinoTerrain::SpawnFlower(std::vector<DinoVertex>& out, int idxSeason, int i
     out[i + 5].pos = {pos.x + 16, pos.y + 16};
     out[i + 5].u = uBase + 16;
     out[i + 5].v = 16;
+}
+
+DinoVec2 DinoTerrain::GetTopLeft()
+{
+    return {m_dx, m_dy};
+}
+
+DinoVec2 DinoTerrain::GetBottomRight()
+{
+    return {m_dx + TERRAIN_SIZE.x, m_dy + TERRAIN_SIZE.y};
 }
