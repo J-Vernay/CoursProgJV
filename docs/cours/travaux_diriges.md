@@ -21,7 +21,8 @@ a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 >
 > `premake5.lua` : ...
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des
+`// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -112,7 +113,7 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
-Dans quelle catégorie est située cette page ? 
+Dans quelle catégorie est située cette page ?
 
 > ...
 
@@ -135,7 +136,8 @@ Comment peut-on mettre en miroir le sprite du dinosaure ?
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
-Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?
+Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
+jeu ?
 
 > ...
 
@@ -195,19 +197,17 @@ Expliquez les étapes de votre algorithme.
 
 Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 
-a) Cherchez `CoursProgJV *.h`. Quels sont les 4 dossiers du projet à contenir des fichiers C++ ?
+a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
+Répartissez ces dossiers en 3 catégories.
 
 > ...
 
-b) Cherchez `CoursProgJV *.cpp`. Quels sont les 3 dossiers du projet à contenir des fichiers C++ ?
+c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
 > ...
 
-c) Cherchez `CoursProgJV *.obj`. Que remarquez-vous des noms des fichiers concernés ? Notez leur chemin.
-
-> ...
-
-d) Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leur chemin.
+d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
+Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
 > ...
 
@@ -233,7 +233,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -281,7 +282,8 @@ L'appliquer dans la base de code.
 
 > ...
 
-j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
+j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
+des `DinoAnimal`. Comment faire ?
 
 > ...
 
@@ -294,18 +296,19 @@ Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de `std::vector` utiliser ?
+c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
+Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
 > ...
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
-
 
 ## 7. S'intéresser à la mémoire
 
@@ -347,7 +350,7 @@ Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des las
 a) Allouez une zone mémoire avec `XDino_MemAlloc()` pour stocker un point.
 Quel est le type de retour ? Pourquoi la zone mémoire ne peut pas être manipulée telle quelle ?
 
-> ... 
+> ...
 
 b) Faites en sorte de pouvoir ajouter des points à la liste, en allouant une zone mémoire plus grande
 et en copiant l'ancien contenu dans la nouvelle zone mémoire.
@@ -440,7 +443,6 @@ Comment démontrez-vous qu'ils fonctionnent ?
 
 > ...
 
-
 ## 10. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
@@ -484,11 +486,11 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 **Temps passé en moyenne pour...**
 
 > **Lire les entrées claviers/manette :** ...
-> 
+>
 > **Le calcul des DinoDrawCall :** ...
-> 
+>
 > **La logique de jeu (excluant lire les entrées et drawcalls):** ...
-> 
+>
 > **Résoudre les collisions :** ...
 >
 > **Calculer les intersections de lasso :** ...
