@@ -5,6 +5,7 @@
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
+#include <dino/dino_animal.h>
 
 #include <format>
 
@@ -14,6 +15,9 @@ double g_lastTime = 0;
 
 std::vector<DinoPlayer> g_Players;
 DinoTerrain g_Terrain;
+
+std::vector<DinoAnimal> g_Animals;
+double g_timeSpawnAnimal = 0;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -42,6 +46,7 @@ void Dino_GameInit()
         textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
+
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -51,7 +56,7 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    XDino_SetRenderSize({480, 360});
+    XDino_SetRenderSize(RENDER_SIZE);
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
@@ -68,6 +73,21 @@ void Dino_GameFrame(double timeSinceStart)
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
         g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
 
+    if (timeSinceStart > g_timeSpawnAnimal) {
+        DinoAnimal& animal = g_Animals.emplace_back();
+        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+
+        DinoVec2 min = g_Terrain.GetTopLeft();
+        DinoVec2 max = g_Terrain.GetBottomRight();
+        float x = XDino_RandomFloat(min.x, max.x);
+        float y = XDino_RandomFloat(min.y, max.y);
+
+        animal.Init(kind, {x, y});
+        g_timeSpawnAnimal = timeSinceStart + 1;
+    }
+    for (DinoAnimal& animal : g_Animals)
+        animal.Update(timeSinceStart, deltaTime);
+
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -75,6 +95,9 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_SetClearColor(CLEAR_COLOR);
 
     g_Terrain.Draw();
+
+    for (DinoAnimal& animal : g_Animals)
+        animal.Draw(timeSinceStart);
 
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
@@ -117,6 +140,8 @@ void Dino_GameShut()
     // For-range loop
     for (DinoPlayer& player : g_Players)
         player.Shut();
+    for (DinoAnimal& animal : g_Animals)
+        animal.Shut();
     g_Terrain.Shut();
 
     XDino_DestroyVertexBuffer(vbufID_prenom);
