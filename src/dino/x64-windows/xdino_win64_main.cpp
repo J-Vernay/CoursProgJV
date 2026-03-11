@@ -175,8 +175,8 @@ void _impl_XDino_Critical(char const* pFunc, int line, char const* msg)
     char buffer[8192];
     snprintf(buffer, sizeof(buffer), "%s\n%s (line %d)\n", msg, pFunc, line);
     fputs(buffer, stderr);
-    TerminateProcess(GetCurrentProcess(), -1);
     MessageBoxA(gXDino_hWindow, buffer, "Error", MB_SYSTEMMODAL | MB_SETFOREGROUND | MB_ICONERROR | MB_OK);
+    TerminateProcess(GetCurrentProcess(), -1);
 }
 
 #ifdef USE_PIX
