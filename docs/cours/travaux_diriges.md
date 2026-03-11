@@ -165,33 +165,36 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
 Répartissez ces dossiers en 3 catégories.
 
-> ...
+> External pix, external sokol, external stb, src\dino (gameplay) ,\x64 linux et windows (moteur platform)
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> ...
+> Chaque fichier source a son fichier obj (source external et build obj) 
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
-> ...
+> Exe de démo, exe de debug et exe de release
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> src\External pour les .h et .cpp
+> Build\obj\x64-windows\Debug Relase pour les .obj 
+> Build\x64-windows\DebugRelease pour les .exe 
 
 f) Quels sont les liens entre :
 
 > **Fichiers `.h` et `.cpp` :** ...
->
+> Etape préprocesseur qui transforme les includes/ define/ if endif / pragma 
+> les # → directive de précesseur 
 > **Fichiers `.cpp` et `.obj` :** ...
->
+> Le compilateur vérifie les règles du cpp, transformation du code cpp en code assembleur (code natif) 
 > **Fichiers `.obj` et `.lib` :** ...
->
+> archanvage 
 > **Fichiers `.obj` et `.dll` :** ...
 >
 > **Fichiers `.obj` et `.exe` :** ...
->
+> editions des liens :
 > **Fichiers `.dll` et `.exe` :** ...
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
