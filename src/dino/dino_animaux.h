@@ -8,13 +8,19 @@ class DinoAnimal {
     DinoVec2 m_pos = {};
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
-    uint64_t m_texID = {};
+    double m_spawnTime = 0;
+
+    static uint64_t s_texID;
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
 public:
-    void Init(EAnimalKind animal, DinoVec2 pos);
+    void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
+    void ApplyLimit(DinoVec2 min, DinoVec2 max);
     void Draw(double timeSinceStart);
     void Shut();
+
+    static void InitStatic();
+    static void ShutStatic();
 };
