@@ -17,6 +17,7 @@ void DinoAnimals::TrySpawn(double time, const DinoTerrain& terrain)
 
         Animal a;
 
+        // Coin supérieur gauche du sprite doit rester dans le terrain
         float minX = terrain.GetOrigin().x;
         float minY = terrain.GetOrigin().y - (SPRITE_SIZE / 2);
 
@@ -165,4 +166,33 @@ void Dino_GenVertices_Animal(
     out[i + 5].pos = {32, 32};
     out[i + 5].u = uMax;
     out[i + 5].v = vMax;
+}
+
+void DinoAnimals::RepulseAnimals()
+{
+    float radius = SPRITE_SIZE / 3.0f;
+    float minDistance = radius * 2.0f;
+
+    for (size_t i = 0; i < animals.size(); ++i) {
+        for (size_t j = i + 1; j < animals.size(); ++j) {
+            DinoVec2 dir = {animals[j].pos.x - animals[i].pos.x,
+                            animals[j].pos.y - animals[i].pos.y};
+            float dist2 = dir.x * dir.x + dir.y * dir.y;
+
+            if (dist2 == 0.0f) {
+                dir.x = 1.0f;
+                dir.y = 0.0f;
+                dist2 = 1.0f;
+            }
+
+            if (dist2 < minDistance * minDistance) {
+                float dist = std::sqrt(dist2);
+                float overlap = (minDistance - dist) / 2.0f;
+                animals[i].pos.x -= dir.x / dist * overlap;
+                animals[i].pos.y -= dir.y / dist * overlap;
+                animals[j].pos.x += dir.x / dist * overlap;
+                animals[j].pos.y += dir.y / dist * overlap;
+            }
+        }
+    }
 }

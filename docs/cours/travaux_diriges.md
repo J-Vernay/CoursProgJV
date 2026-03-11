@@ -290,12 +290,14 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> Deux cercles à des positions données sont en collision si la distance entre leurs centres est inférieur ou égal à la
+> somme de leurs rayons.
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> Pour que deux cercles ne soient plus en collision, il faut les déplacer le long de la normale qui relie leurs centres.
+> On ne peut pas résoudre le cas où les centres des cercles sont exactement au même point.
 
 e) Implémentez la fonctionnalité F4.3 .
 

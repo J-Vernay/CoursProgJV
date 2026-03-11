@@ -6,18 +6,16 @@
 #include "dino/dino_player.h"
 #include "dino/dino_terrain.h"
 #include "dino/dino_animal.h"
+#include <map>
 #include <format>
+#include <iostream>
 
 // Variables globales.
+std::map<int, int> controllerToDino;
 double g_lastTime = 0;
-bool g_prevDown = false;
-
-// Variable globale pour l'affichage de debug.
-int g_debugScroll = 0;
 
 // Objet dinosaure
 std::vector<DinoPlayer> dinos(4);
-int currentPlayer = 0;
 
 // Terrain
 DinoTerrain terrain;
@@ -42,6 +40,18 @@ void Dino_GameInit()
         dinos[i].Init(terrain, startV[i]);
     }
 
+    // Assigner chaque contrôleur à un dino
+    int assigned = 0;
+    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL) {
+        DinoGamepad gp;
+        if (XDino_GetGamepad(idx, gp) && assigned < dinos.size()) {
+            controllerToDino[static_cast<int>(idx)] = assigned;
+            std::cout << "Controller " << static_cast<int>(idx)
+                << " assigned to Dino " << assigned << "\n";
+            ++assigned;
+        }
+    }
+
     // Initialiser les animaux
     animals.Init();
 }
@@ -52,33 +62,32 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    bool downPressed = false;
-
-    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        if (!XDino_GetGamepad(idx, gamepad))
+    // Update tous les dinosaures avec leur contrôleur assigné
+    for (const auto& [controllerIdx, dinoIdx] : controllerToDino) {
+        DinoGamepad gp{};
+        if (!XDino_GetGamepad(static_cast<DinoGamepadIdx>(controllerIdx), gp))
             continue;
 
-        if (gamepad.btn_down)
-            downPressed = true;
+        dinos[dinoIdx].Update(timeSinceStart, deltaTime, terrain, gp);
     }
 
-    // Spawn les animaux
+    // Spawn et update des animaux
     animals.TrySpawn(timeSinceStart, terrain);
-
-    // Détection du moment où le bouton vient d'être pressé
-    if (downPressed && !g_prevDown) {
-        currentPlayer = (currentPlayer + 1) % dinos.size();
-    }
-
-    g_prevDown = downPressed;
-
-    // Update tous les animaux
     animals.Update(timeSinceStart, deltaTime, terrain);
 
-    // Update seulement le joueur actif
-    dinos[currentPlayer].Update(timeSinceStart, deltaTime, terrain);
+    // Collision entre tous les dinos
+    for (int i = 0; i < dinos.size(); ++i) {
+        for (int j = i + 1; j < dinos.size(); ++j) {
+            dinos[i].RepulseWith(dinos[j]);
+        }
+    }
 
+    // Collision entre animaux
+    animals.RepulseAnimals();
+
+    // Collision entre animaux et dinos
+
+    // Affichage
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     XDino_SetClearColor(CLEAR_COLOR);
     terrain.Draw(timeSinceStart);

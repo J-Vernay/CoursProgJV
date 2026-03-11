@@ -50,6 +50,8 @@ public:
     void Draw(double time) const;
     void Shut();
 
+    void RepulseAnimals();
+
 private:
     std::vector<Animal> animals;
 
@@ -57,9 +59,9 @@ private:
 
     double lastSpawnTime = 0;
 
-    constexpr double ANIMAL_SPAWN_INTERVAL = 1;
-    constexpr double SPAWN_FADE_TIME = 0.5;
+    static constexpr double ANIMAL_SPAWN_INTERVAL = 1;
+    static constexpr double SPAWN_FADE_TIME = 0.5;
 
-    constexpr float SPRITE_SIZE = 32;
-    constexpr int NUM_ANIMALS = 8;
+    static constexpr float SPRITE_SIZE = 32;
+    static constexpr int NUM_ANIMALS = 8;
 };

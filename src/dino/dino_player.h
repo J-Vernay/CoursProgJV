@@ -14,7 +14,7 @@ public:
     DinoPlayer();
 
     void Init(const DinoTerrain& terrain, int colorV);
-    void Update(double timeSinceStart, float deltaTime, const DinoTerrain& terrain);
+    void Update(double timeSinceStart, float deltaTime, const DinoTerrain& terrain, const DinoGamepad& gamepad);
     void Draw(double timeSinceStart) const;
     void Shut();
 
@@ -33,9 +33,11 @@ public:
         return isGoingLeft;
     }
 
+    void RepulseWith(DinoPlayer& other);
+
 private:
     DinoVec2 pos;
-    float baseSpeed = 100.f;
+    float baseSpeed = 100.0f;
     bool isGoingLeft = false;
     bool isRunning = false;
     bool isHit = false;
@@ -51,4 +53,6 @@ private:
     Anim hitAnim;
 
     Anim* currentAnim = nullptr;
+
+    static constexpr float spriteSize = 24;
 };
