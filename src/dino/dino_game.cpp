@@ -76,14 +76,17 @@ void Dino_GameFrame(double timeSinceStart)
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
         g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
 
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+    for (DinoPlayer& player : g_Players)
+        player.ApplyLimit(terrainMin, terrainMax);
+
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
         EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
 
-        DinoVec2 min = g_Terrain.GetTopLeft();
-        DinoVec2 max = g_Terrain.GetBottomRight();
-        float x = XDino_RandomFloat(min.x, max.x);
-        float y = XDino_RandomFloat(min.y, max.y);
+        float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
+        float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
         animal.Init(timeSinceStart, kind, {x, y});
         g_timeSpawnAnimal = timeSinceStart + 1;
