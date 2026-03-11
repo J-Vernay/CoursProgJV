@@ -1,7 +1,9 @@
 #include "dino_animal.h"
 
-void dino_animal::DinoAnimal_Spawn(DinoVec2 terrainTopLeft)
+void dino_animal::DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadius)
 {
+    this->collisionRadius = collisionRadius;
+
     m_terrainTopLeft = terrainTopLeft;
     animalType = (EAnimalKind)XDino_RandomInt32(0, 7);
 
@@ -31,10 +33,10 @@ void dino_animal::DinoAnimal_Update(double timeSinceStart, float deltaTime)
         DinoAnimal_GetRandomDirection();
     }
     else {
-        animalPos.x += xToAdd;
-        animalPos.y += yToAdd;
+        entityPosition.x += xToAdd;
+        entityPosition.y += yToAdd;
     }
-    XDino_Draw(vbufID_animal, textIdAnimal, animalPos, 1);
+    XDino_Draw(vbufID_animal, textIdAnimal, {entityPosition.x - 16, entityPosition.y - 16}, 1);
     XDino_DestroyVertexBuffer(vbufID_animal);
 }
 
@@ -46,10 +48,10 @@ void dino_animal::DinoAnimal_InstantDespawn(std::vector<dino_animal>& animals, i
 void dino_animal::DinoAnimal_GetRandomPos()
 {
     //values do account for sprite marging
-    float Dx = m_terrainTopLeft.x + XDino_RandomInt32(0, 232);
-    float Dy = m_terrainTopLeft.y + XDino_RandomInt32(0, 152);
+    float Dx = m_terrainTopLeft.x + XDino_RandomInt32(0, 240);
+    float Dy = m_terrainTopLeft.y + XDino_RandomInt32(0, 168);
 
-    animalPos = DinoVec2(Dx, Dy);
+    entityPosition = DinoVec2(Dx, Dy);
 }
 
 void dino_animal::DinoAnimal_GetRandomDirection()
@@ -83,12 +85,12 @@ void dino_animal::DinoAnimal_ShutStatic()
 
 bool dino_animal::CanAddXValue(float xToAdd)
 {
-    return !(animalPos.x + xToAdd < m_terrainTopLeft.x + 0 || //margin left 0
-             animalPos.x + xToAdd > m_terrainTopLeft.x + 232); // margin right 24
+    return !(entityPosition.x + xToAdd < m_terrainTopLeft.x + 0 || //margin left 0
+             entityPosition.x + xToAdd > m_terrainTopLeft.x + 240); // margin right 16
 }
 
 bool dino_animal::CanAddYValue(float yToAdd)
 {
-    return !(animalPos.y + yToAdd < m_terrainTopLeft.y + 0 || // margin top 0
-             animalPos.y + yToAdd > m_terrainTopLeft.y + 152); // margin down 40
+    return !(entityPosition.y + yToAdd < m_terrainTopLeft.y + 0 || // margin top 0
+             entityPosition.y + yToAdd > m_terrainTopLeft.y + 168); // margin down 24
 }

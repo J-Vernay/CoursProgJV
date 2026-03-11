@@ -4,6 +4,7 @@
 #include "dino_animal.h"
 #include "dino_player.h"
 #include "dino_terrain.h"
+#include "dino_Collision.h"
 
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
@@ -25,9 +26,13 @@ DinoVec2 textSize_prenom;
 float g_spawnTimer;
 DinoVec2 g_terrainTopLeft;
 
+#include <deque>
+
 std::unordered_map<DinoGamepadIdx, dino_player> gamepadDino_map;
-std::vector<dino_animal> animals;
+std::deque<dino_animal> animals;
+
 dino_terrain dinoTerrain;
+dino_Collision dinoCollision;
 
 
 // Variable globale pour l'affichage de debug.
@@ -60,6 +65,9 @@ void Dino_GameInit()
 
 void Dino_GameFrame(double timeSinceStart)
 {
+    //resolving all collisions between entities
+    dinoCollision.DinoCollision_HandleCollisions();
+
     // Prendre en compte le temps qui passe.
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
@@ -77,7 +85,8 @@ void Dino_GameFrame(double timeSinceStart)
     if (g_spawnTimer > 1 && animals.size() < 20) {
         int index = animals.size();
         animals.push_back(dino_animal());
-        animals[index].DinoAnimal_Spawn(g_terrainTopLeft);
+        animals[index].DinoAnimal_Spawn(g_terrainTopLeft, 8);
+        dinoCollision.AddEntity(&animals[index]);
         g_spawnTimer = 0;
     }
     g_spawnTimer += deltaTime;
@@ -106,19 +115,21 @@ void Dino_GameFrame(double timeSinceStart)
             && gamepadDino_map.size() < 4) {
 
             DinoVec2 windowSize = XDino_GetWindowSize();
-            gamepadDino_map.emplace(
-                gamepadIdx,
-                dino_player(
-                    {g_terrainTopLeft.x + 128, g_terrainTopLeft.y + 96},
-                    texID_dino,
-                    gamepadDino_map.size(),
-                    g_terrainTopLeft));
+            dino_player newPlayer = dino_player(
+                {g_terrainTopLeft.x + 128, g_terrainTopLeft.y + 96},
+                8,
+                texID_dino,
+                gamepadDino_map.size(),
+                g_terrainTopLeft);
+
+            auto [it,bInserted] = gamepadDino_map.emplace(gamepadIdx, newPlayer);
+            dinoCollision.AddEntity(&it->second);
         }
 
         //drawing dino_players
         if (gamepadDino_map.contains(gamepadIdx)) {
-            gamepadDino_map.at(gamepadIdx).DinoCharacter_ReadGamepad(gamepad, deltaTime);
-            gamepadDino_map.at(gamepadIdx).DinoCharacter_Update(timeSinceStart, deltaTime);
+            gamepadDino_map.at(gamepadIdx).DinoPlayer_UpdateMovement(gamepad, deltaTime, gamepadDino_map);
+            gamepadDino_map.at(gamepadIdx).DinoPlayer_Logic(timeSinceStart, deltaTime);
         }
         //
     }

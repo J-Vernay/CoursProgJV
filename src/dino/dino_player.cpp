@@ -1,8 +1,11 @@
 ﻿#include "dino_player.h"
 
-dino_player::dino_player(DinoVec2 initialPos, uint64_t dinoTex, int dino_ID, DinoVec2 terrainTopLeft)
+dino_player::dino_player(DinoVec2 initialPos, float collisionRadius, uint64_t dinoTex, int dino_ID,
+                         DinoVec2 terrainTopLeft)
 {
-    dinoPos = initialPos;
+    entityPosition = initialPos;
+    this->collisionRadius = collisionRadius;
+
     texID_dino = dinoTex;
     dinoID = dino_ID;
 
@@ -15,7 +18,7 @@ dino_player::dino_player(DinoVec2 initialPos, uint64_t dinoTex, int dino_ID, Din
     m_terrainTopLeft = terrainTopLeft;
 }
 
-void dino_player::DinoCharacter_Update(float timeSinceStart, float deltaTime)
+void dino_player::DinoPlayer_Logic(float timeSinceStart, float deltaTime)
 {
     if (isStun) {
         waitedTime += deltaTime;
@@ -24,10 +27,10 @@ void dino_player::DinoCharacter_Update(float timeSinceStart, float deltaTime)
         }
     }
 
-    DinoCharacter_UpdateVisual(timeSinceStart);
+    UpdateVisual(timeSinceStart);
 }
 
-void dino_player::DinoCharacter_UpdateVisual(float timeSinceStart)
+void dino_player::UpdateVisual(float timeSinceStart)
 {
     if (isStun)
         currentAnimationPos = &hitPos;
@@ -80,24 +83,25 @@ void dino_player::DinoCharacter_UpdateVisual(float timeSinceStart)
     }
 
     uint64_t vbufID_dino1 = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
-    XDino_Draw(vbufID_dino1, texID_dino, dinoPos, 12);
+    XDino_Draw(vbufID_dino1, texID_dino, entityPosition, 12);
     XDino_DestroyVertexBuffer(vbufID_dino1);
 }
 
 bool dino_player::CanAddXValue(float xToAdd)
 {
-    return !(dinoPos.x + xToAdd < m_terrainTopLeft.x + 8 || //margin left 8
-             dinoPos.x + xToAdd > m_terrainTopLeft.x + 248); // margin right 8
+    return !(entityPosition.x + xToAdd < m_terrainTopLeft.x + 8 || //margin left 8
+             entityPosition.x + xToAdd > m_terrainTopLeft.x + 248); // margin right 8
 }
 
 bool dino_player::CanAddYValue(float yToAdd)
 {
-    return !(dinoPos.y + yToAdd < m_terrainTopLeft.y + 8 || // margin top 8
-             dinoPos.y + yToAdd > m_terrainTopLeft.y + 176); // margin down 16
+    return !(entityPosition.y + yToAdd < m_terrainTopLeft.y + 8 || // margin top 8
+             entityPosition.y + yToAdd > m_terrainTopLeft.y + 176); // margin down 16
 }
 
 
-void dino_player::DinoCharacter_ReadGamepad(DinoGamepad gamepad, float deltaTime)
+void dino_player::DinoPlayer_UpdateMovement(DinoGamepad gamepad, float deltaTime,
+                                            std::unordered_map<DinoGamepadIdx, dino_player> playerGamepadPair)
 {
     if (!isStun) {
         float xToAdd = isRunning
@@ -107,8 +111,8 @@ void dino_player::DinoCharacter_ReadGamepad(DinoGamepad gamepad, float deltaTime
                            ? gamepad.stick_left_y * DINO_SPEED * deltaTime * 2
                            : gamepad.stick_left_y * DINO_SPEED * deltaTime;
 
-        dinoPos.x += CanAddXValue(xToAdd) ? xToAdd : 0;
-        dinoPos.y += CanAddYValue(yToAdd) ? yToAdd : 0;
+        entityPosition.x += CanAddXValue(xToAdd) ? xToAdd : 0;
+        entityPosition.y += CanAddYValue(yToAdd) ? yToAdd : 0;
     }
 
     //checking if dino is going left or right
@@ -122,10 +126,10 @@ void dino_player::DinoCharacter_ReadGamepad(DinoGamepad gamepad, float deltaTime
     isStatic = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
 
     if (gamepad.btn_left && !isStun)
-        DinoCharacter_Stun();
+        DinoPlayer_Stun();
 }
 
-void dino_player::DinoCharacter_Stun()
+void dino_player::DinoPlayer_Stun()
 {
     isStun = true;
     waitedTime = 0;

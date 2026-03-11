@@ -1,11 +1,12 @@
 #pragma once
 
+#include "dino_CollisionEntity.h"
 #include <dino/xdino.h>
 #include "dino_draw_utils.h"
 
-class dino_animal {
+class dino_animal : public dino_CollisionEntity {
 public :
-    void DinoAnimal_Spawn(DinoVec2 terrainTopLeft);
+    void DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadius);
     void DinoAnimal_Update(double timeSinceStart, float deltaTime);
     void DinoAnimal_InstantDespawn(std::vector<dino_animal>& animals, int index);
 
@@ -16,7 +17,6 @@ private :
     static uint64_t textIdAnimal;
 
     bool moving = true;
-    DinoVec2 animalPos;
     DinoVec2 animalMovingDirection;
 
     EAnimalKind animalType;

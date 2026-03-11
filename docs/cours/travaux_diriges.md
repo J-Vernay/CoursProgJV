@@ -284,23 +284,25 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> Il suffit de vérifier la distance entre les deux et de la comparer à leur rayons
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> On prends la direction entre les deux cercles que l'on divise en deux, chacun des deux cercle est repoussé de la
+> direction opposé à l'autre.
+> Si les deux cercles ont exactement la même position, alors ce calcul ne marchera pas (division par 0)
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Car le calcul pour gérer les collisions est le même, qu'il soit pour un player ou un animal
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> On peut utiliser l'héritage de class
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
