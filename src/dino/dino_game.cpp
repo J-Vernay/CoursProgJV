@@ -1,27 +1,23 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "dino_animals.h"
-
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
-#include <unordered_map>
+#include <dino/dino_animal.h>
 
 #include <format>
 
 
 // Variables globales.
 double g_lastTime = 0;
-double g_rotation = 360.0;
-double g_scale = 1.0;
 
 std::vector<DinoPlayer> g_Players;
-std::unordered_map<DinoGamepadIdx, DinoPlayer*> g_gamepadPlayer;
-
 DinoTerrain g_Terrain;
-dino_animalsGenerator g_animalsGenerator;
+
+std::vector<DinoAnimal> g_Animals;
+double g_timeSpawnAnimal = 0;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -35,24 +31,25 @@ void Dino_GameInit()
 {
     XDino_SetRenderSize(RENDER_SIZE);
 
-    DinoGamepad gamepad{};
-    XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad);
-    g_Players.reserve(4);
-    g_Players.resize(1);
+    DinoPlayer::InitStatic();
+    DinoAnimal::InitStatic();
+
+    g_Players.resize(4);
     g_Players[0].Init(0);
-    g_gamepadPlayer.insert({DinoGamepadIdx::Keyboard, &g_Players[0]});
+    g_Players[1].Init(1);
+    g_Players[2].Init(2);
+    g_Players[3].Init(3);
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
 
-    g_animalsGenerator.Init();
-
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Barnabe BERGER", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
+
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -62,57 +59,40 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    XDino_SetRenderSize({480, 360});
+    XDino_SetRenderSize(RENDER_SIZE);
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
     DinoGamepad gamepad{};
-    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad)) {
+    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
         g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
+        g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
+        g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
+        g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
+
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+    for (DinoPlayer& player : g_Players)
+        player.ApplyLimit(terrainMin, terrainMax);
+
+    if (timeSinceStart > g_timeSpawnAnimal) {
+        DinoAnimal& animal = g_Animals.emplace_back();
+        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+
+        float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
+        float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
+
+        animal.Init(timeSinceStart, kind, {x, y});
+        g_timeSpawnAnimal = timeSinceStart + 1;
     }
-
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad)) {
-        if (g_gamepadPlayer.contains(DinoGamepadIdx::Gamepad1)) {
-            g_gamepadPlayer[DinoGamepadIdx::Gamepad1]->Update(timeSinceStart, deltaTime, gamepad);
-        }
-        else {
-            g_Players.emplace_back();
-            DinoPlayer& player = g_Players.back();
-
-            g_gamepadPlayer.emplace(DinoGamepadIdx::Gamepad1, &player);
-            player.Init(g_Players.size());
-        }
-    }
-
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad)) {
-        if (g_gamepadPlayer.contains(DinoGamepadIdx::Gamepad2)) {
-            g_gamepadPlayer[DinoGamepadIdx::Gamepad2]->Update(timeSinceStart, deltaTime, gamepad);
-        }
-        else {
-            g_Players.emplace_back();
-            DinoPlayer& player = g_Players.back();
-
-            g_gamepadPlayer.emplace(DinoGamepadIdx::Gamepad2, &player);
-            player.Init(g_Players.size());
-        }
-    }
-
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad)) {
-        if (g_gamepadPlayer.contains(DinoGamepadIdx::Gamepad3)) {
-            g_gamepadPlayer[DinoGamepadIdx::Gamepad3]->Update(timeSinceStart, deltaTime, gamepad);
-        }
-        else {
-            g_Players.emplace_back();
-            DinoPlayer& player = g_Players.back();
-
-            g_gamepadPlayer.emplace(DinoGamepadIdx::Gamepad3, &player);
-            player.Init(g_Players.size());
-        }
-    }
-
-    for (auto player : g_Players) {
-        player.AplyLimit(DinoVec2({112, 75}), DinoVec2({245, 345}));
-    }
+    for (DinoAnimal& animal : g_Animals)
+        animal.Update(timeSinceStart, deltaTime);
 
     // Affichage
 
@@ -122,7 +102,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
 
-    g_animalsGenerator.Update(deltaTime, timeSinceStart);
+    for (DinoAnimal& animal : g_Animals)
+        animal.Draw(timeSinceStart);
 
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
@@ -165,8 +146,12 @@ void Dino_GameShut()
     // For-range loop
     for (DinoPlayer& player : g_Players)
         player.Shut();
-
-    g_animalsGenerator.Shut();
+    for (DinoAnimal& animal : g_Animals)
+        animal.Shut();
     g_Terrain.Shut();
+
+    DinoPlayer::ShutStatic();
+    DinoAnimal::ShutStatic();
+
     XDino_DestroyVertexBuffer(vbufID_prenom);
 }

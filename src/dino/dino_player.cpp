@@ -2,13 +2,12 @@
 
 #include <dino/xdino.h>
 
-#include <algorithm>
+uint64_t DinoPlayer::s_texID = 0;
 
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     m_pos = {windowSize.x / 2, windowSize.y / 2};
-    m_texID = XDino_CreateGpuTexture("dinosaurs.png");
     m_idxPlayer = idxPlayer;
 }
 
@@ -42,24 +41,28 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     }
 }
 
+void DinoPlayer::ApplyLimit(DinoVec2 posMin, DinoVec2 posMax)
+{
+    if (m_pos.x < posMin.x)
+        m_pos.x = posMin.x;
+    if (m_pos.x > posMax.x)
+        m_pos.x = posMax.x;
+    if (m_pos.y < posMin.y)
+        m_pos.y = posMin.y;
+    if (m_pos.y > posMax.y)
+        m_pos.y = posMax.y;
+}
+
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, m_texID, m_pos);
+    DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
+    XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
-}
-
-void DinoPlayer::AplyLimit(DinoVec2 posMin, DinoVec2 posMax)
-{
-    m_pos.x = std::min(m_pos.x, posMax.x);
-    m_pos.y = std::min(m_pos.y, posMax.y);
-    m_pos.x = std::max(m_pos.x, posMin.x);
-    m_pos.y = std::max(m_pos.y, posMin.y);
 }
 
 void DinoPlayer::Shut()
 {
-    XDino_DestroyGpuTexture(m_texID);
 }
 
 uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
@@ -94,7 +97,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
@@ -129,4 +132,14 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
     vs[5].u = umax;
     vs[5].v = vbase + 24;
     return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
+}
+
+void DinoPlayer::InitStatic()
+{
+    s_texID = XDino_CreateGpuTexture("dinosaurs.png");
+}
+
+void DinoPlayer::ShutStatic()
+{
+    XDino_DestroyGpuTexture(s_texID);
 }
