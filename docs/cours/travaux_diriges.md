@@ -362,7 +362,7 @@ e) Comment détecter qu'une position est à l'intérieur d'un contour fermé dé
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
-## 7. S'intéresser à la mémoire
+## 8. S'intéresser à la mémoire
 
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
@@ -395,7 +395,7 @@ Quand et qui alloue la mémoire des `std::vector` ?
 
 > ...
 
-## 8. Notre propre implémentation de std::vector
+## 9. Notre propre implémentation de std::vector
 
 Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des lassos.
 
@@ -457,7 +457,7 @@ Quel problème se pose ? Fixer l'implémentation de `DinoArray` pour utiliser pl
 
 > ...
 
-## 9. Flow de jeu
+## 10. Flow de jeu
 
 a) Implémentez F6.1 et F6.2 .
 
@@ -495,7 +495,7 @@ Comment démontrez-vous qu'ils fonctionnent ?
 
 > ...
 
-## 10. Profiling
+## 11. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
 
