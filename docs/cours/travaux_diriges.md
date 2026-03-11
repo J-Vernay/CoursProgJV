@@ -107,7 +107,7 @@ Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
 jeu ?
 
-> ...
+> (timeSinceStart * animSpeed) % frameCount) * spriteSizeInPxl + ubase
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
@@ -219,7 +219,10 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> l'editeur de lien peut produire des fichiers .dll et des fichiers .exe
+>
+> la difference majeure entre les deux types de fichiers est que le dll est unique et nedépend pas d la recompilation,
+> ce qui permet de mettre a jour le dll sans changer le .exe
 
 ## 5. Programmation des animaux
 
@@ -237,23 +240,26 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> en compartant la distance entre chacun des cercles et en verifiant si la magnitude au carré du vecteur ésultant est
+> plus petite que la taille d'une collision
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> en applliquant un theoreme de pythagore on peut retrouver la distance minimale qui doit séparer les deux entités selon
+> leurs axe d'alignement de depart
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> parce que les dino collident entre eux de la meme maniere que les animaux doivent le faire, il ne s'agit pas de
+> fonction membre mais elles ne fonctionnent qu'avec leurs propre classe
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> l'héritage
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
