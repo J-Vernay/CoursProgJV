@@ -119,8 +119,9 @@ uint64_t DinoTerrain::CreateEgdes(int idxSeason, int idxAnim, DinoVec2 topLeft)
         for (int tx = 0; tx < TILE_COUNT.x; tx++) {
             if (tx != 0 && tx != TILE_COUNT.x - 1 &&
                 ty != 0 && ty != TILE_COUNT.y - 1) {
-                CreateEdgeTiles(vs, idxSeason, topLeft, idxAnim, tx, ty);
+                continue;
             }
+            CreateEdgeTiles(vs, idxSeason, topLeft, idxAnim, tx, ty);
         }
     }
     return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Edges");
@@ -130,21 +131,21 @@ void DinoTerrain::CreateEdgeTiles(std::vector<DinoVertex>& out, int indexSeason,
                                   int ty)
 {
     int i = out.size();
-    out.resize(i + 16);
+    out.resize(i + 6);
 
     float x = topLeft.x + tx * 16.f;
     float y = topLeft.y + ty * 16.f;
 
     bool left = tx == 0;
-    bool top = ty == 0;
     bool right = tx == TILE_COUNT.x - 1;
+    bool top = ty == 0;
     bool bottom = ty == TILE_COUNT.y - 1;
 
     int u = left ? 0 : right ? 32 : 16;
     int v = top ? 16 : bottom ? 48 : 32;
 
-    uint16_t uBase = indexSeason * 16;
-    uint16_t vBase = indexSeason * 16;
+    uint16_t uBase = indexSeason * 80;
+    uint16_t vBase = idxAnim * 48;
 
     out[i].pos = {x, y};
     out[i].u = uBase + u;
