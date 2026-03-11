@@ -1,19 +1,19 @@
 #include "dino_animals.h"
 
-constexpr float ANIMAL_SPEED = 10;
+constexpr float ANIMAL_SPEED = 12;
 constexpr DinoVec2 COUNT = {8, 6};
 constexpr DinoVec2 SIZE = {COUNT.x * 32, COUNT.y * 32};
 
-uint64_t Animal::GenerateVertexBuffer()
+uint64_t Animal::GenerateVertexBuffer(double timeSinceStart)
 {
     std::vector<DinoVertex> vs;
     uint16_t ubase = m_idxAnimal * 128;
     vs.resize(6);
     vs[0].pos = {0, 0};
-    vs[0].u = ubase ;
+    vs[0].u = ubase;
     vs[0].v = 0;
     vs[1].pos = {32, 0};
-    vs[1].u = ubase +32;
+    vs[1].u = ubase + 32;
     vs[1].v = 0;
     vs[2].pos = {0, 32};
     vs[2].u = ubase;
@@ -36,6 +36,7 @@ void Animal::Init()
     float dx = (480 - SIZE.x) / 2;
     float dy = (360 - SIZE.y) / 2;
     m_idxAnimal = XDino_RandomInt32(0, 7);
+    m_moveSpeed = XDino_RandomFloat(ANIMAL_SPEED - 2, ANIMAL_SPEED + 2);
     m_pos = {XDino_RandomFloat(dx, 368), XDino_RandomFloat(dy, 256)};
     m_targetPos = {XDino_RandomFloat(dx, 368), XDino_RandomFloat(dy, 256)};
     m_texID = XDino_CreateGpuTexture("animals.png");
@@ -46,22 +47,22 @@ void Animal::Update(float deltaTime)
     float dx = (480 - SIZE.x) / 2;
     float dy = (360 - SIZE.y) / 2;
     float directionX = m_targetPos.x - m_pos.x;
-    float directionY =  m_targetPos.y - m_pos.y;
+    float directionY = m_targetPos.y - m_pos.y;
     float dist = hypotf(directionX, directionY);
 
-    if(dist < 4) {
+    if (dist < 4) {
         m_targetPos = {XDino_RandomFloat(dx, 368), XDino_RandomFloat(dy, 256)};
         return;
     }
 
-    m_pos.x += (directionX / dist) * ANIMAL_SPEED * deltaTime;
-    m_pos.y += (directionY / dist) * ANIMAL_SPEED * deltaTime;
-    
+    m_pos.x += (directionX / dist) * m_moveSpeed * deltaTime;
+    m_pos.y += (directionY / dist) * m_moveSpeed * deltaTime;
+
 }
 
-void Animal::Draw()
+void Animal::Draw(double timeSinceStart)
 {
-    uint64_t vbufID = GenerateVertexBuffer();
+    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
     XDino_Draw(vbufID, m_texID, m_pos);
     XDino_DestroyVertexBuffer(vbufID);
 }

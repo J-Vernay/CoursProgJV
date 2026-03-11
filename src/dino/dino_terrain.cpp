@@ -7,7 +7,7 @@ constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
 
 void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
 {
-
+    m_idxSeason = idxSeason;
     float dx = (rdrSize.x - TERRAIN_SIZE.x) / 2;
     float dy = (rdrSize.y - TERRAIN_SIZE.y) / 2;
 
@@ -57,6 +57,7 @@ void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
     vs[11].u = uBase + 32;
     vs[11].v = 16;
 
+    m_topLeft = {dx, dy};
     DrawFlowers(vs, idxSeason, {dx, dy});
 
     m_vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Terrain");
@@ -67,6 +68,14 @@ void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
 void DinoTerrain::Draw()
 {
     XDino_Draw(m_vbufID, m_texID);
+}
+
+void DinoTerrain::Update(double timeSinceStart)
+{
+    int idxAnim = static_cast<int>(timeSinceStart * 2) % 4;
+    uint64_t vbufID = CreateEgdes(m_idxSeason, idxAnim, m_topLeft);
+    XDino_Draw(vbufID, m_texID);
+    XDino_DestroyVertexBuffer(vbufID);
 }
 
 void DinoTerrain::Shut()
@@ -103,10 +112,61 @@ void DinoTerrain::DrawFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoV
     }
 }
 
-void DinoTerrain::DrawTree(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 position)
+uint64_t DinoTerrain::CreateEgdes(int idxSeason, int idxAnim, DinoVec2 topLeft)
 {
-    
+    std::vector<DinoVertex> vs;
+    for (int ty = 0; ty < TILE_COUNT.y; ty++) {
+        for (int tx = 0; tx < TILE_COUNT.x; tx++) {
+            if (tx != 0 && tx != TILE_COUNT.x - 1 &&
+                ty != 0 && ty != TILE_COUNT.y - 1) {
+                CreateEdgeTiles(vs, idxSeason, topLeft, idxAnim, tx, ty);
+            }
+        }
+    }
+    return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Edges");
 }
+
+void DinoTerrain::CreateEdgeTiles(std::vector<DinoVertex>& out, int indexSeason, DinoVec2 topLeft, int idxAnim, int tx,
+                                  int ty)
+{
+    int i = out.size();
+    out.resize(i + 16);
+
+    float x = topLeft.x + tx * 16.f;
+    float y = topLeft.y + ty * 16.f;
+
+    bool left = tx == 0;
+    bool top = ty == 0;
+    bool right = tx == TILE_COUNT.x - 1;
+    bool bottom = ty == TILE_COUNT.y - 1;
+
+    int u = left ? 0 : right ? 32 : 16;
+    int v = top ? 16 : bottom ? 48 : 32;
+
+    uint16_t uBase = indexSeason * 16;
+    uint16_t vBase = indexSeason * 16;
+
+    out[i].pos = {x, y};
+    out[i].u = uBase + u;
+    out[i].v = v + vBase;
+    out[i + 1].pos = {x + 16, y};
+    out[i + 1].u = uBase + u + 16;
+    out[i + 1].v = v + vBase;
+    out[i + 2].pos = {x, y + 16};
+    out[i + 2].u = uBase + u;
+    out[i + 2].v = v + 16 + vBase;
+    out[i + 3].pos = {x + 16, y};
+    out[i + 3].u = uBase + u + 16;
+    out[i + 3].v = v + vBase;
+    out[i + 4].pos = {x, y + 16};
+    out[i + 4].u = uBase + u;
+    out[i + 4].v = v + 16 + vBase;
+    out[i + 5].pos = {x + 16, y + 16};
+    out[i + 5].u = uBase + u + 16;
+    out[i + 5].v = v + 16 + vBase;
+
+}
+
 
 void DinoTerrain::DrawFlower(std::vector<DinoVertex>& out, int idxSeason, int idxFlower, DinoVec2 pos)
 {

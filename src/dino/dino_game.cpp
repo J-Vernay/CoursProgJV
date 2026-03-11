@@ -31,7 +31,7 @@ constexpr DinoVec2 RENDER_SIZE = {480, 360};
 void Dino_GameInit()
 {
     XDino_SetRenderSize(RENDER_SIZE);
-    
+
     g_Players.resize(4);
     g_Players[0].Init(0);
     g_Players[1].Init(1);
@@ -40,7 +40,7 @@ void Dino_GameInit()
 
     int season = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, season);
-    
+
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
@@ -73,30 +73,29 @@ void Dino_GameFrame(double timeSinceStart)
             g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
     }
 
-    if(timeSinceStart - g_lastSpawnTime  > animaSpawnRate) {
+    if (timeSinceStart - g_lastSpawnTime > animaSpawnRate && g_Animals.size() < 8) {
         //Spawn Logic
         Animal a;
         a.Init();
         g_Animals.push_back(a);
         g_lastSpawnTime = timeSinceStart;
     }
-    
 
-    
     // Affichage
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     XDino_SetClearColor(CLEAR_COLOR);
     g_Terrain.Draw();
+    g_Terrain.Update(timeSinceStart);
 
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
         player.Draw(timeSinceStart);
 
-    for(Animal& animal : g_Animals) {
-        animal.Draw();
+    for (Animal& animal : g_Animals) {
+        animal.Draw(timeSinceStart);
         animal.Update(deltaTime);
     }
-    
+
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
