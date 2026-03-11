@@ -83,18 +83,3 @@ void DinoAnimal::ShutStatic()
 {
     XDino_DestroyGpuTexture(s_texID);
 }
-
-void DinoAnimal::ResolveCollision(DinoAnimal& animalA, DinoAnimal& animalB)
-{
-    DinoVec2& a = animalA.m_pos;
-    DinoVec2& b = animalB.m_pos;
-    float ab = sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
-    if (ab == 0 || ab >= 16)
-        return;
-    float dx = (16 - ab) / (2 * ab) * (b.x - a.x);
-    float dy = (16 - ab) / (2 * ab) * (b.y - a.y);
-    a.x -= dx;
-    a.y -= dy;
-    b.x += dx;
-    b.y += dy;
-}

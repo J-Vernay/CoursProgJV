@@ -1,12 +1,12 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_entity.h>
 #include <dino/dino_draw_utils.h>
 
 
-class DinoAnimal {
+class DinoAnimal : public DinoEntity {
 private:
-    DinoVec2 m_pos = {};
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
     double m_spawnTime = 0;
@@ -24,6 +24,4 @@ public:
 
     static void InitStatic();
     static void ShutStatic();
-
-    static void ResolveCollision(DinoAnimal& animalA, DinoAnimal& animalB);
 };
