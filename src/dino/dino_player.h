@@ -5,7 +5,7 @@
 #include <dino/xdino.h>
 
 class DinoPlayer : public DinoEntity {
-    DinoVec2 m_pos = {};
+private:
     bool m_bLeft = false;
     double m_endHitAnim = 0;
     bool m_bMoving = false;

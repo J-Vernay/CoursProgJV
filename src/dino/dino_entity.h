@@ -1,7 +1,8 @@
 #pragma once
-#include "xdino.h"
+#include <dino/xdino.h>
 
 class DinoEntity {
+protected:
     DinoVec2 m_pos = {};
 
 public:

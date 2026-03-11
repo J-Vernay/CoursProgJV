@@ -1,4 +1,4 @@
-#include "dino_entity.h"
+#include <dino/dino_entity.h>
 
 void DinoEntity::ResolveCollision(DinoEntity& entityA, DinoEntity& entityB)
 {
