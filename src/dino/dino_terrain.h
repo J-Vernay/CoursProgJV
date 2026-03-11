@@ -9,15 +9,40 @@ struct Flower {
 
 class DinoTerrain {
 public:
-    void Init();
+    void Init(int tilesX = 16, int tilesY = 12, int tileSize = 16, DinoVec2 origin = {112, 84});
     void Draw(double timeSinceStart);
     void Shut();
 
+    DinoVec2 GetOrigin() const
+    {
+        return terrainOrigin;
+    }
+
+    int GetWidth() const
+    {
+        return TILE_SIZE * TILES_X;
+    }
+
+    int GetHeight() const
+    {
+        return TILE_SIZE * TILES_Y;
+    }
+
+    int GetTileSize() const
+    {
+        return TILE_SIZE;
+    }
+
+    DinoVec2 GetRandomCellCenter() const;
+
 private:
     uint64_t texID_terrain = 0;
+    int season = 0; // 0..3
 
-    int season = 0; // 0...3, correspond à U += (0,80,160,240)
-    DinoVec2 terrainOrigin = {112, 84}; // Centre dans 480x360
+    int TILE_SIZE = 16;
+    int TILES_X = 16;
+    int TILES_Y = 12;
+    DinoVec2 terrainOrigin = {112, 84};
 
     std::vector<Flower> flowers;
 

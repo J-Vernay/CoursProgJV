@@ -28,7 +28,8 @@ a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 > `premake5.lua` : Fichier qui décrit comment générer le projet, solutions et configurations, les chemins, fichiers
 > sources à compiler, dépendances externes...
 
-b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des `// COMMENTAIRE`.
+b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place
+des `// COMMENTAIRE`.
 
 ```cpp
 // Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
@@ -123,7 +124,7 @@ sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
-Dans quelle catégorie est située cette page ? 
+Dans quelle catégorie est située cette page ?
 
 > `std::vector` est un tableau de la bibliothèque standard C++ qui a une taille dynamique. Il stocke des éléments à la
 > suite.
@@ -209,7 +210,16 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> On implemente la grille des tuiles pour placer les fleurs sans superpositions (TILE_SIZE / TILES_X / TILES_Y).
+> Ensuite on vient créer la liste de toutes les cellules disponibles, qui représentent les positions possibles pour les
+> fleurs.
+> On mélange les cellules avant d'attribuer les fleurs.
+> Pour chaque type de fleurs (3 types au total), on génère 10 instances.
+> On créer une fleur (position, type de fleur).
+> Pour chaque fleur, on lui donne la cellule suivante dans la liste mélangée (pour éviter les superpositions) et on lui
+> donne son type.
+> On répète 10 fois pour chaque type.
+> Ensuite on applique l'offset pour les UV correspondants à la saison désirée.
 
 ## 4. Comprendre la compilation des fichiers C++
 
@@ -253,7 +263,8 @@ g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de 
 
 > ...
 
-h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?
+h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
+différence majeure ?
 
 > ...
 
@@ -301,7 +312,8 @@ L'appliquer dans la base de code.
 
 > ...
 
-j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et des `DinoAnimal`. Comment faire ?
+j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
+des `DinoAnimal`. Comment faire ?
 
 > ...
 
@@ -314,18 +326,19 @@ Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de `std::vector` utiliser ?
+c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
+Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'interagir entre elles.
+d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
 > ...
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
-
 
 ## 7. S'intéresser à la mémoire
 

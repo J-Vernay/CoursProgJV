@@ -1,4 +1,6 @@
 ﻿#include "dino_player.h"
+#include "dino_terrain.h"
+#include <algorithm>
 
 DinoPlayer::DinoPlayer()
 {
@@ -12,12 +14,15 @@ DinoPlayer::DinoPlayer()
     currentAnim = &idleAnim;
 }
 
-void DinoPlayer::Init()
+void DinoPlayer::Init(const DinoTerrain& terrain)
 {
     texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
+
+    // Spawn aléatoire dans le terrain
+    pos = terrain.GetRandomCellCenter();
 }
 
-void DinoPlayer::Update(double timeSinceStart, float deltaTime)
+void DinoPlayer::Update(double timeSinceStart, float deltaTime, const DinoTerrain& terrain)
 {
     bool stickMoving = false;
 
@@ -36,9 +41,13 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime)
 
         if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0) {
             stickMoving = true;
+            float speed = baseSpeed * (gamepad.btn_right ? 2.f : 1.f);
 
-            pos.x += gamepad.stick_left_x * 300.f * deltaTime * (gamepad.btn_right ? 2 : 1);
-            pos.y += gamepad.stick_left_y * 300.f * deltaTime * (gamepad.btn_right ? 2 : 1);
+            pos.x += gamepad.stick_left_x * speed * deltaTime;
+            pos.y += gamepad.stick_left_y * speed * deltaTime;
+
+            pos.x = std::clamp(pos.x, terrain.GetOrigin().x, terrain.GetOrigin().x + terrain.GetWidth());
+            pos.y = std::clamp(pos.y, terrain.GetOrigin().y, terrain.GetOrigin().y + terrain.GetHeight());
 
             isGoingLeft = gamepad.stick_left_x < 0;
             isRunning = gamepad.btn_right;
@@ -103,7 +112,7 @@ void DinoPlayer::Draw(double timeSinceStart) const
     }
 
     uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "DinoPlayer");
-    XDino_Draw(vbufID, texID_dino, pos, 48);
+    XDino_Draw(vbufID, texID_dino, pos, 12);
     XDino_DestroyVertexBuffer(vbufID);
 }
 

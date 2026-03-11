@@ -7,12 +7,14 @@ struct Anim {
     int framesPerSecond;
 };
 
+class DinoTerrain;
+
 class DinoPlayer {
 public:
     DinoPlayer();
 
-    void Init();
-    void Update(double timeSinceStart, float deltaTime);
+    void Init(const DinoTerrain& terrain);
+    void Update(double timeSinceStart, float deltaTime, const DinoTerrain& terrain);
     void Draw(double timeSinceStart) const;
     void Shut();
 
@@ -35,6 +37,7 @@ public:
 
 private:
     DinoVec2 pos;
+    float baseSpeed = 100.f;
     bool isGoingLeft = false;
     bool isRunning = false;
     bool isHit = false;

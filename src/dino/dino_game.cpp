@@ -35,7 +35,7 @@ void Dino_GameInit()
     std::vector<int> startV = {0, 24, 48, 72};
 
     for (int i = 0; i < dinos.size(); ++i) {
-        dinos[i].Init();
+        dinos[i].Init(terrain);
         dinos[i].currentV = startV[i];
     }
 }
@@ -65,7 +65,7 @@ void Dino_GameFrame(double timeSinceStart)
     g_prevDown = downPressed;
 
     // Update seulement le joueur actif
-    dinos[currentPlayer].Update(timeSinceStart, deltaTime);
+    dinos[currentPlayer].Update(timeSinceStart, deltaTime, terrain);
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     XDino_SetClearColor(CLEAR_COLOR);
