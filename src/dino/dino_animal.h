@@ -9,7 +9,8 @@ private:
     DinoVec2 m_pos = {};
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
-    uint64_t m_texID = {};
+
+    static uint64_t s_texID;
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
@@ -18,4 +19,7 @@ public:
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart);
     void Shut();
+
+    static void InitStatic();
+    static void ShutStatic();
 };

@@ -2,11 +2,12 @@
 
 #include <dino/xdino.h>
 
+uint64_t DinoPlayer::s_texID = 0;
+
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     m_pos = {windowSize.x / 2, windowSize.y / 2};
-    m_texID = XDino_CreateGpuTexture("dinosaurs.png");
     m_idxPlayer = idxPlayer;
 }
 
@@ -43,13 +44,12 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, m_texID, m_pos);
+    XDino_Draw(vbufID, s_texID, m_pos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 
 void DinoPlayer::Shut()
 {
-    XDino_DestroyGpuTexture(m_texID);
 }
 
 uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
@@ -119,4 +119,14 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
     vs[5].u = umax;
     vs[5].v = vbase + 24;
     return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
+}
+
+void DinoPlayer::InitStatic()
+{
+    s_texID = XDino_CreateGpuTexture("dinosaurs.png");
+}
+
+void DinoPlayer::ShutStatic()
+{
+    XDino_DestroyGpuTexture(s_texID);
 }
