@@ -2,8 +2,9 @@
 
 #include <dino/xdino.h>
 
+// Hello Corentin
+
 class DinoPlayer {
-private:
     DinoVec2 m_pos = {};
     bool m_bLeft = false;
     double m_endHitAnim = 0;
