@@ -31,6 +31,9 @@ void Dino_GameInit()
 {
     XDino_SetRenderSize(RENDER_SIZE);
 
+    DinoPlayer::InitStatic();
+    DinoAnimal::InitStatic();
+
     g_Players.resize(4);
     g_Players[0].Init(0);
     g_Players[1].Init(1);
@@ -39,8 +42,6 @@ void Dino_GameInit()
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
-
-    DinoAnimal::InitStatic();
 
     // Préparation du drawcall du prénom
     {
@@ -145,6 +146,8 @@ void Dino_GameShut()
     for (DinoAnimal& animal : g_Animals)
         animal.Shut();
     g_Terrain.Shut();
+
+    DinoPlayer::ShutStatic();
     DinoAnimal::ShutStatic();
 
     XDino_DestroyVertexBuffer(vbufID_prenom);
