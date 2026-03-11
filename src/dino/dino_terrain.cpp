@@ -19,6 +19,17 @@ void DinoTerrain::Init(DinoVec2 sizeOfTerrainInTiles, int NbrOfFlowersPerGroup)
     vbufID_terrain = GenTerrainVertexBuffer();
 }
 
+DinoVec2 DinoTerrain::GetTopLeft()
+{
+    return {translation.x + 16, translation.y + 16}; // Corner tile that is not a border tile
+}
+
+DinoVec2 DinoTerrain::GetBottomRight()
+{
+    return {translation.x + (sizeInTiles.x - 1) * 16, translation.y + (sizeInTiles.y - 1) * 16};
+    // Top left corner of Corner tile that is not a border tile 
+}
+
 void DinoTerrain::Shut()
 {
     XDino_DestroyGpuTexture(texID_terrain);

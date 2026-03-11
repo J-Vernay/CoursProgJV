@@ -1,8 +1,11 @@
+#include "dino_terrain.h"
+
+#include <algorithm>
 #include <dino/xdino.h>
 #include <dino/DinoController.h>
 
 // Constantes.
-constexpr float DINO_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr float DINO_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
 constexpr float DINO_RUN_SPEED = 0.5f * DINO_SPEED; // Running Speed
 constexpr float DINO_SCALE = 1.f; // Dino Scale
 
@@ -49,9 +52,18 @@ void DinoControllerFields::DinoMovement(DinoGamepad gamepad, float deltaTime)
     dinoPosDelta.y += gamepad.stick_left_y * (this->m_dinoCurrentSpeed + gamepad.btn_right * DINO_RUN_SPEED) *
         deltaTime;
 
-    this->m_dinoPos.x += dinoPosDelta.x;
-    this->m_dinoPos.y += dinoPosDelta.y;
+    m_dinoPos.x += dinoPosDelta.x;
+    m_dinoPos.y += dinoPosDelta.y;
 }
+
+void DinoControllerFields::ApplyTerrainLimit(DinoTerrain terrain)
+{
+    DinoVec2 topLeftCorner = terrain.GetTopLeft();
+    DinoVec2 bottomRightCorner = terrain.GetBottomRight();
+    this->m_dinoPos.x = std::clamp(this->m_dinoPos.x, topLeftCorner.x, bottomRightCorner.x);
+    this->m_dinoPos.y = std::clamp(this->m_dinoPos.y, topLeftCorner.y, bottomRightCorner.y);
+}
+
 
 uint64_t DinoControllerFields::GenDinoVertexBuffer(DinoGamepad gamepad, float deltaTime)
 {
@@ -142,6 +154,24 @@ uint64_t DinoControllerFields::GenDinoVertexBuffer(DinoGamepad gamepad, float de
 void DinoControllerFields::DrawDino(DinoGamepad gamepad, float deltaTime, uint64_t texID_dino)
 {
     this->vbufID_dino = GenDinoVertexBuffer(gamepad, deltaTime);
-    XDino_Draw(this->vbufID_dino, texID_dino, this->m_dinoPos, DINO_SCALE);
+    // -12 / -18 to move the position to the feet and not the corner of the texture
+    XDino_Draw(this->vbufID_dino, texID_dino, {this->m_dinoPos.x - 12, this->m_dinoPos.y - 18}, DINO_SCALE);
     XDino_DestroyVertexBuffer(this->vbufID_dino);
+}
+
+void DinoControllerFields::ResolveCollision(DinoControllerFields& playerA, DinoControllerFields& playerB)
+{
+    DinoVec2& a = playerA.m_dinoPos;
+    DinoVec2& b = playerB.m_dinoPos;
+    float ab = sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
+
+    if (ab == 0 || ab >= 16)
+        return;
+
+    float dx = (16 - ab) / (2 * ab) * (b.x - a.x);
+    float dy = (16 - ab) / (2 * ab) * (b.y - a.y);
+    a.x -= dx;
+    a.y -= dy;
+    b.x += dx;
+    b.y += dy;
 }

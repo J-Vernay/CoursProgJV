@@ -219,12 +219,15 @@ f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours e
 Expliquez les étapes de votre algorithme.
 
 > Lors de la génération du terrain :
-> -- Mélange aléatoire des tuiles, puis vérification si une fleur peut y être posée (si ce n'est aps un bord et que
-> toutes les fleurs n'ont pas été posées)
-> -- Si c'est le cas, enregistrer dans deux vectors la position et l'uv de la fleur
+> - Mélange aléatoire des tuiles, puis vérification si une fleur peut y être posée (si ce n'est aps un bord et que
+    > toutes les fleurs n'ont pas été posées)
+    >
+
+- Si c'est le cas, enregistrer dans deux vectors la position et l'uv de la fleur
+
 >
 > Une fois que le terrain a fini de générer, appel de la génération des fleurs avec en paramètres les deux vectors
-> -- Placement de chaque fleur selon la position sauvegardée et l'uv associé
+> - Placement de chaque fleur selon la position sauvegardée et l'uv associé
 
 ## 4. Comprendre la compilation des fichiers C++
 
@@ -233,43 +236,72 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
 Répartissez ces dossiers en 3 catégories.
 
-> ...
+> - Code source :
+    >
+
+- "CoursProgJV\src\dino"
+
+> - Code d'interaction avec l'OS :
+    >
+
+- linux : "CoursProgJV\src\dino\x64-linux"
+
+> - Windows : "CoursProgJV\src\dino\x64-windows"
+> - Code Externe (dépendances ?) :
+    >
+
+- "CoursProgJV\external\pix\Include\WinPixEventRuntime"
+
+> - "CoursProgJV\external\sokol"
+    >
+
+- "CoursProgJV\external\stb"
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> ...
+> Il y a un obj par cpp (multiplié par el nombre de build). Leurs dossiers sont "CoursProgJV\build\x64-windows\Debug ||
+> Profile || Release\Dino_NomPrenom"
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
-> ...
+> On obtient une version de chaque exécutable, dans le dossier builds, chacun dans un sous dossier du nom de la
+> configuration
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> - 16 : `location "build"`
+> - 19 : `targetdir "build/%{cfg.platform}/%{cfg.buildcfg}"`
+> - 93 : `files { "external/**.cpp", "external/**.h" }`
+> - 101 : `files { "src/dino/*" }`
+> - 107 : `files { "src/dino/x64-windows/*" }`
+> - 115 : `files { "src/dino/x64-linux/*" }`
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** .h possèdes les étapes du préprocesseur nécessaires au .cpp
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** .obj est la version compilée du .cpp
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** .lib est la version archivée des .obj
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** .dll contient un ensemble dynamique des .obj d'un programme. On peut patcher un dll
+> sans avoir à changer le .exe
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** .exe possède l'ensemble des liens (linker) entre les obj
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** le .exe peut exécuter du code qui se situe dans le .dll
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Il réalise toutes les étapes nécessaire à la compilation, comme les include par exemple. Les directives de
+> préprocesseurs sont précédées d'un #
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> L'éditeur de lien s'occupe d'agencer les lien entre chaque scripts pour que le .exe puissent les utiliser correctement
+> Il peut produire soit le .exe lui-même, soit des .dll que le .exe peut utiliser
 
 ## 5. Programmation des animaux
 

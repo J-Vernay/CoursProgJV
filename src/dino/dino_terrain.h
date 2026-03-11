@@ -22,6 +22,9 @@ public:
     void DrawTerrain();
     void DrawFlwrs();
 
+    DinoVec2 GetTopLeft();
+    DinoVec2 GetBottomRight();
+
 private:
     uint64_t GenBgVertexBuffer();
     uint64_t GenTerrainVertexBuffer();

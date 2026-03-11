@@ -59,6 +59,6 @@ enum class EAnimalAnim : int { Up, Down, Left, Right };
 /// @param idxAnimal Quel espèce d'animal afficher, entre 0 et 7.
 /// @param idxAnim Quelle animation jouer.
 void Dino_GenVertices_Animal(
-    std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time);
+    std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time, float alpha);
 
 /// @}

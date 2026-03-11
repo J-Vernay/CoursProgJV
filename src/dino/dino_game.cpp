@@ -1,6 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "dino_animal.h"
+
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <map>
@@ -14,19 +16,21 @@ double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
 
-DinoTerrain g_terrain;
 
-uint64_t texID_dino;
-
-std::map<DinoGamepadIdx, DinoControllerFields> GamepadControllers;
-
-//uint64_t vbufID_imageMilieu;
-//uint64_t texID_imageMilieu;
-//uint64_t vbufID_circle;
 uint64_t vbufID_polyline;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_Prenom;
+
+std::map<DinoGamepadIdx, DinoControllerFields> GamepadControllers;
+std::vector<DinoControllerFields*> g_players;
+uint64_t texID_dino;
+
+DinoTerrain g_terrain;
+
+std::vector<DinoAnimal> g_Animals;
+double g_timeSpawnAnimal = 0;
+
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -46,6 +50,8 @@ void Dino_GameInit()
 
         DinoControllerFields& controller = GamepadControllers[gamepadIdx];
         controller = {};
+
+        g_players.emplace_back(&controller);
 
         controller.Init(playerCount);
         playerCount++;
@@ -76,7 +82,10 @@ void Dino_GameInit()
     // Preparing the texture for the dino
     texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
 
-    g_terrain.Init(DinoVec2{16, 12}, 10);
+    g_terrain.Init(DinoVec2{24, 16}, 10);
+
+    // Preparing texture of animals
+    DinoAnimal::InitTexture();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -86,11 +95,7 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    g_terrain.DrawBG();
-    g_terrain.DrawTerrain();
-    g_terrain.DrawFlwrs();
-
-    // Gestion des entrées et mise à jour de la logique de jeu.
+    // Gestion des entrées et mise à jour de la logique des dinos.
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
@@ -100,20 +105,60 @@ void Dino_GameFrame(double timeSinceStart)
         DinoControllerFields& controller = GamepadControllers[gamepadIdx];
 
         controller.DinoMovement(gamepad, deltaTime);
+
+        for (int idxA = 0; idxA < g_players.size(); idxA++) {
+            for (int idxB = idxA + 1; idxB < g_players.size(); idxB++) {
+                DinoControllerFields::ResolveCollision(*g_players[idxA], *g_players[idxB]);
+            }
+        }
+
+        controller.ApplyTerrainLimit(g_terrain);
     }
 
-    // Affichage
+    // Managing animal logic
+    if (timeSinceStart > g_timeSpawnAnimal) {
+        DinoAnimal& animal = g_Animals.emplace_back();
+        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+
+        DinoVec2 min = g_terrain.GetTopLeft();
+        DinoVec2 max = g_terrain.GetBottomRight();
+        float x = XDino_RandomFloat(min.x, max.x);
+        float y = XDino_RandomFloat(min.y, max.y);
+
+        animal.Init(kind, {x, y}, timeSinceStart);
+        g_timeSpawnAnimal = timeSinceStart + 1;
+    }
+    for (DinoAnimal& animal : g_Animals)
+        animal.Update(deltaTime, g_terrain);
+
+    // -- Affichage -- 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     XDino_SetClearColor(CLEAR_COLOR);
+
+    g_terrain.DrawBG();
+    g_terrain.DrawTerrain();
+    g_terrain.DrawFlwrs();
 
     // Dessin de la "polyligne"
     // XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
 
-    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    // DinoVec2 windowSize = XDino_GetWindowSize();
-    // XDino_SetRenderSize(windowSize);
+    // Drawing Animals
+    for (DinoAnimal& animal : g_Animals)
+        animal.Draw(timeSinceStart);
 
-    DinoVec2 renderSize = XDino_GetRenderSize();
+    // Drawing Dinos
+    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
+
+        DinoGamepad gamepad{};
+        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
+        if (!bSuccess)
+            continue;
+
+        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
+
+        controller.DrawDino(gamepad, deltaTime, texID_dino);
+    }
+
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
@@ -125,26 +170,12 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     // Affichage du nom en bas à droite
+    DinoVec2 renderSize = XDino_GetRenderSize();
     {
         float tx = (renderSize.x - textSize_Prenom.x * 2);
         float ty = (renderSize.y - textSize_Prenom.y * 2);
 
         XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {.x = tx, .y = ty}, 2);
-    }
-
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-
-        // if (gamepadIdx != DinoGamepadIdx::Gamepad1)
-        //     continue;
-
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
-
-        controller.DrawDino(gamepad, deltaTime, texID_dino);
     }
 
 #if !XDINO_RELEASE
@@ -164,13 +195,11 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    //XDino_DestroyVertexBuffer(vbufID_e);
-    //XDino_DestroyVertexBuffer(vbufID_imageMilieu);
-    //XDino_DestroyGpuTexture(texID_imageMilieu);
     XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyVertexBuffer(vbufID_prenom);
 
     XDino_DestroyGpuTexture(texID_dino);
+    DinoAnimal::ShutTexture();
 
     g_terrain.Shut();
 }

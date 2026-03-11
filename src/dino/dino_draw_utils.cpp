@@ -214,13 +214,12 @@ void Dino_GenVertices_Polyline(
 }
 
 void Dino_GenVertices_Animal(
-    std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time)
+    std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time, float alpha)
 {
     int idxFrame = (int)(time * 8) % 4;
     uint16_t uMin = (int)kind * 128 + idxFrame * 32;
     uint16_t uMax = uMin + 32;
     uint16_t vMin = 0;
-    bool bMirror = false;
 
     if (anim == EAnimalAnim::Up) {
         vMin = 64;
@@ -242,23 +241,31 @@ void Dino_GenVertices_Animal(
     int i = out.size();
     out.resize(i + 6);
 
+    DinoColor fadeInColor{255, 255, 255, (uint8_t)alpha};
+
     out[i].pos = {};
     out[i].u = uMin;
     out[i].v = vMin;
+    out[i].color = fadeInColor;
     out[i + 1].pos = {32, 0};
     out[i + 1].u = uMax;
     out[i + 1].v = vMin;
+    out[i + 1].color = fadeInColor;
     out[i + 2].pos = {0, 32};
     out[i + 2].u = uMin;
     out[i + 2].v = vMax;
+    out[i + 2].color = fadeInColor;
 
     out[i + 3].pos = {32, 0};
     out[i + 3].u = uMax;
     out[i + 3].v = vMin;
+    out[i + 3].color = fadeInColor;
     out[i + 4].pos = {0, 32};
     out[i + 4].u = uMin;
     out[i + 4].v = vMax;
+    out[i + 4].color = fadeInColor;
     out[i + 5].pos = {32, 32};
     out[i + 5].u = uMax;
     out[i + 5].v = vMax;
+    out[i + 5].color = fadeInColor;
 }

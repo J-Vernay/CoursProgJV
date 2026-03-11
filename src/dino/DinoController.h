@@ -1,6 +1,7 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_terrain.h>
 
 struct DinoControllerFields {
 
@@ -29,5 +30,8 @@ public:
     // void Shut();
 
     void DinoMovement(DinoGamepad gamepad, float deltaTime);
+    void ApplyTerrainLimit(DinoTerrain terrain);
     void DrawDino(DinoGamepad gamepad, float deltaTime, uint64_t texID_dino);
+
+    static void ResolveCollision(DinoControllerFields& playerA, DinoControllerFields& playerB);
 };
