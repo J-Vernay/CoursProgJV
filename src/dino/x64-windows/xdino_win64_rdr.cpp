@@ -653,9 +653,9 @@ uint64_t XDino_CreateVertexBuffer(const DinoVertex* pVertices, size_t vertexCoun
 {
     XDino_ProfileBegin(
         {0x44,
-        0x44,
-        0x44,
-        0xFF},
+         0x44,
+         0x44,
+         0xFF},
         std::format("Create vertex buffer '{}' ({})", vertexCount, pLabel).c_str()
     );
 
@@ -698,7 +698,6 @@ void XDino_DestroyVertexBuffer(uint64_t vbufID)
 
 void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double scale, double rotation)
 {
-    XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, std::format("Draw {} {}", texture.name, vbuf.name).c_str());
     D3D11_MAPPED_SUBRESOURCE resource;
 
     auto itTex = gXDino_textures.find(texID);
@@ -716,6 +715,8 @@ void XDino_Draw(uint64_t vbufID, uint64_t texID, DinoVec2 translation, double sc
 
     if (vbuf.count == 0)
         return;
+
+    XDino_ProfileBegin({0x44, 0x44, 0x44, 0xFF}, std::format("Draw {} {}", texture.name, vbuf.name).c_str());
 
     gXDino_context->PSSetShaderResources(0, 1, &texture.pTextureView);
     gXDino_context->PSSetSamplers(0, 1, &texture.pTextureSampler);
@@ -766,6 +767,7 @@ void* XDino_MemAlloc(size_t size, const char* pLabel)
     a.size = size;
     a.name = pLabel;
     a.bDestroy = false;
+    memset(p, 0xCC, size);
     return p;
 }
 
