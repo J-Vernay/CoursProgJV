@@ -91,8 +91,10 @@ void Dino_GameFrame(double timeSinceStart)
         animal.Init(timeSinceStart, kind, {x, y});
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
-    for (DinoAnimal& animal : g_Animals)
+    for (DinoAnimal& animal : g_Animals) {
         animal.Update(timeSinceStart, deltaTime);
+        animal.ApplyLimit(terrainMin, terrainMax);
+    }
 
     // Affichage
 

@@ -17,6 +17,25 @@ void DinoAnimal::Update(double timeSinceStart, float deltaTime)
     m_pos.y += m_dir.y * SPEED * deltaTime;
 }
 
+void DinoAnimal::ApplyLimit(DinoVec2 min, DinoVec2 max)
+{
+    DinoVec2 pos = m_pos;
+    if (pos.x < min.x)
+        pos.x = min.x;
+    if (pos.x > max.x)
+        pos.x = max.x;
+    if (pos.y < min.y)
+        pos.y = min.y;
+    if (pos.y > max.y)
+        pos.y = max.y;
+
+    if (pos.x != m_pos.x || pos.y != m_pos.y) {
+        m_pos = pos;
+        m_dir = XDino_RandomUnitVec2();
+    }
+}
+
+
 void DinoAnimal::Draw(double timeSinceStart)
 {
     EAnimalAnim anim;
@@ -46,7 +65,8 @@ void DinoAnimal::Draw(double timeSinceStart)
     for (DinoVertex& v : vs)
         v.color = {255, 255, 255, alpha};
     uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Animal");
-    XDino_Draw(vbufID, s_texID, m_pos);
+    DinoVec2 drawPos = {m_pos.x - 16, m_pos.y - 32};
+    XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 
