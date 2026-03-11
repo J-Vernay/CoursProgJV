@@ -5,6 +5,7 @@
 #include <dino/xdino.h>
 #include "dino/dino_player.h"
 #include "dino/dino_terrain.h"
+#include "dino/dino_animal.h"
 #include <format>
 
 // Variables globales.
@@ -21,6 +22,9 @@ int currentPlayer = 0;
 // Terrain
 DinoTerrain terrain;
 
+// Animaux
+DinoAnimals animals;
+
 void Dino_GameInit()
 {
     /*
@@ -29,15 +33,17 @@ void Dino_GameInit()
     DinoVec2 windowSize = {480.f, 360.f};
     XDino_SetRenderSize(windowSize);
 
+    // Initialiser le terrain
     terrain.Init();
 
-    // Couleurs (V) différentes pour chaque dinosaure
+    // Initialiser les dinosaures
     std::vector<int> startV = {0, 24, 48, 72};
-
     for (int i = 0; i < dinos.size(); ++i) {
-        dinos[i].Init(terrain);
-        dinos[i].currentV = startV[i];
+        dinos[i].Init(terrain, startV[i]);
     }
+
+    // Initialiser les animaux
+    animals.Init();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -57,12 +63,18 @@ void Dino_GameFrame(double timeSinceStart)
             downPressed = true;
     }
 
+    // Spawn les animaux
+    animals.TrySpawn(timeSinceStart, terrain);
+
     // Détection du moment où le bouton vient d'être pressé
     if (downPressed && !g_prevDown) {
         currentPlayer = (currentPlayer + 1) % dinos.size();
     }
 
     g_prevDown = downPressed;
+
+    // Update tous les animaux
+    animals.Update(timeSinceStart, deltaTime, terrain);
 
     // Update seulement le joueur actif
     dinos[currentPlayer].Update(timeSinceStart, deltaTime, terrain);
@@ -76,6 +88,8 @@ void Dino_GameFrame(double timeSinceStart)
     // XDino_SetRenderSize(windowSize);
     DinoVec2 renderSize = XDino_GetRenderSize();
 
+    // Draw tous les animaux
+    animals.Draw(timeSinceStart);
     // Draw tous les dinos
     for (DinoPlayer& dino : dinos) {
         dino.Draw(timeSinceStart);
@@ -123,4 +137,5 @@ void Dino_GameShut()
     for (DinoPlayer& dino : dinos) {
         dino.Shut();
     }
+    animals.Shut();
 }

@@ -14,12 +14,15 @@ DinoPlayer::DinoPlayer()
     currentAnim = &idleAnim;
 }
 
-void DinoPlayer::Init(const DinoTerrain& terrain)
+void DinoPlayer::Init(const DinoTerrain& terrain, int colorV)
 {
     texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
 
     // Spawn aléatoire dans le terrain
     pos = terrain.GetRandomCellCenter();
+
+    // Couleur du dinosaure
+    currentV = colorV;
 }
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, const DinoTerrain& terrain)

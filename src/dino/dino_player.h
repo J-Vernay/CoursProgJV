@@ -13,7 +13,7 @@ class DinoPlayer {
 public:
     DinoPlayer();
 
-    void Init(const DinoTerrain& terrain);
+    void Init(const DinoTerrain& terrain, int colorV);
     void Update(double timeSinceStart, float deltaTime, const DinoTerrain& terrain);
     void Draw(double timeSinceStart) const;
     void Shut();
@@ -33,8 +33,6 @@ public:
         return isGoingLeft;
     }
 
-    int currentV = 0;
-
 private:
     DinoVec2 pos;
     float baseSpeed = 100.f;
@@ -43,6 +41,7 @@ private:
     bool isHit = false;
 
     double hitEndTime = 0.0;
+    int currentV = 0;
 
     uint64_t texID_dino = 0;
 
