@@ -46,8 +46,12 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, const DinoTerrai
             pos.x += gamepad.stick_left_x * speed * deltaTime;
             pos.y += gamepad.stick_left_y * speed * deltaTime;
 
-            pos.x = std::clamp(pos.x, terrain.GetOrigin().x, terrain.GetOrigin().x + terrain.GetWidth());
-            pos.y = std::clamp(pos.y, terrain.GetOrigin().y, terrain.GetOrigin().y + terrain.GetHeight());
+            pos.x = std::clamp(pos.x,
+                               terrain.GetOrigin().x + terrain.GetTileSize(),
+                               terrain.GetOrigin().x + terrain.GetWidth() - terrain.GetTileSize());
+            pos.y = std::clamp(pos.y,
+                               terrain.GetOrigin().y + terrain.GetTileSize(),
+                               terrain.GetOrigin().y + terrain.GetHeight() - terrain.GetTileSize());
 
             isGoingLeft = gamepad.stick_left_x < 0;
             isRunning = gamepad.btn_right;

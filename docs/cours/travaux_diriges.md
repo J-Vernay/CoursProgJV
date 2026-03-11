@@ -184,7 +184,13 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> for each : `range-based for loop`.
+> foreach, code :
+> for (type variableNom : nomTableau)
+> {
+> //Code à executer
+> }
+>
+> Cette syntaxe est appelée : `range-based for loop`.
 
 ## 3. Programmation du terrain
 

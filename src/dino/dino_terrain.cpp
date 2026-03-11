@@ -47,8 +47,6 @@ void DinoTerrain::Draw(double timeSinceStart)
 
 void DinoTerrain::DrawOcean() const
 {
-    int biomeOffset = season * 80;
-
     std::vector<DinoVertex> vs(6);
 
     vs[0].pos = {0, 0};
@@ -71,12 +69,6 @@ void DinoTerrain::DrawOcean() const
 
 void DinoTerrain::DrawGround() const
 {
-    constexpr int TILE = 16;
-    constexpr int TILES_X = 16;
-    constexpr int TILES_Y = 12;
-
-    int biomeOffset = season * 80;
-
     for (int y = 0; y < TILES_Y; ++y) {
         for (int x = 0; x < TILES_X; ++x) {
 
@@ -127,23 +119,28 @@ void DinoTerrain::DrawGround() const
 
             u += biomeOffset;
 
-            float px = terrainOrigin.x + x * TILE;
-            float py = terrainOrigin.y + y * TILE;
+            float px = terrainOrigin.x + x * TILE_SIZE;
+            float py = terrainOrigin.y + y * TILE_SIZE;
 
             std::vector<DinoVertex> vs(6);
 
             vs[0].pos = {0, 0};
-            vs[1].pos = {TILE, 0};
-            vs[2].pos = {0, TILE};
-            vs[3].pos = {TILE, 0};
-            vs[4].pos = {0, TILE};
-            vs[5].pos = {TILE, TILE};
+            vs[1].pos.x = TILE_SIZE;
+            vs[1].pos.y = 0;
+            vs[2].pos.x = 0;
+            vs[2].pos.y = TILE_SIZE;
+            vs[3].pos.x = TILE_SIZE;
+            vs[3].pos.y = 0;
+            vs[4].pos.x = 0;
+            vs[4].pos.y = TILE_SIZE;
+            vs[5].pos.x = TILE_SIZE;
+            vs[5].pos.y = TILE_SIZE;
 
             for (auto& vtx : vs)
                 vtx.color = DinoColor_WHITE;
 
-            int u1 = u + TILE;
-            int v1 = v + TILE;
+            int u1 = u + TILE_SIZE;
+            int v1 = v + TILE_SIZE;
 
             vs[0].u = u;
             vs[0].v = v;
@@ -172,8 +169,6 @@ void DinoTerrain::DrawGround() const
 
 void DinoTerrain::DrawFlowers() const
 {
-    int biomeOffset = season * 80;
-
     for (const Flower& f : flowers) {
         std::vector<DinoVertex> vs(6);
 

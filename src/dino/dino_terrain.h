@@ -4,7 +4,7 @@
 
 struct Flower {
     DinoVec2 pos;
-    int type; // 0, 1 ou 2 correspondant aux 3 fleurs
+    int type; // 0, 1 ou 2 correspondants aux 3 fleurs
 };
 
 class DinoTerrain {
@@ -38,6 +38,7 @@ public:
 private:
     uint64_t texID_terrain = 0;
     int season = 0; // 0..3
+    int biomeOffset = season * 80;
 
     int TILE_SIZE = 16;
     int TILES_X = 16;
