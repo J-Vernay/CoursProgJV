@@ -1,5 +1,8 @@
 #include "dino_animals.h"
 
+#include "dino_draw_utils.h"
+
+#include <algorithm>
 #include <cmath>
 
 float delaySinceLastSpawn;
@@ -50,60 +53,72 @@ void dino_animal::Init(uint64_t& texID)
         m_dir.y /= 2;
     }
 
+    m_pos = DinoVec2(XDino_RandomUint32(112,345), XDino_RandomUint32(75,245));
+
 }
 
-DinoVec2 Redirect(DinoVec2 pos, DinoVec2 dir)
+DinoVec2 dino_animal::Redirect(DinoVec2 pos, DinoVec2 dir)
 {
-    uint32_t rnd = XDino_RandomInt32(-1, 1);
-    if (pos.x < 112 || pos.x > 368) {
-        return DinoVec2(-dir.x, rnd);
+    DinoVec2 newDir;
+    float rnd = XDino_RandomFloat(-1, 1);
+    if (pos.x < 112 || pos.x > 345) {
+        if (pos.x < 112)
+            m_pos.x = 113;
+        if (pos.x > 345)
+            m_pos.x = 344;
+        newDir = DinoVec2(-dir.x, rnd);
     }
-    return DinoVec2(rnd, -dir.y);
+    else {
+
+        if (pos.y < 75)
+            m_pos.y = 76;
+        if (pos.y > 245)
+            m_pos.y = 244;
+        newDir = DinoVec2(rnd, -dir.y);
+    }
+    return newDir;
 }
 
 void dino_animal::Update(double deltaTime, double timeSinceStart)
 {
     m_pos.x += m_dir.x * speed * deltaTime;
     m_pos.y += m_dir.y * speed * deltaTime;
-    if (m_pos.x <= 112 || m_pos.x >= 368 || m_pos.y <= 84 || m_pos.y >= 276) {
+    if (m_pos.x <= 112 || m_pos.x >= 345 || m_pos.y <= 75 || m_pos.y >= 245) {
         m_dir = Redirect(m_pos, m_dir);
     }
-    Draw(timeSinceStart);
+    uint8_t dirAnim = -1;
+
+    if (std::abs(m_dir.x) < std::abs(m_dir.y)) {
+        if (m_dir.y < 0) {
+            dirAnim = 0;
+        }
+        else {
+            dirAnim = 1;
+        }
+    }
+    else if (std::abs(m_dir.x) >= std::abs(m_dir.y)) {
+        if (m_dir.x < 0) {
+            dirAnim = 2;
+        }
+        else {
+            dirAnim = 3;
+        }
+    }
+    Draw(timeSinceStart, dirAnim);
 }
 
-void dino_animal::Draw(double timeSinceStart)
+void dino_animal::Draw(double timeSinceStart, uint8_t dirAnim)
 {
-    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart, m_type);
+    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart, m_type, dirAnim);
     XDino_Draw(vbufID, m_texID, m_pos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 
-uint64_t dino_animal::GenerateVertexBuffer(double time, uint32_t animalType)
+uint64_t dino_animal::GenerateVertexBuffer(double time, uint32_t animalType, uint8_t dirAnim)
 {
-    uint64_t base = 128 * animalType;
-    uint16_t umin = 0;
-    uint16_t umax = 32;
     std::vector<DinoVertex> vs;
 
-    vs.resize(6);
-    vs[0].pos = {0, 0};
-    vs[0].u = umin + base;
-    vs[0].v = 0;
-    vs[1].pos = {32, 0};
-    vs[1].u = umax + base;
-    vs[1].v = 0;
-    vs[2].pos = {0, 32};
-    vs[2].u = umin + base;
-    vs[2].v = 32;
-    vs[3].pos = {32, 0};
-    vs[3].u = umax + base;
-    vs[3].v = 0;
-    vs[4].pos = {0, 32};
-    vs[4].u = umin + base;
-    vs[4].v = 32;
-    vs[5].pos = {32, 32};
-    vs[5].u = umax + base;
-    vs[5].v = 32;
+    Dino_GenVertices_Animal(vs, static_cast<EAnimalKind>(animalType), static_cast<EAnimalAnim>(dirAnim), time);
 
     return XDino_CreateVertexBuffer(vs.data(), vs.size(), "animal");
 }

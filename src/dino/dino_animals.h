@@ -1,14 +1,13 @@
 #pragma once
 #include "xdino.h"
-
 #include <vector>
 
 class dino_animal {
 public:
-    uint16_t speed = 50;
+    uint16_t speed = 40;
     uint64_t m_texID;
     void Init(uint64_t& texID);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart, uint8_t dirAnim);
     void Update(double deltaTime, double timeSinceStart);
     void Shut();
 
@@ -16,7 +15,8 @@ private:
     DinoVec2 m_pos = {200, 200};
     DinoVec2 m_dir = {};
     uint32_t m_type;
-    uint64_t GenerateVertexBuffer(double timeSinceStart, uint32_t animalType);
+    uint64_t GenerateVertexBuffer(double timeSinceStart, uint32_t animalType, uint8_t dirAnim);
+    DinoVec2 Redirect(DinoVec2 pos, DinoVec2 dir);
 };
 
 #pragma once
