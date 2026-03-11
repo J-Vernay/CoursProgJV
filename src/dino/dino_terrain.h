@@ -12,7 +12,7 @@ public :
 private :
     void DrawFlower(std::vector<DinoVertex>& out, int idxSeason, int idxFlower, DinoVec2 pos);
     void DrawFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 posTopLeft);
-
+    void DrawTree(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 position);
     uint64_t m_vbufID;
     uint64_t m_texID;
 };

@@ -103,6 +103,11 @@ void DinoTerrain::DrawFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoV
     }
 }
 
+void DinoTerrain::DrawTree(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 position)
+{
+    
+}
+
 void DinoTerrain::DrawFlower(std::vector<DinoVertex>& out, int idxSeason, int idxFlower, DinoVec2 pos)
 {
     int i = out.size();

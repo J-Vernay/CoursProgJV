@@ -13,6 +13,8 @@
 
 // Variables globales.
 double g_lastTime = 0;
+double g_lastSpawnTime = 0;
+float animaSpawnRate = 1;
 
 std::vector<DinoPlayer> g_Players;
 std::vector<Animal> g_Animals;
@@ -38,8 +40,6 @@ void Dino_GameInit()
 
     int season = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, season);
-
-    g_Animals[0].Init();
     
     // Préparation du drawcall du prénom
     {
@@ -55,36 +55,48 @@ void Dino_GameFrame(double timeSinceStart)
 
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
-
     XDino_SetRenderSize({480, 360});
 
-    // Gestion des entrées et mise à jour de la logique de jeu.
+    //Dino Commandes
+    {
+        DinoGamepad gamepad{};
+        if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
+            g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
 
-    DinoGamepad gamepad{};
-    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
-        g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
+        if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
+            g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
 
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
-        g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
+        if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
+            g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
 
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
-        g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
+        if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
+            g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
+    }
 
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
-        g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
+    if(timeSinceStart - g_lastSpawnTime  > animaSpawnRate) {
+        //Spawn Logic
+        Animal a;
+        a.Init();
+        g_Animals.push_back(a);
+        g_lastSpawnTime = timeSinceStart;
+    }
+    
 
+    
     // Affichage
-
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-
     XDino_SetClearColor(CLEAR_COLOR);
-
     g_Terrain.Draw();
 
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
         player.Draw(timeSinceStart);
 
+    for(Animal& animal : g_Animals) {
+        animal.Draw();
+        animal.Update(deltaTime);
+    }
+    
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
@@ -122,6 +134,8 @@ void Dino_GameShut()
     // For-range loop
     for (DinoPlayer& player : g_Players)
         player.Shut();
+    for (Animal& animal : g_Animals)
+        animal.Shut();
     g_Terrain.Shut();
 
     XDino_DestroyVertexBuffer(vbufID_prenom);

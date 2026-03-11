@@ -2,15 +2,18 @@
 
 class Animal {
     DinoVec2 m_pos = {};
-    bool m_bLeft = false;
-    double m_endHitAnim = 0;
-    uint64_t m_texID = 0;
-    bool m_bMoving = false;
+    
     uint64_t GenerateVertexBuffer();
+    uint64_t m_texID = 0;
+    double m_endHitAnim = 0;
+    bool m_bLeft = false;
+    bool m_bMoving = false;
+    int m_idxAnimal; 
 
 public:
+    DinoVec2 m_targetPos = {};
     void Init();
-    void Update(double timeSinceStart, float deltaTime, DinoVec2 direction);
-    void Draw(int idxAnimal);
+    void Update(float deltaTime);
+    void Draw();
     void Shut();
 };
