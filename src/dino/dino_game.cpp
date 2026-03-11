@@ -27,6 +27,7 @@ int g_debugScroll = 0;
 
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
+
 void Dino_GameInit()
 {
     XDino_SetRenderSize(RENDER_SIZE);
@@ -78,6 +79,11 @@ void Dino_GameFrame(double timeSinceStart)
 
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+
+    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
+            DinoPlayer::ResolveCollision(g_Players[idxA], g_Players[idxB]);
+
     for (DinoPlayer& player : g_Players)
         player.ApplyLimit(terrainMin, terrainMax);
 
