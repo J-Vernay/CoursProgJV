@@ -1,11 +1,11 @@
 #include <dino/dino_animal.h>
 
-void DinoAnimal::Init(EAnimalKind animal, DinoVec2 pos)
+void DinoAnimal::Init(EAnimalKind animal, DinoVec2 pos, uint64_t texID)
 {
     m_pos = pos;
     m_dir = XDino_RandomUnitVec2();
     m_kind = animal;
-    m_texID = XDino_CreateGpuTexture("animals.png");
+    m_texID = texID;
 }
 
 void DinoAnimal::Update(double timeSinceStart, float deltaTime)
@@ -42,5 +42,4 @@ void DinoAnimal::Draw(double timeSinceStart)
 
 void DinoAnimal::Shut()
 {
-    XDino_DestroyGpuTexture(m_texID);
 }

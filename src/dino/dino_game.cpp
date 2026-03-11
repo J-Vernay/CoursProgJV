@@ -18,6 +18,7 @@ DinoTerrain g_Terrain;
 
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
+uint64_t texID_animal;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -39,6 +40,8 @@ void Dino_GameInit()
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
+
+    texID_animal = XDino_CreateGpuTexture("animals.png");
 
     // Préparation du drawcall du prénom
     {
@@ -82,7 +85,7 @@ void Dino_GameFrame(double timeSinceStart)
         float x = XDino_RandomFloat(min.x, max.x);
         float y = XDino_RandomFloat(min.y, max.y);
 
-        animal.Init(kind, {x, y});
+        animal.Init(kind, {x, y}, texID_animal);
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
     for (DinoAnimal& animal : g_Animals)
@@ -143,6 +146,7 @@ void Dino_GameShut()
     for (DinoAnimal& animal : g_Animals)
         animal.Shut();
     g_Terrain.Shut();
+    XDino_DestroyGpuTexture(texID_animal);
 
     XDino_DestroyVertexBuffer(vbufID_prenom);
 }

@@ -14,7 +14,7 @@ private:
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
 public:
-    void Init(EAnimalKind animal, DinoVec2 pos);
+    void Init(EAnimalKind animal, DinoVec2 pos, uint64_t texID);
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart);
     void Shut();
