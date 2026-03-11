@@ -1,6 +1,6 @@
 #include "dino_terrain.h"
 
-void dino_terrain::DinoTerrain_Init(uint64_t textTerrain, int season)
+DinoVec2 dino_terrain::DinoTerrain_Init(uint64_t textTerrain, int season)
 {
     textIdTerrain = textTerrain;
     seasonId = season;
@@ -16,6 +16,8 @@ void dino_terrain::DinoTerrain_Init(uint64_t textTerrain, int season)
     vbufID_terrain = XDino_CreateVertexBuffer(terrainVector.data(), terrainVector.size(), "terrain");
 
     vbufID_flowers = XDino_CreateVertexBuffer(flowerVector.data(), flowerVector.size(), "flowers");
+
+    return {(480 - 256) / 2, (360 - 192) / 2};
 }
 
 void dino_terrain::DinoTerrain_Draw()

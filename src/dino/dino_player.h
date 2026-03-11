@@ -8,7 +8,7 @@ public :
     //DinoGamepad dinoGamepad;
     static constexpr float DINO_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
 
-    dino_player(DinoVec2 initialPos, uint64_t dinoTex, int dino_ID);
+    dino_player(DinoVec2 initialPos, uint64_t dinoTex, int dino_ID, DinoVec2 terrainTopLeft);
 
     struct Anim {
         std::vector<int> posU;
@@ -39,5 +39,8 @@ private :
     float waitedTime = 0;
 
     void DinoCharacter_UpdateVisual(float timeSinceStart);
+    bool CanAddXValue(float xToAdd);
+    bool CanAddYValue(float yToAdd);
     int dinoID;
+    DinoVec2 m_terrainTopLeft;
 };

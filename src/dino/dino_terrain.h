@@ -4,7 +4,7 @@
 
 class dino_terrain {
 public :
-    void DinoTerrain_Init(uint64_t textIdTerrain, int season);
+    DinoVec2 DinoTerrain_Init(uint64_t textIdTerrain, int season);
     void DinoTerrain_Draw();
     void DinoTerrain_ShutDown();
 

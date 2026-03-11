@@ -217,43 +217,56 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
 Répartissez ces dossiers en 3 catégories.
 
-> ...
+> external pix <br>
+> external sokol <br>
+> external stb <br>
+> src\dino <br>
+> src\dino <br>
+> \x64 linux et windows
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> ...
+> Chaque fichier cpp a un fichier obj qui lui est associé
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
-> ...
+> On obtient 4 fichiers différents : celui de démo à la racine, et un par configuration (Debug/Profile/Release) dans le
+> dossier Build\obj\x64-windows\Debug release.
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> .h et .cpp = ligne 101 files {"src/dino/*""} <br>
+> .obj = ligne 16 location "build" <br>
+> .exe = targetdir "build/%{cfg.platform}/%{}cfg.buildcfg"
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** (preprocesseur) les .h aide le preprocesseur a interpréter les fichiers .cpp
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** (compilation) les .obj sont créer par le compilateur grâce au .cpp
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** (archivage) les fichiers .lib sont un archivage des .obj
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** (edition des liens) les .dll sont comparables au .exe mais sans 'main', ils ne peuvent
+> donc pas être executé seuls
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** (edition des liens) le .exe est créé à partir des .obj lorsqu'on fais une "edition des
+> liens static"
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** (edition de liens dynamique) certains .exe peuvent utiliser des .dll lors de leur
+> execution
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Le préprocesseur s'occupe de remplacer les '#' comme #include, #if, #pragma
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> Il se charge de regrouper tous les fichiers .obj en un seul gros fichier un ".exe". Il peut également produire des "
+> .lib" ou ".dll" qui permettent de partager des fichiers précompiler pour éviter de donner accès a tous le code source
+> lorsqu'on partage une base de code
 
 ## 5. Programmation des animaux
 

@@ -1,6 +1,6 @@
 ﻿#include "dino_player.h"
 
-dino_player::dino_player(DinoVec2 initialPos, uint64_t dinoTex, int dino_ID)
+dino_player::dino_player(DinoVec2 initialPos, uint64_t dinoTex, int dino_ID, DinoVec2 terrainTopLeft)
 {
     dinoPos = initialPos;
     texID_dino = dinoTex;
@@ -12,6 +12,7 @@ dino_player::dino_player(DinoVec2 initialPos, uint64_t dinoTex, int dino_ID)
     runPos = {{432, 456, 480, 504, 528, 552}, 16};
 
     currentAnimationPos = &idlePos;
+    m_terrainTopLeft = terrainTopLeft;
 }
 
 void dino_player::DinoCharacter_Update(float timeSinceStart, float deltaTime)
@@ -78,21 +79,36 @@ void dino_player::DinoCharacter_UpdateVisual(float timeSinceStart)
         vs[5].v = baseV + 24;
     }
 
-    uint64_t vbufID_dino1 = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino1");
+    uint64_t vbufID_dino1 = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
     XDino_Draw(vbufID_dino1, texID_dino, dinoPos, 12);
     XDino_DestroyVertexBuffer(vbufID_dino1);
+}
+
+bool dino_player::CanAddXValue(float xToAdd)
+{
+    return !(dinoPos.x + xToAdd < m_terrainTopLeft.x + 8 || //margin left 8
+             dinoPos.x + xToAdd > m_terrainTopLeft.x + 248); // margin right 8
+}
+
+bool dino_player::CanAddYValue(float yToAdd)
+{
+    return !(dinoPos.y + yToAdd < m_terrainTopLeft.y + 8 || // margin top 8
+             dinoPos.y + yToAdd > m_terrainTopLeft.y + 176); // margin down 16
 }
 
 
 void dino_player::DinoCharacter_ReadGamepad(DinoGamepad gamepad, float deltaTime)
 {
     if (!isStun) {
-        dinoPos.x += isRunning
-                         ? gamepad.stick_left_x * DINO_SPEED * deltaTime * 3
-                         : gamepad.stick_left_x * DINO_SPEED * deltaTime;
-        dinoPos.y += isRunning
-                         ? gamepad.stick_left_y * DINO_SPEED * deltaTime * 3
-                         : gamepad.stick_left_y * DINO_SPEED * deltaTime;
+        float xToAdd = isRunning
+                           ? gamepad.stick_left_x * DINO_SPEED * deltaTime * 2
+                           : gamepad.stick_left_x * DINO_SPEED * deltaTime;
+        float yToAdd = isRunning
+                           ? gamepad.stick_left_y * DINO_SPEED * deltaTime * 2
+                           : gamepad.stick_left_y * DINO_SPEED * deltaTime;
+
+        dinoPos.x += CanAddXValue(xToAdd) ? xToAdd : 0;
+        dinoPos.y += CanAddYValue(yToAdd) ? yToAdd : 0;
     }
 
     //checking if dino is going left or right

@@ -1,63 +1,94 @@
 #include "dino_animal.h"
 
-void dino_animal::DinoAnimal_Spawn(uint64_t textId_Animal, DinoVec2 animal_pos, int animal_index)
+void dino_animal::DinoAnimal_Spawn(DinoVec2 terrainTopLeft)
 {
-    textIdAnimal = textId_Animal;
-    animalPos = animal_pos;
-    animalIndex = animal_index;
+    m_terrainTopLeft = terrainTopLeft;
+    animalType = (EAnimalKind)XDino_RandomInt32(0, 7);
+
+    DinoAnimal_GetRandomPos();
+    DinoAnimal_GetRandomDirection();
 
     //debug
     timeAlive = 0;
 }
 
-void dino_animal::DinoAnimal_Update(float deltaTime)
+void dino_animal::DinoAnimal_Update(double timeSinceStart, float deltaTime)
 {
+    constexpr float SPEED = 30;
     timeAlive += deltaTime;
 
     std::vector<DinoVertex> vs;
-    vs.resize(6);
-    vs[0].pos = {0, 0};
-    vs[0].color = DinoColor_WHITE;
-    vs[1].pos = {1, 0};
-    vs[1].color = DinoColor_WHITE;
-    vs[2].pos = {0, 1};
-    vs[2].color = DinoColor_WHITE;
-    vs[3].pos = {1, 0};
-    vs[3].color = DinoColor_WHITE;
-    vs[4].pos = {0, 1};
-    vs[4].color = DinoColor_WHITE;
-    vs[5].pos = {1, 1};
-    vs[5].color = DinoColor_WHITE;
-    vs[0].u = 0;
-    vs[0].v = 0;
-    vs[1].u = 32;
-    vs[1].v = 0;
-    vs[2].u = 0;
-    vs[2].v = 32;
-    vs[3].u = 32;
-    vs[3].v = 0;
-    vs[4].u = 0;
-    vs[4].v = 32;
-    vs[5].u = 32;
-    vs[5].v = 32;
+    Dino_GenVertices_Animal(vs, animalType, animalAnimDirection, timeSinceStart);
+
+    for (DinoVertex& v : vs)
+        v.color.a = std::min(timeAlive / apparitionTime, (float)1) * 255;
 
     uint64_t vbufID_animal = XDino_CreateVertexBuffer(vs.data(), vs.size(), "animal");
-    XDino_Draw(vbufID_animal, textIdAnimal, animalPos, 12);
+
+    float xToAdd = animalMovingDirection.x * deltaTime * SPEED;
+    float yToAdd = animalMovingDirection.y * deltaTime * SPEED;
+    if (!CanAddXValue(xToAdd) || !CanAddYValue(yToAdd)) {
+        DinoAnimal_GetRandomDirection();
+    }
+    else {
+        animalPos.x += xToAdd;
+        animalPos.y += yToAdd;
+    }
+    XDino_Draw(vbufID_animal, textIdAnimal, animalPos, 1);
     XDino_DestroyVertexBuffer(vbufID_animal);
 }
 
-void dino_animal::DinoAnimal_Despawn(std::vector<dino_animal>& animals)
+void dino_animal::DinoAnimal_InstantDespawn(std::vector<dino_animal>& animals, int index)
 {
-    //debug
-    DinoAnimal_Kill(animals);
+    animals.erase(animals.begin() + index);
 }
 
-void dino_animal::DinoAnimal_Kill(std::vector<dino_animal>& animals)
+void dino_animal::DinoAnimal_GetRandomPos()
 {
-    animals.erase(animals.begin() + animalIndex);
+    //values do account for sprite marging
+    float Dx = m_terrainTopLeft.x + XDino_RandomInt32(0, 232);
+    float Dy = m_terrainTopLeft.y + XDino_RandomInt32(0, 152);
+
+    animalPos = DinoVec2(Dx, Dy);
 }
 
-bool dino_animal::DinoAnimal_ShouldDying()
+void dino_animal::DinoAnimal_GetRandomDirection()
 {
-    return timeAlive > 500;
+    animalMovingDirection = XDino_RandomUnitVec2();
+    if (abs(animalMovingDirection.x) > abs(animalMovingDirection.y)) {
+        if (animalMovingDirection.x > 0)
+            animalAnimDirection = EAnimalAnim::Right;
+        else
+            animalAnimDirection = EAnimalAnim::Left;
+    }
+    else {
+        if (animalMovingDirection.y > 0)
+            animalAnimDirection = EAnimalAnim::Down;
+        else
+            animalAnimDirection = EAnimalAnim::Up;
+    }
+}
+
+uint64_t dino_animal::textIdAnimal;
+
+void dino_animal::DinoAnimal_InitStatic()
+{
+    textIdAnimal = XDino_CreateGpuTexture("animals.png");
+}
+
+void dino_animal::DinoAnimal_ShutStatic()
+{
+    XDino_DestroyGpuTexture(textIdAnimal);
+}
+
+bool dino_animal::CanAddXValue(float xToAdd)
+{
+    return !(animalPos.x + xToAdd < m_terrainTopLeft.x + 0 || //margin left 0
+             animalPos.x + xToAdd > m_terrainTopLeft.x + 232); // margin right 24
+}
+
+bool dino_animal::CanAddYValue(float yToAdd)
+{
+    return !(animalPos.y + yToAdd < m_terrainTopLeft.y + 0 || // margin top 0
+             animalPos.y + yToAdd > m_terrainTopLeft.y + 152); // margin down 40
 }
