@@ -16,21 +16,6 @@ void DinoPlayer::Init(int idxPlayer)
     m_idxPlayer = idxPlayer;
 }
 
-void DinoPlayer::ResolveCollision(DinoPlayer& playerA, DinoPlayer& playerB)
-{
-    DinoVec2& a = playerA.m_pos;
-    DinoVec2& b = playerB.m_pos;
-    float ab = sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
-    if (ab == 0 || ab >= 16)
-        return;
-    float dx = (16 - ab) / (2 * ab) * (b.x - a.x);
-    float dy = (16 - ab) / (2 * ab) * (b.y - a.y);
-    a.x -= dx;
-    a.y -= dy;
-    b.x += dx;
-    b.y += dy;
-}
-
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad)
 {
     m_bPressedRun = false;

@@ -91,19 +91,28 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
         for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
-            DinoPlayer::ResolveCollision(g_Players[idxA], g_Players[idxB]);
+            DinoEntity::ResolveCollision(g_Players[idxA], g_Players[idxB]);
+
+    // Collision animal-animal
+    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
+
+    // Collision joueur-animal
+    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+        for (size_t idxB = 0; idxB < g_Animals.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_Players[idxA], g_Animals[idxB]);
+
 
     for (Animal& animal : g_Animals) {
         animal.Update(deltaTime, timeSinceStart);
     }
 
+
     // Dessin du dinosaure.
     for (DinoPlayer& player : g_Players)
         player.Draw(timeSinceStart);
 
-    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
-            Animal::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
     
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

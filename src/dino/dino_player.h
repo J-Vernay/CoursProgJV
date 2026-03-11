@@ -1,9 +1,10 @@
 #pragma once
 
+#include "dino_entity.h"
 #include <dino/xdino.h>
 #include <dino/dino_terrain.h>
 
-class DinoPlayer {
+class DinoPlayer : public DinoEntity {
     DinoVec2 m_pos = {};
     bool m_bLeft = false;
     double m_endHitAnim = 0;

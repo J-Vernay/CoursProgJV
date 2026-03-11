@@ -1,7 +1,8 @@
 #include "dino_draw_utils.h"
+#include "dino_entity.h"
 #include "xdino.h"
 
-class Animal {
+class Animal : public DinoEntity{
     DinoVec2 m_pos = {};
     //std::vector<DinoVertex> m_vs;
     uint64_t m_texID = 0;
@@ -21,6 +22,4 @@ public:
     void Update(float deltaTime, double timeSinceStart);
     void Draw(double timeSinceStart);
     void Shut();
-
-    static void ResolveCollision(Animal& animalA, Animal& animalB);
 };
