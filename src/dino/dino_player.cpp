@@ -2,6 +2,8 @@
 
 #include <dino/xdino.h>
 
+#include <algorithm>
+
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
@@ -47,6 +49,14 @@ void DinoPlayer::Draw(double timeSinceStart)
     XDino_DestroyVertexBuffer(vbufID);
 }
 
+void DinoPlayer::AplyLimit(DinoVec2 posMin, DinoVec2 posMax)
+{
+    m_pos.x = std::min(m_pos.x, posMax.x);
+    m_pos.y = std::min(m_pos.y, posMax.y);
+    m_pos.x = std::max(m_pos.x, posMin.x);
+    m_pos.y = std::max(m_pos.y, posMin.y);
+}
+
 void DinoPlayer::Shut()
 {
     XDino_DestroyGpuTexture(m_texID);
@@ -84,7 +94,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;

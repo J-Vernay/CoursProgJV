@@ -10,10 +10,6 @@ float delaySinceLastSpawn;
 void dino_animalsGenerator::Init()
 {
     m_texID = XDino_CreateGpuTexture("animals.png");
-    animals.emplace_back();
-    dino_animal& animal = animals.back();
-    animal.Init(m_texID);
-
 }
 
 void dino_animalsGenerator::Update(double deltaTime, double timeSinceStart)
@@ -23,7 +19,7 @@ void dino_animalsGenerator::Update(double deltaTime, double timeSinceStart)
     if (delaySinceLastSpawn >= spawnDelay) {
         animals.emplace_back();
         dino_animal& animal = animals.back();
-        animal.Init(m_texID);
+        animal.Init(m_texID, timeSinceStart);
         delaySinceLastSpawn = 0;
     }
     for (dino_animal& animal : animals) {
@@ -36,10 +32,13 @@ void dino_animalsGenerator::Shut()
     for (auto& animal : animals) {
         animal.Shut();
     }
+    XDino_DestroyGpuTexture(m_texID);
 }
 
-void dino_animal::Init(uint64_t& texID)
+
+void dino_animal::Init(uint64_t& texID, uint64_t spawnTimer)
 {
+    spawnTime = spawnTimer;
     m_texID = texID;
     uint32_t rnd = XDino_RandomInt32(0, 7);
     m_type = rnd;
@@ -53,7 +52,7 @@ void dino_animal::Init(uint64_t& texID)
         m_dir.y /= 2;
     }
 
-    m_pos = DinoVec2(XDino_RandomUint32(112,345), XDino_RandomUint32(75,245));
+    m_pos = DinoVec2(XDino_RandomUint32(112, 345), XDino_RandomUint32(75, 245));
 
 }
 
@@ -68,7 +67,7 @@ DinoVec2 dino_animal::Redirect(DinoVec2 pos, DinoVec2 dir)
             m_pos.x = 344;
         newDir = DinoVec2(-dir.x, rnd);
     }
-    else {
+    else if (pos.y < 75 || pos.y > 245) {
 
         if (pos.y < 75)
             m_pos.y = 76;
@@ -76,6 +75,11 @@ DinoVec2 dino_animal::Redirect(DinoVec2 pos, DinoVec2 dir)
             m_pos.y = 244;
         newDir = DinoVec2(rnd, -dir.y);
     }
+    else {
+        float rnd2 = XDino_RandomFloat(-1, 1);
+        newDir = DinoVec2(rnd, rnd2);
+    }
+
     return newDir;
 }
 
@@ -117,13 +121,21 @@ void dino_animal::Draw(double timeSinceStart, uint8_t dirAnim)
 uint64_t dino_animal::GenerateVertexBuffer(double time, uint32_t animalType, uint8_t dirAnim)
 {
     std::vector<DinoVertex> vs;
+    double TimeAlive = time - spawnTime;
+    uint8_t alpha = 255;
+
+    constexpr float TIME_FADEIN = 1;
+    if (TimeAlive < TIME_FADEIN)
+        alpha = (TimeAlive * 255) / TIME_FADEIN;
 
     Dino_GenVertices_Animal(vs, static_cast<EAnimalKind>(animalType), static_cast<EAnimalAnim>(dirAnim), time);
-
+    for (DinoVertex& v : vs) {
+        v.color = DinoColor({255, 255, 255, alpha});
+    }
     return XDino_CreateVertexBuffer(vs.data(), vs.size(), "animal");
 }
 
 void dino_animal::Shut()
 {
-    XDino_DestroyGpuTexture(m_texID);
+    //XDino_DestroyGpuTexture(m_texID);
 }

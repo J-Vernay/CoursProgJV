@@ -6,7 +6,7 @@ class dino_animal {
 public:
     uint16_t speed = 40;
     uint64_t m_texID;
-    void Init(uint64_t& texID);
+    void Init(uint64_t& texID, uint64_t spawnTime);
     void Draw(double timeSinceStart, uint8_t dirAnim);
     void Update(double deltaTime, double timeSinceStart);
     void Shut();
@@ -17,6 +17,7 @@ private:
     uint32_t m_type;
     uint64_t GenerateVertexBuffer(double timeSinceStart, uint32_t animalType, uint8_t dirAnim);
     DinoVec2 Redirect(DinoVec2 pos, DinoVec2 dir);
+    uint64_t spawnTime;
 };
 
 #pragma once

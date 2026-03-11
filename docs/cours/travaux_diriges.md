@@ -173,11 +173,20 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
 Répartissez ces dossiers en 3 catégories.
 
-> ...
+> external pix
+> external solcol
+> extrenal stb
+>
+> src dino // gameplay
+>
+> src dino x64windows
+> src dino x64linux
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> ...
+> tout les fichiers obj sont dans le dossier build/obj, la suite de leurs path dépend de la plateforme et de la
+> configuration que l'on utilise
+> chaque source a son fichier obj qui lui est lié
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
@@ -190,21 +199,22 @@ e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** préprocesseur
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** compilateur
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.dll` :** linkage static
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.lib` :** archivage
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** linkage static
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** linkage dynamique
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> il sert a assimiler toutes les substitutions afin de pouvoir compiler le code, c'est la compilation conditionnelle
+> il sert aussi a remplacer les includes par les morceaux de code qu'ils remplacent
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?

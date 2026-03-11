@@ -110,6 +110,10 @@ void Dino_GameFrame(double timeSinceStart)
         }
     }
 
+    for (auto player : g_Players) {
+        player.AplyLimit(DinoVec2({112, 75}), DinoVec2({245, 345}));
+    }
+
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -162,6 +166,7 @@ void Dino_GameShut()
     for (DinoPlayer& player : g_Players)
         player.Shut();
 
+    g_animalsGenerator.Shut();
     g_Terrain.Shut();
     XDino_DestroyVertexBuffer(vbufID_prenom);
 }
