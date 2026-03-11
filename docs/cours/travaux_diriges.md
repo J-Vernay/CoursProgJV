@@ -201,12 +201,14 @@ f) Quels sont les liens entre :
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> On reconnait les directives de préprocesseur avec le # 
+> Programme qui réalise des traitements sur le code source avant qu'il ne soit réellment compilé 
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> faire le lien entre les codes assembleurs contenu dans plusieurs fichiers obj. 
+> il produit des fichers exe et obj. 
 
 ## 5. Programmation des animaux
 
