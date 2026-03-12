@@ -1,4 +1,5 @@
 #include "dino_draw_utils.h"
+#include "dino_geometry.h"
 
 #include <dino/dino_player.h>
 
@@ -47,6 +48,21 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     m_lasso.push_back(m_pos);
     if (m_lasso.size() > TIME_LASSO * UPDATE_PER_SECOND)
         m_lasso.erase(m_lasso.begin());
+
+    if (m_lasso.size() >= 4) {
+        DinoVec2 c = m_lasso[m_lasso.size() - 2];
+        DinoVec2 d = m_lasso[m_lasso.size() - 1];
+        if (c.x != d.x || c.y != d.y) {
+            for (int i = 0; i < m_lasso.size() - 3; i++) {
+                DinoVec2 a = m_lasso[i];
+                DinoVec2 b = m_lasso[i + 1];
+                if (Dino_IntersectSegment(a, b, c, d)) {
+                    m_lasso.erase(m_lasso.begin() + i + 1, m_lasso.end() + i - 1);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void DinoPlayer::ReactLimit()

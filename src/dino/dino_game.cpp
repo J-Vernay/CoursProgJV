@@ -1,6 +1,8 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "dino_geometry.h"
+
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
@@ -51,7 +53,6 @@ void Dino_GameInit()
         textSize_prenom = Dino_GenVertices_Text(vs, "Mikha", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
-
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -106,8 +107,9 @@ void Dino_GameFrame(double timeSinceStart)
         entities.emplace_back(&animal);
 
     for (size_t idxA = 0; idxA < entities.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB) {
             DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+        }
 
     for (DinoEntity* pEntity : entities)
         pEntity->ApplyLimit(terrainMin, terrainMax);
