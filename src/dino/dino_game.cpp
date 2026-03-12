@@ -6,6 +6,7 @@
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 #include <dino/dino_animal.h>
+#include <dino/dino_lasso.h>
 
 #include <format>
 #include <algorithm>
@@ -16,6 +17,7 @@ double g_lastTime = 0;
 
 std::vector<DinoPlayer> g_Players;
 DinoTerrain g_Terrain;
+std::vector<DinoLasso> g_Lassos;
 
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
@@ -41,6 +43,12 @@ void Dino_GameInit()
     g_Players[1].Init(1);
     g_Players[2].Init(2);
     g_Players[3].Init(3);
+
+    g_Lassos.resize(4);
+    g_Lassos[0].Init(DinoColor_BLUE);
+    g_Lassos[1].Init(DinoColor_RED);
+    g_Lassos[2].Init(DinoColor_YELLOW);
+    g_Lassos[3].Init(DinoColor_GREEN);
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
@@ -81,6 +89,13 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
+    // Purger les animaux qui sont morts.
+    // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
+    // Il faut ensuite appeler .erase() pour enlever les éléments.
+    auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
+    g_Animals.erase(it, g_Animals.end());
+
+    // Spawner un animal si besoin.
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
         EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
@@ -92,29 +107,9 @@ void Dino_GameFrame(double timeSinceStart)
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
 
+    // Update les animaux.
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
-
-    // Collision joueur-joueur
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Players[idxB]);
-
-    // Collision animal-animal
-    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
-
-    // Collision joueur-animal
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = 0; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Animals[idxB]);
-
-    for (DinoPlayer& player : g_Players)
-        player.ApplyLimit(terrainMin, terrainMax);
-
-    for (DinoAnimal& animal : g_Animals)
-        animal.ApplyLimit(terrainMin, terrainMax);
 
     // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
     // car il y a un lien d'héritage.
@@ -123,6 +118,27 @@ void Dino_GameFrame(double timeSinceStart)
         entities.emplace_back(&player);
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
+
+    for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+            DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+
+    for (DinoEntity* pEntity : entities)
+        pEntity->ApplyLimit(terrainMin, terrainMax);
+
+    if (g_Lassos.size() != g_Players.size())
+        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+    for (int i = 0; i < g_Lassos.size(); ++i)
+        g_Lassos[i].Update(g_Players[i].GetPos());
+
+    for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
+            DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+
+    for (DinoLasso& lasso : g_Lassos)
+        for (DinoEntity* pEntity : entities)
+            if (lasso.WasInLoop(pEntity->GetPos()))
+                pEntity->ReactLoop(timeSinceStart);
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
@@ -134,9 +150,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
 
-    for (DinoPlayer& player : g_Players) {
-        player.DrawLasso();
-    }
+    for (DinoLasso& lasso : g_Lassos)
+        lasso.Draw();
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);

@@ -6,16 +6,6 @@
 
 class DinoPlayer : public DinoEntity {
 private:
-    std::vector<DinoVec2> m_lassoPoints;
-
-    struct LassoPoint {
-        DinoVec2 pos;
-        double t;
-    };
-
-    std::vector<LassoPoint> m_lassoHistory;
-    constexpr static float m_lassoMaxTime = 2.f;
-
     bool m_bLeft = false;
     double m_endHitAnim = 0;
     bool m_bMoving = false;
@@ -27,12 +17,11 @@ private:
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
     void ReactLimit() override;
+    void ReactLoop(double timeSinceStart) override;
 
 public:
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
-    void UpdateLasso(double timeSinceStart, float deltaTime);
-    void DrawLasso();
     void Draw(double timeSinceStart) override;
     void Shut();
 
