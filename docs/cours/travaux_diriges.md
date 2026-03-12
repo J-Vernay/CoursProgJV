@@ -299,7 +299,8 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 16Go de RAM.
+> 
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
@@ -334,42 +335,45 @@ Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des las
 a) Allouez une zone mémoire avec `XDino_MemAlloc()` pour stocker un point.
 Quel est le type de retour ? Pourquoi la zone mémoire ne peut pas être manipulée telle quelle ?
 
-> ... 
+> le type de retour de XDIno_MemAlloc() est un void*. 
 
 b) Faites en sorte de pouvoir ajouter des points à la liste, en allouant une zone mémoire plus grande
 et en copiant l'ancien contenu dans la nouvelle zone mémoire.
 Pourquoi l'usage mémoire ne fait que grandir ?
 
-> ...
+> L'usage mémoire ne fait que grandir car on doit doubler la capacité et donc la taille de la mémoire 
+> à chaque ajout dans la liste
 
 c) Utilisez `XDino_MemFree()` pour éviter les fuites mémoire lors du redimensionnement du tableau.
 
 d) Si l'on ajoute 20 points au tableau, combien de `DinoVec2` sont copiés en tout ?
 Combien d'allocation système, c'est-à-dire des appels à `XDino_MemAlloc()` sont faits ?
 
-> ...
+> 
 
 e) Limiter le nombre de copie et d'allocation système en implémentant une "capacité",
 Quelle est la différence entre la taille et la capacité de notre tableau ?
 
-> ...
+> capacité est la taille en mémoire de l'array, la taille est le nombre d'élément de notre array
 
 f) Isoler la logique de gestion du tableau dans une classe à part `DinoArrayVec2`.
 
 g) Que se passe-t-il lorsqu'une fonction contenant une variable locale de type `DinoArrayVec2`
 retourne ? Quel mécanisme C++ permet de s'assurer que cela ne se produise pas ?
 
-> ...
+> Il faut cast l'allocation avec XDino_MemAlloc() en DinoVect2*
 
 h) À l'inverse, quel mécanisme C++ permet de s'assurer que `DinoArrayVec2` peut toujours être détruit,
 même si la fonction d'initialisation n'est pas explicitement appelée ?
 
-> ...
+> Le destructor (~DinoArrayVect2();)
 
 i) Que se passe-t-il lorsqu'on copie un `DinoArrayVec2` vers un autre ?
 Quelles fonctions C++ doivent être définies pour se prémunir du problème ?
 
-> ...
+> quand on copie un DinoArrayVec2, on copie également l'adresse mémoire, donc quand on modifiera l'un
+> l'autre sera également modifier. Il faut pour cela, créer une fonction copie, qui va allouer un nouvel
+> espace mémoire à cette nouvelle array
 
 j) Itérez sur tous les `DinoVec2` d'un `DinoArray<DinoVec2>` avec une boucle for-range,
 pour décaler chaque point du lasso d'une petite distance avant de dessigner le lasso,
@@ -380,14 +384,14 @@ k) Utilisez la syntaxe des template `template<typename T>` pour transformer la c
 `DinoArrayVec2` en classe générique `DinoArray`.
 Pourquoi l'implémentation de `DinoArray` doit forcément être dans un fichier header ?
 
-> ...
+> En c++, l'implémentation d'une classe générique doit être dans le .h
 
 l) Remplacez les usages de `std::vector<DinoVertex>` en `DinoArray<DinoVertex>`.
 
 m) Remplacez les usages de `std::vector<DinoPlayer>` en `DinoArray<DinoPlayer>`.
 Quel problème se pose ? Fixer l'implémentation de `DinoArray` pour utiliser placement-new.
 
-> ...
+> Il faut rajouter les fonction end() et begin() qui renvoie les 1er et denier element de la liste
 
 ## 9. Flow de jeu
 

@@ -1,36 +1,35 @@
 #include "DinoPlayer.h"
 #include <cmath>
 #include <iostream>
-#include "../../build/CollisionManager.h"
+#include <dino/CollisionManager.h>
 
-DinoPlayer::DinoPlayer(float _speed, int idPlayer, DinoVec2 _miniBound, DinoVec2 _maxiBound, CollisionManager& _collisionManager)
-    : collisionManager(_collisionManager)
+DinoPlayer::DinoPlayer(float _speed, int idPlayer, DinoVec2 _miniBound, DinoVec2 _maxiBound, CollisionManager& _collisionManager, GameManager& _gameManager)
+    : lassoPoints(), collisionManager(_collisionManager), vbufID_dino(0), gameManager(_gameManager)
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
+    DinoVec2 windowSize = XDino_GetRenderSize();
 
     baseSpeed = _speed;
     ID = idPlayer;
-    
+
     float terrainOffsetX = windowSize.x / 2.f - (23 * 16 / 2.f);
-    float terrainOffsetY = windowSize.y / 2.f - (15 * 16 / 2.f);    
+    float terrainOffsetY = windowSize.y / 2.f - (15 * 16 / 2.f);
 
     miniBound.x = terrainOffsetX + _miniBound.x;
     miniBound.y = terrainOffsetY + _miniBound.y;
-    maxiBound.x = terrainOffsetX + _maxiBound.x;
-    maxiBound.y = terrainOffsetY + _maxiBound.y;
+    maxiBound.x = terrainOffsetX + _maxiBound.x + 16;
+    maxiBound.y = terrainOffsetY + _maxiBound.y + 16;
 }
 
 void DinoPlayer::Start()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
+    DinoVec2 windowSize = XDino_GetRenderSize();
     
     float terrainOffsetX = windowSize.x / 2.f - (23 * 16 / 2.f);
     float terrainOffsetY = windowSize.y / 2.f - (15 * 16 / 2.f);
 
     position = {
         (miniBound.x + maxiBound.x) / 2.f + ID * 24.f,
-        (miniBound.y + maxiBound.y) / 2.f
-    };
+        (miniBound.y + maxiBound.y) / 2.f    };
 
     texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
     textureLasso = XDino_CreateGpuTexture("monogram-bitmap.png");
@@ -53,7 +52,6 @@ void DinoPlayer::Update(float deltaTime)
     Move(deltaTime);
     ApplyAnimations(deltaTime);
     ApplyBounds();
-    UpdateLasso(deltaTime);
     
     XDino_Draw(vbufID_dino, texID_dino, position);
 }
@@ -61,6 +59,7 @@ void DinoPlayer::Update(float deltaTime)
 
 void DinoPlayer::Move(float deltaTime)
 {
+    
     DinoGamepad gamepad{};
     XDino_GetGamepad((DinoGamepadIdx)ID, gamepad);
     
@@ -72,6 +71,17 @@ void DinoPlayer::Move(float deltaTime)
     }
         
     isMoving = std::abs(gamepad.stick_left_x) > 0.1 || std::abs(gamepad.stick_left_y) > 0.1;
+    
+    //PauseGame
+    if (gamepad.start) {
+        gameManager.SetTimerState();
+    }
+
+    if (gameManager.IsPaused())
+    {
+        SetAnimationValues(0, 4, 8);
+        return;
+    }
 
     //Running
     if (gamepad.btn_right && isMoving)
@@ -112,7 +122,7 @@ void DinoPlayer::Move(float deltaTime)
     {
         SetAnimationValues(13, 4, 8);
     }
-
+    
     lastPosition = position;
 }
 
@@ -127,11 +137,10 @@ void DinoPlayer::SetAnimationValues(short animStart, short numberFrame, short Ip
 void DinoPlayer::ApplyAnimations(float deltaTime)
 {
     {
-        std::vector<DinoVertex> vs;
+        std::vector<DinoVertex> vs(6);
 
         DinoVec2 texSize = XDino_GetGpuTextureSize(texID_dino);
         
-        vs.resize(6);
         vs[0].pos = {-12, -12};
         vs[1].pos = {12, -12};
         vs[2].pos = {-12, 12};
@@ -166,6 +175,9 @@ void DinoPlayer::ApplyAnimations(float deltaTime)
         vs[4].u = mirrorDino == 1 ? uAnimMini : uAnimMax;        vs[4].v = 24 + skin;
 
         vs[5].u = mirrorDino == 1 ? uAnimMax : uAnimMini;        vs[5].v = 24 + skin;
+
+        if (vbufID_dino != 0)
+            XDino_DestroyVertexBuffer(vbufID_dino); 
         
         vbufID_dino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
     }
@@ -190,6 +202,8 @@ void DinoPlayer::TakeDamage()
 {
     if (isDamaged) return;
 
+    std::cout << "Damaged" << std::endl;
+
     elapsedTimeDamage = timeDamaged;
 }
 
@@ -200,10 +214,9 @@ void DinoPlayer::UpdateLasso(float deltaTime)
     addLassoPointTimer += deltaTime;
     checkCircleTimer += deltaTime;
 
-    for (LassoPoint& p : lassoPoints)
-    {
-        p.timeAlive += deltaTime;
-    }
+    for (size_t i = 0 ; i < lassoPoints.GetSize() ; i++) {
+        lassoPoints[i].timeAlive += deltaTime;
+    }    
 
     RemoveOldLassoPoints();
     CheckDoCircleLasso();
@@ -215,28 +228,26 @@ void DinoPlayer::UpdateLasso(float deltaTime)
 
 void DinoPlayer::DrawLassos()
 {
-    if (abs(position.x - lastPosition.x) > 1 && abs(position.y - lastPosition.y) > 1)
-        return;
-    
-    if (addLassoPointTimer > 0.001) {
-        AddLassoPoint();
-        addLassoPointTimer = 0;
-    }
-    
-    for (const LassoPoint& l : lassoPoints)
+    AddLassoPoint();
+
+    for (size_t i = 0 ; i < lassoPoints.GetSize() ; i++)
     {
+        LassoPoint l = lassoPoints[i];
         XDino_Draw(l.buff, textureLasso, l.position);
-    }
+    }    
 }
 
 void DinoPlayer::RemoveOldLassoPoints()
 {
-    for (size_t i = 0; i < lassoPoints.size(); )
+    for (size_t i = 0; i < lassoPoints.GetSize(); )
     {
         if (lassoPoints[i].timeAlive >= 2.0f)
         {
-            XDino_DestroyVertexBuffer(lassoPoints[i].buff);
-            lassoPoints.erase(lassoPoints.begin() + i);
+            uint64_t buffToDestroy = lassoPoints[i].buff;
+            lassoPoints[i].buff = 0;
+            lassoPoints.RemoveAt(i);
+            if (buffToDestroy != 0)
+                XDino_DestroyVertexBuffer(buffToDestroy);
         }
         else
         {
@@ -248,20 +259,20 @@ void DinoPlayer::RemoveOldLassoPoints()
 void DinoPlayer::AddLassoPoint()
 {
     uint64_t buff = DrawLassoPoint();
+
+    DinoVec2 pos = {position.x + XDino_RandomFloat(-1, 1),
+        position.y + XDino_RandomFloat(-1, 1)};
     
-    LassoPoint point = {position, buff, 0};
-    lassoPoints.push_back(point);
+    LassoPoint point = {pos, buff, 0};
+    lassoPoints.AddBack(point);
 }
 
 uint64_t DinoPlayer::DrawLassoPoint()
 {
     uint64_t newBuff;
-    {
+    {        
+        DinoArray<DinoVertex> vs(6);
         
-        std::vector<DinoVertex> vs;
-            
-        vs.resize(6);
-
         float size = 2.5;
         
         vs[0].pos = {-size, -size};
@@ -295,7 +306,7 @@ uint64_t DinoPlayer::DrawLassoPoint()
 
         vs[5].u = 96;        vs[5].v = 24;
         
-        newBuff = XDino_CreateVertexBuffer(vs.data(), vs.size(), "LassoPoint");
+        newBuff = XDino_CreateVertexBuffer(vs.data(), vs.GetSize(), "LassoPoint");
     }
 
     return newBuff;
@@ -304,24 +315,26 @@ uint64_t DinoPlayer::DrawLassoPoint()
 
 void DinoPlayer::CheckDoCircleLasso()
 {
-    for (size_t i = 0; i < lassoPoints.size(); ++i)
+    for (size_t i = 0; i < lassoPoints.GetSize(); ++i)
     {
-        for (size_t j = i + 1; j < lassoPoints.size(); ++j)
+        for (size_t j = i + 1; j < lassoPoints.GetSize(); ++j)
         {
+            if (j - i < 6) continue;
+
             float dx = lassoPoints[i].position.x - lassoPoints[j].position.x;
             float dy = lassoPoints[i].position.y - lassoPoints[j].position.y;
             float distance = std::sqrt(dx * dx + dy * dy);
 
-            if (distance < 2.0f)
+            if (distance < 10.0f)
             {
-                std::vector<DinoVec2> points;
+                DinoArray<DinoVec2> points;
 
-                for (size_t p = i; p < lassoPoints.size(); p++) {
-                    points.push_back(lassoPoints[p].position);
-                }
-                
-                collisionManager.ApplyCircleLasso(ID, points);
-                
+                for (size_t p = i; p <= j; p++)
+                    points.AddBack(lassoPoints[p].position);
+
+                if (points.GetSize() >= 3)
+                    collisionManager.ApplyCircleLasso(ID, points);
+
                 ResetLasso(i);
                 return;
             }
@@ -331,8 +344,12 @@ void DinoPlayer::CheckDoCircleLasso()
 
 void DinoPlayer::ResetLasso(int x)
 {
-    for (size_t i = x; i < lassoPoints.size(); ) {
-        XDino_DestroyVertexBuffer(lassoPoints[i].buff);
-        lassoPoints.erase(lassoPoints.begin() + i);
+    while (x < (int)lassoPoints.GetSize())
+    {
+        uint64_t buffToDestroy = lassoPoints[x].buff;
+        lassoPoints[x].buff = 0;
+        lassoPoints.RemoveAt(x);
+        if (buffToDestroy != 0)
+            XDino_DestroyVertexBuffer(buffToDestroy);
     }
 }

@@ -3,8 +3,11 @@
 
 #include "Terrain.h"
 #include "DinoPlayer.h"
-#include "../../build/Animal.h"
-#include "../../build/CollisionManager.h"
+#include "GameManager.h"
+
+#include <dino/Animal.h>
+#include <dino/CollisionManager.h>
+#include <dino/DinoArray.h>
 
 #include <__msvc_ostream.hpp>
 #include <dino/dino_draw_utils.h>
@@ -31,19 +34,24 @@ constexpr int NUMBER_PLAYERS = 2;
 constexpr float WORLD_OFFSET_X = 420.f / 4.f;
 constexpr float WORLD_OFFSET_Y = 360.f / 4.f;
 
-// Variable globale pour l'affichage de debug.
 int g_debugScroll = 1;
 
-std::vector<DinoPlayer> players;
-std::vector<Animal> animals;
-std::vector<Agent*> agentsList;
-float elapsedTimeBeforeNewAnimal = 0;
+DinoArray<DinoPlayer*>* players = nullptr;
+DinoArray<Animal*>* animals = nullptr;
+DinoArray<Agent*>* agentsList = nullptr;
 
-Terrain terrain;
+float elapsedTimeBeforeNewAnimal = 0;
+float maxTimeBeforeNewAnimal = 0.5f;
+float timeToSpawnAnimal = 2;
+
+Terrain* terrain = nullptr;
+
 DinoVec2 _MINI_terrainBounds = {};
 DinoVec2 _MAXI_terrainBounds = {};
 
-CollisionManager collisionManager = CollisionManager();
+CollisionManager* collisionManager;
+
+GameManager* gameManager;
 
 // Constantes.
 
@@ -52,35 +60,44 @@ void Dino_GameInit()
     DinoVec2 windowSize = {420, 360};
     XDino_SetRenderSize(windowSize);
 
-    terrain.SetUpTerrain(windowSize);
-    _MINI_terrainBounds = terrain._MINI_terrainBound;
-    _MAXI_terrainBounds = terrain._MAXI_terrainBound;
+    gameManager = new GameManager();
+    
+    terrain = new Terrain();
+    
+    terrain->SetUpTerrain();
+    _MINI_terrainBounds = terrain->_MINI_terrainBound;
+    _MAXI_terrainBounds = terrain->_MAXI_terrainBound;
+    
+    players = new DinoArray<DinoPlayer*>(0, NUMBER_PLAYERS);
+    animals = new DinoArray<Animal*>(0, 1000);
+    agentsList = new DinoArray<Agent*>(0, 1000);
 
-    players.reserve(NUMBER_PLAYERS);
-    animals.reserve(1000);
-    agentsList.reserve(2000);
+    collisionManager = new CollisionManager();
     
     for (int i = 0; i < NUMBER_PLAYERS; i++)
     {
-        players.emplace_back(DINO_SPEED, i, _MINI_terrainBounds, _MAXI_terrainBounds, collisionManager);
-        agentsList.push_back(&players.back());
+        DinoPlayer* player = new DinoPlayer(DINO_SPEED, i, _MINI_terrainBounds, _MAXI_terrainBounds, *collisionManager, *gameManager);
+        players->AddBack(player);
+        agentsList->AddBack(player);
     }
 
-    collisionManager.SetPlayers(&players);
-    collisionManager.SetAgents(agentsList);
+    collisionManager->SetPlayers(players);
+    collisionManager->SetAgents(agentsList);
     
-    for (DinoPlayer& player : players)
+    for (DinoPlayer* player : *players)
     {
-        player.Start();
+        player->Start();
     }
+
+    gameManager->SetPlayers(players);
+    
+    gameManager->StartGame();
 }
 
 float currentFrameAnim = 0;
 
 void Dino_GameFrame(double timeSinceStart)
 {
-    // Prendre en compte le temps qui passe.
-
     DinoVec2 windowSize = {420, 360};
     XDino_SetRenderSize(windowSize);
 
@@ -93,32 +110,42 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
     
-    //Terrain
-    terrain.Update(deltaTime);
-
-    collisionManager.Update(deltaTime);
+    terrain->Update(deltaTime);
     
     elapsedTimeBeforeNewAnimal += deltaTime;
+
+    timeToSpawnAnimal = 0.5f + (2- 0.5f) * gameManager->GetCurrentT_Time();
     
-    if (elapsedTimeBeforeNewAnimal >= 1)
+    if (elapsedTimeBeforeNewAnimal >= timeToSpawnAnimal)
     {
         int animalType = XDino_RandomInt32(0, 7);
         elapsedTimeBeforeNewAnimal = 0;
-        animals.emplace_back(animalType,_MINI_terrainBounds, _MAXI_terrainBounds, windowSize);
-        agentsList.push_back(&animals.back());
-        collisionManager.SetAgents(agentsList);
-        collisionManager.SetAnimals(&animals);
+
+        Animal* animal = new Animal(animalType,_MINI_terrainBounds, _MAXI_terrainBounds, *gameManager);
+        
+        animals->AddBack(animal);
+        agentsList->AddBack(animal);
+        
+        collisionManager->SetAgents(agentsList);
+        collisionManager->SetAnimals(animals);
     }
-   
-    collisionManager.ShuffleByVerticalPosition(agentsList);
-    collisionManager.CheckLassoCollisionPlayer(players);
+
+    for (DinoPlayer* player : *players) {
+        player->UpdateLasso(deltaTime);
+    }
     
-    for (Agent* agent : agentsList)
+    for (Agent* agent : *agentsList)
     {
         agent->Update(deltaTime);
     }
-    
-    collisionManager.ApplyPlayersCollision(agentsList);
+
+    gameManager->UpdateGame(deltaTime);    
+
+    //Collision Manager
+    collisionManager->Update(deltaTime);
+    collisionManager->ShuffleByVerticalPosition(agentsList);
+    collisionManager->CheckLassoCollisionPlayer(players);
+    collisionManager->ApplyPlayersCollision(*agentsList);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -156,9 +183,9 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    for (DinoPlayer& player : players) {
-        player.ShutDown();
-    }
-
-    
+    for (DinoPlayer* player : *players)
+    {
+        player->ShutDown();
+        delete player;
+    }    
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include "dino/xdino.h"
+#include <dino/DinoArray.h>
+
 
 struct flowerCoord {
     float x;
@@ -12,7 +14,7 @@ private:
     uint64_t texID_ocean;
     uint64_t vbufID_ocean;
 
-    uint64_t texID_terrain;
+    uint64_t texID_terrain = 0;
     std::vector<uint64_t> framesAnim;
 
     DinoVec2 _renderSize;
@@ -22,7 +24,7 @@ private:
     double terrainScale;
     double oceanScale;
 
-    int terrainAnimFrame = 0;
+    int terrainAnimFrame=0;
     float timeBetweenFrames;
 
     int randomSaison;
@@ -35,18 +37,18 @@ private:
     std::vector<flowerCoord> flowerCoords;
 
     uint64_t texID_flower;
-    uint64_t buf_flower;
+    uint64_t buf_flower = 0;
 
 public:
     Terrain();
     
-    void SetUpTerrain(DinoVec2 renderSize);
+    void SetUpTerrain();
     void DrawOcean();
     void DrawTerrain();
-    uint64_t DrawTuilesTerrain(int offset);
+    uint64_t DrawTuilesTerrain(int offset, bool collectFlowers = false);
     void DrawTuile(std::vector<DinoVertex>& vs, int idVertex, int u, int v, int offsetAnim);
     void DrawFlowers();
-    void DrawSoloFlower(std::vector<DinoVertex>& vs, int idVertex, float x, float y, int u);
+    void DrawSoloFlower(DinoArray<DinoVertex>& vs, int idVertex, float x, float y, int u);
     void DrawDefaultTuile(std::vector<DinoVertex>& vs, int idVertex);
     
     void ApplyAnimation(float deltaTime);

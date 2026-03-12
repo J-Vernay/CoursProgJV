@@ -1,6 +1,9 @@
 #pragma once
-#include "../../build/Agent.h"
-#include "../../build/LassoPoint.h"
+#include "GameManager.h"
+
+#include <dino/Agent.h>
+#include <dino/LassoPoint.h>
+#include <dino/DinoArray.h>
 #include <dino/xdino.h>
 
 class CollisionManager;
@@ -8,8 +11,7 @@ class CollisionManager;
 class DinoPlayer : public Agent
 {    
 public:
-    DinoPlayer(float _speed, int idPlayer, DinoVec2 miniBound, DinoVec2 maxiBound, CollisionManager& _collisionManager);
-
+    DinoPlayer(float _speed, int idPlayer, DinoVec2 miniBound, DinoVec2 maxiBound, CollisionManager& _collisionManager, GameManager& _gameManager);
     
     void Start();
     void Update(float deltaTime) override;
@@ -29,11 +31,11 @@ public:
     void CheckDoCircleLasso();
     void ResetLasso(int x);
 
-    std::vector<LassoPoint> lassoPoints = {};
+    DinoArray<LassoPoint> lassoPoints;
  
 private:
-    uint64_t texID_dino;
-    uint64_t vbufID_dino;
+    uint64_t texID_dino = 0;
+    uint64_t vbufID_dino = 0;
 
     DinoVec2 lastPosition;
         
@@ -52,7 +54,7 @@ private:
     DinoVec2 maxiBound;
 
     //Lasso
-    uint64_t textureLasso;
+    uint64_t textureLasso = 0;
 
     DinoColor lassoColor;
     
@@ -67,4 +69,5 @@ private:
     float currentFrameAnim = 0;
 
     CollisionManager& collisionManager;
+    GameManager& gameManager;
 };
