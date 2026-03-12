@@ -290,7 +290,7 @@ Quelle méthode de `std::vector` utiliser ?
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> comme on ne check la collision qu'avec le drnier segment du lasso, on appelle la fonction "CheckCollision" NombreDeJoueur * LongueurDeChaqueLasso (en l'occurence 4*120 = 480)
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
