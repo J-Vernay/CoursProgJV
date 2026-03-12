@@ -26,4 +26,6 @@ public:
 
     static void InitStatic();
     static void ShutStatic();
+    
+    std::vector<DinoVec2> listPosition = {};
 };

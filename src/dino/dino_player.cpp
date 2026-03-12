@@ -1,18 +1,34 @@
+#include <iostream>
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
 
 uint64_t DinoPlayer::s_texID = 0;
 
+
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     m_pos = {windowSize.x / 2, windowSize.y / 2};
     m_idxPlayer = idxPlayer;
+    // the iterator constructor can also be used to construct from arrays:
+    
+
+    // 2. Ajouter un point (un nouvel élément)
+    DinoVec2 position = {40, 10};
+
+    // Affichage
+    for (DinoVec2 n : listPosition) {
+        std::cout << n.x << "/" << n.y << '\n';
+    }
+
+    std::cout << '\n';
 }
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
 {
+    listPosition.push_back({m_pos.x, m_pos.y});
+    
     m_bPressedRun = false;
     m_bMoving = false;
 
