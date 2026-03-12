@@ -8,6 +8,7 @@
 #include <dino/dino_animal.h>
 
 #include <format>
+#include <algorithm>
 
 
 // Variables globales.
@@ -94,6 +95,7 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
 
+    /*
     // Collision joueur-joueur
     for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
         for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
@@ -108,12 +110,23 @@ void Dino_GameFrame(double timeSinceStart)
     for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
         for (size_t idxB = 0; idxB < g_Animals.size(); ++idxB)
             DinoEntity::ResolveCollision(g_Players[idxA], g_Animals[idxB]);
+*/
 
     for (DinoPlayer& player : g_Players)
         player.ApplyLimit(terrainMin, terrainMax);
 
     for (DinoAnimal& animal : g_Animals)
         animal.ApplyLimit(terrainMin, terrainMax);
+
+    // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
+    // car il y a un lien d'héritage.
+    std::vector<DinoEntity*> entities;
+    for (DinoPlayer& player : g_Players)
+        entities.emplace_back(&player);
+    for (DinoAnimal& animal : g_Animals)
+        entities.emplace_back(&animal);
+
+    std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     // Affichage
 
@@ -123,12 +136,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
 
-    for (DinoAnimal& animal : g_Animals)
-        animal.Draw(timeSinceStart);
-
-    // Dessin du dinosaure.
-    for (DinoPlayer& player : g_Players)
-        player.Draw(timeSinceStart);
+    for (DinoEntity* pEntity : entities)
+        pEntity->Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

@@ -21,7 +21,7 @@ private:
 public:
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
     void Shut();
 
     static void InitStatic();

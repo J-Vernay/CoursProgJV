@@ -20,7 +20,7 @@ private:
 public:
     void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
     void Shut();
 
     static void InitStatic();
