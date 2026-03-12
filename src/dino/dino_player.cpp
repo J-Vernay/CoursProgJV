@@ -1,7 +1,8 @@
+#include "dino_draw_utils.h"
 #include "dino_geometry.h"
 
 #include <dino/dino_player.h>
-#include <dino/dino_draw_utils.h>
+
 #include <dino/xdino.h>
 
 uint64_t DinoPlayer::s_texID = 0;
@@ -15,7 +16,6 @@ void DinoPlayer::Init(int idxPlayer)
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
 {
-
     m_bPressedRun = false;
     m_bMoving = false;
 
@@ -43,37 +43,11 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
         m_endHitAnim = timeSinceStart + 3;
     }
 
-    if (m_pastPositions.size() > 120) {
-        m_pastPositions.erase(m_pastPositions.begin());
-    }
-
-    m_lestlasso.clear();
-
-    if (m_pastPositions.size() >= 4) {
-        DinoVec2 c = m_pastPositions[m_pastPositions.size() - 2];
-        DinoVec2 d = m_pastPositions[m_pastPositions.size() - 1];
-        if (c.x != d.x || c.y != d.y) {
-            for (int i = 0; i < m_pastPositions.size() - 3; i++) {
-                DinoVec2 a = m_pastPositions[i];
-                DinoVec2 b = m_pastPositions[i + 1];
-                if (Dino_IntersectSegment(a, b, c, d)) {
-                    m_pastPositions.erase(m_pastPositions.begin() + i + 1, m_pastPositions.end() - 1);
-                }
-            }
-        }
-    }
-
-    m_pastPositions.push_back(m_pos);
-}
-
-void DinoPlayer::CheckPlayerIntersec(DinoPlayer& player1, DinoPlayer& player2)
-{                     
 }
 
 void DinoPlayer::ReactLimit()
 {
 }
-
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
@@ -83,24 +57,9 @@ void DinoPlayer::Draw(double timeSinceStart)
     XDino_DestroyVertexBuffer(vbufID);
 }
 
-void DinoPlayer::DrawLasso()
+DinoVec2 DinoPlayer::GetPos()
 {
-    DinoColor color;
-    if (m_idxPlayer == 0)
-        color = DinoColor_BLUE;
-    else if (m_idxPlayer == 1)
-        color = DinoColor_RED;
-    else if (m_idxPlayer == 2)
-        color = DinoColor_YELLOW;
-    else
-        color = DinoColor_GREEN;
-    std::vector<DinoVertex> trailvs;
-    Dino_GenVertices_Polyline(trailvs, m_pastPositions, 7, color);
-    uint64_t lvbufID = XDino_CreateVertexBuffer(trailvs.data(), trailvs.size(), "Dino");
-
-    XDino_Draw(lvbufID, 1);
-    XDino_DestroyVertexBuffer(lvbufID);
-
+    return m_pos;
 }
 
 void DinoPlayer::Shut()
@@ -139,7 +98,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;

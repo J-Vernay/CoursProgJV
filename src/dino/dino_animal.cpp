@@ -12,7 +12,7 @@ void DinoAnimal::Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos)
 
 void DinoAnimal::Update(double timeSinceStart, float deltaTime)
 {
-    constexpr float SPEED = 150; // px/s
+    constexpr float SPEED = 40; // px/s
     m_pos.x += m_dir.x * SPEED * deltaTime;
     m_pos.y += m_dir.y * SPEED * deltaTime;
 }

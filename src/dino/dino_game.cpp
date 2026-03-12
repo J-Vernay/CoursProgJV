@@ -1,22 +1,23 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include <algorithm>
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 #include <dino/dino_animal.h>
+#include <dino/dino_lasso.h>
 
 #include <format>
+#include <algorithm>
 
 
 // Variables globales.
 double g_lastTime = 0;
 
-
 std::vector<DinoPlayer> g_Players;
 DinoTerrain g_Terrain;
+std::vector<DinoLasso> g_Lassos;
 
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
@@ -43,13 +44,19 @@ void Dino_GameInit()
     g_Players[2].Init(2);
     g_Players[3].Init(3);
 
+    g_Lassos.resize(4);
+    g_Lassos[0].Init(DinoColor_BLUE);
+    g_Lassos[1].Init(DinoColor_RED);
+    g_Lassos[2].Init(DinoColor_YELLOW);
+    g_Lassos[3].Init(DinoColor_GREEN);
+
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
 
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Antoine BOULANGER", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
 
@@ -82,9 +89,9 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
-    if ((timeSinceStart > g_timeSpawnAnimal) && g_Animals.size() < 10) {
+    if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
-        auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
+        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
@@ -96,53 +103,45 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
 
-    // Collision joueur-joueur
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Players[idxB]);
-
-    // Collision animal-animal
-    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
-
-    // Collision joueur-animal
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = 0; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Animals[idxB]);
-
-    for (DinoPlayer& player : g_Players)
-        player.ApplyLimit(terrainMin, terrainMax);
-
-    for (DinoAnimal& animal : g_Animals)
-        animal.ApplyLimit(terrainMin, terrainMax);
-
+    // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
+    // car il y a un lien d'héritage.
     std::vector<DinoEntity*> entities;
     for (DinoPlayer& player : g_Players)
         entities.emplace_back(&player);
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
 
+    for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+            DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+
+    for (DinoEntity* pEntity : entities)
+        pEntity->ApplyLimit(terrainMin, terrainMax);
+
+    if (g_Lassos.size() != g_Players.size())
+        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+    for (int i = 0; i < g_Lassos.size(); ++i)
+        g_Lassos[i].Update(g_Players[i].GetPos());
+
+    for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
+            DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
+
+    // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    g_Terrain.Draw(timeSinceStart);
+    g_Terrain.Draw();
 
-    for (DinoPlayer& player : g_Players)
-        player.DrawLasso();
+    for (DinoLasso& lasso : g_Lassos)
+        lasso.Draw();
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
-
-    // for (DinoAnimal& animal : g_Animals)
-    //     animal.Draw(timeSinceStart);
-    //
-    // // Dessin du dinosaure.
-    // for (DinoPlayer& player : g_Players)
-    //     player.Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
