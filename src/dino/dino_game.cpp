@@ -89,6 +89,13 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
+    // Purger les animaux qui sont morts.
+    // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
+    // Il faut ensuite appeler .erase() pour enlever les éléments.
+    auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
+    g_Animals.erase(it, g_Animals.end());
+
+    // Spawner un animal si besoin.
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
         EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
@@ -100,6 +107,7 @@ void Dino_GameFrame(double timeSinceStart)
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
 
+    // Update les animaux.
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
 

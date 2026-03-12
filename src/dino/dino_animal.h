@@ -10,6 +10,7 @@ private:
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
     double m_spawnTime = 0;
+    bool m_dead = false;
 
     static uint64_t s_texID;
 
@@ -24,6 +25,7 @@ public:
     void Draw(double timeSinceStart) override;
     void Shut();
 
+    static bool IsDead(DinoAnimal& animal);
     static void InitStatic();
     static void ShutStatic();
 };

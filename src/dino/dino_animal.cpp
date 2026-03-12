@@ -24,7 +24,12 @@ void DinoAnimal::ReactLimit()
 
 void DinoAnimal::ReactLoop(double timeSinceStart)
 {
+    m_dead = true;
+}
 
+bool DinoAnimal::IsDead(DinoAnimal& animal)
+{
+    return animal.m_dead;
 }
 
 
