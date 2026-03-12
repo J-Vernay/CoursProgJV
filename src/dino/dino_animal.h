@@ -1,24 +1,26 @@
 #pragma once
 
 #include <dino/xdino.h>
+#include <dino/dino_entity.h>
 #include <dino/dino_draw_utils.h>
 
 
-class DinoAnimal {
-    DinoVec2 m_pos = {};
+class DinoAnimal : public DinoEntity {
+private:
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
-    float m_timer = {};
+    double m_spawnTime = 0;
 
     static uint64_t s_texID;
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
+    void ReactLimit() override;
+
 public:
-    void Init(EAnimalKind animal, DinoVec2 pos);
+    void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
-    void ApplyLimit(DinoVec2 min, DinoVec2 max);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
     void Shut();
 
     static void InitStatic();

@@ -41,10 +41,16 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     }
 }
 
+void DinoPlayer::ReactLimit()
+{
+}
+
+
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, s_texID, m_pos);
+    DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
+    XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
 }
 

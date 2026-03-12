@@ -1,11 +1,11 @@
 #pragma once
 
+#include "dino_entity.h"
+
 #include <dino/xdino.h>
 
-// Hello Corentin
-
-class DinoPlayer {
-    DinoVec2 m_pos = {};
+class DinoPlayer : public DinoEntity {
+private:
     bool m_bLeft = false;
     double m_endHitAnim = 0;
     bool m_bMoving = false;
@@ -16,10 +16,12 @@ class DinoPlayer {
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
+    void ReactLimit() override;
+
 public:
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
     void Shut();
 
     static void InitStatic();
