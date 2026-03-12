@@ -95,29 +95,6 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
 
-    /*
-    // Collision joueur-joueur
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Players[idxB]);
-
-    // Collision animal-animal
-    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
-
-    // Collision joueur-animal
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = 0; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Animals[idxB]);
-*/
-
-    for (DinoPlayer& player : g_Players)
-        player.ApplyLimit(terrainMin, terrainMax);
-
-    for (DinoAnimal& animal : g_Animals)
-        animal.ApplyLimit(terrainMin, terrainMax);
-
     // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
     // car il y a un lien d'héritage.
     std::vector<DinoEntity*> entities;
@@ -125,6 +102,13 @@ void Dino_GameFrame(double timeSinceStart)
         entities.emplace_back(&player);
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
+
+    for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+            DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+
+    for (DinoEntity* pEntity : entities)
+        pEntity->ApplyLimit(terrainMin, terrainMax);
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
@@ -135,6 +119,9 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_SetClearColor(CLEAR_COLOR);
 
     g_Terrain.Draw();
+
+    for (DinoPlayer& player : g_Players)
+        player.DrawLasso();
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
