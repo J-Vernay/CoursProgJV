@@ -1,3 +1,5 @@
+#include "dino_draw_utils.h"
+
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
@@ -39,6 +41,11 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     if (gamepad.btn_left) {
         m_endHitAnim = timeSinceStart + 3;
     }
+
+    m_lassoHistory.push_back({m_pos, timeSinceStart});
+
+    while (!m_lassoHistory.empty() && (timeSinceStart - m_lassoHistory.front().t) > m_lassoMaxTime)
+        m_lassoHistory.erase(m_lassoHistory.begin());
 }
 
 void DinoPlayer::ReactLimit()
@@ -52,6 +59,49 @@ void DinoPlayer::Draw(double timeSinceStart)
     DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
     XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
+}
+
+void DinoPlayer::DrawLasso()
+{
+    DinoColor color;
+    switch (m_idxPlayer) {
+    case 0: color = DinoColor_BLUE;
+        break;
+    case 1: color = DinoColor_RED;
+        break;
+    case 2: color = DinoColor_YELLOW;
+        break;
+    case 3: color = DinoColor_GREEN;
+        break;
+    default: color = DinoColor_WHITE;
+    }
+
+    if (!m_lassoHistory.empty()) {
+        std::vector<DinoVec2> points;
+        points.reserve(m_lassoHistory.size());
+        for (auto const& p : m_lassoHistory)
+            points.push_back(p.pos);
+
+        if (points.size() >= 2) {
+            std::vector<DinoVertex> vsLasso;
+            Dino_GenVertices_Polyline(vsLasso, points, 4, color);
+            Dino_GenVertices_Polyline(vsLasso, points, 4, color);
+            uint64_t vbufLasso = XDino_CreateVertexBuffer(vsLasso.data(), vsLasso.size(), "Lasso");
+            XDino_Draw(vbufLasso, XDino_TEXID_WHITE, {0, 0});
+            XDino_DestroyVertexBuffer(vbufLasso);
+        }
+    }
+}
+
+void DinoPlayer::UpdateLasso(double timeSinceStart, float deltaTime)
+{
+    m_lassoPoints.push_back(m_pos);
+
+    float maxHistoryTime = 2.0f;
+    int maxPoints = (int)(maxHistoryTime / deltaTime);
+    if (m_lassoPoints.size() > maxPoints) {
+        m_lassoPoints.erase(m_lassoPoints.begin(), m_lassoPoints.end() - maxPoints);
+    }
 }
 
 void DinoPlayer::Shut()

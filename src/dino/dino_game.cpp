@@ -134,6 +134,10 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
 
+    for (DinoPlayer& player : g_Players) {
+        player.DrawLasso();
+    }
+
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
 
