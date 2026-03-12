@@ -1,3 +1,5 @@
+#include "dino_draw_utils.h"
+
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
@@ -16,7 +18,7 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     m_bPressedRun = false;
     m_bMoving = false;
 
-    constexpr float DINO_SPEED = 100.f; // Nombre de pixels parcourus en une seconde.
+    constexpr float DINO_SPEED = 100.f; // Nombre de pixels parcourus en une seconde
 
     float speed = DINO_SPEED;
     if (gamepad.btn_right) {
@@ -45,11 +47,38 @@ void DinoPlayer::ReactLimit()
 {
 }
 
+void DinoPlayer::UpdateLasso(DinoVec2 newPos)
+{
+    constexpr float DINO_LASSO_SIZE = 200.f;
+    if (m_lassoPos.size() > DINO_LASSO_SIZE) {
+        m_lassoPos.erase(m_lassoPos.begin());
+    }
+    m_lassoPos.emplace_back(newPos);
+    DrawLasso();
+}
+
+void DinoPlayer::DrawLasso()
+{
+    uint64_t vbufID = GenerateLassoVertexBuffer();
+    XDino_Draw(vbufID, XDino_TEXID_WHITE);
+    XDino_DestroyVertexBuffer(vbufID);
+}
+
+
+uint64_t DinoPlayer::GenerateLassoVertexBuffer()
+{
+    constexpr float DINO_LASSO_WIDTH = 10.f;
+    std::vector<DinoVertex> vs;
+    Dino_GenVertices_Polyline(vs, m_lassoPos, DINO_LASSO_WIDTH, DinoColor_WHITE);
+    return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Lasso");
+}
+
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
     DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
+    UpdateLasso(m_pos);
     XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
 }
@@ -90,7 +119,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
