@@ -31,6 +31,15 @@ double g_timeSpawnAnimal = 0;
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
 
+// TIMER
+double g_gameStartTime = 0;
+constexpr double GAME_DURATION = 60.0;
+
+uint64_t g_vbufID_timer = 0;
+DinoVec2 g_textSize_timer;
+int g_lastTimerValue = -1;
+
+
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
@@ -63,6 +72,8 @@ void Dino_GameInit()
         g_PlayerLassos[i].lasso = &g_Lassos[i];
     }
 
+    g_gameStartTime = 0;
+
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
 
@@ -83,6 +94,32 @@ void Dino_GameFrame(double timeSinceStart)
     g_lastTime = timeSinceStart;
 
     XDino_SetRenderSize(RENDER_SIZE);
+
+    // TIMER
+    if (g_gameStartTime == 0)
+        g_gameStartTime = timeSinceStart;
+
+    double elapsed = timeSinceStart - g_gameStartTime;
+    double timeLeft = GAME_DURATION - elapsed;
+
+    if (timeLeft < 0)
+        timeLeft = 0;
+
+    int timerValue = (int)timeLeft;
+
+    if (timerValue != g_lastTimerValue) {
+        g_lastTimerValue = timerValue;
+
+        if (g_vbufID_timer != 0)
+            XDino_DestroyVertexBuffer(g_vbufID_timer);
+
+        std::string text = std::format("{:02}", timerValue);
+
+        std::vector<DinoVertex> vs;
+        g_textSize_timer = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
+
+        g_vbufID_timer = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Timer");
+    }
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
@@ -117,7 +154,10 @@ void Dino_GameFrame(double timeSinceStart)
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
         animal.Init(timeSinceStart, kind, {x, y});
-        g_timeSpawnAnimal = timeSinceStart + 1;
+
+        // Spawn plus rapide quand le chrono descend
+        double spawnInterval = 0.3 + (timeLeft / GAME_DURATION) * 0.7;
+        g_timeSpawnAnimal = timeSinceStart + spawnInterval;
     }
 
     // Update les animaux.
@@ -141,6 +181,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (g_Lassos.size() != g_Players.size())
         DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+
     for (int i = 0; i < g_Lassos.size(); ++i)
         g_Lassos[i].Update(g_Players[i].GetPos());
 
@@ -175,6 +216,13 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
+
+    // TIMER DRAW
+    {
+        float tx = (RENDER_SIZE.x - g_textSize_timer.x * 2) / 2;
+        float ty = 10;
+        XDino_Draw(g_vbufID_timer, XDino_TEXID_FONT, {tx, ty}, 2);
+    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -219,6 +267,9 @@ void Dino_GameShut()
 
     DinoPlayer::ShutStatic();
     DinoAnimal::ShutStatic();
+
+    if (g_vbufID_timer != 0)
+        XDino_DestroyVertexBuffer(g_vbufID_timer);
 
     XDino_DestroyVertexBuffer(vbufID_prenom);
 }
