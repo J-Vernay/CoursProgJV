@@ -3,23 +3,28 @@
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
 #include <dino/dino_terrain.h>
+#include <dino/dino_entity.h>
 
-class DinoAnimal {
+class DinoAnimal : public DinoEntity {
 
-    DinoVec2 m_pos = {};
     DinoVec2 m_dir = {};
 
     EAnimalKind m_kind = {};
 
     double m_timeAtBirth = 0;
+    bool m_dead = false;
 
     static uint64_t s_texID;
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
+    void ReactLimit(bool xChanged) override;
+    void ReactLoop(double timeSinceStart);
+    bool IsDead(DinoAnimal& animal);
+
 public:
     void Init(EAnimalKind animalKind, DinoVec2 pos, double timeSinceStart);
-    void Update(float deltaTime, DinoTerrain terrain);
+    void Update(float deltaTime);
     void Draw(double timeSinceStart);
 
     static void InitTexture();

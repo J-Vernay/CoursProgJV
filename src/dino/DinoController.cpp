@@ -1,8 +1,9 @@
-#include "dino_terrain.h"
+#include "dino_draw_utils.h"
 
 #include <algorithm>
 #include <dino/xdino.h>
 #include <dino/DinoController.h>
+#include <dino/dino_geometry.h>
 
 // Constantes.
 constexpr float DINO_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
@@ -23,11 +24,24 @@ constexpr DinoVec2 UPPER_RIGHT = {24, 0};
 constexpr DinoVec2 LOWER_LEFT = {0, 24};
 constexpr DinoVec2 LOWER_RIGHT = {24, 24};
 
+uint64_t DinoControllerFields::s_texID = 0;
+
 void DinoControllerFields::Init(int playerCount)
 {
+    playerCount;
+
     DinoVec2 windowSize = {480, 360};
-    this->m_dinoPos = {windowSize.x / 2, windowSize.y / 2};
+    this->m_pos = {windowSize.x / 2, windowSize.y / 2};
     this->m_dinoColor = playerCount;
+
+    // if (playerCount == 0)
+    //     m_lassoColor = DinoColor{77, 146, 188, 255}; // BLUE
+    // else if (playerCount == 1)
+    //     m_lassoColor = DinoColor{188, 77, 79, 255}; // RED
+    // else if (playerCount == 2)
+    //     m_lassoColor = DinoColor{253, 199, 96, 255}; // YELLOW
+    // else if (playerCount == 3)
+    //     m_lassoColor = DinoColor{159, 188, 77, 255}; // GREEN
 }
 
 // void DinoControllerFields::Shut()
@@ -37,35 +51,48 @@ void DinoControllerFields::Init(int playerCount)
 
 void DinoControllerFields::DinoMovement(DinoGamepad gamepad, float deltaTime)
 {
-    if (!this->m_dinoCanTakeDamage)
+    m_gamepad = gamepad;
+
+    if (this->m_dinoTakeDamage)
         return;
 
     // Prevent Diagonal speed boost
-    if (gamepad.stick_left_x != 0.0f && gamepad.stick_left_y != 0.0f)
+    if (m_gamepad.stick_left_x != 0.0f && m_gamepad.stick_left_y != 0.0f)
         this->m_dinoCurrentSpeed = 0.75f * DINO_SPEED;
     else
         this->m_dinoCurrentSpeed = DINO_SPEED;
 
     DinoVec2 dinoPosDelta = {0, 0};
-    dinoPosDelta.x += gamepad.stick_left_x * (this->m_dinoCurrentSpeed + gamepad.btn_right * DINO_RUN_SPEED) *
+    dinoPosDelta.x += m_gamepad.stick_left_x * (this->m_dinoCurrentSpeed + m_gamepad.btn_right * DINO_RUN_SPEED) *
         deltaTime;
-    dinoPosDelta.y += gamepad.stick_left_y * (this->m_dinoCurrentSpeed + gamepad.btn_right * DINO_RUN_SPEED) *
+    dinoPosDelta.y += m_gamepad.stick_left_y * (this->m_dinoCurrentSpeed + m_gamepad.btn_right * DINO_RUN_SPEED) *
         deltaTime;
 
-    m_dinoPos.x += dinoPosDelta.x;
-    m_dinoPos.y += dinoPosDelta.y;
+    m_pos.x += dinoPosDelta.x;
+    m_pos.y += dinoPosDelta.y;
+
+    // m_lasso.push_back(m_pos);
+    //
+    // if (m_lasso.size() >= 120) {
+    //     m_lasso.erase(m_lasso.begin());
+    // }
+    //
+    // CheckForOwnLassoIntersections();
 }
 
-void DinoControllerFields::ApplyTerrainLimit(DinoTerrain terrain)
+void DinoControllerFields::ReactLimit(bool xChanged)
 {
-    DinoVec2 topLeftCorner = terrain.GetTopLeft();
-    DinoVec2 bottomRightCorner = terrain.GetBottomRight();
-    this->m_dinoPos.x = std::clamp(this->m_dinoPos.x, topLeftCorner.x, bottomRightCorner.x);
-    this->m_dinoPos.y = std::clamp(this->m_dinoPos.y, topLeftCorner.y, bottomRightCorner.y);
 }
 
+void DinoControllerFields::ReactLoop(double timeSinceStart)
+{
+    if (!m_dinoTakeDamage) {
+        this->m_dinoDamageAnimTimer = timeSinceStart + ANIM_HURT_LEN;
+        m_dinoTakeDamage = true;
+    }
+}
 
-uint64_t DinoControllerFields::GenDinoVertexBuffer(DinoGamepad gamepad, float deltaTime)
+uint64_t DinoControllerFields::GenDinoVertexBuffer(float timeSinceStart)
 {
     // Choosing Animation based on current player behaviour
     int currAnimLen;
@@ -73,28 +100,21 @@ uint64_t DinoControllerFields::GenDinoVertexBuffer(DinoGamepad gamepad, float de
     int firstFrameOfAnim;
 
     // Temp condition to test damage
-    if (this->m_dinoCanTakeDamage && gamepad.btn_left || this->m_dinoDamageAnimTimer > 0.f) {
+    if (this->m_dinoTakeDamage) {
         currAnimLen = ANIM_HURT_LEN;
         firstFrameOfAnim = ANIM_IDLE_LEN + ANIM_WALK_LEN + 4;
         animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
 
-        if (this->m_dinoCanTakeDamage) {
-            this->m_dinoDamageAnimTimer = ANIM_HURT_LEN;
-            this->m_dinoCanTakeDamage = false;
-        }
-        else {
-            this->m_dinoDamageAnimTimer -= deltaTime;
-            if (this->m_dinoDamageAnimTimer <= 0.f) {
-                this->m_dinoCanTakeDamage = true;
-            }
+        if (this->m_dinoDamageAnimTimer <= timeSinceStart) {
+            this->m_dinoTakeDamage = false;
         }
     }
-    else if (gamepad.stick_left_x == 0.0f && gamepad.stick_left_y == 0.0f) {
+    else if (m_gamepad.stick_left_x == 0.0f && m_gamepad.stick_left_y == 0.0f) {
         currAnimLen = ANIM_IDLE_LEN;
         firstFrameOfAnim = 0;
         animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
     }
-    else if (gamepad.btn_right == 0.0f) {
+    else if (m_gamepad.btn_right == 0.0f) {
         currAnimLen = ANIM_WALK_LEN;
         firstFrameOfAnim = ANIM_IDLE_LEN;
         animationSpeed = DINO_ANIM_FRAMES_PER_SECOND;
@@ -110,14 +130,14 @@ uint64_t DinoControllerFields::GenDinoVertexBuffer(DinoGamepad gamepad, float de
         this->m_dinoAnimElapsed = 0.0f;
     }
     else {
-        this->m_dinoAnimElapsed += deltaTime;
+        this->m_dinoAnimElapsed += timeSinceStart;
     }
 
     // Displaying Dino
 
     // Only change facing orientation if player is moving
-    if (gamepad.stick_left_x != 0.0f) {
-        this->m_dinoGoingLeft = gamepad.stick_left_x <= 0.0f; // Changes facing orientation based on input
+    if (m_gamepad.stick_left_x != 0.0f) {
+        this->m_dinoGoingLeft = m_gamepad.stick_left_x <= 0.0f; // Changes facing orientation based on input
     }
 
     std::vector<DinoVertex> vs;
@@ -151,27 +171,74 @@ uint64_t DinoControllerFields::GenDinoVertexBuffer(DinoGamepad gamepad, float de
     return this->vbufID_dino;
 }
 
-void DinoControllerFields::DrawDino(DinoGamepad gamepad, float deltaTime, uint64_t texID_dino)
+void DinoControllerFields::Draw(double timeSinceStart)
 {
-    this->vbufID_dino = GenDinoVertexBuffer(gamepad, deltaTime);
+    this->vbufID_dino = GenDinoVertexBuffer(timeSinceStart);
     // -12 / -18 to move the position to the feet and not the corner of the texture
-    XDino_Draw(this->vbufID_dino, texID_dino, {this->m_dinoPos.x - 12, this->m_dinoPos.y - 18}, DINO_SCALE);
+    XDino_Draw(this->vbufID_dino, s_texID, {this->m_pos.x - 12, this->m_pos.y - 18}, DINO_SCALE);
     XDino_DestroyVertexBuffer(this->vbufID_dino);
 }
 
-void DinoControllerFields::ResolveCollision(DinoControllerFields& playerA, DinoControllerFields& playerB)
+// void DinoControllerFields::DrawLasso()
+// {
+//     std::vector<DinoVertex> vs;
+//     Dino_GenVertices_Polyline(vs, m_lasso, 5, m_lassoColor);
+//     vbufID_lasso = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
+//     XDino_Draw(vbufID_lasso, XDino_TEXID_WHITE);
+//     XDino_DestroyVertexBuffer(vbufID_lasso);
+// }
+//
+// void DinoControllerFields::CheckForOwnLassoIntersections()
+// {
+//     if (m_lasso.size() < 4)
+//         return;
+//
+//     DinoVec2 c = m_lasso[m_lasso.size() - 2];
+//     DinoVec2 d = m_lasso[m_lasso.size() - 1];
+//
+//     if (c.x == d.x && c.y == d.y)
+//         return;
+//
+//     for (int i = 0; i < m_lasso.size() - 3; i++) {
+//         DinoVec2 a = m_lasso[i];
+//         DinoVec2 b = m_lasso[i + 1];
+//         if (Dino_IntersectSegment(a, b, c, d)) {
+//             m_lasso.erase(m_lasso.begin() + i + 1, m_lasso.end() - 1);
+//             m_lassoLifeSpan = 2.f;
+//             break;
+//         }
+//     }
+// }
+//
+// void DinoControllerFields::CheckForOtherLassIntersections(DinoControllerFields& other)
+// {
+//     if (m_lasso.size() < 2 || other.m_lasso.size() < 2)
+//         return;
+//
+//     DinoVec2 a = m_lasso[m_lasso.size() - 2];
+//     DinoVec2 b = m_lasso[m_lasso.size() - 1];
+//
+//     if (a.x == b.x && a.y == b.y)
+//         return;
+//
+//     for (int i = 0; i < other.m_lasso.size() - 2; i++) {
+//         DinoVec2 c = other.m_lasso[i];
+//         DinoVec2 d = other.m_lasso[i + 1];
+//
+//         if (Dino_IntersectSegment(a, b, c, d)) {
+//             other.m_lasso.erase(other.m_lasso.begin(), other.m_lasso.begin() + i + 1);
+//             other.m_lassoLifeSpan = 2.f;
+//             break;
+//         }
+//     }
+// }
+
+void DinoControllerFields::InitTexture()
 {
-    DinoVec2& a = playerA.m_dinoPos;
-    DinoVec2& b = playerB.m_dinoPos;
-    float ab = sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
+    s_texID = XDino_CreateGpuTexture("dinosaurs.png");
+}
 
-    if (ab == 0 || ab >= 16)
-        return;
-
-    float dx = (16 - ab) / (2 * ab) * (b.x - a.x);
-    float dy = (16 - ab) / (2 * ab) * (b.y - a.y);
-    a.x -= dx;
-    a.y -= dy;
-    b.x += dx;
-    b.y += dy;
+void DinoControllerFields::ShutTexture()
+{
+    XDino_DestroyGpuTexture(s_texID);
 }

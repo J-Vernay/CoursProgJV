@@ -319,33 +319,40 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> on vérifie si la distance entre le centre des deux cercles est inférieur à la somme du rayon ce chaque cercle
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> on calcule la taille de l'overlap, et on déplace chaque cercle de la moitié de cette distance dans le sens opposé à
+> l'autre cercle. De cette manière les cercles s'éloigne jusqu'à ne se toucher plus qu'en un point.
+> Le calcul pour trouver cette distance nécessite de faire une division par la distance entre les cercles, ce qui fait
+> que le cas où les objets sont exactement à al même position n'est pas résoluble
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Il y a de la duplication de code car les joueurs et les animaux ne sont pas du même type, il faut donc gérer trois
+> cas, les joueurs entre-eux, les animaux entre-eux, et les joueurs avec les animaux.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> On peut utiliser de l'héritage pour n'utiliser qu'une seule fonction (présente dans la classe parente) pour gérer les
+> colissions des classes enfants (joueurs et animaux)
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Pour gérer différemment un point de logique commune on utilise du polymorphise. Cela permet aux classe enfant
+> d'implémenter leur propre comportement lors d'un appel de logique commun à tous les enfants
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> - ResolveCollision (simple héritage)
+> - ApplyLimit (polymorphisme)
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
@@ -385,7 +392,9 @@ Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets p
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Cela veut dire réserver une région de l'espace d'adresses pour qu'un programme puisse l'utiliser afin de stocker des
+> données
+> Le coût n'est pas normalement couteux, sauf à très grande échelle
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?

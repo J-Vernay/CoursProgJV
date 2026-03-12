@@ -30,26 +30,32 @@ void DinoAnimal::Init(EAnimalKind animalKind, DinoVec2 pos, double timeSinceStar
     m_timeAtBirth = timeSinceStart;
 }
 
-void DinoAnimal::Update(float deltaTime, DinoTerrain terrain)
+void DinoAnimal::Update(float deltaTime)
 {
     constexpr float SPEED = 75.f;
 
     m_pos.x += m_dir.x * SPEED * deltaTime;
     m_pos.y += m_dir.y * SPEED * deltaTime;
+}
 
-    DinoVec2 pos = m_pos;
-    DinoVec2 topLeftCorner = terrain.GetTopLeft();
-    DinoVec2 bottomRightCorner = terrain.GetBottomRight();
-    pos.x = std::clamp(pos.x, topLeftCorner.x, bottomRightCorner.x);
-    pos.y = std::clamp(pos.y, topLeftCorner.y, bottomRightCorner.y);
-
-    if (pos.x != m_pos.x) {
+void DinoAnimal::ReactLimit(bool xChanged)
+{
+    if (xChanged) {
         m_dir.x = -m_dir.x;
     }
-
-    if (pos.y != m_pos.y) {
+    else {
         m_dir.y = -m_dir.y;
     }
+}
+
+void DinoAnimal::ReactLoop(double timeSinceStart)
+{
+    m_dead = true;
+}
+
+bool DinoAnimal::IsDead(DinoAnimal& animal)
+{
+    return animal.m_dead;
 }
 
 void DinoAnimal::Draw(double timeSinceStart)

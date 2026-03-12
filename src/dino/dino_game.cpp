@@ -2,7 +2,9 @@
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
 #include "dino_animal.h"
+#include "dino_lasso.h"
 
+#include <algorithm>
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <map>
@@ -16,15 +18,14 @@ double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
 
-
-uint64_t vbufID_polyline;
-
 uint64_t vbufID_prenom;
 DinoVec2 textSize_Prenom;
 
 std::map<DinoGamepadIdx, DinoControllerFields> GamepadControllers;
 std::vector<DinoControllerFields*> g_players;
 uint64_t texID_dino;
+
+std::vector<DinoLasso> g_Lassos;
 
 DinoTerrain g_terrain;
 
@@ -57,20 +58,15 @@ void Dino_GameInit()
         playerCount++;
     }
 
-    // Préparation du drawcall de la polyline (zigzag en fond).
-    {
-        constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
-
-        std::vector<DinoVec2> polyline;
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
-        std::vector<DinoVertex> vs;
-        Dino_GenVertices_Polyline(vs, polyline, 100, POLYLINE_COLOR);
-        vbufID_polyline = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
-    }
+    g_Lassos.resize(g_players.size());
+    if (g_players.size() >= 1)
+        g_Lassos[0].Init(DinoColor_BLUE);
+    if (g_players.size() >= 2)
+        g_Lassos[1].Init(DinoColor_RED);
+    if (g_players.size() >= 3)
+        g_Lassos[2].Init(DinoColor_YELLOW);
+    if (g_players.size() >= 4)
+        g_Lassos[3].Init(DinoColor_GREEN);
 
     // Préparation du drawcall du nom en bas à droite
     {
@@ -86,6 +82,7 @@ void Dino_GameInit()
 
     // Preparing texture of animals
     DinoAnimal::InitTexture();
+    DinoControllerFields::InitTexture();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -105,15 +102,16 @@ void Dino_GameFrame(double timeSinceStart)
         DinoControllerFields& controller = GamepadControllers[gamepadIdx];
 
         controller.DinoMovement(gamepad, deltaTime);
-
-        for (int idxA = 0; idxA < g_players.size(); idxA++) {
-            for (int idxB = idxA + 1; idxB < g_players.size(); idxB++) {
-                DinoControllerFields::ResolveCollision(*g_players[idxA], *g_players[idxB]);
-            }
-        }
-
-        controller.ApplyTerrainLimit(g_terrain);
     }
+
+    // for (DinoControllerFields* playerA : g_players) {
+    //     for (DinoControllerFields* playerB : g_players) {
+    //         if (playerA == playerB)
+    //             continue;
+    //
+    //         playerA->CheckForOtherLassIntersections(*playerB);
+    //     }
+    // }
 
     // Managing animal logic
     if (timeSinceStart > g_timeSpawnAnimal) {
@@ -126,38 +124,82 @@ void Dino_GameFrame(double timeSinceStart)
         float y = XDino_RandomFloat(min.y, max.y);
 
         animal.Init(kind, {x, y}, timeSinceStart);
-        g_timeSpawnAnimal = timeSinceStart + 1;
+        g_timeSpawnAnimal = timeSinceStart + 100;
     }
     for (DinoAnimal& animal : g_Animals)
-        animal.Update(deltaTime, g_terrain);
+        animal.Update(deltaTime);
+
+    // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
+    // car il y a un lien d'héritage.
+    std::vector<DinoEntity*> entities;
+    for (DinoControllerFields* player : g_players)
+        entities.emplace_back(player);
+    for (DinoAnimal& animal : g_Animals)
+        entities.emplace_back(&animal);
+
+    for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+            DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+
+    for (DinoEntity* pEntity : entities)
+        pEntity->ApplyTerrainLimit(g_terrain);
+
+    if (g_Lassos.size() != g_players.size())
+        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+    for (int i = 0; i < g_Lassos.size(); ++i)
+        g_Lassos[i].Update(g_players[i]->GetPos());
+
+    for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
+            DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+
+    for (DinoLasso& lasso : g_Lassos)
+        for (DinoEntity* pEntity : entities)
+            if (lasso.WasInLoop(pEntity->GetPos()))
+                pEntity->ReactLoop(timeSinceStart);
+
+    std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
+
+    for (DinoControllerFields* player : g_players) {
+        player->ApplyTerrainLimit(g_terrain);
+    }
+
+    for (DinoAnimal& animal : g_Animals)
+        animal.ApplyTerrainLimit(g_terrain);
+
+    std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     // -- Affichage -- 
-    constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-    XDino_SetClearColor(CLEAR_COLOR);
 
     g_terrain.DrawBG();
     g_terrain.DrawTerrain();
     g_terrain.DrawFlwrs();
 
+    for (DinoLasso& lasso : g_Lassos)
+        lasso.Draw();
+
+    for (DinoEntity* pEntity : entities)
+        pEntity->Draw(timeSinceStart);
+
     // Dessin de la "polyligne"
     // XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
 
-    // Drawing Animals
-    for (DinoAnimal& animal : g_Animals)
-        animal.Draw(timeSinceStart);
-
-    // Drawing Dinos
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
-
-        controller.DrawDino(gamepad, deltaTime, texID_dino);
-    }
+    // // Drawing Animals
+    // for (DinoAnimal& animal : g_Animals)
+    //     animal.Draw(timeSinceStart);
+    //
+    // // Drawing Dinos
+    // for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
+    //
+    //     DinoGamepad gamepad{};
+    //     bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
+    //     if (!bSuccess)
+    //         continue;
+    //
+    //     DinoControllerFields& controller = GamepadControllers[gamepadIdx];
+    //
+    //     controller.Draw(deltaTime);
+    // }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -195,11 +237,11 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    XDino_DestroyVertexBuffer(vbufID_polyline);
     XDino_DestroyVertexBuffer(vbufID_prenom);
 
     XDino_DestroyGpuTexture(texID_dino);
     DinoAnimal::ShutTexture();
+    DinoControllerFields::ShutTexture();
 
     g_terrain.Shut();
 }
