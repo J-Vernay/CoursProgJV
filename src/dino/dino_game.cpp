@@ -6,6 +6,7 @@
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 #include <dino/dino_animal.h>
+#include <dino/dino_lasso.h>
 
 #include <format>
 #include <algorithm>
@@ -16,6 +17,7 @@ double g_lastTime = 0;
 
 std::vector<DinoPlayer> g_Players;
 DinoTerrain g_Terrain;
+std::vector<DinoLasso> g_Lassos;
 
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
@@ -41,6 +43,12 @@ void Dino_GameInit()
     g_Players[1].Init(1);
     g_Players[2].Init(2);
     g_Players[3].Init(3);
+
+    g_Lassos.resize(4);
+    g_Lassos[0].Init(DinoColor_BLUE);
+    g_Lassos[1].Init(DinoColor_RED);
+    g_Lassos[2].Init(DinoColor_YELLOW);
+    g_Lassos[3].Init(DinoColor_GREEN);
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
@@ -110,6 +118,11 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoEntity* pEntity : entities)
         pEntity->ApplyLimit(terrainMin, terrainMax);
 
+    if (g_Lassos.size() != g_Players.size())
+        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+    for (int i = 0; i < g_Lassos.size(); ++i)
+        g_Lassos[i].Update(g_Players[i].GetPos());
+
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     // Affichage
@@ -120,8 +133,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
 
-    for (DinoPlayer& player : g_Players)
-        player.DrawLasso();
+    for (DinoLasso& lasso : g_Lassos)
+        lasso.Draw();
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
