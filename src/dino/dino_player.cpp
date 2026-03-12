@@ -41,17 +41,10 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     }
 }
 
-void DinoPlayer::ApplyLimit(DinoVec2 posMin, DinoVec2 posMax)
+void DinoPlayer::ReactLimit()
 {
-    if (m_pos.x < posMin.x)
-        m_pos.x = posMin.x;
-    if (m_pos.x > posMax.x)
-        m_pos.x = posMax.x;
-    if (m_pos.y < posMin.y)
-        m_pos.y = posMin.y;
-    if (m_pos.y > posMax.y)
-        m_pos.y = posMax.y;
 }
+
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
