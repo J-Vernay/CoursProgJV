@@ -14,3 +14,23 @@ void DinoEntity::ResolveCollision(DinoEntity& entityA, DinoEntity& entityB)
     b.x += dx;
     b.y += dy;
 }
+
+void DinoEntity::ApplyLimit(DinoVec2 min, DinoVec2 max)
+{
+    DinoVec2 pos = m_pos;
+    if (pos.x < min.x)
+        pos.x = min.x;
+    if (pos.x > max.x)
+        pos.x = max.x;
+    if (pos.y < min.y)
+        pos.y = min.y;
+    if (pos.y > max.y)
+        pos.y = max.y;
+
+    if (pos.x != m_pos.x || pos.y != m_pos.y) {
+        m_pos = pos;
+        // Pour DinoPlayer: ne rien faire
+        // Pour DinoAnimal: changer la direction
+        ReactLimit();
+    }
+}
