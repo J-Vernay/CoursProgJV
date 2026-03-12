@@ -282,7 +282,7 @@ c) Implémentez la fonctionnalité F5.3 . Combien d'intersections de segments so
 Quelle méthode de `std::vector` utiliser ?
 
 > (119 × 118) / 2 = 7021 comparaisons par joueur
-× 4 joueurs = 28 084 comparaisons au total
+> × 4 joueurs = 28 084 comparaisons au total
 > C'est toujours la méthode std::vector::erase()
 
 d) Implémentez la fonctionnalité F5.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
@@ -290,7 +290,7 @@ interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> Si le point est a l'intérieur il va couper le contour du lasso  sinon le point est l'extérieur 
+> Si le point est a l'intérieur il va couper le contour du lasso sinon le point est l'extérieur
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
@@ -299,33 +299,50 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32go
+> 18 millaird d'octets sont adressables
+> On peut pas lire ou écrire partout, meme si en théorie on peut. On peut seulement sur les la mémoire que l'os
+> a allouée au programme
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Allouer de la mémoire veut dire qu'on réserve dans la ram des octets pour stocker de l'information.
+> relativement oui, il faut faire un appel de l'os pour trouver un bloc de mémoire assez grand pour stocker l'
+> information.
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> un type est une séquence d'octets, comment interpréter une variable
+> Un pointeur est une adresse mémoire en plus du type
+> réinterpréter un pointeur c'est le fait de lire les octets en mémoire mais avec un type différent
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> Dino color fait 12 octets (struc : 4, uint8_t rgba : 1 1 1 1 doc 4 et uint32_t rgba_t : 4 octets)
+> DinoVertex fait 32 octets ( Struc : 16 octets, dinovec2 8, uint16_t u v : 2 2, dinocolor : 4 octet)
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> Zone mémoire unique et collaspe (toutes les données sont a la chaine)
+> Comme les données sont collé, et comme on connait leur taille en mémoire, il suffit de prendre le début et de
+> décaller a chaque fois, ici on décale de 16 pour avoir l'élement suivant.
+> il faut que le type soit le meme sinon cela peut vite devenir compliquer pour avoir accès à l'élement position x dans
+> la mémoire
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Variable globale : Lors de la compilation l'OS va alouer de la mémoire dans la ram physique, cela est allouer avant
+> l'appel de la fonction main
+> de meme pour les variables locals elles sont alloué par l'os avant la fonction main, elles sont sous allouer dans le
+> stack
+> std::vector est un tableau dynamique, il est égallement alloué en mémoire via l'OS
+> il est alloué avant chaque variables local et globale et libéré en dernier
 
 ## 9. Notre propre implémentation de std::vector
 
