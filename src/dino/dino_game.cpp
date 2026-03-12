@@ -1,6 +1,7 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include <__msvc_ostream.hpp>
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
@@ -10,6 +11,7 @@
 
 #include <format>
 #include <algorithm>
+#include <iostream>
 
 
 // Variables globales.
@@ -21,9 +23,11 @@ std::vector<DinoLasso> g_Lassos;
 
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
+float g_spawnInterval = 1;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
+
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -56,7 +60,7 @@ void Dino_GameInit()
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Antoine BOULANGER", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
 
@@ -68,7 +72,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
-
+    g_spawnInterval -= (deltaTime/100) * 0.5;
+    
+    std::cout<<g_spawnInterval<<std::endl;
     XDino_SetRenderSize(RENDER_SIZE);
 
     // Gestion des entrées et mise à jour de la logique de jeu.
@@ -96,15 +102,15 @@ void Dino_GameFrame(double timeSinceStart)
     g_Animals.erase(it, g_Animals.end());
 
     // Spawner un animal si besoin.
-    if (timeSinceStart > g_timeSpawnAnimal) {
+    if ((timeSinceStart > g_timeSpawnAnimal)) {
         DinoAnimal& animal = g_Animals.emplace_back();
-        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+        auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
         animal.Init(timeSinceStart, kind, {x, y});
-        g_timeSpawnAnimal = timeSinceStart + 1;
+        g_timeSpawnAnimal = timeSinceStart + g_spawnInterval;
     }
 
     // Update les animaux.
@@ -148,7 +154,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    g_Terrain.Draw();
+    g_Terrain.Draw(timeSinceStart);
 
     for (DinoLasso& lasso : g_Lassos)
         lasso.Draw();
@@ -171,6 +177,16 @@ void Dino_GameFrame(double timeSinceStart)
         float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
         float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
         XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {tx, ty}, 2);
+    }
+
+    {
+        double time = (std::ceil(timeSinceStart * 100.0) / 100.0);
+        std::string text = std::to_string(time);
+        std::vector<DinoVertex> vs;
+        Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
+        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Time");
+        XDino_Draw(vbufID, XDino_TEXID_FONT, {RENDER_SIZE.x - 50, 0}, 2);
+        XDino_DestroyVertexBuffer(vbufID);
     }
 
 #if !XDINO_RELEASE
