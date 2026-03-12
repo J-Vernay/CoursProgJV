@@ -1,58 +1,28 @@
-﻿#pragma once
-#include <vector>
+#pragma once
+
+#include "dino_entity.h"
+
 #include <dino/xdino.h>
 
-struct Anim {
-    std::vector<int> posU;
-    int framesPerSecond;
-};
+class DinoPlayer : public DinoEntity {
+private:
+    bool m_bLeft = false;
+    double m_endHitAnim = 0;
+    bool m_bMoving = false;
+    bool m_bPressedRun = false;
+    int m_idxPlayer = 0;
 
-class DinoTerrain;
+    static uint64_t s_texID;
 
-class DinoPlayer {
+    uint64_t GenerateVertexBuffer(double timeSinceStart);
+
 public:
-    DinoPlayer();
-
-    void Init(const DinoTerrain& terrain, int colorV);
-    void Update(double timeSinceStart, float deltaTime, const DinoTerrain& terrain, const DinoGamepad& gamepad);
-    void Draw(double timeSinceStart) const;
+    void Init(int idxPlayer);
+    void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
+    void ApplyLimit(DinoVec2 posMin, DinoVec2 posMax);
+    void Draw(double timeSinceStart);
     void Shut();
 
-    DinoVec2 GetPosition() const
-    {
-        return pos;
-    }
-
-    bool IsRunning() const
-    {
-        return isRunning;
-    }
-
-    bool IsGoingLeft() const
-    {
-        return isGoingLeft;
-    }
-
-    void RepulseWith(DinoPlayer& other);
-
-private:
-    DinoVec2 pos;
-    float baseSpeed = 100.0f;
-    bool isGoingLeft = false;
-    bool isRunning = false;
-    bool isHit = false;
-
-    double hitEndTime = 0.0;
-    int currentV = 0;
-
-    uint64_t texID_dino = 0;
-
-    Anim idleAnim;
-    Anim walkAnim;
-    Anim runAnim;
-    Anim hitAnim;
-
-    Anim* currentAnim = nullptr;
-
-    static constexpr float spriteSize = 24;
+    static void InitStatic();
+    static void ShutStatic();
 };

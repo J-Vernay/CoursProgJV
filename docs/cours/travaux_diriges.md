@@ -322,7 +322,7 @@ f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> On peut dédupliquer la logique en utilisant de l'héritage.
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.

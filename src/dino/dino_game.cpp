@@ -3,106 +3,134 @@
 
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
-#include "dino/dino_player.h"
-#include "dino/dino_terrain.h"
-#include "dino/dino_animal.h"
-#include <map>
+#include <dino/dino_player.h>
+#include <dino/dino_terrain.h>
+#include <dino/dino_animal.h>
+
 #include <format>
-#include <iostream>
+
 
 // Variables globales.
-std::map<int, int> controllerToDino;
 double g_lastTime = 0;
 
-// Objet dinosaure
-std::vector<DinoPlayer> dinos(4);
+std::vector<DinoPlayer> g_Players;
+DinoTerrain g_Terrain;
 
-// Terrain
-DinoTerrain terrain;
+std::vector<DinoAnimal> g_Animals;
+double g_timeSpawnAnimal = 0;
 
-// Animaux
-DinoAnimals animals;
+uint64_t vbufID_prenom;
+DinoVec2 textSize_prenom;
+
+// Variable globale pour l'affichage de debug.
+int g_debugScroll = 0;
+
+constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
 void Dino_GameInit()
 {
-    /*
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);*/
-    DinoVec2 windowSize = {480.f, 360.f};
-    XDino_SetRenderSize(windowSize);
+    XDino_SetRenderSize(RENDER_SIZE);
 
-    // Initialiser le terrain
-    terrain.Init();
+    DinoPlayer::InitStatic();
+    DinoAnimal::InitStatic();
 
-    // Initialiser les dinosaures
-    std::vector<int> startV = {0, 24, 48, 72};
-    for (int i = 0; i < dinos.size(); ++i) {
-        dinos[i].Init(terrain, startV[i]);
+    g_Players.resize(4);
+    g_Players[0].Init(0);
+    g_Players[1].Init(1);
+    g_Players[2].Init(2);
+    g_Players[3].Init(3);
+
+    int idxSeason = XDino_RandomInt32(0, 3);
+    g_Terrain.Init();
+
+    // Préparation du drawcall du prénom
+    {
+        std::vector<DinoVertex> vs;
+        textSize_prenom = Dino_GenVertices_Text(vs, "Remi CHAUVIN", DinoColor_WHITE, DinoColor_GREY);
+        vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
 
-    // Assigner chaque contrôleur à un dino
-    int assigned = 0;
-    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL) {
-        DinoGamepad gp;
-        if (XDino_GetGamepad(idx, gp) && assigned < dinos.size()) {
-            controllerToDino[static_cast<int>(idx)] = assigned;
-            std::cout << "Controller " << static_cast<int>(idx)
-                << " assigned to Dino " << assigned << "\n";
-            ++assigned;
-        }
-    }
-
-    // Initialiser les animaux
-    animals.Init();
 }
 
 void Dino_GameFrame(double timeSinceStart)
 {
-    // Prendre en compte le temps qui passe
+    // Prendre en compte le temps qui passe.
+
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    // Update tous les dinosaures avec leur contrôleur assigné
-    for (const auto& [controllerIdx, dinoIdx] : controllerToDino) {
-        DinoGamepad gp{};
-        if (!XDino_GetGamepad(static_cast<DinoGamepadIdx>(controllerIdx), gp))
-            continue;
+    XDino_SetRenderSize(RENDER_SIZE);
 
-        dinos[dinoIdx].Update(timeSinceStart, deltaTime, terrain, gp);
+    // Gestion des entrées et mise à jour de la logique de jeu.
+
+    DinoGamepad gamepad{};
+    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
+        g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
+        g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
+        g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
+
+    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
+        g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
+
+    DinoVec2 terrainMin = g_Terrain.GetOrigin();
+    DinoVec2 terrainMax = {
+        g_Terrain.GetOrigin().x + g_Terrain.GetWidth(),
+        g_Terrain.GetOrigin().y + g_Terrain.GetHeight()
+    };
+
+    if (timeSinceStart > g_timeSpawnAnimal) {
+        DinoAnimal& animal = g_Animals.emplace_back();
+        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+
+        float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
+        float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
+
+        animal.Init(timeSinceStart, kind, {x, y});
+        g_timeSpawnAnimal = timeSinceStart + 1;
     }
 
-    // Spawn et update des animaux
-    animals.TrySpawn(timeSinceStart, terrain);
-    animals.Update(timeSinceStart, deltaTime, terrain);
+    for (DinoAnimal& animal : g_Animals)
+        animal.Update(timeSinceStart, deltaTime);
 
-    // Collision entre tous les dinos
-    for (int i = 0; i < dinos.size(); ++i) {
-        for (int j = i + 1; j < dinos.size(); ++j) {
-            dinos[i].RepulseWith(dinos[j]);
-        }
-    }
+    // Collision joueur-joueur
+    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_Players[idxA], g_Players[idxB]);
 
-    // Collision entre animaux
-    animals.RepulseAnimals();
+    // Collision animal-animal
+    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
 
-    // Collision entre animaux et dinos
+    // Collision joueur-animal
+    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+        for (size_t idxB = 0; idxB < g_Animals.size(); ++idxB)
+            DinoEntity::ResolveCollision(g_Players[idxA], g_Animals[idxB]);
+
+    for (DinoPlayer& player : g_Players)
+        player.ApplyLimit(terrainMin, terrainMax);
+
+    for (DinoAnimal& animal : g_Animals)
+        animal.ApplyLimit(terrainMin, terrainMax);
 
     // Affichage
+
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
+
     XDino_SetClearColor(CLEAR_COLOR);
-    terrain.Draw(timeSinceStart);
 
-    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    // DinoVec2 windowSize = XDino_GetWindowSize();
-    // XDino_SetRenderSize(windowSize);
-    DinoVec2 renderSize = XDino_GetRenderSize();
+    g_Terrain.Draw(timeSinceStart);
 
-    // Draw tous les animaux
-    animals.Draw(timeSinceStart);
-    // Draw tous les dinos
-    for (DinoPlayer& dino : dinos) {
-        dino.Draw(timeSinceStart);
-    }
+    for (DinoAnimal& animal : g_Animals)
+        animal.Draw(timeSinceStart);
+
+    // Dessin du dinosaure.
+    for (DinoPlayer& player : g_Players)
+        player.Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -114,19 +142,15 @@ void Dino_GameFrame(double timeSinceStart)
         XDino_DestroyVertexBuffer(vbufID);
     }
 
-    // Affichage du nom en bas à droite
+    // Affiche le prénom.
     {
-        std::string myName = "Chauvin Remi";
-        std::vector<DinoVertex> vs;
-        DinoVec2 textSize = Dino_GenVertices_Text(vs, myName, DinoColor_WHITE, DinoColor_GREY);
-        DinoVec2 translation = {renderSize.x - textSize.x * 2, renderSize.y - textSize.y * 2};
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "myName");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, translation, 2);
-        XDino_DestroyVertexBuffer(vbufID);
+        float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
+        float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
+        XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
 #if !XDINO_RELEASE
-    // Affichage des statistiques si on appuie sur SHIFT.
+    // Affichage des statistiques si on appuie sur CTRL.
     DinoGamepad keyboard;
     bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
     if (bKeyboardOk && keyboard.shoulder_left) {
@@ -142,9 +166,15 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    terrain.Shut();
-    for (DinoPlayer& dino : dinos) {
-        dino.Shut();
-    }
-    animals.Shut();
+    // For-range loop
+    for (DinoPlayer& player : g_Players)
+        player.Shut();
+    for (DinoAnimal& animal : g_Animals)
+        animal.Shut();
+    g_Terrain.Shut();
+
+    DinoPlayer::ShutStatic();
+    DinoAnimal::ShutStatic();
+
+    XDino_DestroyVertexBuffer(vbufID_prenom);
 }

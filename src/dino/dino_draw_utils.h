@@ -46,4 +46,19 @@ DinoVec2 Dino_GenVertices_Text(
 void Dino_GenVertices_Polyline(
     std::vector<DinoVertex>& out, std::vector<DinoVec2> const& points, float width, DinoColor color = DinoColor_WHITE
 );
+
+// À bouger dans vos fichiers dino_animal.cpp/dino_animal.h
+
+enum class EAnimalKind : int { Pig1, Pig2, Cow1, Cow2, Sheep1, Sheep2, Ostrich1, Ostrich2 };
+
+enum class EAnimalAnim : int { Up, Down, Left, Right };
+
+/// Produit une liste de sommets qui correspond à un animal animé.
+///
+/// @param out Destination dans laquelle sont ajoutés les sommets.
+/// @param idxAnimal Quel espèce d'animal afficher, entre 0 et 7.
+/// @param idxAnim Quelle animation jouer.
+void Dino_GenVertices_Animal(
+    std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time);
+
 /// @}

@@ -1,67 +1,27 @@
 #pragma once
-#include <vector>
-#include "xdino.h"
-#include "dino_terrain.h"
 
-enum class EAnimalKind : int {
-    Pig1,
-    Pig2,
-    Cow1,
-    Cow2,
-    Sheep1,
-    Sheep2,
-    Ostrich1,
-    Ostrich2
-};
+#include <dino/xdino.h>
+#include <dino/dino_entity.h>
+#include <dino/dino_draw_utils.h>
 
-enum class EAnimalAnim : int {
-    Up,
-    Down,
-    Left,
-    Right
-};
 
-/// Produit une liste de sommets qui correspond à un animal animé.
-void Dino_GenVertices_Animal(
-    std::vector<DinoVertex>& out,
-    EAnimalKind kind,
-    EAnimalAnim anim,
-    double time
-);
+class DinoAnimal : public DinoEntity {
+private:
+    DinoVec2 m_dir = {};
+    EAnimalKind m_kind = {};
+    double m_spawnTime = 0;
 
-struct Animal {
-    DinoVec2 pos;
-    DinoVec2 targetPos;
-    EAnimalKind kind;
-    EAnimalAnim anim;
+    static uint64_t s_texID;
 
-    double spawnTime;
-    float alpha = 0;
-};
+    uint64_t GenerateVertexBuffer(double timeSinceStart);
 
-class DinoAnimals {
 public:
-    void Init();
-
-    void TrySpawn(double time, const DinoTerrain& terrain);
-
-    void Update(double time, float deltaTime, const DinoTerrain& terrain);
-
-    void Draw(double time) const;
+    void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
+    void Update(double timeSinceStart, float deltaTime);
+    void ApplyLimit(DinoVec2 min, DinoVec2 max);
+    void Draw(double timeSinceStart);
     void Shut();
 
-    void RepulseAnimals();
-
-private:
-    std::vector<Animal> animals;
-
-    uint64_t animalsTex = 0;
-
-    double lastSpawnTime = 0;
-
-    static constexpr double ANIMAL_SPAWN_INTERVAL = 1;
-    static constexpr double SPAWN_FADE_TIME = 0.5;
-
-    static constexpr float SPRITE_SIZE = 32;
-    static constexpr int NUM_ANIMALS = 8;
+    static void InitStatic();
+    static void ShutStatic();
 };

@@ -4,7 +4,7 @@
 
 struct Flower {
     DinoVec2 pos;
-    int type; // 0, 1 ou 2 correspondants aux 3 fleurs
+    int type;
 };
 
 class DinoTerrain {
@@ -37,17 +37,19 @@ public:
 
 private:
     uint64_t texID_terrain = 0;
-    int season = 0; // 0..3
-    int biomeOffset = season * 80;
+    uint64_t terrainVbuf = 0;
+
+    int season = 0;
+    int biomeOffset = 0;
 
     int TILE_SIZE = 16;
     int TILES_X = 16;
     int TILES_Y = 12;
+
     DinoVec2 terrainOrigin = {112, 84};
 
     std::vector<Flower> flowers;
 
     void DrawOcean() const;
-    void DrawGround() const;
     void DrawFlowers() const;
 };
