@@ -12,6 +12,10 @@
 #include <algorithm>
 
 
+constexpr double SPAWNTIME_BEGIN = 1;
+constexpr double SPAWNTIME_END = 0.033;
+constexpr double CHRONO_INIT = 60;
+
 // Variables globales.
 double g_lastTime = 0;
 
@@ -20,7 +24,7 @@ DinoTerrain g_Terrain;
 std::vector<DinoLasso> g_Lassos;
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
-double g_chrono = 60;
+double g_chrono = CHRONO_INIT;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -106,7 +110,8 @@ void Dino_GameFrame(double timeSinceStart)
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
         animal.Init(timeSinceStart, kind, {x, y});
-        g_timeSpawnAnimal = timeSinceStart + 1;
+        double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono;
+        g_timeSpawnAnimal = timeSinceStart + spawnTime;
     }
 
     // Update les animaux.
