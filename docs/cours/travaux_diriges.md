@@ -297,7 +297,8 @@ interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> on calcule le nombre d'intersection entre le contour et le segment défini par "position qu'on sait a l'exterieur" et "position checkée"
+> si ce nombre d'intersection est pair (0 compris) la position checkée est a l'exterieur du contour, sinon a l'interieur
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
