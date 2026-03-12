@@ -83,7 +83,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
-        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+        auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
@@ -138,6 +138,14 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
+
+    for (int i = 0; i < g_Players.size(); i++) {
+        for (int j = 0; j < g_Players.size(); j++) {
+            if (&g_Players[i] != &g_Players[j]) {
+                g_Players[i].CheckLassoCollision(g_Players[j]);
+            }
+        }
+    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

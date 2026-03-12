@@ -285,7 +285,7 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> m_lassoPos.erase(m_lassoPos.begin());
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
@@ -307,13 +307,14 @@ a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
 > mon pc possede 32Go de ram en tout et dispose en moyenne sans programe trop gourmand de 16Go disponibles
->18 446 744 073 709 551 615 octets (2 exposant 64) sont adressables sur un processeur 64 bits
+> 18 446 744 073 709 551 615 octets (2 exposant 64) sont adressables sur un processeur 64 bits
 > on ne peut pas lire ni ecrire a des espaces memoires qui ne sont pas liés a des emplacements de ram physique
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> reserver un espace mémoire afin que la donée soit sauvgardée et qu'il ne soit plus considéré comme disponnible (on le malloc)
+> reserver un espace mémoire afin que la donée soit sauvgardée et qu'il ne soit plus considéré comme disponnible (on le
+> malloc)
 > non cette opération n'est pas couteuse
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
@@ -321,7 +322,8 @@ Que veut dire réinterpréter un pointeur ?
 
 > un type reprenente la facon dont l'ordinateur doit interpreter une sequence d'octets
 > un pointeur est une adresse memoire (dynamique) + un type (static)
-> cela signifie changer le type contenu dans un pointeur pour changer l'interpretation de la sequence d'octet qu'il contient
+> cela signifie changer le type contenu dans un pointeur pour changer l'interpretation de la sequence d'octet qu'il
+> contient
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
@@ -337,8 +339,10 @@ h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> les variables globales sont connues a la compilation, le fichier exe connait le nombre d'octets a allouer aux vairables globales => l'os va donc l'allouer avant d'apeler la fonction main
-> (stack) allouées par l'OS avant la fonction main, le compilateur va ensuite générer du code pour sous alouer les variables locales dans la stack
+> les variables globales sont connues a la compilation, le fichier exe connait le nombre d'octets a allouer aux
+> vairables globales => l'os va donc l'allouer avant d'apeler la fonction main
+> (stack) allouées par l'OS avant la fonction main, le compilateur va ensuite générer du code pour sous alouer les
+> variables locales dans la stack
 > taille dynamique => allocation memeoire par l'OS
 
 ## 9. Notre propre implémentation de std::vector

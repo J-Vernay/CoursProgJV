@@ -15,15 +15,18 @@ class DinoPlayer : public DinoEntity {
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
     uint64_t GenerateLassoVertexBuffer();
-    std::vector<DinoVec2> m_lassoPos;
 
     void ReactLimit() override;
 
 public:
+    std::vector<DinoVec2> m_lassoPos;
+    DinoVec2 previousPos;
+
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
     void Draw(double timeSinceStart) override;
     void UpdateLasso(DinoVec2 newPos);
+    void CheckLassoCollision(DinoPlayer& otherPlayer);
     void DrawLasso();
     void Shut();
 

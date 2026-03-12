@@ -1,4 +1,5 @@
 #include "dino_draw_utils.h"
+#include "dino_geometry.h"
 
 #include <dino/dino_player.h>
 
@@ -49,12 +50,43 @@ void DinoPlayer::ReactLimit()
 
 void DinoPlayer::UpdateLasso(DinoVec2 newPos)
 {
-    constexpr float DINO_LASSO_SIZE = 200.f;
+    constexpr size_t DINO_LASSO_SIZE = 200;
+
+    if (m_lassoPos.size() < 4) {
+        previousPos = m_pos;
+        m_lassoPos.emplace_back(newPos);
+        DrawLasso();
+        return;
+    }
+
     if (m_lassoPos.size() > DINO_LASSO_SIZE) {
         m_lassoPos.erase(m_lassoPos.begin());
     }
+
+    previousPos = m_lassoPos.back();
     m_lassoPos.emplace_back(newPos);
+
+    for (int i = static_cast<int>(m_lassoPos.size()) - 3; i > 0; i--) {
+        if (Dino_IntersectSegment(previousPos, newPos, m_lassoPos[i], m_lassoPos[i - 1])) {
+            m_lassoPos.erase(m_lassoPos.begin() + i, m_lassoPos.end() - 1);
+            break;
+        }
+    }
+
     DrawLasso();
+}
+
+void DinoPlayer::CheckLassoCollision(DinoPlayer& otherPlayer)
+{
+    for (int i = 1; i < static_cast<int>(otherPlayer.m_lassoPos.size()); i++) {
+        if (Dino_IntersectSegment(previousPos,
+                                  m_pos,
+                                  otherPlayer.m_lassoPos[i],
+                                  otherPlayer.m_lassoPos[i - 1])) {
+            otherPlayer.m_lassoPos.erase(otherPlayer.m_lassoPos.begin(), otherPlayer.m_lassoPos.begin() + i);
+            break;
+        }
+    }
 }
 
 void DinoPlayer::DrawLasso()
