@@ -1,3 +1,5 @@
+#include "dino_draw_utils.h"
+
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
@@ -39,12 +41,37 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     if (gamepad.btn_left) {
         m_endHitAnim = timeSinceStart + 3;
     }
+
+    constexpr float UPDATE_PER_SECOND = 60;
+    constexpr float TIME_LASSO = 2;
+    m_lasso.push_back(m_pos);
+    if (m_lasso.size() > TIME_LASSO * UPDATE_PER_SECOND)
+        m_lasso.erase(m_lasso.begin());
 }
 
 void DinoPlayer::ReactLimit()
 {
 }
 
+
+void DinoPlayer::DrawLasso()
+{
+    DinoColor color;
+    if (m_idxPlayer == 0)
+        color = DinoColor_BLUE;
+    else if (m_idxPlayer == 1)
+        color = DinoColor_RED;
+    else if (m_idxPlayer == 2)
+        color = DinoColor_YELLOW;
+    else
+        color = DinoColor_GREEN;
+
+    std::vector<DinoVertex> vs;
+    Dino_GenVertices_Polyline(vs, m_lasso, 5, color);
+    uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "lasso");
+    XDino_Draw(vbufID, XDino_TEXID_WHITE);
+    XDino_DestroyVertexBuffer(vbufID);
+}
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
