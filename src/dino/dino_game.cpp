@@ -18,9 +18,9 @@ double g_lastTime = 0;
 std::vector<DinoPlayer> g_Players;
 DinoTerrain g_Terrain;
 std::vector<DinoLasso> g_Lassos;
-
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
+double g_chrono = 60;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -93,6 +93,8 @@ void Dino_GameFrame(double timeSinceStart)
     // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
     // Il faut ensuite appeler .erase() pour enlever les éléments.
     auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
+    for (auto it2 = it; it2 < g_Animals.end(); ++it2)
+        it2->Shut();
     g_Animals.erase(it, g_Animals.end());
 
     // Spawner un animal si besoin.
@@ -142,6 +144,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
+    // Décrémenter le chronomètre.
+    g_chrono -= deltaTime;
+
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -163,6 +168,17 @@ void Dino_GameFrame(double timeSinceStart)
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
         uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
         XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
+        XDino_DestroyVertexBuffer(vbufID);
+    }
+
+    {
+        std::string text = std::format("{:.2f}", g_chrono);
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_TRANSPARENT);
+        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Chrono");
+        float tx = (RENDER_SIZE.x - textSize.x * 2) / 2;
+        float ty = 0;
+        XDino_Draw(vbufID, XDino_TEXID_FONT, {tx, ty}, 2);
         XDino_DestroyVertexBuffer(vbufID);
     }
 
