@@ -1,28 +1,23 @@
-#include "dino_terrain.h"
-
-#include <__msvc_ostream.hpp>
-#include <iostream>
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
 
-constexpr float DINO_SPEED = 150.f;
+uint64_t DinoPlayer::s_texID = 0;
 
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     m_pos = {windowSize.x / 2, windowSize.y / 2};
-    m_texID = XDino_CreateGpuTexture("dinosaurs.png");
     m_idxPlayer = idxPlayer;
 }
 
-void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad)
+void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
 {
     m_bPressedRun = false;
     m_bMoving = false;
 
-    float moveX;
-    float moveY;
+    constexpr float DINO_SPEED = 100.f; // Nombre de pixels parcourus en une seconde.
+
     float speed = DINO_SPEED;
     if (gamepad.btn_right) {
         speed = DINO_SPEED * 2;
@@ -31,33 +26,9 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terr
     if (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
         m_bMoving = true;
 
-    if ((m_pos.x > terrain.m_downRight.x) && gamepad.stick_left_x > 0) {
-        moveX = 0;
-    }
-    else if ((m_pos.x < terrain.m_topLeft.x) && gamepad.stick_left_x < 0) {
-        moveX = 0;
-    }
-    else {
-        moveX = gamepad.stick_left_x;
-    }
-
-    if ((m_pos.y > terrain.m_downRight.y) && gamepad.stick_left_y > 0) {
-        moveY = 0;
-    }
-    else if ((m_pos.y < terrain.m_topLeft.y) && gamepad.stick_left_y < 0) {
-        moveY = 0;
-    }
-    else {
-        moveY = gamepad.stick_left_y;
-    }
-
-    // if (m_pos.y > terrain.m_downRight.y && m_pos.y < terrain.m_topLeft.y) {
-    //     gamepad.stick_left_y = 0;
-    // }
-
     if (timeSinceStart >= m_endHitAnim) {
-        m_pos.x += moveX * speed * deltaTime;
-        m_pos.y += moveY * speed * deltaTime;
+        m_pos.x += gamepad.stick_left_x * speed * deltaTime;
+        m_pos.y += gamepad.stick_left_y * speed * deltaTime;
     }
 
     if (gamepad.stick_left_x < 0)
@@ -70,16 +41,28 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terr
     }
 }
 
-void DinoPlayer::Shut()
+void DinoPlayer::ApplyLimit(DinoVec2 posMin, DinoVec2 posMax)
 {
-    XDino_DestroyGpuTexture(m_texID);
+    if (m_pos.x < posMin.x)
+        m_pos.x = posMin.x;
+    if (m_pos.x > posMax.x)
+        m_pos.x = posMax.x;
+    if (m_pos.y < posMin.y)
+        m_pos.y = posMin.y;
+    if (m_pos.y > posMax.y)
+        m_pos.y = posMax.y;
 }
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, m_texID, m_pos);
+    DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
+    XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
+}
+
+void DinoPlayer::Shut()
+{
 }
 
 uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
@@ -114,7 +97,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
@@ -149,4 +132,14 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
     vs[5].u = umax;
     vs[5].v = vbase + 24;
     return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
+}
+
+void DinoPlayer::InitStatic()
+{
+    s_texID = XDino_CreateGpuTexture("dinosaurs.png");
+}
+
+void DinoPlayer::ShutStatic()
+{
+    XDino_DestroyGpuTexture(s_texID);
 }

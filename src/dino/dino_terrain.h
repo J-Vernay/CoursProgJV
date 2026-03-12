@@ -1,23 +1,22 @@
 #pragma once
-#include "xdino.h"
 
-#include <cstdint>
+#include <dino/xdino.h>
 
 class DinoTerrain {
-public :
-    int m_idxSeason;
-    DinoVec2 m_topLeft;
-    DinoVec2 m_downRight;
-    void Init(DinoVec2 rdrSize, int idx);
+public:
+    void Init(DinoVec2 rdrSize, int idxSeason);
     void Draw();
-    void Update(double timeSinceStart);
     void Shut();
 
-private :
-    void DrawFlower(std::vector<DinoVertex>& out, int idxSeason, int idxFlower, DinoVec2 pos);
-    void DrawFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 posTopLeft);
-    uint64_t CreateEgdes(int idxSeason, int idxAnim, DinoVec2 topLeft);
-    void CreateEdgeTiles(std::vector<DinoVertex>& out, int indexSeason, DinoVec2 topLeft, int idxAnim, int tx, int ty);
-    uint64_t m_vbufID;
-    uint64_t m_texID;
+    DinoVec2 GetTopLeft();
+    DinoVec2 GetBottomRight();
+
+private:
+    uint64_t m_vbufID = 0;
+    uint64_t m_texID = 0;
+    float m_dx = 0;
+    float m_dy = 0;
+
+    void GenFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 posTopLeft);
+    void GenFlower(std::vector<DinoVertex>& out, int idxSeason, int idxFlower, DinoVec2 pos);
 };
