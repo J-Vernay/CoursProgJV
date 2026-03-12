@@ -1,3 +1,5 @@
+#include "dino_geometry.h"
+
 #include <algorithm>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
@@ -5,9 +7,17 @@
 void DinoPlayer::Init(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
+
     m_pos = {-150 + windowSize.x / 2 + idxPlayer * 50, windowSize.y / 2};
     m_texID = XDino_CreateGpuTexture("dinosaurs.png");
     m_idxPlayer = idxPlayer;
+
+    {
+        m_anims.push_back({Idle, 0, 4, 8});
+        m_anims.push_back({Walk, 96, 6, 8});
+        m_anims.push_back({Hit, 336, 3, 8});
+        m_anims.push_back({Run, 432, 6, 16});
+    }
 }
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad)
@@ -40,10 +50,6 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terr
         m_currentAnim = Idle;
     }
 
-    if (gamepad.btn_left) {
-        m_endHitAnim = timeSinceStart + 3;
-    }
-
     if (timeSinceStart < m_endHitAnim) {
         m_currentAnim = Hit;
     }
@@ -54,9 +60,9 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terr
 
 }
 
-uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, anim current)
+uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
 {
-
+    anim current = Get_Current_Anim();
     int frame = int(timeSinceStart * current.Speed) % int(current.NbFrames);
 
     float U = current.Ubase + frame * 24;
@@ -90,12 +96,28 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart, anim current)
     }
 };
 
-void DinoPlayer::Draw(double timeSinceStart, anim currentAnim)
+anim DinoPlayer::Get_Current_Anim()
 {
-    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart, currentAnim);
+    for (auto a : m_anims) {
+        if (a.state == m_currentAnim)
+            return a;
+    }
+
+    return m_anims[0];
+}
+
+void DinoPlayer::Draw(double timeSinceStart)
+{
+    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
     XDino_Draw(vbufID, m_texID, {m_pos.x - 12, m_pos.y - 20});
     XDino_DestroyVertexBuffer(vbufID);
 }
+
+void DinoPlayer::ReactLoop(double timeSinceStart)
+{
+    m_endHitAnim = timeSinceStart + 3;
+}
+
 
 void DinoPlayer::Shut()
 {

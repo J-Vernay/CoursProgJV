@@ -294,12 +294,12 @@ L'appliquer dans la base de code.
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> L'accès protected
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> La fonction ApplyLimit
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
@@ -339,7 +339,7 @@ Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets p
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Cela signifie libérer un emplacement précis dans la mémoire afin de permettre le stockage d'une donnée
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
@@ -348,19 +348,22 @@ Que veut dire réinterpréter un pointeur ?
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> DinoColor : 4 octets (union dans uint32_t)
+> DinoVertex : 16 octets (8 + 2 + 2 + 4)
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> un tableau. En mémoire c'est sizeOf(type) * la size du tableau.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Les variables globales sont connues à la compilation, l'os va allouer cette zone avant d'appeler la fonction main.
+> Les variables locales (stack) allouée par l'os avant la fonction main
+> Les std::Vector ont une taille dynamique qui signifie une allocation mémoire via l'OS
 
 ## 8. Notre propre implémentation de std::vector
 

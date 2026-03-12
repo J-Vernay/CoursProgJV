@@ -9,9 +9,17 @@ void DinoAnimalSpawner::Init()
     m_texID = XDino_CreateGpuTexture("animals.png");
 }
 
-void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart)
+void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double chrono)
 {
-    if (timeSinceStart - m_timeSinceLastSpawn > 1) {
+    constexpr double SPAWNTIME_BEGIN = 1;
+    constexpr double SPAWNTIME_END = 0.033;
+    constexpr double CHRONO_INIT = 60;
+
+    double t = 1.0 - chrono / CHRONO_INIT;
+    t = std::clamp(t, 0.0, 1.0);
+
+    double spawnTime = SPAWNTIME_BEGIN + (SPAWNTIME_END - SPAWNTIME_BEGIN) * t;
+    if (timeSinceStart - m_timeSinceLastSpawn > spawnTime) {
         int animalIdx = XDino_RandomInt32(0, 7);
 
         m_animals.emplace_back();
@@ -22,7 +30,6 @@ void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart)
 
     for (auto& animal : m_animals) {
         animal.Update(deltaTime, timeSinceStart);
-        animal.Draw(timeSinceStart);
     }
 }
 
@@ -87,6 +94,17 @@ void DinoAnimal::Update(float deltaTime, double timeSinceStart)
     }
 
 }
+
+void DinoAnimal::ReactLoop(double timeSinceStart)
+{
+    m_dead = true;
+}
+
+bool DinoAnimal::IsDead(DinoAnimal& animal)
+{
+    return animal.m_dead;
+}
+
 
 void DinoAnimal::Draw(double timeSinceStart)
 {
@@ -161,6 +179,11 @@ uint64_t DinoAnimal::GenerateVertexBuffer(double timeSinceStart, float alpha)
         return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Animal");
 
     }
+
 };
+
+void DinoAnimal::Shut()
+{
+}
 
 #pragma endregion

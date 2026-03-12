@@ -14,3 +14,13 @@ void DinoEntity::ResolveCollision(DinoEntity& entityA, DinoEntity& entityB)
     b.x += dx;
     b.y += dy;
 }
+
+bool DinoEntity::CompareVerticalPos(DinoEntity* a, DinoEntity* b)
+{
+    return a->m_pos.y < b->m_pos.y;
+}
+
+DinoVec2 DinoEntity::GetPos()
+{
+    return m_pos;
+}
