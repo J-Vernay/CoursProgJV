@@ -22,6 +22,11 @@ void DinoAnimal::ReactLimit()
     m_dir = XDino_RandomUnitVec2();
 }
 
+void DinoAnimal::ReactLoop(double timeSinceStart)
+{
+
+}
+
 
 void DinoAnimal::Draw(double timeSinceStart)
 {

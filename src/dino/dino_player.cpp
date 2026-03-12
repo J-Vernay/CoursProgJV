@@ -38,15 +38,15 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
         m_bLeft = true;
     if (gamepad.stick_left_x > 0)
         m_bLeft = false;
-
-    if (gamepad.btn_left) {
-        m_endHitAnim = timeSinceStart + 3;
-    }
-
 }
 
 void DinoPlayer::ReactLimit()
 {
+}
+
+void DinoPlayer::ReactLoop(double timeSinceStart)
+{
+    m_endHitAnim = timeSinceStart + 3;
 }
 
 void DinoPlayer::Draw(double timeSinceStart)
@@ -55,11 +55,6 @@ void DinoPlayer::Draw(double timeSinceStart)
     DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
     XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
-}
-
-DinoVec2 DinoPlayer::GetPos()
-{
-    return m_pos;
 }
 
 void DinoPlayer::Shut()

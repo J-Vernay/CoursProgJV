@@ -20,6 +20,8 @@ void DinoLasso::Update(DinoVec2 pos)
     if (m_lasso.size() > TIME_LASSO * UPDATE_PER_SECOND)
         m_lasso.erase(m_lasso.begin());
 
+    m_loopLasso.clear();
+
     // 3. Détection d'une boucle ; juste besoin de tester le dernier segment ajouté.
     if (m_lasso.size() >= 4) {
         DinoVec2 c = m_lasso[m_lasso.size() - 2];
@@ -32,12 +34,31 @@ void DinoLasso::Update(DinoVec2 pos)
                     // Effacer le lasso du point B au point C (en gardant A et D relié)
                     // Il faut supprimer de i+1 (inclus) à size-2 (inclus)
                     // erase(first, last): first est inclus, last est exclus
+                    m_loopLasso.assign(m_lasso.begin() + i + 1, m_lasso.end() - 1);
                     m_lasso.erase(m_lasso.begin() + i + 1, m_lasso.end() - 1);
                     break;
                 }
             }
         }
     }
+}
+
+bool DinoLasso::WasInLoop(DinoVec2 pos)
+{
+    if (m_loopLasso.size() < 3)
+        return false;
+
+    DinoVec2 origin = {0, 0};
+
+    int nbCollisions = 0;
+    for (int i = 0; i < m_loopLasso.size(); ++i) {
+        DinoVec2 c = m_loopLasso[i];
+        DinoVec2 d = (i == m_loopLasso.size() - 1) ? m_loopLasso[0] : m_loopLasso[i + 1];
+        if (Dino_IntersectSegment(origin, pos, c, d))
+            nbCollisions += 1;
+    }
+
+    return (nbCollisions % 2) == 1;
 }
 
 void DinoLasso::Draw()
