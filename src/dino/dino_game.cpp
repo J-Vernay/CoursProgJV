@@ -82,7 +82,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
-        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+        auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
@@ -121,7 +121,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    g_Terrain.Draw();
+    g_Terrain.Draw(timeSinceStart);
 
     for (DinoAnimal& animal : g_Animals)
         animal.Draw(timeSinceStart);

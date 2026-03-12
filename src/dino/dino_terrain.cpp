@@ -5,6 +5,7 @@ constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
 
 void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
 {
+    m_idxSeason = idxSeason;
     m_dx = (rdrSize.x - TERRAIN_SIZE.x) / 2;
     m_dy = (rdrSize.y - TERRAIN_SIZE.y) / 2;
 
@@ -73,9 +74,13 @@ DinoVec2 DinoTerrain::GetBottomRight()
     return {m_dx + TERRAIN_SIZE.x, m_dy + TERRAIN_SIZE.y};
 }
 
-void DinoTerrain::Draw()
+void DinoTerrain::Draw(double timeSinceStart)
 {
+    int idxAnim = static_cast<int>(timeSinceStart * 2) % 4;
+    uint64_t vbufID = CreateEgdes(m_idxSeason, idxAnim, GetTopLeft());
     XDino_Draw(m_vbufID, m_texID);
+    XDino_Draw(vbufID, m_texID);
+    XDino_DestroyVertexBuffer(vbufID);
 }
 
 void DinoTerrain::Shut()
@@ -134,4 +139,60 @@ void DinoTerrain::GenFlower(std::vector<DinoVertex>& out, int idxSeason, int idx
     out[i + 5].pos = {pos.x + 16, pos.y + 16};
     out[i + 5].u = uBase + 16;
     out[i + 5].v = 16;
+}
+
+uint64_t DinoTerrain::CreateEgdes(int idxSeason, int idxAnim, DinoVec2 topLeft)
+{
+    std::vector<DinoVertex> vs;
+    for (int ty = 0; ty < TILE_COUNT.y; ty++) {
+        for (int tx = 0; tx < TILE_COUNT.x; tx++) {
+            if (tx != 0 && tx != TILE_COUNT.x - 1 &&
+                ty != 0 && ty != TILE_COUNT.y - 1) {
+                continue;
+            }
+            CreateEdgeTiles(vs, idxSeason, topLeft, idxAnim, tx, ty);
+        }
+    }
+    return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Edges");
+}
+
+void DinoTerrain::CreateEdgeTiles(std::vector<DinoVertex>& out, int indexSeason, DinoVec2 topLeft, int idxAnim, int tx,
+                                  int ty)
+{
+    int i = out.size();
+    out.resize(i + 6);
+
+    float x = topLeft.x + tx * 16.f;
+    float y = topLeft.y + ty * 16.f;
+
+    bool left = tx == 0;
+    bool right = tx == TILE_COUNT.x - 1;
+    bool top = ty == 0;
+    bool bottom = ty == TILE_COUNT.y - 1;
+
+    int u = left ? 0 : right ? 32 : 16;
+    int v = top ? 16 : bottom ? 48 : 32;
+
+    uint16_t uBase = indexSeason * 80;
+    uint16_t vBase = idxAnim * 48;
+
+    out[i].pos = {x, y};
+    out[i].u = uBase + u;
+    out[i].v = v + vBase;
+    out[i + 1].pos = {x + 16, y};
+    out[i + 1].u = uBase + u + 16;
+    out[i + 1].v = v + vBase;
+    out[i + 2].pos = {x, y + 16};
+    out[i + 2].u = uBase + u;
+    out[i + 2].v = v + 16 + vBase;
+    out[i + 3].pos = {x + 16, y};
+    out[i + 3].u = uBase + u + 16;
+    out[i + 3].v = v + vBase;
+    out[i + 4].pos = {x, y + 16};
+    out[i + 4].u = uBase + u;
+    out[i + 4].v = v + 16 + vBase;
+    out[i + 5].pos = {x + 16, y + 16};
+    out[i + 5].u = uBase + u + 16;
+    out[i + 5].v = v + 16 + vBase;
+
 }
