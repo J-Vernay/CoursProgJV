@@ -15,6 +15,11 @@ void DinoEntity::ResolveCollision(DinoEntity& entityA, DinoEntity& entityB)
     b.y += dy;
 }
 
+DinoVec2 DinoEntity::GetPos()
+{
+    return m_pos;
+}
+
 void DinoEntity::ApplyLimit(DinoVec2 min, DinoVec2 max)
 {
     DinoVec2 pos = m_pos;

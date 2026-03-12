@@ -16,6 +16,7 @@ private:
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
     void ReactLimit() override;
+    void ReactLoop(double timeSinceStart) override;
 
 public:
     void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);

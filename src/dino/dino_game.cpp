@@ -127,6 +127,11 @@ void Dino_GameFrame(double timeSinceStart)
         for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
             DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
 
+    for (DinoLasso& lasso : g_Lassos)
+        for (DinoEntity* pEntity : entities)
+            if (lasso.WasInLoop(pEntity->GetPos()))
+                pEntity->ReactLoop(timeSinceStart);
+
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     // Affichage
