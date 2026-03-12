@@ -13,6 +13,9 @@
 #include <algorithm>
 #include <iostream>
 
+constexpr double SPAWNTIME_BEGIN = 1;
+constexpr double SPAWNTIME_END = 0.033;
+constexpr double CHRONO_INIT = 60;
 
 // Variables globales.
 double g_lastTime = 0;
@@ -22,12 +25,13 @@ DinoTerrain g_Terrain;
 std::vector<DinoLasso> g_Lassos;
 
 std::vector<DinoAnimal> g_Animals;
-double g_timeSpawnAnimal = 0;
 float g_spawnInterval = 1;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
 
+double g_timeSpawnAnimal = 0;
+double g_chrono = CHRONO_INIT;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -74,7 +78,6 @@ void Dino_GameFrame(double timeSinceStart)
     g_lastTime = timeSinceStart;
     g_spawnInterval -= (deltaTime/100) * 0.5;
     
-    std::cout<<g_spawnInterval<<std::endl;
     XDino_SetRenderSize(RENDER_SIZE);
 
     // Gestion des entrées et mise à jour de la logique de jeu.
@@ -110,7 +113,8 @@ void Dino_GameFrame(double timeSinceStart)
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
         animal.Init(timeSinceStart, kind, {x, y});
-        g_timeSpawnAnimal = timeSinceStart + g_spawnInterval;
+        double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono;
+        g_timeSpawnAnimal = timeSinceStart + spawnTime;
     }
 
     // Update les animaux.
@@ -148,6 +152,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
+    g_chrono -= deltaTime;
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -180,12 +185,13 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     {
-        double time = (std::ceil(timeSinceStart * 100.0) / 100.0);
-        std::string text = std::to_string(time);
+        std::string text = std::format("{:.2f}", g_chrono);
         std::vector<DinoVertex> vs;
-        Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Time");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {RENDER_SIZE.x - 50, 0}, 2);
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_TRANSPARENT);
+        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Chrono");
+        float tx = (RENDER_SIZE.x - textSize.x * 2) / 2;
+        float ty = 0;
+        XDino_Draw(vbufID, XDino_TEXID_FONT, {tx, ty}, 2);
         XDino_DestroyVertexBuffer(vbufID);
     }
 
