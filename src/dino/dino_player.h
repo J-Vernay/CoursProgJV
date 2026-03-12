@@ -16,11 +16,12 @@ private:
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
+    void ReactLimit() override;
+
 public:
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
-    void ApplyLimit(DinoVec2 posMin, DinoVec2 posMax);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
     void Shut();
 
     static void InitStatic();

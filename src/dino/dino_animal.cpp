@@ -1,7 +1,4 @@
 #include <dino/dino_animal.h>
-#include <dino/dino_draw_utils.h>
-#include <cmath>
-#include <algorithm>
 
 uint64_t DinoAnimal::s_texID = 0;
 
@@ -15,38 +12,14 @@ void DinoAnimal::Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos)
 
 void DinoAnimal::Update(double timeSinceStart, float deltaTime)
 {
-    constexpr float SPEED = 30; // px/s
+    constexpr float SPEED = 40; // px/s
     m_pos.x += m_dir.x * SPEED * deltaTime;
     m_pos.y += m_dir.y * SPEED * deltaTime;
 }
 
-void DinoAnimal::ApplyLimit(DinoVec2 terrainMin, DinoVec2 terrainMax)
+void DinoAnimal::ReactLimit()
 {
-    constexpr float HALF_SPRITE = 32 / 2.0f;
-
-    bool bounced = false;
-
-    if (m_pos.x < terrainMin.x + HALF_SPRITE) {
-        m_pos.x = terrainMin.x + HALF_SPRITE;
-        bounced = true;
-    }
-    if (m_pos.x > terrainMax.x - HALF_SPRITE) {
-        m_pos.x = terrainMax.x - HALF_SPRITE;
-        bounced = true;
-    }
-    if (m_pos.y < terrainMin.y + HALF_SPRITE) {
-        m_pos.y = terrainMin.y + HALF_SPRITE;
-        bounced = true;
-    }
-    if (m_pos.y > terrainMax.y - HALF_SPRITE) {
-        m_pos.y = terrainMax.y - HALF_SPRITE;
-        bounced = true;
-    }
-
-    // Si on a touché un bord, on change la direction aléatoirement
-    if (bounced) {
-        m_dir = XDino_RandomUnitVec2();
-    }
+    m_dir = XDino_RandomUnitVec2();
 }
 
 

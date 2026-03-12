@@ -8,6 +8,7 @@
 #include <dino/dino_animal.h>
 
 #include <format>
+#include <algorithm>
 
 
 // Variables globales.
@@ -27,6 +28,7 @@ int g_debugScroll = 0;
 
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
+
 void Dino_GameInit()
 {
     XDino_SetRenderSize(RENDER_SIZE);
@@ -41,7 +43,7 @@ void Dino_GameInit()
     g_Players[3].Init(3);
 
     int idxSeason = XDino_RandomInt32(0, 3);
-    g_Terrain.Init();
+    g_Terrain.Init(RENDER_SIZE, idxSeason);
 
     // Préparation du drawcall du prénom
     {
@@ -76,11 +78,8 @@ void Dino_GameFrame(double timeSinceStart)
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
         g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
 
-    DinoVec2 terrainMin = g_Terrain.GetOrigin();
-    DinoVec2 terrainMax = {
-        g_Terrain.GetOrigin().x + g_Terrain.GetWidth(),
-        g_Terrain.GetOrigin().y + g_Terrain.GetHeight()
-    };
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
@@ -117,20 +116,26 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals)
         animal.ApplyLimit(terrainMin, terrainMax);
 
+    // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
+    // car il y a un lien d'héritage.
+    std::vector<DinoEntity*> entities;
+    for (DinoPlayer& player : g_Players)
+        entities.emplace_back(&player);
+    for (DinoAnimal& animal : g_Animals)
+        entities.emplace_back(&animal);
+
+    std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
+
     // Affichage
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    g_Terrain.Draw(timeSinceStart);
+    g_Terrain.Draw();
 
-    for (DinoAnimal& animal : g_Animals)
-        animal.Draw(timeSinceStart);
-
-    // Dessin du dinosaure.
-    for (DinoPlayer& player : g_Players)
-        player.Draw(timeSinceStart);
+    for (DinoEntity* pEntity : entities)
+        pEntity->Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

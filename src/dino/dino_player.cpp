@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
@@ -42,14 +41,10 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     }
 }
 
-void DinoPlayer::ApplyLimit(DinoVec2 terrainMin, DinoVec2 terrainMax)
+void DinoPlayer::ReactLimit()
 {
-    constexpr float HALF_SPRITE = 24 / 2.0f;
-
-    // On considère pos comme le centre du dinosaure
-    m_pos.x = std::clamp(m_pos.x, terrainMin.x + HALF_SPRITE, terrainMax.x - HALF_SPRITE);
-    m_pos.y = std::clamp(m_pos.y, terrainMin.y + HALF_SPRITE, terrainMax.y - HALF_SPRITE);
 }
+
 
 void DinoPlayer::Draw(double timeSinceStart)
 {

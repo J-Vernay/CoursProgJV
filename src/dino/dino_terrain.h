@@ -1,55 +1,22 @@
-﻿#pragma once
-#include <vector>
-#include <dino/xdino.h>
+#pragma once
 
-struct Flower {
-    DinoVec2 pos;
-    int type;
-};
+#include <dino/xdino.h>
 
 class DinoTerrain {
 public:
-    void Init(int tilesX = 16, int tilesY = 12, int tileSize = 16, DinoVec2 origin = {112, 84});
-    void Draw(double timeSinceStart);
+    void Init(DinoVec2 rdrSize, int idxSeason);
+    void Draw();
     void Shut();
 
-    DinoVec2 GetOrigin() const
-    {
-        return terrainOrigin;
-    }
-
-    int GetWidth() const
-    {
-        return TILE_SIZE * TILES_X;
-    }
-
-    int GetHeight() const
-    {
-        return TILE_SIZE * TILES_Y;
-    }
-
-    int GetTileSize() const
-    {
-        return TILE_SIZE;
-    }
-
-    DinoVec2 GetRandomCellCenter() const;
+    DinoVec2 GetTopLeft();
+    DinoVec2 GetBottomRight();
 
 private:
-    uint64_t texID_terrain = 0;
-    uint64_t terrainVbuf = 0;
+    uint64_t m_vbufID = 0;
+    uint64_t m_texID = 0;
+    float m_dx = 0;
+    float m_dy = 0;
 
-    int season = 0;
-    int biomeOffset = 0;
-
-    int TILE_SIZE = 16;
-    int TILES_X = 16;
-    int TILES_Y = 12;
-
-    DinoVec2 terrainOrigin = {112, 84};
-
-    std::vector<Flower> flowers;
-
-    void DrawOcean() const;
-    void DrawFlowers() const;
+    void GenFlowers(std::vector<DinoVertex>& out, int idxSeason, DinoVec2 posTopLeft);
+    void GenFlower(std::vector<DinoVertex>& out, int idxSeason, int idxFlower, DinoVec2 pos);
 };
