@@ -1,8 +1,6 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "dino_geometry.h"
-
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
@@ -58,9 +56,10 @@ void Dino_GameInit()
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Mikha", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
+
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -90,9 +89,16 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
+    // Purger les animaux qui sont morts.
+    // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
+    // Il faut ensuite appeler .erase() pour enlever les éléments.
+    auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
+    g_Animals.erase(it, g_Animals.end());
+
+    // Spawner un animal si besoin.
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
-        auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
+        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
@@ -101,10 +107,9 @@ void Dino_GameFrame(double timeSinceStart)
         g_timeSpawnAnimal = timeSinceStart + 1;
     }
 
-    for (DinoAnimal& animal : g_Animals) {
+    // Update les animaux.
+    for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
-        animal.ApplyLimit(terrainMin, terrainMax);
-    }
 
     // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
     // car il y a un lien d'héritage.
@@ -115,9 +120,8 @@ void Dino_GameFrame(double timeSinceStart)
         entities.emplace_back(&animal);
 
     for (size_t idxA = 0; idxA < entities.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB) {
+        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
             DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
-        }
 
     for (DinoEntity* pEntity : entities)
         pEntity->ApplyLimit(terrainMin, terrainMax);
@@ -130,6 +134,11 @@ void Dino_GameFrame(double timeSinceStart)
     for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
         for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
             DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+
+    for (DinoLasso& lasso : g_Lassos)
+        for (DinoEntity* pEntity : entities)
+            if (lasso.WasInLoop(pEntity->GetPos()))
+                pEntity->ReactLoop(timeSinceStart);
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
