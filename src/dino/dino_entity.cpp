@@ -34,3 +34,8 @@ void DinoEntity::ApplyLimit(DinoVec2 min, DinoVec2 max)
         ReactLimit();
     }
 }
+
+bool DinoEntity::CompareVerticalPos(DinoEntity* a, DinoEntity* b)
+{
+    return a->m_pos.y < b->m_pos.y;
+}
