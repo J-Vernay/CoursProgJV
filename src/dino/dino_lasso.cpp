@@ -90,6 +90,9 @@ void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)
         }
     }
 
+    if (pointsB.size() < 2)
+        return;
+
     // Dernier segment du lassoB avec tous les segments du lasso A
     a = pointsB[pointsB.size() - 2];
     b = pointsB[pointsB.size() - 1];

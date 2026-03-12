@@ -15,9 +15,15 @@
 // Variables globales.
 double g_lastTime = 0;
 
-std::vector<DinoPlayer> g_Players;
+struct DinoPlayerLasso {
+    DinoPlayer* player;
+    DinoLasso* lasso;
+};
+
 DinoTerrain g_Terrain;
+std::vector<DinoPlayer> g_Players;
 std::vector<DinoLasso> g_Lassos;
+std::vector<DinoPlayerLasso> g_PlayerLassos;
 
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
@@ -49,6 +55,13 @@ void Dino_GameInit()
     g_Lassos[1].Init(DinoColor_RED);
     g_Lassos[2].Init(DinoColor_YELLOW);
     g_Lassos[3].Init(DinoColor_GREEN);
+
+    g_PlayerLassos.resize(4);
+
+    for (int i = 0; i < 4; ++i) {
+        g_PlayerLassos[i].player = &g_Players[i];
+        g_PlayerLassos[i].lasso = &g_Lassos[i];
+    }
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
@@ -135,10 +148,17 @@ void Dino_GameFrame(double timeSinceStart)
         for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
             DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
 
-    for (DinoLasso& lasso : g_Lassos)
-        for (DinoEntity* pEntity : entities)
+    for (DinoPlayerLasso& pl : g_PlayerLassos) {
+        DinoLasso& lasso = *pl.lasso;
+
+        for (DinoEntity* pEntity : entities) {
+            if (pEntity == pl.player)
+                continue;
+
             if (lasso.WasInLoop(pEntity->GetPos()))
                 pEntity->ReactLoop(timeSinceStart);
+        }
+    }
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
