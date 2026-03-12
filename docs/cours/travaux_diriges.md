@@ -360,7 +360,14 @@ interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> On récupère la position d'un point qui on sait est en dehors de la forme quoi qu'il arrive et on trace un segment
+> entre ce > point et la position qu'on veut détecter.
+> Si le segment n'a aucune intersection, ou s'il en a un nombre pair, alors on sait qu'on est à l'extérieur, et
+> inversement.
+>
+> Un cas très rare peut arriver où le segment serait une tangente du tracé et aurait donc un nombre d'intersections
+> impair alors que la position qu'on veut détecter est en dehors du tracé. (on pourrait réduire les probabilités en
+> prenant plusieurs points en dehors de la forme)
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
