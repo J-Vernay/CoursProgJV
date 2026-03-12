@@ -226,54 +226,64 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
->
+> On peut mettre une range a chaque position de chaque dino. Ici on va utiliser 16 px, donc si on récupère 
+> position + 16px de range on peut savoir si on est en collision. C'est le calcule de AB 
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> En récupérant la position des deux entités, on calcule la distance entre les deux centres, s'il y a chevauchement
+> on les sépare dans la direction opposés
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> On a besoin de gérer la collision entre deux entités différents, pour le moment on gère ceci directment dans leur
+> class
+> respective. Les dino etant pas des animaux, on duplique le code.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> On peut utiliser une class qui gère les collisions et la faire hérité aux entités qui ont besoin de comportement
+> commun
+> ici on veut gérer la physique de tout entity qui ont en besoin.
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> La surcharge de l'héritage, c'est à dire la redifinition de la méthode avec le mot clé overide
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> On peut mettre en commun la méthode Draw comme methode virtuel. Ce qui permet a ceux
+> qui
+> en hérite de la redéfinir avec leur propre logique
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
 
-> ...
+> EN utilisant le polymorphisme, on peut directement manipuler des références de dino entity qui sont des dino animal ou
+> player
+> pour autant la logique à l'intérieur est bien différentes.
 
 ## 7. Programmation des lassos
 
-a) Implémentez la fonctionnalité F4.1 .
+a) Implémentez la fonctionnalité F5.1 .
 
-b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
+b) Implémentez la fonctionnalité F5.2 en limitant à 2 secondes d'historique.
 Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
+c) Implémentez la fonctionnalité F5.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
 > ...
 
-d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
+d) Implémentez la fonctionnalité F5.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
