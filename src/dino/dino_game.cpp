@@ -123,9 +123,6 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
 
-    for (DinoEntity* pEntity : entities)
-        pEntity->Draw(timeSinceStart);
-
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
@@ -133,6 +130,9 @@ void Dino_GameFrame(double timeSinceStart)
     XDino_SetClearColor(CLEAR_COLOR);
 
     g_Terrain.Draw(timeSinceStart);
+
+    for (DinoPlayer& player : g_Players)
+        player.DrawLasso();
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
