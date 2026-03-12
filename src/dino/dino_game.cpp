@@ -123,6 +123,10 @@ void Dino_GameFrame(double timeSinceStart)
     for (int i = 0; i < g_Lassos.size(); ++i)
         g_Lassos[i].Update(g_Players[i].GetPos());
 
+    for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
+            DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     // Affichage

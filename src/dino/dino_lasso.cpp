@@ -1,3 +1,5 @@
+#include "dino_entity.h"
+
 #include <dino/dino_lasso.h>
 #include <dino/dino_geometry.h>
 #include <dino/dino_draw_utils.h>
@@ -40,20 +42,43 @@ void DinoLasso::Update(DinoVec2 pos)
 
 void DinoLasso::Draw()
 {
-    /*
-    DinoColor color;
-    if (m_idxPlayer == 0)
-        color = DinoColor_BLUE;
-    else if (m_idxPlayer == 1)
-        color = DinoColor_RED;
-    else if (m_idxPlayer == 2)
-        color = DinoColor_YELLOW;
-    else
-        color = DinoColor_GREEN;*/
-
     std::vector<DinoVertex> vs;
     Dino_GenVertices_Polyline(vs, m_lasso, 4, m_color);
     uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Lasso");
     XDino_Draw(vbufID, XDino_TEXID_WHITE);
     XDino_DestroyVertexBuffer(vbufID);
+}
+
+void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)
+{
+    if (lassoA.m_lasso.size() < 2 || lassoB.m_lasso.size() < 2)
+        return;
+
+    std::vector<DinoVec2>& pointsA = lassoA.m_lasso;
+    std::vector<DinoVec2>& pointsB = lassoB.m_lasso;
+
+    // Dernier segment du lassoA avec tous les segments du lasso B
+    DinoVec2 a = pointsA[pointsA.size() - 2];
+    DinoVec2 b = pointsA[pointsA.size() - 1];
+    for (int i = 0; i < pointsB.size() - 1; ++i) {
+        DinoVec2 c = pointsB[i];
+        DinoVec2 d = pointsB[i + 1];
+        if (Dino_IntersectSegment(a, b, c, d)) {
+            pointsB.erase(pointsB.begin(), pointsB.begin() + i);
+            break;
+        }
+    }
+
+    // Dernier segment du lassoB avec tous les segments du lasso A
+    a = pointsB[pointsB.size() - 2];
+    b = pointsB[pointsB.size() - 1];
+    for (int i = 0; i < pointsA.size() - 1; ++i) {
+        DinoVec2 c = pointsA[i];
+        DinoVec2 d = pointsA[i + 1];
+        if (Dino_IntersectSegment(a, b, c, d)) {
+            pointsA.erase(pointsA.begin(), pointsA.begin() + i);
+            break;
+        }
+    }
+
 }

@@ -11,4 +11,6 @@ public:
     void Init(DinoColor color);
     void Update(DinoVec2 pos);
     void Draw();
+
+    static void ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB);
 };
