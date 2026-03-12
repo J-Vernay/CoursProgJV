@@ -6,7 +6,6 @@
 
 
 class DinoAnimal : public DinoEntity {
-private:
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
     double m_spawnTime = 0;
@@ -15,11 +14,12 @@ private:
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
+    void ReactLimit() override;
+
 public:
     void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
-    void ApplyLimit(DinoVec2 min, DinoVec2 max);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
     void Shut();
 
     static void InitStatic();

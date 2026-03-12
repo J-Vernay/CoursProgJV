@@ -5,7 +5,6 @@
 #include <dino/xdino.h>
 
 class DinoPlayer : public DinoEntity {
-private:
     bool m_bLeft = false;
     double m_endHitAnim = 0;
     bool m_bMoving = false;
@@ -16,11 +15,13 @@ private:
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
+    void ReactLimit() override;
+
 public:
+    std::vector<DinoVec2> m_pastPositions;
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
-    void ApplyLimit(DinoVec2 posMin, DinoVec2 posMax);
-    void Draw(double timeSinceStart);
+    void Draw(double timeSinceStart) override;
     void Shut();
 
     static void InitStatic();

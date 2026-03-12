@@ -17,22 +17,9 @@ void DinoAnimal::Update(double timeSinceStart, float deltaTime)
     m_pos.y += m_dir.y * SPEED * deltaTime;
 }
 
-void DinoAnimal::ApplyLimit(DinoVec2 min, DinoVec2 max)
+void DinoAnimal::ReactLimit()
 {
-    DinoVec2 pos = m_pos;
-    if (pos.x < min.x)
-        pos.x = min.x;
-    if (pos.x > max.x)
-        pos.x = max.x;
-    if (pos.y < min.y)
-        pos.y = min.y;
-    if (pos.y > max.y)
-        pos.y = max.y;
-
-    if (pos.x != m_pos.x || pos.y != m_pos.y) {
-        m_pos = pos;
-        m_dir = XDino_RandomUnitVec2();
-    }
+    m_dir = XDino_RandomUnitVec2();
 }
 
 

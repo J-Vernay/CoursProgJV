@@ -291,17 +291,19 @@ L'appliquer dans la base de code.
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Le polymorphisme permet ce genre de chose, on peut par exemple override une fonction si l'on veut un fonctionnement
+> précis pour une classe ayant le même héritage.
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> Les méthodes gérant les collisions et les limites de terrain sont des méthodes parfaites pour utiliser ce principe.
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
 
-> ...
+> On va créer un tableau de pointeur, et acceder aux references de ses éléments pour appeler les méthodes dont on a
+> besoin.
 
 ## 7. Programmation des lassos
 
@@ -331,21 +333,30 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> On ne peut acceder qu'à la RAM physique, si le GPU accede à une partie de la RAM non associé a la RAM physique, le
+> programme crash.
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> C'est une demande à l'Os de pouvoir mapper une donnée dans l'espace adressable, après cette demande, l'os renvois une
+> adresse libre à utiliser.
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Les types sont des abstractions, nn type correspond à la place dans la mémoire dont la donnée a besoin pour y être
+> stockée.
+> C'est le travail du compilateur d'interpreter les types dans la mémoire.
+>
+> Un pointeur correspond à l'adresse (hexadécimal) de la mémoire dans laquelle la donnée est stockée.
+> Cela signifie acceder à l'emplacement d'une séquence d'octet dans la mémoire et l'interpreter avec un type différent
+> que celui ce base..
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> DinoColor : 4 octets
+> DinoVertex : 16 octets : 1 Vec2 (2octets), 2 uint16 (10 octets) et 1 couleur (4 octets)
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?

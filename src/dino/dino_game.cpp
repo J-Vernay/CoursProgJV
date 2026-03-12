@@ -1,6 +1,7 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include <algorithm>
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
@@ -12,6 +13,7 @@
 
 // Variables globales.
 double g_lastTime = 0;
+
 
 std::vector<DinoPlayer> g_Players;
 DinoTerrain g_Terrain;
@@ -47,7 +49,7 @@ void Dino_GameInit()
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Antoine BOULANGER", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
 
@@ -80,7 +82,7 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
-    if (timeSinceStart > g_timeSpawnAnimal) {
+    if ((timeSinceStart > g_timeSpawnAnimal) && g_Animals.size() < 10) {
         DinoAnimal& animal = g_Animals.emplace_back();
         auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
 
@@ -115,7 +117,16 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals)
         animal.ApplyLimit(terrainMin, terrainMax);
 
-    // Affichage
+    std::vector<DinoEntity*> entities;
+    for (DinoPlayer& player : g_Players)
+        entities.emplace_back(&player);
+    for (DinoAnimal& animal : g_Animals)
+        entities.emplace_back(&animal);
+
+    for (DinoEntity* pEntity : entities)
+        pEntity->Draw(timeSinceStart);
+
+    std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
@@ -123,12 +134,15 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw(timeSinceStart);
 
-    for (DinoAnimal& animal : g_Animals)
-        animal.Draw(timeSinceStart);
+    for (DinoEntity* pEntity : entities)
+        pEntity->Draw(timeSinceStart);
 
-    // Dessin du dinosaure.
-    for (DinoPlayer& player : g_Players)
-        player.Draw(timeSinceStart);
+    // for (DinoAnimal& animal : g_Animals)
+    //     animal.Draw(timeSinceStart);
+    //
+    // // Dessin du dinosaure.
+    // for (DinoPlayer& player : g_Players)
+    //     player.Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

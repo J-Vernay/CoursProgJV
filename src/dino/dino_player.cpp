@@ -1,5 +1,5 @@
 #include <dino/dino_player.h>
-
+#include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 
 uint64_t DinoPlayer::s_texID = 0;
@@ -13,6 +13,10 @@ void DinoPlayer::Init(int idxPlayer)
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
 {
+    if (m_pastPositions.size() > 120) {
+        m_pastPositions.erase(m_pastPositions.begin());
+    }
+    
     m_bPressedRun = false;
     m_bMoving = false;
 
@@ -39,24 +43,23 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
     if (gamepad.btn_left) {
         m_endHitAnim = timeSinceStart + 3;
     }
+    m_pastPositions.push_back(m_pos);
 }
 
-void DinoPlayer::ApplyLimit(DinoVec2 posMin, DinoVec2 posMax)
+void DinoPlayer::ReactLimit()
 {
-    if (m_pos.x < posMin.x)
-        m_pos.x = posMin.x;
-    if (m_pos.x > posMax.x)
-        m_pos.x = posMax.x;
-    if (m_pos.y < posMin.y)
-        m_pos.y = posMin.y;
-    if (m_pos.y > posMax.y)
-        m_pos.y = posMax.y;
 }
+
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
+    std::vector<DinoVertex> trailvs;
+    Dino_GenVertices_Polyline(trailvs, m_pastPositions, 10);
+    uint64_t lvbufID =  XDino_CreateVertexBuffer(trailvs.data(), trailvs.size(), "Dino");
+    
     uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
     DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
+    XDino_Draw(lvbufID, 1);
     XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
 }
@@ -97,7 +100,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
