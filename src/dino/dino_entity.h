@@ -9,7 +9,10 @@ protected:
 public:
     DinoVec2 m_pos = {};
     virtual void Draw(double timeSinceStart) = 0;
+    virtual void ReactLoop(double timeSinceStart) = 0;
+
     void ApplyLimit(DinoVec2 min, DinoVec2 max);
+    DinoVec2 GetPos();
 
     static void ResolveCollision(DinoEntity& entityA, DinoEntity& entityB);
 

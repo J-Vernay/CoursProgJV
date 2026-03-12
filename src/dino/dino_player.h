@@ -17,6 +17,7 @@ class DinoPlayer : public DinoEntity {
     uint64_t GenerateLassoVertexBuffer();
 
     void ReactLimit() override;
+    void ReactLoop(double timeSinceStart) override;
 
 public:
     std::vector<DinoVec2> m_lassoPos;

@@ -22,6 +22,16 @@ void DinoAnimal::ReactLimit()
     m_dir = XDino_RandomUnitVec2();
 }
 
+void DinoAnimal::ReactLoop(double timeSinceStart)
+{
+    m_dead = true;
+}
+
+bool DinoAnimal::IsDead(DinoAnimal& animal)
+{
+    return animal.m_dead;
+}
+
 
 void DinoAnimal::Draw(double timeSinceStart)
 {
