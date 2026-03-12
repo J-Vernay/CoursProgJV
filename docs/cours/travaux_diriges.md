@@ -276,21 +276,21 @@ a) Implémentez la fonctionnalité F5.1 .
 b) Implémentez la fonctionnalité F5.2 en limitant à 2 secondes d'historique.
 Quelle méthode de `std::vector` utiliser ?
 
-> std::vector::erase() pour supprimer les points dont le timestamp est trop on vieux
+> std::vector::erase() pour supprimer les points dont le timestamp est trop vieux
 
 c) Implémentez la fonctionnalité F5.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
 > (119 × 118) / 2 = 7021 comparaisons par joueur
 × 4 joueurs = 28 084 comparaisons au total
-> C'est toujours la métjode std::vector::erase()
+> C'est toujours la méthode std::vector::erase()
 
 d) Implémentez la fonctionnalité F5.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> Si le point est a l'intérieur il va couper le contour du lasso  sinon le point est l'extérieur 
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
