@@ -269,12 +269,14 @@ comme la réaction à un événement du type "limite du terrain" ? L'appliquer d
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> les collisions entres les entités
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
 
-> ...
+> on créé un std::vector d'entities et on créé un algorythme de tri qui les met dans l'ordre selon m-pos.y
+> (on va devoir recréer une methode draw dans la classe entity)
+> ensuite on Draw les elements a l'ecran dans l'ordre du tableau
 
 ## 7. Programmation des lassos
 
