@@ -43,50 +43,10 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
         m_endHitAnim = timeSinceStart + 3;
     }
 
-    constexpr float UPDATE_PER_SECOND = 60;
-    constexpr float TIME_LASSO = 2;
-    m_lasso.push_back(m_pos);
-    if (m_lasso.size() > TIME_LASSO * UPDATE_PER_SECOND)
-        m_lasso.erase(m_lasso.begin());
-
-    if (m_lasso.size() >= 4) {
-        DinoVec2 c = m_lasso[m_lasso.size() - 2];
-        DinoVec2 d = m_lasso[m_lasso.size() - 1];
-        if (c.x != d.x || c.y != d.y) {
-            for (int i = 0; i < m_lasso.size() - 3; i++) {
-                DinoVec2 a = m_lasso[i];
-                DinoVec2 b = m_lasso[i + 1];
-                if (Dino_IntersectSegment(a, b, c, d)) {
-                    m_lasso.erase(m_lasso.begin() + i + 1, m_lasso.end() + i - 1);
-                    break;
-                }
-            }
-        }
-    }
 }
 
 void DinoPlayer::ReactLimit()
 {
-}
-
-
-void DinoPlayer::DrawLasso()
-{
-    DinoColor color;
-    if (m_idxPlayer == 0)
-        color = DinoColor_BLUE;
-    else if (m_idxPlayer == 1)
-        color = DinoColor_RED;
-    else if (m_idxPlayer == 2)
-        color = DinoColor_YELLOW;
-    else
-        color = DinoColor_GREEN;
-
-    std::vector<DinoVertex> vs;
-    Dino_GenVertices_Polyline(vs, m_lasso, 5, color);
-    uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "lasso");
-    XDino_Draw(vbufID, XDino_TEXID_WHITE);
-    XDino_DestroyVertexBuffer(vbufID);
 }
 
 void DinoPlayer::Draw(double timeSinceStart)
@@ -95,6 +55,11 @@ void DinoPlayer::Draw(double timeSinceStart)
     DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
     XDino_Draw(vbufID, s_texID, drawPos);
     XDino_DestroyVertexBuffer(vbufID);
+}
+
+DinoVec2 DinoPlayer::GetPos()
+{
+    return m_pos;
 }
 
 void DinoPlayer::Shut()
@@ -133,7 +98,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;

@@ -12,8 +12,6 @@ private:
     bool m_bPressedRun = false;
     int m_idxPlayer = 0;
 
-    std::vector<DinoVec2> m_lasso;
-
     static uint64_t s_texID;
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
@@ -23,8 +21,8 @@ private:
 public:
     void Init(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
-    void DrawLasso();
     void Draw(double timeSinceStart) override;
+    DinoVec2 GetPos();
     void Shut();
 
     static void InitStatic();
