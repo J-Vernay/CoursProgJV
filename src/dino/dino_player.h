@@ -1,15 +1,16 @@
 ﻿#pragma once
 
-//#include <dino/dino_draw_utils.h>
-#include "dino_CollisionEntity.h"
+#include "dino_Entity.h"
 
 #include <unordered_map>
 #include <dino/xdino.h>
 
-class dino_player : public dino_CollisionEntity {
+class dino_player : public dino_Entity {
 public :
     //DinoGamepad dinoGamepad;
     static constexpr float DINO_SPEED = 150.f; // Nombre de pixels parcourus en une seconde.
+    int dinoID;
+    bool isStun = false;
 
     dino_player(DinoVec2 initialPos, float collisionRadius, uint64_t dinoTex, int dino_ID, DinoVec2 terrainTopLeft);
 
@@ -18,10 +19,11 @@ public :
         int framesPerSecond;
     };
 
-    void DinoPlayer_UpdateMovement(DinoGamepad gamepad, float deltaTime,
-                                   std::unordered_map<DinoGamepadIdx, dino_player> playerGamepadPair);
-    void DinoPlayer_Logic(float timeSinceStart, float deltaTime);
+    void DinoPlayer_ReadGamePad(DinoGamepad gamepad, float deltaTime);
     void DinoPlayer_Stun();
+    void Update(float deltaTime) override;
+    void DrawEntity(double timeSinceStart) override;
+    void LassoCatched(int playerId) override;
 
 private :
     uint64_t texID_dino;
@@ -36,14 +38,9 @@ private :
     bool isStatic = false;
     bool isRunning = false;
     bool isGoingLeft = false;
-    bool isStun = false;
 
     static constexpr float STUN_TIME = 3;
     float waitedTime = 0;
 
-    void UpdateVisual(float timeSinceStart);
-    bool CanAddXValue(float xToAdd);
-    bool CanAddYValue(float yToAdd);
-    int dinoID;
     DinoVec2 m_terrainTopLeft;
 };

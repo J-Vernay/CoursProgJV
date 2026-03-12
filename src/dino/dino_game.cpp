@@ -1,10 +1,11 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "LassoManager.h"
 #include "dino_animal.h"
 #include "dino_player.h"
 #include "dino_terrain.h"
-#include "dino_Collision.h"
+#include "dino_EntityManager.h"
 
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
@@ -24,15 +25,22 @@ uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
 
 float g_spawnTimer;
+const float g_baseSpawnDelay = 3;
+const float g_endSpawnDelay = 0.5f;
+
 DinoVec2 g_terrainTopLeft;
+
+const float PLAYING_TIME = 60;
+float g_timeLeft;
 
 #include <deque>
 
 std::unordered_map<DinoGamepadIdx, dino_player> gamepadDino_map;
 std::deque<dino_animal> animals;
 
-dino_terrain dinoTerrain;
-dino_Collision dinoCollision;
+dino_terrain g_dinoTerrain;
+dino_EntityManager g_dinoEntityManager;
+LassoManager g_lassoManager;
 
 
 // Variable globale pour l'affichage de debug.
@@ -51,7 +59,7 @@ void Dino_GameInit()
         texID_terrain = XDino_CreateGpuTexture("terrain.png");
     }
 
-    g_terrainTopLeft = dinoTerrain.DinoTerrain_Init(texID_terrain, XDino_RandomInt32(0, 3));
+    g_terrainTopLeft = g_dinoTerrain.DinoTerrain_Init(texID_terrain, XDino_RandomInt32(0, 3));
 
     // Préparation du drawcall du prenom.
     {
@@ -61,13 +69,11 @@ void Dino_GameInit()
     }
 
     dino_animal::DinoAnimal_InitStatic();
+    g_timeLeft = PLAYING_TIME;
 }
 
 void Dino_GameFrame(double timeSinceStart)
 {
-    //resolving all collisions between entities
-    dinoCollision.DinoCollision_HandleCollisions();
-
     // Prendre en compte le temps qui passe.
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
@@ -79,22 +85,17 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 renderSize = XDino_GetRenderSize();
 
     //drawing terrain
-    dinoTerrain.DinoTerrain_Draw();
+    g_dinoTerrain.DinoTerrain_Draw();
 
     //adding an animal, max amount is 20
-    if (g_spawnTimer > 1 && animals.size() < 20) {
+    if (g_spawnTimer > std::lerp(g_endSpawnDelay, g_baseSpawnDelay, g_timeLeft / PLAYING_TIME) && animals.size() < 50) {
         int index = animals.size();
         animals.push_back(dino_animal());
         animals[index].DinoAnimal_Spawn(g_terrainTopLeft, 8);
-        dinoCollision.AddEntity(&animals[index]);
+        g_dinoEntityManager.AddEntity(&animals[index]);
         g_spawnTimer = 0;
     }
     g_spawnTimer += deltaTime;
-
-    //drawing animals
-    for (int i = animals.size() - 1; i >= 0; i--) {
-        animals[i].DinoAnimal_Update(timeSinceStart, deltaTime);
-    }
 
     // Gestion des entrées et mise à jour de la logique de jeu.
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
@@ -123,17 +124,29 @@ void Dino_GameFrame(double timeSinceStart)
                 g_terrainTopLeft);
 
             auto [it,bInserted] = gamepadDino_map.emplace(gamepadIdx, newPlayer);
-            dinoCollision.AddEntity(&it->second);
+            g_dinoEntityManager.AddEntity(&it->second);
+            g_lassoManager.AddLasso(it->second);
         }
 
-        //drawing dino_players
+        //updating dino_players
         if (gamepadDino_map.contains(gamepadIdx)) {
-            gamepadDino_map.at(gamepadIdx).DinoPlayer_UpdateMovement(gamepad, deltaTime, gamepadDino_map);
-            gamepadDino_map.at(gamepadIdx).DinoPlayer_Logic(timeSinceStart, deltaTime);
+            gamepadDino_map.at(gamepadIdx).DinoPlayer_ReadGamePad(gamepad, deltaTime);
         }
         //
     }
 
+    // Timer
+    {
+        g_timeLeft -= deltaTime;
+        g_timeLeft = std::max(g_timeLeft, 0.0f);
+
+        std::string text = std::format("{:04.1f}", g_timeLeft);
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
+        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
+        XDino_Draw(vbufID, XDino_TEXID_FONT, {240 - textSize.x / 2, 0}, 2);
+        XDino_DestroyVertexBuffer(vbufID);
+    }
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
@@ -147,6 +160,13 @@ void Dino_GameFrame(double timeSinceStart)
         DinoVec2 translation = {renderSize.x - textSize_prenom.x * 2, renderSize.y - textSize_prenom.y * 2};
         XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, translation, 2);
     }
+
+    //drawing all entities
+    g_lassoManager.UpdateLassos(g_dinoEntityManager.entities);
+    g_dinoEntityManager.UpdateAndDrawEntities(timeSinceStart, deltaTime);
+
+    //resolving all collisions between entities
+    g_dinoEntityManager.DinoCollision_HandleCollisions(g_terrainTopLeft);
 
 #if !XDINO_RELEASE
     // Affichage des statistiques si on appuie sur CTRL.
@@ -165,7 +185,7 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    dinoTerrain.DinoTerrain_ShutDown();
+    g_dinoTerrain.DinoTerrain_ShutDown();
     dino_animal::DinoAnimal_ShutStatic();
 
     XDino_DestroyVertexBuffer(vbufID_prenom);

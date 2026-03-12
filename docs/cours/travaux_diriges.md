@@ -307,17 +307,17 @@ L'appliquer dans la base de code.
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> L'héritage de class et le polymorphisme
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> les fonctions "Drawn" et "Update"
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
 
-> ...
+> les deux class doivent hériter de la même class parent
 
 ## 7. Programmation des lassos
 
@@ -326,19 +326,22 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> on peut utiliser la méthode erase (en fournissant un debut et fin).
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> Avec un peu d'optimisation, on peut réduire le nombre de calculs à un par segment soit 480.
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> en prenant un point situé à l'extérieur de la boucle, on trace le chemin entre celui-ci et le point que l'on souhaite
+> vérifier tout en comptant le nombre de fois que l'on intersecte le contour de la boucle. Si le nombre d'intersection
+> est par, le point est à l'extérieur sinon il est à l'interieur. (exception si le tracé entre les deux points est
+> exactement la tangeante du tracé de la boucle)
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
@@ -347,33 +350,54 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32Go de RAM
+> Il y a 18.446.744.073.709.551.616 adresses mémoires différentes, c'est à dire un espace
+> addressable de 18 milliards Go, mais cette valeur est limitée par la RAM physique
+> présente dans l'ordinateur
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Le programmedemande à l'OS de l'espace dans la mémoir pour y stocker des valeurs qui lui
+> sont/seront utiles. L'OS cherche un emplacement dans la RAM, "Map" (récupère l'adresse où il a stocké) puis retourne
+> l'adresse (pointeur) au programme.
+> Une allocation mémoire est d'autant plus couteuse que la taille demandée augmente.
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Les types correspondent à une abstraction des octets pour les rendre plus facilement manipulables dans le code. Il
+> définissent comment interpréter une séquence d'octets. <br>
+> Un pointeur correspond à une adresse mémoire (dynamique) et un Type (statique)
+> Réinterpréter un pointeur signifie lire la valeur stocké à son adresse mais en utilisant le prisme d'un autre Type
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> DinoColor fait 4 octets <br>
+> DinoVertex fait 16 octets
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> std::vector représente un liste de plusieurs éléments de même type, cela est représenté en mémoir par une longue
+> chaine d'octets dont la taille est égale à : Taille = TailleElement * NombreElement. <br>
+> Ainsi, pour retrouver un élément à un indice donné, il suffit d'aller à l'emplacement du vector et de se décaler de
+> indice*TailleElement <br>
+> Cela signifie que pour changer la taille d'un std::vector (augmenter), il faut déplacer tous les éléments pour trouver
+> un nouvel
+> espace mémoire d'une taille adéquate.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Variables globales : L'OS alloue une suffisamment grande pour stocker toutes les variables globales avant d'appeler la
+> fonction "main" du programme <br>
+> Variables locales : L'OS alloue un espace nécessaire pour la "stack" avant d'appeler la fonction "main". Le
+> compilateur génère ensuite du code pour sous-allouer les variables locales dans le stack. <br>
+> Les std::vector ont des tailles dynamiques, ce qui signifie qu'ils ont besoin d'allocation mémoire pendant l'éxecution
+> du programme. Il y a bien discussion avec L'OS.
 
 ## 9. Notre propre implémentation de std::vector
 

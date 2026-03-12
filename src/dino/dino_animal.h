@@ -1,17 +1,24 @@
 #pragma once
 
-#include "dino_CollisionEntity.h"
+#include "dino_Entity.h"
+
 #include <dino/xdino.h>
 #include "dino_draw_utils.h"
 
-class dino_animal : public dino_CollisionEntity {
+class dino_animal : public dino_Entity {
 public :
+    bool wasCatched = false;
+
     void DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadius);
-    void DinoAnimal_Update(double timeSinceStart, float deltaTime);
-    void DinoAnimal_InstantDespawn(std::vector<dino_animal>& animals, int index);
+    void Update(float deltaTime) override;
+    void DinoAnimal_InstantDespawn(std::vector<dino_Entity>& entities, int index);
 
     static void DinoAnimal_InitStatic();
     static void DinoAnimal_ShutStatic();
+    bool IsEntityDead() override;
+    void ReactionToBorderCross() override;
+    void DrawEntity(double timeSinceStart) override;
+    void LassoCatched(int playerId) override;
 
 private :
     static uint64_t textIdAnimal;
@@ -24,9 +31,6 @@ private :
 
     void DinoAnimal_GetRandomPos();
     void DinoAnimal_GetRandomDirection();
-
-    bool CanAddXValue(float xToAdd);
-    bool CanAddYValue(float yToAdd);
 
     float apparitionTime = 0.2f;
     float timeAlive;

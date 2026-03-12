@@ -14,35 +14,18 @@ void dino_animal::DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadiu
     timeAlive = 0;
 }
 
-void dino_animal::DinoAnimal_Update(double timeSinceStart, float deltaTime)
+void dino_animal::Update(float deltaTime)
 {
     constexpr float SPEED = 30;
     timeAlive += deltaTime;
 
-    std::vector<DinoVertex> vs;
-    Dino_GenVertices_Animal(vs, animalType, animalAnimDirection, timeSinceStart);
-
-    for (DinoVertex& v : vs)
-        v.color.a = std::min(timeAlive / apparitionTime, (float)1) * 255;
-
-    uint64_t vbufID_animal = XDino_CreateVertexBuffer(vs.data(), vs.size(), "animal");
-
-    float xToAdd = animalMovingDirection.x * deltaTime * SPEED;
-    float yToAdd = animalMovingDirection.y * deltaTime * SPEED;
-    if (!CanAddXValue(xToAdd) || !CanAddYValue(yToAdd)) {
-        DinoAnimal_GetRandomDirection();
-    }
-    else {
-        entityPosition.x += xToAdd;
-        entityPosition.y += yToAdd;
-    }
-    XDino_Draw(vbufID_animal, textIdAnimal, {entityPosition.x - 16, entityPosition.y - 16}, 1);
-    XDino_DestroyVertexBuffer(vbufID_animal);
+    entityPosition.x += animalMovingDirection.x * deltaTime * SPEED;
+    entityPosition.y += animalMovingDirection.y * deltaTime * SPEED;
 }
 
-void dino_animal::DinoAnimal_InstantDespawn(std::vector<dino_animal>& animals, int index)
+void dino_animal::DinoAnimal_InstantDespawn(std::vector<dino_Entity>& entities, int index)
 {
-    animals.erase(animals.begin() + index);
+    entities.erase(entities.begin() + index);
 }
 
 void dino_animal::DinoAnimal_GetRandomPos()
@@ -83,14 +66,31 @@ void dino_animal::DinoAnimal_ShutStatic()
     XDino_DestroyGpuTexture(textIdAnimal);
 }
 
-bool dino_animal::CanAddXValue(float xToAdd)
+bool dino_animal::IsEntityDead()
 {
-    return !(entityPosition.x + xToAdd < m_terrainTopLeft.x + 0 || //margin left 0
-             entityPosition.x + xToAdd > m_terrainTopLeft.x + 240); // margin right 16
+    return wasCatched;
 }
 
-bool dino_animal::CanAddYValue(float yToAdd)
+void dino_animal::ReactionToBorderCross()
 {
-    return !(entityPosition.y + yToAdd < m_terrainTopLeft.y + 0 || // margin top 0
-             entityPosition.y + yToAdd > m_terrainTopLeft.y + 168); // margin down 24
+    DinoAnimal_GetRandomDirection();
+}
+
+void dino_animal::DrawEntity(double timeSinceStart)
+{
+    std::vector<DinoVertex> vs;
+    Dino_GenVertices_Animal(vs, animalType, animalAnimDirection, timeSinceStart);
+
+    for (DinoVertex& v : vs)
+        v.color.a = std::min(timeAlive / apparitionTime, (float)1) * 255;
+
+    uint64_t vbufID_animal = XDino_CreateVertexBuffer(vs.data(), vs.size(), "animal");
+
+    XDino_Draw(vbufID_animal, textIdAnimal, {entityPosition.x - 16, entityPosition.y - 16}, 1);
+    XDino_DestroyVertexBuffer(vbufID_animal);
+}
+
+void dino_animal::LassoCatched(int playerId)
+{
+    wasCatched = true;
 }
