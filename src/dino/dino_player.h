@@ -95,6 +95,12 @@ class DinoObject  : public Collider,public SpriteRenderer
 
 public:
     DinoColor color;
+
+
+    DinoObject()
+    {
+        Init();
+    }
     
 };
 

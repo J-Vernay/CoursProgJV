@@ -89,7 +89,7 @@ void Dino_GameInit()
         PlayerList[i].texID_dinoTexture = texID_dinoTexture;
         PlayerList[i].dinoPos = {XDino_GetRenderSize().x/2, XDino_GetRenderSize().y/2};
         
-        PlayerList[i].Init();
+        //PlayerList[i].Init();
 
         switch (i) {
             case 0:

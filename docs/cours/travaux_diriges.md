@@ -390,21 +390,24 @@ Quand et qui alloue la mémoire des `std::vector` ?
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> operator + (ou autre signe )
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> Car le constructeur utilise deja les valeur par défault, qui la donne la couleur blanche.
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
 et crée une instance sans faire de copie ?
 
+>emplace_back
+
+
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> Parcq'un destructeur s'en charge tout seul
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
@@ -413,7 +416,7 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> 2 dinoVertexBuffer contiennent le meme ID et il va etre détruit 2 fois. 
 
 g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
 (s'il y en a).
