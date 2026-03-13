@@ -42,17 +42,18 @@ void Dino_GameInit()
     DinoPlayer::InitStatic();
     DinoAnimal::InitStatic();
 
-    g_Players.resize(4);
-    g_Players[0].Init(0);
-    g_Players[1].Init(1);
-    g_Players[2].Init(2);
-    g_Players[3].Init(3);
+    // Resize() appelle le constructeur par défaut;
+    // il n'y a pas de constructeur par défaut dans DinoPlayer
+    //g_Players.resize(4);
+    g_Players.emplace_back(0);
+    g_Players.emplace_back(1);
+    g_Players.emplace_back(2);
+    g_Players.emplace_back(3);
 
-    g_Lassos.resize(4);
-    g_Lassos[0].Init(DinoColor_BLUE);
-    g_Lassos[1].Init(DinoColor_RED);
-    g_Lassos[2].Init(DinoColor_YELLOW);
-    g_Lassos[3].Init(DinoColor_GREEN);
+    g_Lassos.emplace_back(DinoColor_BLUE);
+    g_Lassos.emplace_back(DinoColor_RED);
+    g_Lassos.emplace_back(DinoColor_YELLOW);
+    g_Lassos.emplace_back(DinoColor_GREEN);
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
@@ -103,13 +104,12 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Spawner un animal si besoin.
     if (timeSinceStart > g_timeSpawnAnimal) {
-        DinoAnimal& animal = g_Animals.emplace_back();
         EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
-        animal.Init(timeSinceStart, kind, {x, y});
+        DinoAnimal& animal = g_Animals.emplace_back(timeSinceStart, kind, DinoVec2{x, y});
         double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono;
         g_timeSpawnAnimal = timeSinceStart + spawnTime;
     }

@@ -20,7 +20,7 @@ private:
     void ReactLoop(double timeSinceStart) override;
 
 public:
-    void Init(int idxPlayer);
+    DinoPlayer(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
     void Draw(double timeSinceStart) override;
     void Shut();

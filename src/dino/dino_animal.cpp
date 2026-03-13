@@ -3,7 +3,7 @@
 
 uint64_t DinoAnimal::s_texID = 0;
 
-void DinoAnimal::Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos)
+DinoAnimal::DinoAnimal(double timeSinceStart, EAnimalKind animal, DinoVec2 pos)
 {
     m_pos = pos;
     m_dir = XDino_RandomUnitVec2();

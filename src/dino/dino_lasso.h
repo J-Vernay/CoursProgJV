@@ -9,7 +9,7 @@ private:
     std::vector<DinoVec2> m_loopLasso;
 
 public:
-    void Init(DinoColor color);
+    DinoLasso(DinoColor color);
     void Update(DinoVec2 pos);
     bool WasInLoop(DinoVec2 pos);
     void Draw();

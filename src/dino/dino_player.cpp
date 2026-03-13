@@ -7,7 +7,7 @@
 
 uint64_t DinoPlayer::s_texID = 0;
 
-void DinoPlayer::Init(int idxPlayer)
+DinoPlayer::DinoPlayer(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     m_pos = {windowSize.x / 2, windowSize.y / 2};
