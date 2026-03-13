@@ -4,12 +4,14 @@
 #include <dino/xdino.h>
 #include <dino/dino_player.h>
 
-void DinoPlayer::Init(int idxPlayer)
+uint64_t DinoPlayer::s_texID = 0;
+
+
+DinoPlayer::DinoPlayer(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
 
     m_pos = {-150 + windowSize.x / 2 + idxPlayer * 50, windowSize.y / 2};
-    m_texID = XDino_CreateGpuTexture("dinosaurs.png");
     m_idxPlayer = idxPlayer;
 
     {
@@ -34,8 +36,10 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terr
     }
 
     if (timeSinceStart >= m_endHitAnim) {
-        m_pos.x += gamepad.stick_left_x * speed * deltaTime;
-        m_pos.y += gamepad.stick_left_y * speed * deltaTime;
+        DinoVec2 stick = {gamepad.stick_left_x, gamepad.stick_left_y};
+        m_pos = m_pos + stick * speed * deltaTime;
+        //m_pos.x += gamepad.stick_left_x * speed * deltaTime;
+        //m_pos.y += gamepad.stick_left_y * speed * deltaTime;
 
         if (gamepad.stick_left_x < 0) {
             m_bRight = false;
@@ -60,7 +64,7 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terr
 
 }
 
-uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
+DinoVertexBuffer DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
 {
     anim current = Get_Current_Anim();
     int frame = int(timeSinceStart * current.Speed) % int(current.NbFrames);
@@ -91,7 +95,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         vs[5].u = m_bRight ? U + 24 : U;
         vs[5].v = vbase + 24;;
 
-        return XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageDino");
+        return {vs.data(), vs.size(), "ImageDino"};
 
     }
 };
@@ -108,9 +112,8 @@ anim DinoPlayer::Get_Current_Anim()
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
-    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
-    XDino_Draw(vbufID, m_texID, {m_pos.x - 12, m_pos.y - 20});
-    XDino_DestroyVertexBuffer(vbufID);
+    DinoVertexBuffer vertex_buffer = GenerateVertexBuffer(timeSinceStart);
+    XDino_Draw(vertex_buffer.GetVbufID(), s_texID, {m_pos.x - 12, m_pos.y - 20});
 }
 
 void DinoPlayer::ReactLoop(double timeSinceStart)
@@ -121,5 +124,14 @@ void DinoPlayer::ReactLoop(double timeSinceStart)
 
 void DinoPlayer::Shut()
 {
-    XDino_DestroyGpuTexture(m_texID);
+}
+
+void DinoPlayer::InitStatic()
+{
+    s_texID = XDino_CreateGpuTexture("dinosaurs.png");
+}
+
+void DinoPlayer::ShutStatic()
+{
+    XDino_DestroyGpuTexture(s_texID);
 }

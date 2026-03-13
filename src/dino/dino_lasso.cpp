@@ -1,10 +1,11 @@
 #include "dino_draw_utils.h"
 #include "dino_geometry.h"
+#include <dino/dino_draw_utils.h>
 
 #include <dino/dino_lasso.h>
 
 
-void DinoLasso::Init(DinoColor color)
+DinoLasso::DinoLasso(DinoColor color)
 {
     m_color = color;
 }
@@ -59,12 +60,10 @@ bool DinoLasso::WasInLoop(DinoVec2 pos)
 
 void DinoLasso::Draw()
 {
-
     std::vector<DinoVertex> vs;
     Dino_GenVertices_Polyline(vs, m_lasso, 5, m_color);
-    uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "lasso");
-    XDino_Draw(vbufID, XDino_TEXID_WHITE);
-    XDino_DestroyVertexBuffer(vbufID);
+    DinoVertexBuffer vbuf = {vs.data(), vs.size(), "lasso"};
+    XDino_Draw(vbuf.GetVbufID(), XDino_TEXID_WHITE);
 }
 
 void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)

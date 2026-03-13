@@ -231,30 +231,43 @@ Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leu
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> On a la ligne 93 pour la compilation des bibliothèques externes : files { "external/.cpp", "external/.h" }
+> On a la ligne 107 pour la build windows: files { "src/dino/x64-windows/" }
+> On a la ligne 1015 pour la build linux : files { "src/dino/x64-linux/" }
+> Les particularités du débogguage sont définies plus haut dans le fichier.
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** Le h est un fichier de déclaration, et le cpp est un fichier de définition dans lequel
+> la logique des méthodes est implémenté.
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** Le fichier en .obj est un fichier cpp compilé, il contient donc le code en binaire du
+> .cpp, mais il n'est pas tout a fait complet
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** Le fichier .Lib contient des fichiers .obj, c'est le linker qui ira piocher dedans
+> lorsqu'il en aura besoin.
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** Le fichier .dll contient également des fichiers .obj, mais celle-ci n'est pas intégré
+> dans l'exécutable final.
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :**  Ces deux fichiers sont lié par un linker qui va s'occuper des différentes liaisons
+> entre les fichiers et combler les trous.
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :**  Le lien entre les deux dépend du projet, certains projets chargent la .dll au
+> démarrage uniquement et d'autres non.
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Il agit avant la compilation, il ne s'agit de code en c++, mais de la manipulation de texte afin de donner des
+> directives spécifiques au compilateur. Une directive de préprocesseur se reconnait avec le character # devant
+> l'instruction.
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> Comme le préprocesseur, il intervient avant la création du .exe et s'occupe de correctement lier les fichiers du
+> projet entre eux (pour résoudre les références etc..). Il peut produire un exécutable et des bibliothèques (.lib /
+> .dll).
 
 ## 5. Programmation des animaux
 
@@ -272,11 +285,13 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> Il suffit de vérifier la distance entre les deux et de la comparer à leur rayons
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
+> On prends la direction entre les deux cercles que l'on divise en deux, chacun des deux cercle est repoussé de la
+> direction opposé à l'autre.
 > d = ((Ra+rb) - ab) / pas eu le temps de noter
 > Le risque est la division par zero si les 2 sont parfaitement au meme endroit
 
@@ -284,27 +299,29 @@ e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> Ce sont des types différents
+> On essaye d'implémenter la même fonctionnalité sur des types différents
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> C'est l'héritage
+> L'héritage permet de créer des fonctions communes à toutes les classes qui en hérite
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> L'accès protected
+> Le polymorphisme permet ce genre de chose, on peut par exemple override une fonction si l'on veut un fonctionnement
+> précis pour une classe ayant le même héritage.
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> La fonction ApplyLimit
+> Les méthodes gérant les collisions et les limites de terrain sont des méthodes qu'on peut utiliser ce principe.
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
 
-> ...
+> Créer un tableau de pointeur de dino Entity, et acceder aux references de ses éléments pour appeler les méthodes dont
+> on a besoin.
 
 ## 7. Programmation des lassos
 
@@ -313,19 +330,23 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> On va utiliser .erase pour supprimer la dernière position de la liste si elle contient plus de Lasso_time * update per
+> seconde (soit 60 x 2 = 120) positions.
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> On a 12 vérifications par frame On utilisera la méthode .size() pour ne pas calculer toutes les positions du lasso.
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> On va tracer une ligne entre un élément du jeu (par exemple un joueur) et un point hors de la zone de jeu, Ensuite, au
+> moment de valider une boucle de lasso, on vérifie le nombre de collisions entre cette ligne et le lasso, En fonction
+> du
+> nombre cela détermine si le joueur est dans le lasso ou non.
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
@@ -334,17 +355,23 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32Go de RAM Il y a 18.446.744.073.709.551.616 adresses mémoires différentes, c'est à dire un espace addressable de 18
+> milliards Go, mais cette valeur est limitée par la RAM physique présente dans l'ordinateur
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> Cela signifie libérer un emplacement précis dans la mémoire afin de permettre le stockage d'une donnée
+> Le programmedemande à l'OS de l'espace dans la mémoir pour y stocker des valeurs qui lui sont/seront utiles. L'OS
+> cherche un emplacement dans la RAM, "Map" (récupère l'adresse où il a stocké) puis retourne l'adresse (pointeur) au
+> programme. Une allocation mémoire est d'autant plus couteuse que la taille demandée augmente.
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Les types correspondent à une abstraction des octets pour les rendre plus facilement manipulables dans le code. Il
+> définissent comment interpréter une séquence d'octets.
+> Un pointeur correspond à une adresse mémoire (dynamique) et un Type (statique) Réinterpréter un pointeur signifie lire
+> la valeur stocké à son adresse mais en utilisant le prisme d'un autre Type
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
@@ -355,7 +382,12 @@ e) Que représente un `std::vector` ? Comment pourrait-il être représenté en 
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> un tableau. En mémoire c'est sizeOf(type) * la size du tableau.
+> std::vector représente un liste de plusieurs éléments de même type, cela est représenté en mémoir par une longue
+> chaine d'octets dont la taille est égale à : Taille = TailleElement * NombreElement.
+> Ainsi, pour retrouver un élément à un indice donné, il suffit d'aller à l'emplacement du vector et de se décaler de
+> indice*TailleElement
+> Cela signifie que pour changer la taille d'un std::vector (augmenter), il faut déplacer tous les éléments pour trouver
+> un nouvel espace mémoire d'une taille adéquate.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
@@ -370,21 +402,27 @@ Quand et qui alloue la mémoire des `std::vector` ?
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> DinoVec2 operator+(DinoVec2 a, DinoVec2 b);
+> DinoVec2 operator*(DinoVec2 a, float b);
+> DinoVec2 operator*(float a, DinoVec2 b);
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> Car elles sont de base à {255, 255, 255, 255} en paramètre par défaut dans le constructeur. Ce dernier est appelé
+> implicitement quand on declare un DinoVertex.
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
 et crée une instance sans faire de copie ?
 
+> emplace_back
+
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> En symétrie du constructeur en c++, quand une variable est détruite, le compilateur appelle automatiquemen le
+> destructeur. Le compilateur appelle donc implictement le destructeur de std::vector
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
@@ -393,7 +431,8 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> Le jeu crash instantanément car les 2 DinoVertexBuffer essayent de detruire le vertexBuffer et donc essaye de detruire
+> quelque chose de vide
 
 =========== NE PAS FAIRE ===========
 

@@ -5,10 +5,10 @@
 
 class DinoLasso {
 public :
+    DinoLasso(DinoColor color);
     std::vector<DinoVec2> m_lasso;
     DinoColor m_color;
     void Update(DinoVec2 pos);
-    void Init(DinoColor color);
     void Draw();
     static void ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB);
     std::vector<DinoVec2> m_loopLasso;

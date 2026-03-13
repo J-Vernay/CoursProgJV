@@ -22,8 +22,7 @@ void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double ch
     if (timeSinceStart - m_timeSinceLastSpawn > spawnTime) {
         int animalIdx = XDino_RandomInt32(0, 7);
 
-        m_animals.emplace_back();
-        m_animals.back().Init(timeSinceStart, animalIdx, m_texID);
+        m_animals.emplace_back(timeSinceStart, animalIdx, m_texID);
 
         m_timeSinceLastSpawn = timeSinceStart;
     }
@@ -31,7 +30,9 @@ void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double ch
     for (auto& animal : m_animals) {
         animal.Update(deltaTime, timeSinceStart);
     }
+
 }
+
 
 void DinoAnimalSpawner::Shut()
 {
@@ -40,7 +41,7 @@ void DinoAnimalSpawner::Shut()
 #pragma endregion
 
 #pragma region AnimalBehaviours
-void DinoAnimal::Init(double timeSinceStart, int animalIndex, uint64_t texID)
+DinoAnimal::DinoAnimal(double timeSinceStart, int animalIndex, uint64_t texID)
 {
     m_animalType = animalIndex;
     m_texID = texID;
@@ -111,12 +112,11 @@ void DinoAnimal::Draw(double timeSinceStart)
     constexpr float TIME_FADE_IN = 1;
     float alpha = (timeSinceStart - m_spawnTime) / TIME_FADE_IN;
     alpha = std::clamp(alpha, 0.0f, 1.0f);
-    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart, alpha);
-    XDino_Draw(vbufID, m_texID, {m_pos.x - 16, m_pos.y - 32});
-    XDino_DestroyVertexBuffer(vbufID);
+    DinoVertexBuffer vbuf = GenerateVertexBuffer(timeSinceStart, alpha);
+    XDino_Draw(vbuf.GetVbufID(), m_texID, {m_pos.x - 16, m_pos.y - 32});
 }
 
-uint64_t DinoAnimal::GenerateVertexBuffer(double timeSinceStart, float alpha)
+DinoVertexBuffer DinoAnimal::GenerateVertexBuffer(double timeSinceStart, float alpha)
 {
     uint8_t a = (uint8_t)(alpha * 255);
     int frameAnim = int(timeSinceStart * 2) % 4;
@@ -176,7 +176,7 @@ uint64_t DinoAnimal::GenerateVertexBuffer(double timeSinceStart, float alpha)
         vs[4].color = {{0xFF, 0xFF, 0xFF, a}};
         vs[5].color = {{0xFF, 0xFF, 0xFF, a}};
 
-        return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Animal");
+        return {vs.data(), vs.size(), "Animal"};
 
     }
 

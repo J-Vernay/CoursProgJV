@@ -13,13 +13,13 @@ struct DinoAnimal : public DinoEntity {
     DinoVec2 m_posTopLeft = {};
     bool m_dead = false;
 
-    void Init(double timeSinceStart, int animalIndex, uint64_t texID);
+    DinoAnimal(double timeSinceStart, int animalIndex, uint64_t texID);
     void Update(float deltaTime, double timeSinceStart);
     void Draw(double timeSinceStart) override;
     void ReactLoop(double timeSinceStart) override;
     static bool IsDead(DinoAnimal& animal);
     void Shut();
-    uint64_t GenerateVertexBuffer(double timeSinceStart, float alpha);
+    DinoVertexBuffer GenerateVertexBuffer(double timeSinceStart, float alpha);
 };
 
 struct DinoAnimalSpawner {
