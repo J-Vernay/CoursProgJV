@@ -12,7 +12,6 @@
 #include <algorithm>
 #include <optional>
 
-
 constexpr double SPAWNTIME_BEGIN = 1;
 constexpr double SPAWNTIME_END = 0.033;
 constexpr double CHRONO_INIT = 60;
@@ -30,11 +29,12 @@ double g_chrono = CHRONO_INIT;
 std::optional<DinoVertexBuffer> g_vbufID_prenom;
 DinoVec2 textSize_prenom;
 
-// Variable globale pour l'affichage de debug.
-int g_debugScroll = 0;
+// Pause
+bool g_paused = false;
+bool g_prevStartPressed[4] = {false, false, false, false};
+double g_lastTimeActive = 0; // dernier timeSinceStart actif avant pause
 
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
-
 
 void Dino_GameInit()
 {
@@ -65,62 +65,71 @@ void Dino_GameInit()
         textSize_prenom = Dino_GenVertices_Text(vs, "Remi CHAUVIN", DinoColor_WHITE, DinoColor_GREY);
         g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
-
+    g_lastTimeActive = 0;
 }
 
 void Dino_GameFrame(double timeSinceStart)
 {
-    // Prendre en compte le temps qui passe.
-
+    // Calcul du deltaTime
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
     XDino_SetRenderSize(RENDER_SIZE);
 
-    // Gestion des entrées et mise à jour de la logique de jeu.
+    // Récupération des gamepads
+    DinoGamepad gamepad[4];
+    XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad[0]);
+    XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad[1]);
+    XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad[2]);
+    XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad[3]);
 
-    DinoGamepad gamepad{};
-    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
-        g_Players[0].Update(timeSinceStart, deltaTime, gamepad);
-
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
-        g_Players[1].Update(timeSinceStart, deltaTime, gamepad);
-
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
-        g_Players[2].Update(timeSinceStart, deltaTime, gamepad);
-
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
-        g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
+    // Gestion du bouton START pour pause / unpause
+    for (int i = 0; i < 4; ++i) {
+        if (gamepad[i].start && !g_prevStartPressed[i]) {
+            g_paused = !g_paused;
+        }
+        g_prevStartPressed[i] = gamepad[i].start;
+    }
 
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
-    // Purger les animaux qui sont morts.
-    // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
-    // Il faut ensuite appeler .erase() pour enlever les éléments.
-    auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
-    for (auto it2 = it; it2 < g_Animals.end(); ++it2)
-        it2->Shut();
-    g_Animals.erase(it, g_Animals.end());
+    // Update logique si le jeu n'est pas en pause
+    if (!g_paused) {
 
-    // Spawner un animal si besoin.
-    if (timeSinceStart > g_timeSpawnAnimal) {
-        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+        // Supprime les animaux morts
+        auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
+        for (auto it2 = it; it2 < g_Animals.end(); ++it2)
+            it2->Shut();
+        g_Animals.erase(it, g_Animals.end());
 
-        float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
-        float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
+        // Spawn d'animaux si nécessaire
+        if (timeSinceStart > g_timeSpawnAnimal) {
+            EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+            float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
+            float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
+            DinoAnimal& animal = g_Animals.emplace_back(timeSinceStart, kind, DinoVec2{x, y});
+            double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono;
+            g_timeSpawnAnimal = timeSinceStart + spawnTime;
+        }
 
-        DinoAnimal& animal = g_Animals.emplace_back(timeSinceStart, kind, DinoVec2{x, y});
-        double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono;
-        g_timeSpawnAnimal = timeSinceStart + spawnTime;
+        // Update des lassos
+        for (int i = 0; i < g_Lassos.size(); ++i)
+            g_Lassos[i].Update(g_Players[i].GetPos());
+
+        // Update des joueurs
+        for (int i = 0; i < g_Players.size(); ++i)
+            g_Players[i].Update(timeSinceStart, deltaTime, gamepad[i]);
+
+        // Update des animaux
+        for (DinoAnimal& animal : g_Animals)
+            animal.Update(timeSinceStart, deltaTime);
+
+        // Décrémente le chrono
+        g_chrono -= deltaTime;
     }
 
-    // Update les animaux.
-    for (DinoAnimal& animal : g_Animals)
-        animal.Update(timeSinceStart, deltaTime);
-
-    // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
-    // car il y a un lien d'héritage.
+    // Collision et limites
     std::vector<DinoEntity*> entities;
     for (DinoPlayer& player : g_Players)
         entities.emplace_back(&player);
@@ -134,29 +143,23 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoEntity* pEntity : entities)
         pEntity->ApplyLimit(terrainMin, terrainMax);
 
-    if (g_Lassos.size() != g_Players.size())
-        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
-    for (int i = 0; i < g_Lassos.size(); ++i)
-        g_Lassos[i].Update(g_Players[i].GetPos());
-
     for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
         for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
             DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
 
-    for (DinoLasso& lasso : g_Lassos)
-        for (DinoEntity* pEntity : entities)
-            if (lasso.WasInLoop(pEntity->GetPos()))
-                pEntity->ReactLoop(timeSinceStart);
+    // ReactLoop seulement si pas en pause
+    if (!g_paused) {
+        for (DinoLasso& lasso : g_Lassos)
+            for (DinoEntity* pEntity : entities)
+                if (lasso.WasInLoop(pEntity->GetPos()))
+                    pEntity->ReactLoop(timeSinceStart);
+    }
 
+    // Tri vertical pour affichage correct
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
-    // Décrémenter le chronomètre.
-    g_chrono -= deltaTime;
-
     // Affichage
-
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-
     XDino_SetClearColor(CLEAR_COLOR);
 
     g_Terrain.Draw();
@@ -184,6 +187,7 @@ void Dino_GameFrame(double timeSinceStart)
         // Destructeur de 'vs' appelé implicitement par le compilateur
     }
 
+    // Affichage du chrono
     {
         std::string text = std::format("{:.2f}", g_chrono);
         std::vector<DinoVertex> vs;
@@ -199,6 +203,16 @@ void Dino_GameFrame(double timeSinceStart)
         float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
         float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
         XDino_Draw(g_vbufID_prenom->Get(), XDino_TEXID_FONT, {tx, ty}, 2);
+    }
+
+    // Affiche "PAUSE" si en pause
+    if (g_paused) {
+        std::vector<DinoVertex> vs;
+        DinoVec2 pauseSize = Dino_GenVertices_Text(vs, "PAUSE", DinoColor_WHITE, DinoColor_GREY);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Pause");
+        float tx = (RENDER_SIZE.x - pauseSize.x * 2) / 2;
+        float ty = (RENDER_SIZE.y - pauseSize.y * 2) / 2;
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 3);
     }
 
 #if !XDINO_RELEASE
