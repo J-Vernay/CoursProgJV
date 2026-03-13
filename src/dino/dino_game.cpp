@@ -7,6 +7,7 @@
 #include <dino/dino_terrain.h>
 #include <dino/dino_animal.h>
 #include <dino/dino_lasso.h>
+#include <dino/dino_tree.h>
 
 #include <format>
 #include <algorithm>
@@ -29,6 +30,7 @@ struct PlayerState {
 
 std::vector<DinoGamepadIdx> g_UnassignedGamepads;
 std::vector<PlayerState> g_Players;
+std::vector<DinoTree> g_Trees;
 
 DinoTerrain g_Terrain;
 std::vector<DinoAnimal> g_Animals;
@@ -53,6 +55,7 @@ void Dino_GameInit()
 
     DinoPlayer::InitStatic();
     DinoAnimal::InitStatic();
+    DinoTree::InitStatic();
 
     for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
         g_UnassignedGamepads.emplace_back(idx);
@@ -65,6 +68,14 @@ void Dino_GameInit()
         std::vector<DinoVertex> vs;
         textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
         g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
+    }
+
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+    for (int i = 0; i < 4; ++i) {
+        float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+        float y = terrainMin.y + 80;
+        g_Trees.emplace_back(DinoVec2{x, y}, i);
     }
 
 }
@@ -96,7 +107,7 @@ void Dino_GameFrame(double timeSinceStart)
             if (XDino_GetGamepad(idx, gamepad)) {
                 if (gamepad.start) {
                     int idxPlayer = g_Players.size();
-                    if (idxPlayer >= 4) {
+                    if (idxPlayer < 4) {
                         g_Players.emplace_back(idx, gamepad, idxPlayer, PLAYER_COLORS[idxPlayer]);
                         g_UnassignedGamepads.erase(g_UnassignedGamepads.begin() + i);
                     }
@@ -163,6 +174,10 @@ void Dino_GameFrame(double timeSinceStart)
         entities.emplace_back(&player.dino);
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
+    if (g_bLobby) {
+        for (DinoTree& tree : g_Trees)
+            entities.emplace_back(&tree);
+    }
 
     if (!g_bPause) {
         for (size_t idxA = 0; idxA < entities.size(); ++idxA)
@@ -183,6 +198,18 @@ void Dino_GameFrame(double timeSinceStart)
             for (DinoEntity* pEntity : entities)
                 if (player.lasso.WasInLoop(pEntity->GetPos()))
                     pEntity->ReactLoop(timeSinceStart);
+    }
+
+    if (g_bLobby) {
+        for (DinoTree& tree : g_Trees)
+            if (tree.WasLooped()) {
+                // Lobby -> Gameplay
+                g_bLobby = false;
+                g_Terrain.Shut();
+                g_Terrain.Init(RENDER_SIZE, tree.GetIdxSeason());
+                g_Trees.clear();
+                break;
+            }
     }
 
     if (!g_bPause && !g_bLobby) {
@@ -273,6 +300,7 @@ void Dino_GameShut()
         animal.Shut();
     g_Terrain.Shut();
 
+    DinoTree::ShutStatic();
     DinoPlayer::ShutStatic();
     DinoAnimal::ShutStatic();
 
