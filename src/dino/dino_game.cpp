@@ -63,7 +63,7 @@ void Dino_GameInit()
     {
         std::vector<DinoVertex> vs;
         textSize_prenom = Dino_GenVertices_Text(vs, "Remi CHAUVIN", DinoColor_WHITE, DinoColor_GREY);
-        vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
+        g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
 
 }
