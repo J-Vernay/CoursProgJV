@@ -36,7 +36,7 @@ double g_chrono = CHRONO_INIT;
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
-constexpr DinoVec2 RENDER_SIZE = {480, 360};
+constexpr DinoVec2 RENDER_SIZE = {500 , 500};
 
 
 void Dino_GameInit()

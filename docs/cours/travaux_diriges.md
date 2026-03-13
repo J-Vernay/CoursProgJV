@@ -173,13 +173,13 @@ Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manip
 Comment s'appelle cette syntaxe ?
 
 > for (Type& typeName : liste/array )
->   typeName.Update();
+> typeName.Update();
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> Parce que l'on définit la taille de l'écran en pixel à l'avance, de ce fait si on dépasse cette limite, 
+> Parce que l'on définit la taille de l'écran en pixel à l'avance, de ce fait si on dépasse cette limite,
 > ce n'est plus affiché.
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
@@ -229,41 +229,46 @@ Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leu
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
->On a la ligne 93 pour la compilation des bibliothèques externes : 
->   files { "external/**.cpp", "external/**.h" }
-> 
+> On a la ligne 93 pour la compilation des bibliothèques externes :
+> files { "external/**.cpp", "external/**.h" }
+>
 > On a la ligne 107 pour la build windows:
->    files { "src/dino/x64-windows/*" }
-> 
+> files { "src/dino/x64-windows/*" }
+>
 > On a la ligne 1015 pour la build linux :
->     files { "src/dino/x64-linux/*" }
-> 
+> files { "src/dino/x64-linux/*" }
+>
 > Les particularités du débogguage sont définies plus haut dans le fichier.
 
 f) Quels sont les liens entre :
 
 > **Fichiers `.h` et `.cpp` :** ...
-> Le h est un fichier de déclaration, et le cpp est un fichier de définition dans lequel la logique des méthodes est implémenté.
+> Le h est un fichier de déclaration, et le cpp est un fichier de définition dans lequel la logique des méthodes est
+> implémenté.
 > **Fichiers `.cpp` et `.obj` :** ...
-> Le fichier en .obj est un fichier cpp compilé, il contient donc le code en binaire du .cpp, mais il n'est pas tout a fait complet.
+> Le fichier en .obj est un fichier cpp compilé, il contient donc le code en binaire du .cpp, mais il n'est pas tout a
+> fait complet.
 > **Fichiers `.obj` et `.lib` :** ...
 > Le fichier .Lib contient des fichiers .obj, c'est le linker qui ira piocher dedans lorsqu'il en aura besoin.
 > **Fichiers `.obj` et `.dll` :** ...
 > Le fichier .dll contient également des fichiers .obj, mais celle-ci n'est pas intégré dans l'exécutable final.
 > **Fichiers `.obj` et `.exe` :** ...
-> Ces deux fichiers sont lié par un linker qui va s'occuper des différentes liaisons entre les fichiers et combler les trous.
+> Ces deux fichiers sont lié par un linker qui va s'occuper des différentes liaisons entre les fichiers et combler les
+> trous.
 > **Fichiers `.dll` et `.exe` :** ...
 > Le lien entre les deux dépend du projet, certains projets chargent la .dll au démarrage uniquement et d'autres non.
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> Il s'agit d'une étape qui se déroule avant la compilation, il ne s'agit de code en c++, mais de la manipulation de texte afin de donner des directives spécifiques au compilateur.
+> Il s'agit d'une étape qui se déroule avant la compilation, il ne s'agit de code en c++, mais de la manipulation de
+> texte afin de donner des directives spécifiques au compilateur.
 > Une directive de préprocesseur se reconnait avec le character `#`  devant l'instruction.
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> Comme dit précédemment, il intervient avant la création du .exe et s'occupe de correctement lier les fichiers du projet entre eux (pour résoudre les références etc..).
+> Comme dit précédemment, il intervient avant la création du .exe et s'occupe de correctement lier les fichiers du
+> projet entre eux (pour résoudre les références etc..).
 > Il peut produire un exécutable et des bibliothèques (.lib / .dll).
 
 ## 5. Programmation des animaux
@@ -282,12 +287,13 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> On regarde si le radius du cercle A + celui du cercle B sont à une distance supérieure du segment AB.
 
-d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
+d) Comment repousser deux cercles en collision de façon minimale et qu'ils ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> On peut trouver un moyen simple de résoudre cela en appliquant le théorème de pythagore,
+> on peut trouver la distance minimale qui doit séparer les deux cercles selon leur alignement de départ.
 
 e) Implémentez la fonctionnalité F4.3 .
 
@@ -338,7 +344,7 @@ interagir entre elles.
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
 > On va tracer une ligne entre un élément du jeu (par exemple un joueur) et un point hors de la zone de jeu,
-> Ensuite, au moment de valider une boucle de lasso, on vérifie le nombre de collisions entre cette ligne et le lasso, 
+> Ensuite, au moment de valider une boucle de lasso, on vérifie le nombre de collisions entre cette ligne et le lasso,
 > En fonction du nombre cela détermine si le joueur est dans le lasso ou non.
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
@@ -377,44 +383,54 @@ e) Que représente un `std::vector` ? Comment pourrait-il être représenté en 
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> Un std::vector est un tableau dynamique, il contient donc trois informations : 
+> Un std::vector est un tableau dynamique, il contient donc trois informations :
 > - Un pointeur qui dirrige vers le début du tableau en mémoire.
 > - Une taille, qui donne le nombre d'éléments que contient ce tableau.
 > - Une capacité, qui donne le nombre d'éléments que le tableau peut acceuillir avant de devoir réallouer de l'espace.
->Pour connaitre la position d'un élément, avec son indice, il faut connaitre son type ensuite,
->on peut prendre l'adresse donnée par le pointeur et lui ajouter autant de fois que l'indice, l'espace que prend ce type dans la mémoire.
->adresse(i) = adresse_debut + i × taille_d_un_element
-> 
-> La limiation de cela est que si on dépasse la capcité max du tableau, il faut changer l'emplacement de son contenu dans la mémoire, ce qui peut être une action très lourde.
+    > Pour connaitre la position d'un élément, avec son indice, il faut connaitre son type ensuite,
+    > on peut prendre l'adresse donnée par le pointeur et lui ajouter autant de fois que l'indice, l'espace que prend ce
+    type dans la mémoire.
+    > adresse(i) = adresse_debut + i × taille_d_un_element
+>
+> La limiation de cela est que si on dépasse la capcité max du tableau, il faut changer l'emplacement de son contenu
+> dans la mémoire, ce qui peut être une action très lourde.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> C'est l'OS qui va se charger d'allouer de l'espace. Il le fera avant l'execution du main() pendant l'exécution du .exe.
-> Pour les variables locales, le compilateur va générer des instructions pour gérer la "stack", ces instructions sont générée l'entrée du block et détruite à la fin.
-> Cela va dépendre de s'il s'agit d'une variable locale ou globale, dans les deux cas, il n'y a pas besoin de libéré la mémoire, puisque ces données sont automatiquement détruites.
+> C'est l'OS qui va se charger d'allouer de l'espace. Il le fera avant l'execution du main() pendant l'exécution du
+> .exe.
+> Pour les variables locales, le compilateur va générer des instructions pour gérer la "stack", ces instructions sont
+> générée l'entrée du block et détruite à la fin.
+> Cela va dépendre de s'il s'agit d'une variable locale ou globale, dans les deux cas, il n'y a pas besoin de libéré la
+> mémoire, puisque ces données sont automatiquement détruites.
 
 ## 9. Fonctions cachées
 
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> DinoVec2 operator+(DinoVec2 a, DinoVec2 b){
+> 
+>      //logique de l'opérateur 
+>}
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> Car celle ci contient déjà une valeur par défaut initialisée dans le struct DinoVertex.
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
 et crée une instance sans faire de copie ?
 
+>emplace back
+
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> Car il contient déjà un destructeur appelé automatiquement lorsque l'on en a plus besoin.
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.

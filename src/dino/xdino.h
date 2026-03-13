@@ -88,6 +88,7 @@ struct DinoVertex {
     DinoColor color = DinoColor_WHITE;
 };
 
+
 /// Copie une liste de sommets de triangles texturés sur la carte graphique.
 /// Retourne l'identifiant unique de la liste de sommets.
 /// 'pLabel' est seulement utile pour avoir un nom de debug dans les statistiques.
