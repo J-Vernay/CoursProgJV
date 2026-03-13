@@ -404,65 +404,50 @@ Quand et qui alloue la mémoire des `std::vector` ?
 
 > ...
 
-## 9. Notre propre implémentation de std::vector
+## 9. Fonctions cachées
 
-Nous allons remplacer l'usage de `std::vector<DinoVec2>` dans la gestion des lassos.
-
-a) Allouez une zone mémoire avec `XDino_MemAlloc()` pour stocker un point.
-Quel est le type de retour ? Pourquoi la zone mémoire ne peut pas être manipulée telle quelle ?
+a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
+et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
 > ...
 
-b) Faites en sorte de pouvoir ajouter des points à la liste, en allouant une zone mémoire plus grande
-et en copiant l'ancien contenu dans la nouvelle zone mémoire.
-Pourquoi l'usage mémoire ne fait que grandir ?
+b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
+Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
 > ...
 
-c) Utilisez `XDino_MemFree()` pour éviter les fuites mémoire lors du redimensionnement du tableau.
+c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
+Quelle méthode de `std::vector` prend en paramètres les arguments de construction
+et crée une instance sans faire de copie ?
 
-d) Si l'on ajoute 20 points au tableau, combien de `DinoVec2` sont copiés en tout ?
-Combien d'allocation système, c'est-à-dire des appels à `XDino_MemAlloc()` sont faits ?
-
-> ...
-
-e) Limiter le nombre de copie et d'allocation système en implémentant une "capacité",
-Quelle est la différence entre la taille et la capacité de notre tableau ?
+d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
+d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
 > ...
 
-f) Isoler la logique de gestion du tableau dans une classe à part `DinoArrayVec2`.
+e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
+et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
+Faites en sorte que `XDino_DestroyVertexBuffer()` soit appelé automatiquement.
+Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
-g) Que se passe-t-il lorsqu'une fonction contenant une variable locale de type `DinoArrayVec2`
-retourne ? Quel mécanisme C++ permet de s'assurer que cela ne se produise pas ?
-
-> ...
-
-h) À l'inverse, quel mécanisme C++ permet de s'assurer que `DinoArrayVec2` peut toujours être détruit,
-même si la fonction d'initialisation n'est pas explicitement appelée ?
+f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
 > ...
 
-i) Que se passe-t-il lorsqu'on copie un `DinoArrayVec2` vers un autre ?
-Quelles fonctions C++ doivent être définies pour se prémunir du problème ?
+g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
+(s'il y en a).
+
+h) Implémentez en debug le fait que le terrain est réinitialisé en appuyant
+sur le bouton `btn_up` (touche Z du clavier).
+
+i) Quelle difficulté a-t-on pour remplacer `Init()` et `Shut()` de `DinoTerrain` ?
+Comment changer le code ?
 
 > ...
 
-j) Itérez sur tous les `DinoVec2` d'un `DinoArray<DinoVec2>` avec une boucle for-range,
-pour décaler chaque point du lasso d'une petite distance avant de dessigner le lasso,
-pour imiter un effet gribouillage. Quelles méthodes devez-vous implémenter pour que la syntaxe
-de la boucle for-range soit acceptée par le compilateur ?
-
-k) Utilisez la syntaxe des template `template<typename T>` pour transformer la classe
-`DinoArrayVec2` en classe générique `DinoArray`.
-Pourquoi l'implémentation de `DinoArray` doit forcément être dans un fichier header ?
-
-> ...
-
-l) Remplacez les usages de `std::vector<DinoVertex>` en `DinoArray<DinoVertex>`.
-
-m) Remplacez les usages de `std::vector<DinoPlayer>` en `DinoArray<DinoPlayer>`.
-Quel problème se pose ? Fixer l'implémentation de `DinoArray` pour utiliser placement-new.
+j) Pour le test, créer dynamiquement un `DinoAnimal` (en dehors de la logique de jeu).
+Convertissez le pointeur en `DinoEntity`, puis détruisez l'instance via le pointeur `DinoEntity`.
+Passe-t-on dans le destructeur de `DinoAnimal` ? Pourquoi ? Comment y remédier ?
 
 > ...
 
