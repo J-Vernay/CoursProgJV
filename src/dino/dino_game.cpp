@@ -20,14 +20,23 @@ constexpr double CHRONO_INIT = 60;
 // Variables globales.
 double g_lastTime = 0;
 
-std::vector<DinoPlayer> g_Players;
+struct PlayerState {
+    DinoGamepadIdx gamepadIdx;
+    DinoGamepad gamepad;
+    DinoPlayer dino;
+    DinoLasso lasso;
+};
+
+std::vector<DinoGamepadIdx> g_UnassignedGamepads;
+std::vector<PlayerState> g_Players;
+
 DinoTerrain g_Terrain;
-std::vector<DinoLasso> g_Lassos;
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
 double g_chrono = CHRONO_INIT;
 bool g_bWasStartPressed = false;
 bool g_bPause = false;
+bool g_bLobby = true;
 
 std::optional<DinoVertexBuffer> g_vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -45,18 +54,8 @@ void Dino_GameInit()
     DinoPlayer::InitStatic();
     DinoAnimal::InitStatic();
 
-    // Resize() appelle le constructeur par défaut;
-    // il n'y a pas de constructeur par défaut dans DinoPlayer
-    //g_Players.resize(4);
-    g_Players.emplace_back(0);
-    g_Players.emplace_back(1);
-    g_Players.emplace_back(2);
-    g_Players.emplace_back(3);
-
-    g_Lassos.emplace_back(DinoColor_BLUE);
-    g_Lassos.emplace_back(DinoColor_RED);
-    g_Lassos.emplace_back(DinoColor_YELLOW);
-    g_Lassos.emplace_back(DinoColor_GREEN);
+    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
+        g_UnassignedGamepads.emplace_back(idx);
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
@@ -81,32 +80,57 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    DinoGamepad gamepads[4];
-    DinoGamepad gamepad;
-    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, gamepad))
-        gamepads[0] = gamepad;
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad1, gamepad))
-        gamepads[1] = gamepad;
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad2, gamepad))
-        gamepads[2] = gamepad;
-    if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
-        gamepads[3] = gamepad;
+    constexpr DinoColor PLAYER_COLORS[4] = {
+        DinoColor_BLUE,
+        DinoColor_RED,
+        DinoColor_YELLOW,
+        DinoColor_GREEN,
+    };
 
+    // Détection des nouveaux joueurs
+
+    if (g_bLobby) {
+        for (int i = 0; i < g_UnassignedGamepads.size(); i++) {
+            DinoGamepadIdx idx = g_UnassignedGamepads[i];
+            DinoGamepad gamepad;
+            if (XDino_GetGamepad(idx, gamepad)) {
+                if (gamepad.start) {
+                    int idxPlayer = g_Players.size();
+                    if (idxPlayer >= 4) {
+                        g_Players.emplace_back(idx, gamepad, idxPlayer, PLAYER_COLORS[idxPlayer]);
+                        g_UnassignedGamepads.erase(g_UnassignedGamepads.begin() + i);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    // Lecture des inputs des joueurs
     bool bPressedStart = false;
-    for (DinoGamepad& g : gamepads)
-        bPressedStart = bPressedStart || g.start;
+    for (PlayerState& player : g_Players) {
+        DinoGamepad gamepad;
+        if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
+            player.gamepad = gamepad;
+            bPressedStart = bPressedStart || gamepad.start;
+        }
+    }
 
-    if (bPressedStart && !g_bWasStartPressed)
-        g_bPause = !g_bPause; // g_bPause prend l'inverse de g_bPause
-    g_bWasStartPressed = bPressedStart;
+    // Mettre en pause le jeu
+    if (!g_bLobby) {
+        if (bPressedStart && !g_bWasStartPressed)
+            g_bPause = !g_bPause; // g_bPause prend l'inverse de g_bPause
+        g_bWasStartPressed = bPressedStart;
+    }
 
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
     if (!g_bPause) {
-        for (int i = 0; i < 4; ++i)
-            g_Players[i].Update(timeSinceStart, deltaTime, gamepads[i]);
-
+        for (PlayerState& player : g_Players)
+            player.dino.Update(timeSinceStart, deltaTime, player.gamepad);
+    }
+    if (!g_bPause && !g_bLobby) {
         // Purger les animaux qui sont morts.
         // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
         // Il faut ensuite appeler .erase() pour enlever les éléments.
@@ -135,8 +159,8 @@ void Dino_GameFrame(double timeSinceStart)
     // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
     // car il y a un lien d'héritage.
     std::vector<DinoEntity*> entities;
-    for (DinoPlayer& player : g_Players)
-        entities.emplace_back(&player);
+    for (PlayerState& player : g_Players)
+        entities.emplace_back(&player.dino);
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
 
@@ -148,20 +172,20 @@ void Dino_GameFrame(double timeSinceStart)
         for (DinoEntity* pEntity : entities)
             pEntity->ApplyLimit(terrainMin, terrainMax);
 
-        if (g_Lassos.size() != g_Players.size())
-            DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
-        for (int i = 0; i < g_Lassos.size(); ++i)
-            g_Lassos[i].Update(g_Players[i].GetPos());
+        for (PlayerState& player : g_Players)
+            player.lasso.Update(player.dino.GetPos());
 
-        for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
-            for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
-                DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+        for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+            for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
+                DinoLasso::ResolveCollision(g_Players[idxA].lasso, g_Players[idxB].lasso);
 
-        for (DinoLasso& lasso : g_Lassos)
+        for (PlayerState& player : g_Players)
             for (DinoEntity* pEntity : entities)
-                if (lasso.WasInLoop(pEntity->GetPos()))
+                if (player.lasso.WasInLoop(pEntity->GetPos()))
                     pEntity->ReactLoop(timeSinceStart);
+    }
 
+    if (!g_bPause && !g_bLobby) {
         // Décrémenter le chronomètre.
         g_chrono -= deltaTime;
     }
@@ -176,8 +200,8 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
 
-    for (DinoLasso& lasso : g_Lassos)
-        lasso.Draw();
+    for (PlayerState& player : g_Players)
+        player.lasso.Draw();
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
@@ -242,8 +266,9 @@ void Dino_GameFrame(double timeSinceStart)
 void Dino_GameShut()
 {
     // For-range loop
-    for (DinoPlayer& player : g_Players)
-        player.Shut();
+
+    for (PlayerState& player : g_Players)
+        player.dino.Shut();
     for (DinoAnimal& animal : g_Animals)
         animal.Shut();
     g_Terrain.Shut();
