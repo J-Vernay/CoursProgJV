@@ -60,7 +60,7 @@ void Dino_GameInit()
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Mikha", DinoColor_WHITE, DinoColor_GREY);
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
     }
 
@@ -104,7 +104,7 @@ void Dino_GameFrame(double timeSinceStart)
     // Spawner un animal si besoin.
     if (timeSinceStart > g_timeSpawnAnimal) {
         DinoAnimal& animal = g_Animals.emplace_back();
-        EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
+        auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);

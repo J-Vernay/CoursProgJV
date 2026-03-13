@@ -233,7 +233,8 @@ d) Comment repousser deux cercles en collision de façon minimale et qu'il ne so
 Quel cas particulier n'est pas résoluble ?
 
 > En récupérant la position des deux entités, on calcule la distance entre les deux centres, s'il y a chevauchement
-> on les sépare dans la direction opposés
+> on les sépare dans la direction opposés. Attention, si les deux cercles ont la meme positions, cela ne marchera pas
+> du fait que ça fait une division par 0.
 
 e) Implémentez la fonctionnalité F4.3 .
 
