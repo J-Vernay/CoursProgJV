@@ -383,6 +383,8 @@ f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comme
 > pour prévenir, on peut supprimé le constructeur par copie et l'opérateur d'assignement
 > par copie avec un = delete, alors le compilateur va refusé la tentative de copie.
 
+=========== NE PAS FAIRE ===========
+
 g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
 (s'il y en a).
 
@@ -399,6 +401,8 @@ Convertissez le pointeur en `DinoEntity`, puis détruisez l'instance via le poin
 Passe-t-on dans le destructeur de `DinoAnimal` ? Pourquoi ? Comment y remédier ?
 
 > ...
+
+=========== FIN DE NE PAS FAIRE ===========
 
 ## 10. Flow de jeu
 
@@ -425,34 +429,23 @@ Qu'est-ce que cela entraîne nécessairement pour le stockage ?
 
 > ...
 
-m) Utilisez `std::unique_ptr<T>`. En quoi son usage est pratique ?
-
-> ...
-
-n) Que veut dire `std::move` ?
-
-> ...
-
-o) Implémentez des move-operators sur `DinoArray`.
-Comment démontrez-vous qu'ils fonctionnent ?
-
-> ...
-
 ## 11. Profiling
 
 a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.
 
 b) Prenez une capture PIX. ( https://devblogs.microsoft.com/pix/download/ )
 
-* Dans **File > Settings > PDB Search Paths**, ajoutez `srv*c:\symcache*https://msdl.microsoft.com/download/symbols` .
-* Dans **Connect > Local Machine > Attach**, cherchez le nom de l'exécutable (`Dino_PrenomNom.exe`), et clique dessus.
+* Dans **File > Settings > Symbol / PDB Options > PDB Search Paths**, ajoutez
+  `srv*c:\symcache*https://msdl.microsoft.com/download/symbols` (même s'il y a un texte d'erreur).
+* Dans **Local Machine > Capture > Attach** (à gauche), cherchez le nom de l'exécutable (`Dino_PrenomNom.exe`), et
+  cliquez dessus.
 * Décochez la case **For GPU Capture**, puis appuyez sur le bouton **Attach**.
-* Dans **Start Timing Capture**, cochez **CPU Samples** avec **8k / sec**, puis appuyez sur l'icône de chronomètre.
+* Dans **Capture**, cochez **CPU Samples** avec **8k / sec**, puis appuyez sur **Start Capture**.
 * Jouez pendant quelques secondes.
-* Recliquez sur l'icône de chronomètre.
+* Cliquez sur **Stop Capture**.
 * Allez dans l'onglet en haut **Timing 1.wpix**, puis dans l'onglet **Timeline**
 
-c) En haut à droite de la fenêtre, vous pouvez voir **Loading symbols**.
+c) En haut à gauche de la fenêtre, vous pouvez voir **Reload Symbols**. Cliquez dessus.
 Cette étape télécharge la première fois environ 250 MiB de données dans le dossier `C:\symcache`.
 Dépendamment de la connexion, cela peut prendre plusieurs minutes.
 
@@ -460,7 +453,7 @@ En utilisant Everything, quel type de fichiers se trouvent dans `C:\symcache` ? 
 
 > ...
 
-d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez **Items to show = Sampled functions**.
+d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez **Item Type = Sampled functions**.
 
 Quelle part représente `Dino_GameFrame` relativement à `WinMain` ? Quelle autre fonction prend du temps ?
 
@@ -480,6 +473,10 @@ pour avoir une meilleure idée des performances du code, et répondre aux questi
 
 **Temps passé en moyenne pour...**
 
+> **Créer un vertex buffer de 6 points :** ...
+>
+> **Drawcall d'un animal :** ...
+>
 > **Lire les entrées claviers/manette :** ...
 >
 > **Le calcul des DinoDrawCall :** ...
