@@ -7,7 +7,7 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : Fichier contenant les définission du moteur XDino.
+> `dino/xdino.h` : Fichier contenant les définitions du moteur XDino.
 >
 > `dino/x64-windows/` : Dossier contenant les fichiers permettant au moteur de fonctionner correctement sur Windows.
 >
@@ -93,7 +93,7 @@ au bout d'une seconde ?
 
 f) Par quoi est définit un triangle texturé ?
 
-> Par trois vertice, ayant des information de position, de couleur, de coordonnées UV, de normale.
+> Par trois vertices, ayant des informations de position, de couleur, de coordonnées UV, de normale.
 
 g) Qu'est-ce qu'est un "draw call" ?
 
@@ -136,14 +136,14 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> Il faut inverser la position des UV
+> Il faut inverser la position des UV en fonction de l'input du joueur.
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
 jeu ?
 
-> ...
+> ((temps écoulé * vitesse d'animation) % nombre de frame) * décalage en pixel + position de départ de u.
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
@@ -152,7 +152,7 @@ d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper ? L'appliquer.
 
-> On a créer un struct DinoPlayer regroupant toutes les variables associées à celui-ci.
+> On a créé un struct DinoPlayer regroupant toutes les variables associées à celui-ci.
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -172,23 +172,23 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> for (Type& typeName : ... )
-> typeName.Shut();
+> for (Type& typeName : liste/array )
+>   typeName.Update();
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> parce que l'on défini la taille de l'écran en pixel à l'avance, de ce fait si on dépasse cette limite, ce n'est plus
-> affiché
+> Parce que l'on définit la taille de l'écran en pixel à l'avance, de ce fait si on dépasse cette limite, 
+> ce n'est plus affiché.
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> On défini le nombre de tile posable dans cette aire, ensuite on calcule la position du corner en haut à gauche,
-> à partir de là il n'y a qu'à poser les tiles.
+> On définit le nombre de tile posable dans cette aire, ensuite, on calcule la position du corner en haut à gauche,
+> à partir de là, il n'y a qu'à poser les tiles.
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
@@ -229,30 +229,42 @@ Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leu
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+>On a la ligne 93 pour la compilation des bibliothèques externes : 
+>   files { "external/**.cpp", "external/**.h" }
+> 
+> On a la ligne 107 pour la build windows:
+>    files { "src/dino/x64-windows/*" }
+> 
+> On a la ligne 1015 pour la build linux :
+>     files { "src/dino/x64-linux/*" }
+> 
+> Les particularités du débogguage sont définies plus haut dans le fichier.
 
 f) Quels sont les liens entre :
 
 > **Fichiers `.h` et `.cpp` :** ...
->
+> Le h est un fichier de déclaration, et le cpp est un fichier de définition dans lequel la logique des méthodes est implémenté.
 > **Fichiers `.cpp` et `.obj` :** ...
->
+> Le fichier en .obj est un fichier cpp compilé, il contient donc le code en binaire du .cpp, mais il n'est pas tout a fait complet.
 > **Fichiers `.obj` et `.lib` :** ...
->
+> Le fichier .Lib contient des fichiers .obj, c'est le linker qui ira piocher dedans lorsqu'il en aura besoin.
 > **Fichiers `.obj` et `.dll` :** ...
->
+> Le fichier .dll contient également des fichiers .obj, mais celle-ci n'est pas intégré dans l'exécutable final.
 > **Fichiers `.obj` et `.exe` :** ...
->
+> Ces deux fichiers sont lié par un linker qui va s'occuper des différentes liaisons entre les fichiers et combler les trous.
 > **Fichiers `.dll` et `.exe` :** ...
+> Le lien entre les deux dépend du projet, certains projets chargent la .dll au démarrage uniquement et d'autres non.
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Il s'agit d'une étape qui se déroule avant la compilation, il ne s'agit de code en c++, mais de la manipulation de texte afin de donner des directives spécifiques au compilateur.
+> Une directive de préprocesseur se reconnait avec le character `#`  devant l'instruction.
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> faire le liens entre les code assembleur contenus dans plusieurs fichiers obj
+> Comme dit précédemment, il intervient avant la création du .exe et s'occupe de correctement lier les fichiers du projet entre eux (pour résoudre les références etc..).
+> Il peut produire un exécutable et des bibliothèques (.lib / .dll).
 
 ## 5. Programmation des animaux
 
@@ -312,19 +324,22 @@ a) Implémentez la fonctionnalité F4.1 .
 b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique.
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> On vas utiliser .erase pour supprimer la dernière position de la liste si elle contient plus de 120 positions.
 
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> On a 12 vérifications par frame
+> On utilisera la méthode .size() pour le pas calculer toutes les positions du lasso.
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> ...
+> On va tracer une ligne entre un élément du jeu (par exemple un joueur) et un point hors de la zone de jeu,
+> Ensuite, au moment de valider une boucle de lasso, on vérifie le nombre de collisions entre cette ligne et le lasso, 
+> En fonction du nombre cela détermine si le joueur est dans le lasso ou non.
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
 
@@ -362,13 +377,23 @@ e) Que représente un `std::vector` ? Comment pourrait-il être représenté en 
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> Un std::vector est un tableau dynamique, il contient donc trois informations : 
+> - Un pointeur qui dirrige vers le début du tableau en mémoire.
+> - Une taille, qui donne le nombre d'éléments que contient ce tableau.
+> - Une capacité, qui donne le nombre d'éléments que le tableau peut acceuillir avant de devoir réallouer de l'espace.
+>Pour connaitre la position d'un élément, avec son indice, il faut connaitre son type ensuite,
+>on peut prendre l'adresse donnée par le pointeur et lui ajouter autant de fois que l'indice, l'espace que prend ce type dans la mémoire.
+>adresse(i) = adresse_debut + i × taille_d_un_element
+> 
+> La limiation de cela est que si on dépasse la capcité max du tableau, il faut changer l'emplacement de son contenu dans la mémoire, ce qui peut être une action très lourde.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> C'est l'OS qui va se charger d'allouer de l'espace. Il le fera avant l'execution du main() pendant l'exécution du .exe.
+> Pour les variables locales, le compilateur va générer des instructions pour gérer la "stack", ces instructions sont générée l'entrée du block et détruite à la fin.
+> Cela va dépendre de s'il s'agit d'une variable locale ou globale, dans les deux cas, il n'y a pas besoin de libéré la mémoire, puisque ces données sont automatiquement détruites.
 
 ## 8. Notre propre implémentation de std::vector
 
