@@ -53,6 +53,11 @@ void dino_player::DinoPlayer_ReadGamePad(DinoGamepad gamepad, float deltaTime)
     isStatic = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
 }
 
+void dino_player::DinoPlayer_Despawn()
+{
+    ShouldDespawn = true;
+}
+
 void dino_player::DinoPlayer_Stun()
 {
     isStun = true;
@@ -120,4 +125,9 @@ void dino_player::LassoCatched(int playerId)
     if (playerId != dinoID) {
         DinoPlayer_Stun();
     }
+}
+
+bool dino_player::IsEntityDead()
+{
+    return ShouldDespawn;
 }

@@ -20,10 +20,12 @@ public :
     };
 
     void DinoPlayer_ReadGamePad(DinoGamepad gamepad, float deltaTime);
+    void DinoPlayer_Despawn();
     void DinoPlayer_Stun();
     void Update(float deltaTime) override;
     void DrawEntity(double timeSinceStart) override;
     void LassoCatched(int playerId) override;
+    bool IsEntityDead() override;
 
 private :
     uint64_t texID_dino;
@@ -38,6 +40,8 @@ private :
     bool isStatic = false;
     bool isRunning = false;
     bool isGoingLeft = false;
+
+    bool ShouldDespawn = false;
 
     static constexpr float STUN_TIME = 3;
     float waitedTime = 0;

@@ -475,7 +475,7 @@ j) Implémentez F6.8.
 
 k) Sous quelle forme peut-on réorganiser toute cette logique ? Pourquoi ?
 
-> ...
+> sous la forme d'un state machine ou en utilisant des enum
 
 l) Utilisez le polymorphisme pour gérer l'état actuel du jeu.
 Qu'est-ce que cela entraîne nécessairement pour le stockage ?

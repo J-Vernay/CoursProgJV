@@ -10,7 +10,6 @@ public :
 
     dino_terrain& operator=(dino_terrain const& other) = delete;
 
-    DinoVec2 DinoTerrain_GetTopLeft();
     void DinoTerrain_Draw();
 
 private :

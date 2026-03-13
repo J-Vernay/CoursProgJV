@@ -9,6 +9,7 @@ public :
     std::vector<dino_Entity*> entities;
 
     void UpdateAndDrawEntities(double timeSinceStart, float deltaTime);
+    void SimpleDrawEntities(double timeSinceStart);
     void DinoCollision_HandleCollisions(DinoVec2 terrainTopLeft);
     void AddEntity(dino_Entity* entity);
 

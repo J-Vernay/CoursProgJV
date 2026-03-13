@@ -15,11 +15,6 @@ dino_terrain::~dino_terrain()
     XDino_DestroyVertexBuffer(vbufID_flowers);
 }
 
-DinoVec2 dino_terrain::DinoTerrain_GetTopLeft()
-{
-    return {(480 - 256) / 2, (360 - 192) / 2};
-}
-
 void dino_terrain::DinoTerrain_Draw()
 {
     XDino_Draw(vbufID_ocean, textIdTerrain);

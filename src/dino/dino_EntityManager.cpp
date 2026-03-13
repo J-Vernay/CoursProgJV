@@ -6,12 +6,19 @@ void dino_EntityManager::UpdateAndDrawEntities(double timeSinceStart, float delt
     std::sort(entities.begin(), entities.end(), dino_Entity::CompareVerticalY);
 
     for (int i = entities.size() - 1; i >= 0; i--) {
-        if (entities[i]->IsEntityDead()) {
+        if (entities[i] == nullptr || entities[i]->IsEntityDead()) {
             entities.erase(entities.begin() + i);
             continue;
         }
         entities[i]->Update(deltaTime);
         entities[i]->DrawEntity(timeSinceStart);
+    }
+}
+
+void dino_EntityManager::SimpleDrawEntities(double timeSinceStart)
+{
+    for (dino_Entity* entity : entities) {
+        entity->DrawEntity(timeSinceStart);
     }
 }
 

@@ -2,49 +2,38 @@
 
 DinoGameState::DinoGameState()
 {
-    ChangeGameState(Lobby);
-}
 
-DinoGameState::~DinoGameState()
-{
-    m_dinoTerrain.emplace(0);
 }
 
 void DinoGameState::Update()
 {
+    if (!m_dinoTerrain.has_value())
+        m_dinoTerrain.emplace(XDino_RandomInt32(0, 3));
+
     m_dinoTerrain->DinoTerrain_Draw();
+}
+
+DinoGameState::game_state DinoGameState::GetState()
+{
+    return currentGameState;
 }
 
 void DinoGameState::ChangeGameState(game_state newGameState)
 {
     currentGameState = newGameState;
     switch (newGameState) {
-        case Lobby:
-        m_dinoTerrain.emplace(0);        
+    case Lobby: m_dinoTerrain.emplace(0);
         break;
 
-        case Pause:
-        break;
+    case Pause: break;
 
-        case Season1:
-        m_dinoTerrain.emplace(0);
-        break;
-
-        case Season2:
-        m_dinoTerrain.emplace(1);
-        break;
-
-        case Season3:
-        m_dinoTerrain.emplace(2);
-        break;
-
-        case Season4:
-        m_dinoTerrain.emplace(3);
+    case Playing: if (!m_dinoTerrain.has_value())
+            m_dinoTerrain.emplace(0);
         break;
     }
 }
 
-DinoVec2 DinoGameState::GetTopLeft()
+void DinoGameState::Shutdown()
 {
-    return m_dinoTerrain->DinoTerrain_GetTopLeft();
+    m_dinoTerrain.reset();
 }

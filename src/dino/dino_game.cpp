@@ -5,7 +5,6 @@
 #include "LassoManager.h"
 #include "dino_animal.h"
 #include "dino_player.h"
-#include "dino_terrain.h"
 #include "dino_EntityManager.h"
 
 #include <dino/dino_draw_utils.h>
@@ -34,6 +33,7 @@ float g_timeLeft;
 #include <deque>
 
 std::unordered_map<DinoGamepadIdx, dino_player> gamepadDino_map;
+std::unordered_map<DinoGamepadIdx, DinoGamepad> lastFrameInputs_map;
 std::deque<dino_animal> animals;
 
 DinoGameState g_gameState;
@@ -47,8 +47,6 @@ int g_debugScroll = 0;
 
 void Dino_GameInit()
 {
-    g_gameState.ChangeGameState(DinoGameState::Season1);
-
     //DinoVec2 windowSize = XDino_GetWindowSize();
     DinoVec2 windowSize = {480, 360};
     XDino_SetRenderSize(windowSize);
@@ -58,7 +56,7 @@ void Dino_GameInit()
         texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
     }
 
-    g_terrainTopLeft = g_gameState.GetTopLeft();
+    g_terrainTopLeft = {(480 - 256) / 2, (360 - 192) / 2};
 
     // Préparation du drawcall du prenom.
     {
@@ -86,15 +84,6 @@ void Dino_GameFrame(double timeSinceStart)
     //drawing terrain
     g_gameState.Update();
 
-    //adding an animal, max amount is 20
-    if (g_spawnTimer > std::lerp(g_endSpawnDelay, g_baseSpawnDelay, g_timeLeft / PLAYING_TIME) && animals.size() < 50) {
-        int index = animals.size();
-        animals.emplace_back(g_terrainTopLeft, 8);
-        g_dinoEntityManager.AddEntity(&animals[index]);
-        g_spawnTimer = 0;
-    }
-    g_spawnTimer += deltaTime;
-
     // Gestion des entrées et mise à jour de la logique de jeu.
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
@@ -102,18 +91,25 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
+        if (gamepad.start && !lastFrameInputs_map.find(gamepadIdx)->second.start) {
+            if (g_gameState.GetState() == DinoGameState::Pause)
+                g_gameState.ChangeGameState(DinoGameState::Playing);
+            else
+                g_gameState.ChangeGameState(DinoGameState::Pause);
+        }
+
         if (gamepad.btn_up) {
 
-            g_gameState.ChangeGameState((DinoGameState::game_state)XDino_RandomInt32(2, 5));
+            g_gameState.ChangeGameState(DinoGameState::Playing);
         }
 
         //spawning dino_players
-        if (!gamepadDino_map.contains(gamepadIdx)
+        if (g_gameState.GetState() == DinoGameState::Lobby
+            && !gamepadDino_map.contains(gamepadIdx)
             && (gamepad.stick_left_x != 0 || gamepad.stick_left_y != 0)
             //max player amount == 4
             && gamepadDino_map.size() < 4) {
 
-            DinoVec2 windowSize = XDino_GetWindowSize();
             dino_player newPlayer = dino_player(
                 {g_terrainTopLeft.x + 128, g_terrainTopLeft.y + 96},
                 8,
@@ -125,18 +121,52 @@ void Dino_GameFrame(double timeSinceStart)
             g_dinoEntityManager.AddEntity(&it->second);
             g_lassoManager.AddLasso(it->second);
         }
+        //despawning player
+        if (g_gameState.GetState() == DinoGameState::Lobby
+            && gamepadDino_map.contains(gamepadIdx)
+            && gamepad.select) {
+
+            dino_player& player = gamepadDino_map.find(gamepadIdx)->second;
+
+            for (int i = g_dinoEntityManager.entities.size() - 1; i >= 0; i--) {
+                if (g_dinoEntityManager.entities[i] == &player) {
+                    g_dinoEntityManager.entities.erase(g_dinoEntityManager.entities.begin() + i);
+                }
+            }
+            g_lassoManager.RemovePlayer(player);
+
+            gamepadDino_map.find(gamepadIdx)->second.DinoPlayer_Despawn();
+            gamepadDino_map.erase(gamepadIdx);
+        }
 
         //updating dino_players
-        if (gamepadDino_map.contains(gamepadIdx)) {
+        if (gamepadDino_map.contains(gamepadIdx) && g_gameState.GetState() != DinoGameState::Pause) {
             gamepadDino_map.at(gamepadIdx).DinoPlayer_ReadGamePad(gamepad, deltaTime);
         }
         //
+        lastFrameInputs_map[gamepadIdx] = gamepad;
+    }
+
+    //logic active only in game
+    //adding an animal, max amount is 20
+    if (g_gameState.GetState() == DinoGameState::Playing) {
+        if (g_spawnTimer > std::lerp(g_endSpawnDelay, g_baseSpawnDelay, g_timeLeft / PLAYING_TIME) && animals.size() <
+            50) {
+            int index = animals.size();
+            animals.emplace_back(g_terrainTopLeft, 8);
+            g_dinoEntityManager.AddEntity(&animals[index]);
+            g_dinoEntityManager.AddEntity(&animals[index]);
+            g_spawnTimer = 0;
+        }
+        g_spawnTimer += deltaTime;
     }
 
     // Timer
     {
-        g_timeLeft -= deltaTime;
-        g_timeLeft = std::max(g_timeLeft, 0.0f);
+        if (g_gameState.GetState() == DinoGameState::Playing) {
+            g_timeLeft -= deltaTime;
+            g_timeLeft = std::max(g_timeLeft, 0.0f);
+        }
 
         std::string text = std::format("{:04.1f}", g_timeLeft);
         std::vector<DinoVertex> vs;
@@ -158,11 +188,21 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     //drawing all entities
-    g_lassoManager.UpdateLassos(g_dinoEntityManager.entities);
-    g_dinoEntityManager.UpdateAndDrawEntities(timeSinceStart, deltaTime);
+    if (g_gameState.GetState() != DinoGameState::Pause) {
+        g_lassoManager.UpdateLassos(g_dinoEntityManager.entities);
+        g_dinoEntityManager.UpdateAndDrawEntities(PLAYING_TIME - g_timeLeft, deltaTime);
+        //resolving all collisions between entities
+        g_dinoEntityManager.DinoCollision_HandleCollisions(g_terrainTopLeft);
+    }
+    else {
+        g_lassoManager.SimpleDrawLasso();
+        g_dinoEntityManager.SimpleDrawEntities(PLAYING_TIME - g_timeLeft);
 
-    //resolving all collisions between entities
-    g_dinoEntityManager.DinoCollision_HandleCollisions(g_terrainTopLeft);
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, "Paused", DinoColor_WHITE, DinoColor_BLACK);
+        DinoVertexBuffer vbufID(vs.data(), vs.size(), "dTime");
+        XDino_Draw(vbufID.Get(), XDino_TEXID_FONT, {240 - textSize.x * 2.5f, 180 - textSize.y * 2.5f}, 5);
+    }
 
 #if !XDINO_RELEASE
     // Affichage des statistiques si on appuie sur CTRL.
@@ -181,7 +221,7 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    g_dinoTerrain.reset();
+    g_gameState.Shutdown();
     dino_animal::DinoAnimal_ShutStatic();
 
     XDino_DestroyVertexBuffer(vbufID_prenom);

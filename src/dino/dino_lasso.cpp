@@ -2,11 +2,27 @@
 
 #include "dino_draw_utils.h"
 #include "dino_geometry.h"
-#include "x64-windows/xdino_win64_rdr.h"
 
 dino_lasso::dino_lasso(dino_player& player)
 {
     attachedPlayer = &player;
+}
+
+void dino_lasso::SimpleDrawLasso()
+{
+    std::vector<DinoVertex> vs;
+    DinoColor lineColor =
+        attachedPlayer->dinoID == 0
+            ? DinoColor_BLUE
+            : attachedPlayer->dinoID == 1
+            ? DinoColor_RED
+            : attachedPlayer->dinoID == 2
+            ? DinoColor_YELLOW
+            : DinoColor_GREEN;
+
+    Dino_GenVertices_Polyline(vs, lassoPoints, 5, lineColor);
+    DinoVertexBuffer lassoVertexBuffer(vs.data(), vs.size(), "lasso");
+    XDino_Draw(lassoVertexBuffer.Get(), XDino_TEXID_WHITE, {}, 1);
 }
 
 void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities)
@@ -41,20 +57,7 @@ void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities)
             break;
         }
     }
-
-    std::vector<DinoVertex> vs;
-    DinoColor lineColor =
-        playerId == 0
-            ? DinoColor_BLUE
-            : playerId == 1
-            ? DinoColor_RED
-            : playerId == 2
-            ? DinoColor_YELLOW
-            : DinoColor_GREEN;
-
-    Dino_GenVertices_Polyline(vs, lassoPoints, 5, lineColor);
-    DinoVertexBuffer lassoVertexBuffer(vs.data(), vs.size(), "lasso");
-    XDino_Draw(lassoVertexBuffer.Get(), XDino_TEXID_WHITE, {}, 1);
+    SimpleDrawLasso();
 }
 
 void dino_lasso::CutLasso(int fromIndex)
@@ -83,4 +86,9 @@ bool dino_lasso::IsPointInLoop(DinoVec2 p, int index1, int index2)
     }
 
     return intersectionCount % 2 != 0;
+}
+
+bool dino_lasso::IsMyPlayer(dino_player& player)
+{
+    return &player == attachedPlayer;
 }
