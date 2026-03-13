@@ -15,7 +15,12 @@ class Animal : public Collider, public SpriteRenderer
         float distanceThreshold = 0.5f;
         float Speed = 50;
         int Id;
-        void Init(uint64_t);
+
+        bool isAlive = true;
+        bool pointAdded; 
+        bool fadeOutDone= false;
+    
+        void Init();
         void Update(double);
         void Shut();
         static void InitStatic(uint64_t);
@@ -32,11 +37,18 @@ class Animal : public Collider, public SpriteRenderer
         Pos = newPos;
     }
 
+
+    void ReactLoop(float = 0) override
+    {
+        isAlive = false;
+    };
+
     private:
         
         int animFrame = 0;
         float animTimer = 0.f;
         int animPos = 0;
+         float fadeOutTimer = 1;
 
     
     
@@ -48,9 +60,10 @@ class Animal : public Collider, public SpriteRenderer
     bool isFadeInDone = false;
     float timeSinceSpawn = 1.0f;
      std::vector<DinoVertex> FadeIn(float, std::vector<DinoVertex>);
+        std::vector<DinoVertex> FadeOut(float deltaTime, std::vector<DinoVertex> vs);
 
-    
-    DinoVec2 MoveTowards(DinoVec2,DinoVec2, float,float);
+
+        DinoVec2 MoveTowards(DinoVec2,DinoVec2, float,float);
     DinoVec2 DefineDestination();
     void Draw() override;
     float Distance(DinoVec2,DinoVec2);

@@ -23,12 +23,10 @@ void DinoObject::Update(double timeSinceStart,float deltaTime, const DinoGamepad
 
     //======================
 
-    GenerateRopePoints();
-    ManageRopePointsTime(deltaTime);
-
-     
+    dinoLasso.GenerateRopePoints(dinoPos);
+    dinoLasso.ManageRopePointsTime(deltaTime);
+    dinoLasso.ScanRopeIntersection();
     
-    ScanRopeIntersection();
     DrawRopePoints();
 }
 
@@ -75,6 +73,14 @@ void DinoObject::HandleInput(float deltaTime, const DinoGamepad& gamepad)
             curentDinoState = idle;
         }
     }
+}
+
+void DinoObject::TakeDamage()
+{
+    damageTimer = damageDuration;
+    curentDinoState = damage;
+    animFrame = 0;
+    animTimer = 0.0f;
 }
 
 
@@ -172,13 +178,13 @@ void DinoObject::DinoShut()
 #include "dino/CodeBase/dino_draw_utils.h"
 
 
-void DinoObject::GenerateRopePoints()
+void DinoObject::DinoLasso::GenerateRopePoints(DinoVec2 dinoPos)
 {
     ropePoints.push_back(PointInfo{});
     ropePoints[ropePoints.size()-1].pointPos = dinoPos;
 }
 
-void DinoObject::ManageRopePointsTime(float deltaTime)
+void DinoObject::DinoLasso::ManageRopePointsTime(float deltaTime)
 {
 
     for (int i = 0; i < ropePoints.size(); ++i) {
@@ -190,7 +196,7 @@ void DinoObject::ManageRopePointsTime(float deltaTime)
     }
 }
 
-void DinoObject::ScanRopeIntersection()
+void DinoObject::DinoLasso::ScanRopeIntersection()
 {
     int count = ropePoints.size();
 
@@ -207,28 +213,45 @@ void DinoObject::ScanRopeIntersection()
 
         if (Dino_IntersectSegment(A, B, C, D))
         {
+            loopLasso.assign(ropePoints.begin() + i + 1, ropePoints.end() - 1);
             ropePoints.erase(ropePoints.begin() + i + 1, ropePoints.end() - 1);
             break;
         }
     }
 }
 
-void DinoObject::DrawRopePoints()
+bool DinoObject::DinoLasso::WasInLoop(DinoVec2 pos)
 {
+    if (loopLasso.size() < 3)
+        return false;
 
-    std::vector<DinoVec2> ropePointsPos = {};
+    DinoVec2 origin = {0, 0};
 
-    for (int i = 0; i < ropePoints.size(); ++i) {
-        ropePointsPos.push_back(ropePoints[i].pointPos);
+    int nbCollisions = 0;
+    for (int i = 0; i < loopLasso.size(); ++i) {
+        DinoVec2 c = loopLasso[i].pointPos;
+        DinoVec2 d = (i == loopLasso.size() - 1) ? loopLasso[0].pointPos : loopLasso[i + 1].pointPos;
+        if (Dino_IntersectSegment(origin, pos, c, d))
+            nbCollisions += 1;
     }
 
+    return (nbCollisions % 2) == 1;
+}
+
+
+
+void DinoObject::DrawRopePoints() 
+{
+
+    std::vector<DinoVec2> ropePointsPos = dinoLasso.GetRopePoint();
+    
 
     if (RopeManager::allRopes.size() > playerId)RopeManager::allRopes[playerId] = ropePointsPos;
     else RopeManager::allRopes.push_back(ropePointsPos);
 
     std::vector<DinoVertex> line;
 
-    Dino_GenVertices_Polyline(line,ropePointsPos, 3.0f,color);
+    Dino_GenVertices_Polyline(line,ropePointsPos, 3.0f,dinoLasso.color);
 
     uint64_t vbufID_dinoLine = XDino_CreateVertexBuffer(line.data(), line.size(), "dinoLine");
     

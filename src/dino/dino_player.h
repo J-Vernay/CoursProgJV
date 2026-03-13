@@ -56,6 +56,11 @@ class DinoObject  : public Collider,public SpriteRenderer
         dinoPos = newPos;
     }
 
+    void ReactLoop(float = 0) override
+    {
+        TakeDamage();
+    };
+
     private:
     
         int animFrame = 0;
@@ -68,33 +73,56 @@ class DinoObject  : public Collider,public SpriteRenderer
     
         
         uint64_t vbufID_dinoTexture;
+
      
         void HandleInput(float, const DinoGamepad&);
+        void TakeDamage();
         void AnimTimerUpdate(float);
         void GenerateVertexBuffer();
         void Draw();
 
     //===================================================================
-
+public:
     struct PointInfo
     {
-        float timeAliveRemaining = 5.0f;
+        float timeAliveRemaining = 10.0f;
 
     public:
          DinoVec2 pointPos;
         
     };
-    std::vector<PointInfo> ropePoints;
-
-
-    void GenerateRopePoints();
-    void ManageRopePointsTime(float);
-    void ScanRopeIntersection();
-    void DrawRopePoints();
-    
 
 public:
-    DinoColor color;
+    struct DinoLasso {
+        
+        void GenerateRopePoints(DinoVec2 dinoPos);
+        void ManageRopePointsTime(float);
+        void ScanRopeIntersection();
+        bool WasInLoop(DinoVec2 pos);
+
+        std::vector<DinoVec2> GetRopePoint()
+        {
+            std::vector<DinoVec2> ropePointsPos;
+            for (int i = 0; i < ropePoints.size(); ++i) {
+                ropePointsPos.push_back(ropePoints[i].pointPos);
+            }
+            return ropePointsPos;
+    
+        }
+
+        std::vector<PointInfo> ropePoints;
+        
+        std::vector<PointInfo> loopLasso;
+
+        DinoColor color;
+    };
+    
+public:
+    
+    void DrawRopePoints();
+    DinoLasso dinoLasso;
+
+    
 
 
     DinoObject()

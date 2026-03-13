@@ -11,6 +11,8 @@
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 #include "Rendering.h"
+#include "RopeManager.h"
+
 #include <array>
 #include <dino/UI.h>
 
@@ -28,11 +30,15 @@ uint64_t texID_dinoTexture;
 
 
 #include <deque>
+
 UI gUI;
 DinoTerrain g_Terrain;
 std::deque<Animal> animals;
-float spawnClock =1;
-float clockReset = 1;
+std::vector<DinoObject::DinoLasso*> g_Lassos ;
+RopeManager g_RopeManager;
+
+float spawnClock =0.5f;
+float clockReset = 0.2f;
 
 
 
@@ -88,18 +94,19 @@ void Dino_GameInit()
         PlayerList[i].playerId = i;
         PlayerList[i].texID_dinoTexture = texID_dinoTexture;
         PlayerList[i].dinoPos = {XDino_GetRenderSize().x/2, XDino_GetRenderSize().y/2};
+        g_Lassos.push_back(&PlayerList[i].dinoLasso);
         
         //PlayerList[i].Init();
 
         switch (i) {
             case 0:
-            PlayerList[i].color = DinoColor_BLUE; break;
+            PlayerList[i].dinoLasso.color = DinoColor_BLUE; break;
             case 1:
-            PlayerList[i].color = DinoColor_RED; break;
+            PlayerList[i].dinoLasso.color = DinoColor_RED; break;
             case 2:
-            PlayerList[i].color = DinoColor_YELLOW; break;
+            PlayerList[i].dinoLasso.color = DinoColor_YELLOW; break;
             case 3:
-            PlayerList[i].color = DinoColor_GREEN; break;
+            PlayerList[i].dinoLasso.color = DinoColor_GREEN; break;
             
         }
     }
@@ -189,7 +196,7 @@ void Dino_GameFrame(double timeSinceStart)
         spawnClock = clockReset;
 
         animals.emplace_back();
-        animals.back().Init(texID_AnimalTexture);
+        animals.back().Init();
     }
 
     
@@ -211,6 +218,64 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
         PlayerList[3].Update(timeSinceStart,deltaTime,gamepad);
+    
+    
+    
+    // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
+    // car il y a un lien d'héritage.
+    std::vector<Collider*> entities;
+    for (DinoObject& player : PlayerList)
+        entities.emplace_back(&player);
+    for (Animal& animal : animals)
+        entities.emplace_back(&animal);
+    
+    // for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+    //     for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+    //         DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+    
+    // for (DinoEntity* pEntity : entities)
+    //     pEntity->ApplyLimit(terrainMin, terrainMax);
+    
+    if (g_Lassos.size() != PlayerList.size())
+        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+    // for (int i = 0; i < g_Lassos.size(); ++i)
+    //     g_Lassos[i].Update(g_Players[i].GetPos());
+    
+    for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
+            g_RopeManager.ResolveCollision(PlayerList[idxA].dinoLasso, PlayerList[idxB].dinoLasso);
+    
+    for (size_t i = 0; i < g_Lassos.size(); ++i)
+    {
+        for (size_t j = 0; j < entities.size(); ++j)
+        {
+            if (g_Lassos[i]->WasInLoop(entities[j]->GetPosition()))
+            {
+                entities[j]->ReactLoop(timeSinceStart);
+            }
+        }
+    }
+
+
+    int combo = 0;
+
+    for (auto it = animals.begin(); it != animals.end(); )
+    {
+        if (!it->isAlive)
+        {
+            combo++;
+            it->pointAdded = true;
+        }
+        if (it->fadeOutDone)
+        {
+            it->Shut();
+            it = animals.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 
 
 
