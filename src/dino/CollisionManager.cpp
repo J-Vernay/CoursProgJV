@@ -1,11 +1,15 @@
 #include "CollisionManager.h"
 
+#include "GameManager.h"
+#include "PopUpScore.h"
+
 #include <iostream>
 
 #include "dino/DinoPlayer.h"
 #include "dino/dino_geometry.h"
 
-CollisionManager::CollisionManager() {}
+CollisionManager::CollisionManager(GameManager& _gameManager): gameManager(_gameManager)
+{}
 
 
 void CollisionManager::Update(float deltaTime)
@@ -28,6 +32,17 @@ void CollisionManager::Update(float deltaTime)
                     }
                 }
             }
+        }
+    }
+
+    for (int i = (int)popUpScoreList.size() - 1; i >= 0; i--)
+    {
+        popUpScoreList[i]->Update(deltaTime);
+
+        if (popUpScoreList[i]->readyToDelete)
+        {
+            delete popUpScoreList[i];
+            popUpScoreList.erase(popUpScoreList.begin() + i);
         }
     }
 }
@@ -114,20 +129,57 @@ void CollisionManager::CheckLassoCollisionPlayer(DinoArray<DinoPlayer*>* pList)
         }
     }
 }
+
+
 void CollisionManager::ApplyCircleLasso(int playerWhoDo, const DinoArray<DinoVec2>& bounds)
 {
+    DinoArray<Agent*> agentCatchs;
+    Agent* currentPlayer = nullptr;
+    
     for (int i = (int)agentsList->GetSize() - 1; i >= 0; i--)
     {
-        if ((*agentsList)[i]->ID == playerWhoDo)
+        if ((*agentsList)[i]->ID == playerWhoDo) {
+            currentPlayer = (*agentsList)[i];
             continue;
+        }
         
         Agent* currentAgent = (*agentsList)[i];
 
         if (CheckIsInBounds(bounds, currentAgent->position))
         {
+            agentCatchs.AddBack(currentAgent);
             currentAgent->TakeDamage();
         }
     }
+
+    int finalScore = CheckAddScore(agentCatchs);
+
+    if (finalScore > 0)
+        popUpScoreList.push_back(new PopUpScore(currentPlayer->position, finalScore, &gameManager, currentPlayer->ID));
+    gameManager.AddScore(playerWhoDo, CheckAddScore(agentCatchs));
+}
+
+int CollisionManager::CheckAddScore(const DinoArray<Agent*>& list)
+{
+    DinoArray<int> numberAnimalTypeCatch;
+    int finalScore = 0;
+
+    for (int i = 0; i < 8; i++) numberAnimalTypeCatch.AddBack(0);
+    
+    for (size_t i = 0; i < list.GetSize(); i++)
+    {
+        numberAnimalTypeCatch[list[i]->typeAgent] += 1;
+    }
+
+    for (size_t i = 0; i < numberAnimalTypeCatch.GetSize(); i++)
+    {
+        for (size_t j = 1; j <= numberAnimalTypeCatch[i]; j++)
+        {
+            finalScore += 10 * j;
+        }
+    }
+
+    return finalScore;
 }
 
 bool CollisionManager::CheckIsInBounds(const DinoArray<DinoVec2>& bounds, DinoVec2 pos)

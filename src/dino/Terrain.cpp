@@ -253,19 +253,23 @@ void Terrain::ApplyAnimation(float deltaTime)
     {
         timeBetweenFrames = 0;
         terrainAnimFrame = (terrainAnimFrame+1) % framesAnim.size();
+        std::cout << (terrainAnimFrame+1) % framesAnim.size() << std::endl;
     }
 
+    
     XDino_Draw(framesAnim[terrainAnimFrame], texID_terrain, terrainPos);
 }
 
 void Terrain::ShutDown()
 {
-    XDino_DestroyGpuTexture(texID_terrain);
+    XDino_DestroyVertexBuffer(vbufID_ocean);
 
+    XDino_DestroyGpuTexture(texID_terrain);
+    
     for (size_t i = 0; i < framesAnim.size(); i++)
         XDino_DestroyVertexBuffer(framesAnim[i]);
 
-    XDino_DestroyVertexBuffer(vbufID_ocean);
+    
     if (buf_flower != 0)
         XDino_DestroyVertexBuffer(buf_flower);
 }

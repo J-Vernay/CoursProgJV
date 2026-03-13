@@ -1,7 +1,13 @@
 #include "Animal.h"
 
+#include "Agent.h"
+#include "GameManager.h"
+
+#include <cmath>
+
 #include <algorithm>
-#include <iostream>
+
+class GameManager;
 
 Animal::Animal(int type, DinoVec2 max_X, DinoVec2 max_Y, GameManager& gameManager) : gameManager(gameManager)
 {
@@ -21,6 +27,8 @@ Animal::Animal(int type, DinoVec2 max_X, DinoVec2 max_Y, GameManager& gameManage
     
     texID_animal = XDino_CreateGpuTexture("animals.png");
     animalType = type;
+
+    typeAgent = (AgentType)type;
 
     Spawn();
 }
@@ -83,6 +91,19 @@ void Animal::Update(float deltaTime)
     ApplyAnimations(deltaTime);
     ApplyMovement(deltaTime);
     ApplyBounds();
+}
+
+void Animal::Shutdown()
+{
+    if (texID_animal != 0) {
+        XDino_DestroyGpuTexture(texID_animal);
+        texID_animal = 0;
+    }
+
+    if (vbufID_animal != 0) {
+        XDino_DestroyVertexBuffer(vbufID_animal);
+        vbufID_animal = 0;
+    }
 }
 
 void Animal::ApplyBounds()

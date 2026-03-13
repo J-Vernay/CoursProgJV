@@ -1,6 +1,23 @@
 #pragma once
 #include "dino/xdino.h"
 
+#define DINOARRAY_AS_STDVECTOR 0
+
+#if DINOARRAY_AS_STDVECTOR
+template<typename T>
+class DinoArray {
+    std::vector<T> data;
+public:
+    DinoArray(size_t size = 0, size_t capacity = 0)
+    {
+        data.reserve(capacity);
+        data.resize(size);
+    }
+
+    // Implémenter le reste DinoArray
+};
+#else
+
 template <typename T>
 class DinoArray
 {
@@ -13,6 +30,8 @@ public:
             m_data = (T*)XDino_MemAlloc(capacity * sizeof(T), "DinoArray");
         else
             m_data = nullptr;
+        for (size_t i = 0; i < size; ++i)
+            new ((void*)&m_data[i]) T();
     }
 
     DinoArray(const DinoArray& other) : currentSize(other.currentSize), capacity(other.capacity)
@@ -31,14 +50,11 @@ public:
 
     ~DinoArray()
     {
-        XDino_MemFree(m_data);
+        Clear();
     }
 
     void AddBack(T point)
     {
-        if constexpr (std::is_pointer_v<T>)
-            if (point == nullptr)
-                XDINO_BREAKPOINT();
         if (currentSize >= capacity)
         {
             size_t newCapacity = (capacity == 0) ? 1 : capacity * 2;
@@ -59,7 +75,7 @@ public:
             }
         }
 
-        m_data[currentSize] = point;
+        new ((void*)&m_data[currentSize]) T(point);
         currentSize++;
     }
     
@@ -79,34 +95,52 @@ public:
     {
         return m_data[index];
     }
+
+    DinoArray& operator=(const DinoArray& other)
+    {
+        if (this == &other) return *this;
+    
+        Clear();
+    
+        currentSize = other.currentSize;
+        capacity = other.capacity;
+    
+        if (capacity > 0)
+        {
+            m_data = (T*)XDino_MemAlloc(sizeof(T) * capacity, "DinoArray");
+            if (m_data && other.m_data)
+                memcpy(m_data, other.m_data, currentSize * sizeof(T));
+        }
+        else
+        {
+            m_data = nullptr;
+        }
+    
+        return *this;
+    }
     
     void RemoveAt(size_t index)
     {
         if (currentSize == 0) return;
         if (index >= currentSize) return;
 
-        T* newData = nullptr;
-    
-        if (currentSize - 1 > 0)
-        {
-            newData = (T*)XDino_MemAlloc(sizeof(T) * (currentSize - 1), "DinoArray");
-
-            if (newData != nullptr)
-            {
-                size_t newIndex = 0;
-                for (size_t i = 0; i < currentSize; i++)
-                {
-                    if (i == index) continue;
-                    newData[newIndex] = m_data[i];
-                    newIndex++;
-                }
-            }
+        for (size_t i = index; i < currentSize - 1; i++) {
+            m_data[i].~T();
+            m_data[i] = m_data[i + 1];
         }
-
-        XDino_MemFree(m_data);
-        m_data = newData;
         currentSize--;
-        capacity = currentSize;
+    }
+
+    
+    void Clear()
+    {
+        for (size_t i = 0; i < currentSize; i++)
+            m_data[i].~T();
+        XDino_MemFree(m_data);
+        m_data = nullptr;
+
+        currentSize = 0;
+        capacity = 0;
     }
     
     std::string ToString()
@@ -131,3 +165,4 @@ private:
     size_t currentSize;
     size_t capacity;
 };
+#endif

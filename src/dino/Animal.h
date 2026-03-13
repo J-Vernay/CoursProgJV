@@ -59,6 +59,7 @@ public:
     
     Animal(int type, DinoVec2 max_X, DinoVec2 max_Y, GameManager& gameManager);
     void Update(float deltaTime) override;
+    void Shutdown();
 
     void TakeDamage() override;
 };

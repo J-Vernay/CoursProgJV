@@ -1,9 +1,9 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
-#include "Terrain.h"
-#include "DinoPlayer.h"
-#include "GameManager.h"
+#include <dino/Terrain.h>
+#include <dino/DinoPlayer.h>
+#include <dino/GameManager.h>
 
 #include <dino/Animal.h>
 #include <dino/CollisionManager.h>
@@ -72,7 +72,7 @@ void Dino_GameInit()
     animals = new DinoArray<Animal*>(0, 1000);
     agentsList = new DinoArray<Agent*>(0, 1000);
 
-    collisionManager = new CollisionManager();
+    collisionManager = new CollisionManager(*gameManager);
     
     for (int i = 0; i < NUMBER_PLAYERS; i++)
     {
@@ -91,7 +91,7 @@ void Dino_GameInit()
 
     gameManager->SetPlayers(players);
     
-    gameManager->StartGame();
+    gameManager->StartGame(4);
 }
 
 float currentFrameAnim = 0;
@@ -116,7 +116,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     timeToSpawnAnimal = 0.5f + (2- 0.5f) * gameManager->GetCurrentT_Time();
     
-    if (elapsedTimeBeforeNewAnimal >= timeToSpawnAnimal)
+    if (elapsedTimeBeforeNewAnimal >= timeToSpawnAnimal && !gameManager->IsPaused())
     {
         int animalType = XDino_RandomInt32(0, 7);
         elapsedTimeBeforeNewAnimal = 0;
@@ -153,7 +153,7 @@ void Dino_GameFrame(double timeSinceStart)
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
         uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
+        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 1);
         XDino_DestroyVertexBuffer(vbufID);
     }
     
@@ -162,8 +162,8 @@ void Dino_GameFrame(double timeSinceStart)
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
         uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "BOURRICAUD Antoine");
-        DinoVec2 position = {0, windowSize.y - text.size()};
-        XDino_Draw(vbufID, XDino_TEXID_FONT, position, 2);
+        DinoVec2 position = {windowSize.x - vs.size(), 0};
+        XDino_Draw(vbufID, XDino_TEXID_FONT, position, 1);
         XDino_DestroyVertexBuffer(vbufID);
     }
 
@@ -183,9 +183,35 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
+    terrain->ShutDown();
+    delete terrain;
+    terrain = nullptr;
+    
     for (DinoPlayer* player : *players)
     {
         player->ShutDown();
         delete player;
-    }    
+    }
+    players->Clear();
+    delete players;
+    players = nullptr;
+
+    for (Animal* animal : *animals) {
+        delete animal;
+    }
+    
+    animals->Clear();
+    delete animals;
+    animals = nullptr;
+
+    delete agentsList;
+    agentsList = nullptr;
+
+
+    gameManager->ShutDown();
+    delete gameManager;
+    gameManager = nullptr;
+
+    delete collisionManager;
+    collisionManager = nullptr;
 }

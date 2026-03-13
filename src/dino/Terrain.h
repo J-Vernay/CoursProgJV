@@ -25,7 +25,7 @@ private:
     double oceanScale;
 
     int terrainAnimFrame=0;
-    float timeBetweenFrames;
+    float timeBetweenFrames = 0;
 
     int randomSaison;
 
@@ -36,7 +36,6 @@ private:
 
     std::vector<flowerCoord> flowerCoords;
 
-    uint64_t texID_flower;
     uint64_t buf_flower = 0;
 
 public:

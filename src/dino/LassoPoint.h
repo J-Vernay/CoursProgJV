@@ -6,4 +6,13 @@ struct LassoPoint {
     DinoVec2 position;
     uint64_t buff = 0;
     float timeAlive = 0.0f;
+
+    void Shutdown()
+    {
+        if (buff != 0)
+        {
+            XDino_DestroyVertexBuffer(buff);
+            buff = 0;
+        }
+    }
 };

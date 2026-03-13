@@ -1,11 +1,11 @@
 #pragma once
-#include "GameManager.h"
 
 #include <dino/Agent.h>
 #include <dino/LassoPoint.h>
 #include <dino/DinoArray.h>
 #include <dino/xdino.h>
 
+class GameManager;
 class CollisionManager;
 
 class DinoPlayer : public Agent
@@ -30,6 +30,9 @@ public:
     void RemoveOldLassoPoints();
     void CheckDoCircleLasso();
     void ResetLasso(int x);
+
+    DinoPlayer(const DinoPlayer&) = delete;
+    DinoPlayer& operator=(const DinoPlayer&) = delete;
 
     DinoArray<LassoPoint> lassoPoints;
  

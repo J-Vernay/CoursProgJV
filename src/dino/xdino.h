@@ -60,6 +60,11 @@ constexpr DinoColor DinoColor_RED{0xBC, 0x4D, 0x4F, 0xFF};
 constexpr DinoColor DinoColor_YELLOW{0xFD, 0xC7, 0x60, 0xFF};
 constexpr DinoColor DinoColor_GREEN{0x88, 0xA0, 0x43, 0xFF};
 
+constexpr DinoColor DinoColor_DARK_BLUE  {0x00, 0x33, 0x66, 0xFF};
+constexpr DinoColor DinoColor_DARK_RED   {0x66, 0x00, 0x00, 0xFF};
+constexpr DinoColor DinoColor_DARK_YELLOW {0x99, 0x99, 0x33, 0xFF};
+constexpr DinoColor DinoColor_DARK_GREEN {0x33, 0x66, 0x33, 0xFF};
+
 /// Charge une texture nommée 'pName' depuis le disque jusqu'à la carte graphique.
 /// Retourne l'identifiant unique de la texture.
 uint64_t XDino_CreateGpuTexture(char const* pName);

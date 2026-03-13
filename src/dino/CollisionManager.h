@@ -4,15 +4,15 @@
 #include "LassoPoint.h"
 #include "Agent.h"
 #include "Animal.h"
+#include "PopUpScore.h"
 #include "dino/xdino.h"
-
 
 class DinoPlayer;
 
 class CollisionManager
 {
 public:
-    CollisionManager();
+    CollisionManager(GameManager& _gameManager);
 
     void Update(float deltaTime);
     
@@ -20,6 +20,7 @@ public:
     void ShuffleByVerticalPosition(DinoArray<Agent*>* agentList);
     void CheckLassoCollisionPlayer(DinoArray<DinoPlayer*>* pList);
 
+    int CheckAddScore(const DinoArray<Agent*>& list);
     void ApplyCircleLasso(int playerWhoDo, const DinoArray<DinoVec2>& bounds);
     bool CheckIsInBounds(const DinoArray<DinoVec2>& bounds, DinoVec2 pos);
     
@@ -30,4 +31,8 @@ public:
     DinoArray<Agent*>* agentsList = nullptr;
     DinoArray<DinoPlayer*>* playerList = nullptr;
     DinoArray<Animal*>* animalList = nullptr;
+
+    std::vector<PopUpScore*> popUpScoreList;
+
+    GameManager& gameManager;
 };
