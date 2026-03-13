@@ -9,8 +9,8 @@ uint64_t DinoPlayer::s_texID = 0;
 
 DinoPlayer::DinoPlayer(int idxPlayer)
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    m_pos = {windowSize.x / 2, windowSize.y / 2};
+    DinoVec2 renderSize = XDino_GetRenderSize();
+    m_pos = {renderSize.x / 2, renderSize.y / 2};
     m_idxPlayer = idxPlayer;
 }
 
