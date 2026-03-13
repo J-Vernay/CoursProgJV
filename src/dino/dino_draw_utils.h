@@ -68,6 +68,12 @@ public:
     DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
     ~DinoVertexBuffer();
 
+    // Constructeur par copie
+    DinoVertexBuffer(DinoVertexBuffer const&) = delete;
+
+    // Opérateur d'assignement par copie
+    DinoVertexBuffer& operator=(DinoVertexBuffer const& other) = delete;
+
     uint64_t Get();
 
 private:
