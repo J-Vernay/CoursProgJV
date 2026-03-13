@@ -30,8 +30,9 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
         m_bMoving = true;
 
     if (timeSinceStart >= m_endHitAnim) {
-        m_pos.x += gamepad.stick_left_x * speed * deltaTime;
-        m_pos.y += gamepad.stick_left_y * speed * deltaTime;
+        DinoVec2 stick = {gamepad.stick_left_x, gamepad.stick_left_y};
+        m_pos = m_pos + stick * speed * deltaTime;
+        // m_pos = operator+(m_pos, operator*(operator*(stick, speed), deltaTime))
     }
 
     if (gamepad.stick_left_x < 0)
