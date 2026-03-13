@@ -5,12 +5,14 @@
 #include "Animal.h"
 #include "Physics.h"
 
-#include <dino/dino_draw_utils.h>
+#include <dino/CodeBase/dino_draw_utils.h>
 #include <dino/xdino.h>
 #include <format>
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
+#include "Rendering.h"
 #include <array>
+#include <dino/UI.h>
 
 #include <map>
 
@@ -26,7 +28,7 @@ uint64_t texID_dinoTexture;
 
 
 #include <deque>
-
+UI gUI;
 DinoTerrain g_Terrain;
 std::deque<Animal> animals;
 float spawnClock =1;
@@ -41,6 +43,7 @@ uint64_t texID_AnimalTexture;
 
 
 static Physics physics;
+static Rendering rendering;
 
 
 
@@ -85,11 +88,21 @@ void Dino_GameInit()
         PlayerList[i].playerId = i;
         PlayerList[i].texID_dinoTexture = texID_dinoTexture;
         PlayerList[i].dinoPos = {XDino_GetRenderSize().x/2, XDino_GetRenderSize().y/2};
+        
         PlayerList[i].Init();
+
+        switch (i) {
+            case 0:
+            PlayerList[i].color = DinoColor_BLUE; break;
+            case 1:
+            PlayerList[i].color = DinoColor_RED; break;
+            case 2:
+            PlayerList[i].color = DinoColor_YELLOW; break;
+            case 3:
+            PlayerList[i].color = DinoColor_GREEN; break;
+            
+        }
     }
-
-
-
     
     // Affiche mon nom en bas a droite (en principe)
     {
@@ -115,6 +128,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
     physics.Update(deltaTime);
+    gUI.Update(deltaTime);
     
    {
         
@@ -197,6 +211,10 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
         PlayerList[3].Update(timeSinceStart,deltaTime,gamepad);
+
+
+
+    rendering.Update(deltaTime);
             
 
 #pragma endregion

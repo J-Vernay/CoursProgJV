@@ -3,12 +3,16 @@
 
 #include <algorithm>
 #include "Physics.h"
+#include "Rendering.h"
+#include "dino/RopeManager.h"
+#include "CodeBase/dino_geometry.h"
 
 
 void DinoObject::Init()
 {
     Physics::colliders.push_back(this);
-    collider_radius = 16;
+    Rendering::spriteRenderer.push_back(this);
+    collider_radius = 8;
 }
 
 void DinoObject::Update(double timeSinceStart,float deltaTime, const DinoGamepad& gamepad)
@@ -16,9 +20,19 @@ void DinoObject::Update(double timeSinceStart,float deltaTime, const DinoGamepad
     HandleInput(deltaTime,gamepad);
     AnimTimerUpdate(deltaTime);
     GenerateVertexBuffer();
+
+    //======================
+
+    GenerateRopePoints();
+    ManageRopePointsTime(deltaTime);
+
+     
+    
+    ScanRopeIntersection();
+    DrawRopePoints();
 }
 
-
+//================================================================================================
 
 void DinoObject::HandleInput(float deltaTime, const DinoGamepad& gamepad)
 {
@@ -92,6 +106,7 @@ void DinoObject::AnimTimerUpdate(float deltaTime)
 
 void DinoObject::GenerateVertexBuffer()
 {
+    if (vbufID_dinoTexture != 0) XDino_DestroyVertexBuffer(vbufID_dinoTexture);
     
     float u0 = animPos;
     float u1 = animPos + 24;
@@ -135,14 +150,112 @@ void DinoObject::GenerateVertexBuffer()
     
     //BOT triangle ----------------------
      vbufID_dinoTexture = XDino_CreateVertexBuffer(dinoVS.data(), dinoVS.size(), "dinoTexture");
-     XDino_Draw(vbufID_dinoTexture, texID_dinoTexture, dinoPos, 24);
-    XDino_DestroyVertexBuffer(vbufID_dinoTexture);
+    
     
 }
+
+void DinoObject::Draw()
+{
+    DinoVec2 spritePos = {dinoPos.x, dinoPos.y - 16};
+    XDino_Draw(vbufID_dinoTexture, texID_dinoTexture, spritePos, 16);
+}
+
 
 
 void DinoObject::DinoShut()
 {
     
 }
+
+//============================================================================================================
+
+#include "dino/CodeBase/dino_draw_utils.h"
+
+
+void DinoObject::GenerateRopePoints()
+{
+    ropePoints.push_back(PointInfo{});
+    ropePoints[ropePoints.size()-1].pointPos = dinoPos;
+}
+
+void DinoObject::ManageRopePointsTime(float deltaTime)
+{
+
+    for (int i = 0; i < ropePoints.size(); ++i) {
+        ropePoints[i].timeAliveRemaining -= deltaTime;
+    }
+
+    if (ropePoints[0].timeAliveRemaining <= 0.0f) {
+        ropePoints.erase(ropePoints.begin());
+    }
+}
+
+void DinoObject::ScanRopeIntersection()
+{
+    int count = ropePoints.size();
+
+    if (count < 5)
+        return;
+
+    DinoVec2 C = ropePoints[count - 2].pointPos;
+    DinoVec2 D = ropePoints[count - 1].pointPos;
+
+    for (int i = 0; i < count - 3; ++i)  
+    {
+        DinoVec2 A = ropePoints[i].pointPos;
+        DinoVec2 B = ropePoints[i + 1].pointPos;
+
+        if (Dino_IntersectSegment(A, B, C, D))
+        {
+            ropePoints.erase(ropePoints.begin() + i + 1, ropePoints.end() - 1);
+            break;
+        }
+    }
+}
+
+void DinoObject::DrawRopePoints()
+{
+
+    std::vector<DinoVec2> ropePointsPos = {};
+
+    for (int i = 0; i < ropePoints.size(); ++i) {
+        ropePointsPos.push_back(ropePoints[i].pointPos);
+    }
+
+
+    if (RopeManager::allRopes.size() > playerId)RopeManager::allRopes[playerId] = ropePointsPos;
+    else RopeManager::allRopes.push_back(ropePointsPos);
+
+    std::vector<DinoVertex> line;
+
+    Dino_GenVertices_Polyline(line,ropePointsPos, 3.0f,color);
+
+    uint64_t vbufID_dinoLine = XDino_CreateVertexBuffer(line.data(), line.size(), "dinoLine");
+    
+    XDino_Draw(vbufID_dinoLine, XDino_TEXID_WHITE);
+
+    XDino_DestroyVertexBuffer(vbufID_dinoLine);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

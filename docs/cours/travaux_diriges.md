@@ -286,38 +286,38 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> Utiliser le radius et claculer la distance. si distance < RadiusA + RadiusB, ils sont en collision
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> appliquer un vecteur inverse tant que la collision se fait, plus la collision est proche, plus le vecteur inverse est fort. si deux entité on exactement la meme coordonée, la collision ne se fait pas.
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Parcque il ont la ememe fonction mais dansd deux class différentes.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> l'héritage de class.
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Un fonction abstract.
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> GetPosition et SetPosition. 
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
 
-> ...
+> heritage de class
 
 ## 7. Programmation des lassos
 
@@ -347,33 +347,43 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32 au total
+> la quantité max d'octet addressable par un programme 64 bit est 18 446 744 073 709 551 616 octet, soit, 18 hexaoctet
+> 
+> 
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Attribuer un espace de la RAM pour y stocker des donné
+> Le cout d'une allocation mémoire est proportionnel a la taille de mémoire a alouer.
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Un type définit comment interpréter une zone mémoire. 
+> Un pointeur est une variable contenant une adresse mémoire. 
+> Réinterpréter un pointeur  c'est lire les octets à cette adresse en leur appliquant un type différents.
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> DinoColor = 4 octet
+> 
+> DinoVertex = 16 octet
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> std::vector
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Variable gloabal = dans le fichier .exe, connue a la compilation
+> Variable Local = dans la stack. généré par le compilateur pour sous-allouer dans la mémoire.
+> vector = taille dinamiqye = allocation par l'OS.
 
 ## 8. Notre propre implémentation de std::vector
 

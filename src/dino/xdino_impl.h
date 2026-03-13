@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include <dino/dino_draw_utils.h>
+#include <dino/CodeBase/dino_draw_utils.h>
 #include <dino/xdino.h>
 
 int XDinoImpl_DrawStats(int scroll, float maxY, float scale, std::vector<std::string> lines)

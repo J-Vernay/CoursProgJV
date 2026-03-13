@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "xdino.h"
-#include "Collider.h"
+#include "Component/Collider.h"
+
 class Physics
 {
 public:

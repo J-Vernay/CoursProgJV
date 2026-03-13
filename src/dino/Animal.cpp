@@ -1,6 +1,7 @@
 ﻿#include "Animal.h"
 
 #include "Physics.h"
+#include "Rendering.h"
 
 #include <cmath>
 #include <numbers>
@@ -11,6 +12,7 @@ uint64_t Animal::texID_Texture = 0;
 void Animal::Init(uint64_t textID)
 {
     Physics::colliders.push_back(this);
+    Rendering::spriteRenderer.push_back(this);
     Pos = DefineDestination();
     Destination = DefineDestination();
     collider_radius = 8;
@@ -36,13 +38,14 @@ void Animal::Init(uint64_t textID)
 void Animal::Update(double deltaTime)
 {
 
+    if (vbufID_Texture != 0) XDino_DestroyVertexBuffer(vbufID_Texture);
+    
     std::vector<DinoVertex> vs = {};
     Dino_GenVertices_Animal(vs ,EAnimalKind::Sheep1,ChooseAnim(),deltaTime);
     if (!isFadeInDone)vs = FadeIn(deltaTime,vs);
 
     vbufID_Texture = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Animal");
-    Draw();
-    XDino_DestroyVertexBuffer(vbufID_Texture);
+    //Draw();
 
 
 
@@ -109,7 +112,6 @@ EAnimalAnim Animal::ChooseAnim()
 
 void Animal::Draw()
 {
-    
     
     DinoVec2 spriteDest = {Pos.x-16, Pos.y-32};
     XDino_Draw(vbufID_Texture, texID_Texture, spriteDest, 1);

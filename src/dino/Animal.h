@@ -1,11 +1,12 @@
 ﻿#pragma once
-#include "Collider.h"
+#include "Component/Collider.h"
+#include "Component/SpriteRenderer.h"
 
 #include <cstdint>
-#include "dino/dino_draw_utils.h"
+#include "dino/CodeBase/dino_draw_utils.h"
 #include "dino/xdino.h"
 
-class Animal : public Collider
+class Animal : public Collider, public SpriteRenderer
 {
     
     public:
@@ -51,7 +52,7 @@ class Animal : public Collider
     
     DinoVec2 MoveTowards(DinoVec2,DinoVec2, float,float);
     DinoVec2 DefineDestination();
-    void Draw();
+    void Draw() override;
     float Distance(DinoVec2,DinoVec2);
     EAnimalAnim ChooseAnim();
 

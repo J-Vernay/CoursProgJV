@@ -98,7 +98,7 @@ project "Dino_WarrickVedrenne"
   -- On fait une application graphique (en opposition à une application console = purement texte)
   kind "WindowedApp"
   -- Compile tous les fichiers qui sont directement dans le dossier src
-  files { "src/dino/*", "src/dino/CodeBase/*" }
+  files { "src/dino/*", "src/dino/CodeBase/*" ,"src/dino/Component/*"}
 
   links { "Dino_External" }
 

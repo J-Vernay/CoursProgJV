@@ -1,7 +1,10 @@
 ﻿#pragma once
+#include "Component/Collider.h"
+#include "Component/SpriteRenderer.h"
+
 #include <array>
 #include "dino/xdino.h"
-#include "dino/Collider.h"
+#include "dino/Component/Collider.h"
 
 
 
@@ -30,9 +33,8 @@ static std::array<AnimInfo, DinoState_Count> animeStateInfo =
 };
 
 
-class DinoObject  : public Collider
+class DinoObject  : public Collider,public SpriteRenderer
 {
-    
 
     public:
         DinoVec2 dinoPos;
@@ -70,5 +72,29 @@ class DinoObject  : public Collider
         void HandleInput(float, const DinoGamepad&);
         void AnimTimerUpdate(float);
         void GenerateVertexBuffer();
+        void Draw();
+
+    //===================================================================
+
+    struct PointInfo
+    {
+        float timeAliveRemaining = 5.0f;
+
+    public:
+         DinoVec2 pointPos;
+        
+    };
+    std::vector<PointInfo> ropePoints;
+
+
+    void GenerateRopePoints();
+    void ManageRopePointsTime(float);
+    void ScanRopeIntersection();
+    void DrawRopePoints();
+    
+
+public:
+    DinoColor color;
+    
 };
 
