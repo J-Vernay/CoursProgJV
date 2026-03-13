@@ -61,10 +61,10 @@ void DinoAnimal::Draw(double timeSinceStart)
     Dino_GenVertices_Animal(vs, m_kind, anim, timeSinceStart);
     for (DinoVertex& v : vs)
         v.color = {255, 255, 255, alpha};
-    uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Animal");
+
+    DinoVertexBuffer vbuf(vs.data(), vs.size(), "Animal");
     DinoVec2 drawPos = {m_pos.x - 16, m_pos.y - 32};
-    XDino_Draw(vbufID, s_texID, drawPos);
-    XDino_DestroyVertexBuffer(vbufID);
+    XDino_Draw(vbuf.Get(), s_texID, drawPos);
 }
 
 void DinoAnimal::Shut()

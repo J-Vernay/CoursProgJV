@@ -52,17 +52,16 @@ void DinoPlayer::ReactLoop(double timeSinceStart)
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
-    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
+    DinoVertexBuffer vbuf = GenerateVertexBuffer(timeSinceStart);
     DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
-    XDino_Draw(vbufID, s_texID, drawPos);
-    XDino_DestroyVertexBuffer(vbufID);
+    XDino_Draw(vbuf.Get(), s_texID, drawPos);
 }
 
 void DinoPlayer::Shut()
 {
 }
 
-uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
+DinoVertexBuffer DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
 {
     float animSpeed;
     int frameCount;
@@ -128,7 +127,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
     vs[5].pos = {24, 24};
     vs[5].u = umax;
     vs[5].v = vbase + 24;
-    return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
+    return DinoVertexBuffer(vs.data(), vs.size(), "Dino");
 }
 
 void DinoPlayer::InitStatic()
