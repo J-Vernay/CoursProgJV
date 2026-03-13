@@ -476,9 +476,9 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> Si on copie un DinoVertexBuffer vers un autre, les deux objets contiennent le même vbufID et leurs destructeurs vont
-> appeler XDino_DestroyVertexBuffer() deux fois, donc une double destruction se produit. On peut le prévenir en
-> empêchant la copie.
+> Si on copie un type vers un autre, on copie tous ces membres, donc ici les deux objets contiennent le même vbufID et
+> leurs destructeurs vont essayer de détruire le même, donc une double destruction se produit.
+> On peut le prévenir en empêchant la copie.
 
 g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
 (s'il y en a).
