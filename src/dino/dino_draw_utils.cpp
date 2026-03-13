@@ -109,8 +109,9 @@ DinoVec2 Dino_GenVertices_Text(
     return {width, height};
 }
 
-void Dino_GenVertices_Polyline(std::vector<DinoVertex>& out, const std::vector<DinoVec2>& points, float width,
-                               DinoColor color)
+void Dino_GenVertices_Polyline(
+    std::vector<DinoVertex>& out, std::vector<DinoVec2> const& points, float width, DinoColor color
+)
 {
     // En bonus, pour plus d'infos sur l'algorithme, voir :
     // https://jvernay.fr/en/blog/points-triangulation/
@@ -262,7 +263,8 @@ void Dino_GenVertices_Animal(
     out[i + 5].v = vMax;
 }
 
-DinoVertexBuffer::DinoVertexBuffer(DinoVertex* pVertices, size_t vertexCount, const char* pLabel)
+
+DinoVertexBuffer::DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
 {
     m_vbufID = XDino_CreateVertexBuffer(pVertices, vertexCount, pLabel);
 }

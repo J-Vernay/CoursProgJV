@@ -19,7 +19,7 @@ class DinoAnimal : public DinoEntity {
     void ReactLoop(double timeSinceStart) override;
 
 public:
-    void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
+    DinoAnimal(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart) override;
     void Shut();
