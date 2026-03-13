@@ -10,6 +10,7 @@
 
 #include <format>
 #include <algorithm>
+#include <optional>
 
 
 constexpr double SPAWNTIME_BEGIN = 1;
@@ -26,7 +27,7 @@ std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
 double g_chrono = CHRONO_INIT;
 
-uint64_t vbufID_prenom;
+std::optional<DinoVertexBuffer> g_vbufID_prenom;
 DinoVec2 textSize_prenom;
 
 // Variable globale pour l'affichage de debug.
@@ -62,7 +63,7 @@ void Dino_GameInit()
     {
         std::vector<DinoVertex> vs;
         textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
-        vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
+        g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
 
 }
@@ -175,33 +176,29 @@ void Dino_GameFrame(double timeSinceStart)
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
 
         // vbufID : Représente une allocation mémoire sur la carte graphique
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "dTime");
 
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {}, 2);
 
-        // Libère l'allocation mémoire de la carte graphique
-        XDino_DestroyVertexBuffer(vbufID);
-
-        // Qui libère la mémoire du CPU ?
-        // Le compilateur appelle implicitement le destructeur de std::vector
+        // Destructeur de 'vbuf' appelé implicitement par le compilateur
+        // Destructeur de 'vs' appelé implicitement par le compilateur
     }
 
     {
         std::string text = std::format("{:.2f}", g_chrono);
         std::vector<DinoVertex> vs;
         DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_TRANSPARENT);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Chrono");
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
         float tx = (RENDER_SIZE.x - textSize.x * 2) / 2;
         float ty = 0;
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {tx, ty}, 2);
-        XDino_DestroyVertexBuffer(vbufID);
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
     // Affiche le prénom.
     {
         float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
         float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
-        XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {tx, ty}, 2);
+        XDino_Draw(g_vbufID_prenom->Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
 #if !XDINO_RELEASE
@@ -231,5 +228,5 @@ void Dino_GameShut()
     DinoPlayer::ShutStatic();
     DinoAnimal::ShutStatic();
 
-    XDino_DestroyVertexBuffer(vbufID_prenom);
+    g_vbufID_prenom.reset();
 }
