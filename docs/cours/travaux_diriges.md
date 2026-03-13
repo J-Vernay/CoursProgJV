@@ -356,17 +356,21 @@ et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> On a pas besoin de la spécifier car la valeur par défaut est déjà blanc (255 *4) 
-> or la multiplication serait de 1 sur chaque canal 
+> On a pas besoin de la spécifier car la valeur par défaut est déjà blanc (255 *4)
+> or la multiplication serait de 1 sur chaque canal
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
 et crée une instance sans faire de copie ?
 
+> On remplace Init() par un constructeur
+> La méthode std::vector qui construit sans copie est emplace_back(),
+> elle transmet les arguments directement au constructeur de l'objet
+
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> Il est automatiquement appelé par le compilateur pour libéré la mémoire
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
@@ -375,7 +379,9 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> SI on détruit un objet, le deuxeime étant une copie, va pointer sur une valeur détruite.
+> pour prévenir, on peut supprimé le constructeur par copie et l'opérateur d'assignement
+> par copie avec un = delete, alors le compilateur va refusé la tentative de copie.
 
 g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
 (s'il y en a).
