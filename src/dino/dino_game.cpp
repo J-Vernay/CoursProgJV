@@ -79,15 +79,6 @@ void Dino_GameFrame(double timeSinceStart)
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
         g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
 
-    // Affichage
-
-    for (DinoPlayer& player : g_Players)
-        
-    for (DinoVec2 n : g_Players[0].listPosition) {
-        std::cout << n.x << "/" << n.y << '\n';
-    }
-
-    Dino_GenVertices_Polyline(DinoVec2 );
     
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
@@ -165,6 +156,24 @@ void Dino_GameFrame(double timeSinceStart)
         float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
         float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
         XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {tx, ty}, 2);
+    }
+
+    // 1. On génère les sommets (Tu l'as déjà fait)
+    std::vector<DinoVertex> vertices;
+    Dino_GenVertices_Polyline(vertices, g_Players[0].listPosition, 5, DinoColor_BLUE);
+
+    // 2. Transférer les données au GPU (Créer le buffer)
+    if (!vertices.empty()) {
+        // On crée un buffer temporaire pour cette frame
+        uint64_t vbufTrail = XDino_CreateVertexBuffer(vertices.data(), vertices.size(), "PlayerTrail");
+
+        // 3. Demander au GPU de l'afficher
+        // On utilise XDino_TEXID_NONE car c'est une ligne de couleur unie (pas de texture)
+        XDino_Draw(vbufTrail, 0, {0, 0}, 1);
+
+        // 4. TRÈS IMPORTANT : Nettoyer le buffer après le dessin 
+        // sinon tu vas saturer la mémoire vidéo en quelques secondes !
+        XDino_DestroyVertexBuffer(vbufTrail);
     }
 
 #if !XDINO_RELEASE

@@ -191,27 +191,27 @@ void Dino_GenVertices_Polyline(
 
             float xBB1 = halfWidth / lenBC * -yBC;
             float yBB1 = halfWidth / lenBC * xBC;
-            DinoVec2 B1{B.x + xBB1, B.y + yBB1};
-            DinoVec2 B2{B.x - xBB1, B.y - yBB1};
-
-            // Generate Bevel join triangle.
-            if (zAB_BC < 0) {
-                out.emplace_back(B, 0, 0, color);
-                out.emplace_back(A1p, 0, 0, color);
-                out.emplace_back(B1, 0, 0, color);
-            }
-            else {
-                out.emplace_back(B, 0, 0, color);
-                out.emplace_back(A2p, 0, 0, color);
-                out.emplace_back(B2, 0, 0, color);
-            }
-        }
-        // Prepare for next segment.
-        A = B;
-        B = C;
-        lenAB = lenBC;
-    }
-}
+             DinoVec2 B1{B.x + xBB1, B.y + yBB1};
+             DinoVec2 B2{B.x - xBB1, B.y - yBB1};
+ 
+             // Generate Bevel join triangle.
+             if (zAB_BC < 0) {
+                 out.emplace_back(B, 0, 0, color);
+                 out.emplace_back(A1p, 0, 0, color);
+                 out.emplace_back(B1, 0, 0, color);
+             }
+             else {
+                 out.emplace_back(B, 0, 0, color);
+                 out.emplace_back(A2p, 0, 0, color);
+                 out.emplace_back(B2, 0, 0, color);
+             }
+         }
+         // Prepare for next segment.
+         A = B;
+         B = C;
+         lenAB = lenBC;
+     }
+ }
 
 void Dino_GenVertices_Animal(
     std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time)
