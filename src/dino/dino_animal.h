@@ -10,19 +10,22 @@ private:
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
     double m_spawnTime = 0;
+    bool m_dead = false;
 
     static uint64_t s_texID;
 
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
     void ReactLimit() override;
+    void ReactLoop(double timeSinceStart) override;
 
 public:
-    void Init(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
+    DinoAnimal(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart) override;
     void Shut();
 
+    static bool IsDead(DinoAnimal& animal);
     static void InitStatic();
     static void ShutStatic();
 };

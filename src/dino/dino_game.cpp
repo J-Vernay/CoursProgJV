@@ -6,22 +6,28 @@
 #include <dino/dino_player.h>
 #include <dino/dino_terrain.h>
 #include <dino/dino_animal.h>
+#include <dino/dino_lasso.h>
 
 #include <format>
 #include <algorithm>
-#include <list>
-#include <iostream>
+#include <optional>
+
+
+constexpr double SPAWNTIME_BEGIN = 1;
+constexpr double SPAWNTIME_END = 0.033;
+constexpr double CHRONO_INIT = 60;
 
 // Variables globales.
 double g_lastTime = 0;
 
 std::vector<DinoPlayer> g_Players;
 DinoTerrain g_Terrain;
-
+std::vector<DinoLasso> g_Lassos;
 std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
+double g_chrono = CHRONO_INIT;
 
-uint64_t vbufID_prenom;
+std::optional<DinoVertexBuffer> g_vbufID_prenom;
 DinoVec2 textSize_prenom;
 
 // Variable globale pour l'affichage de debug.
@@ -37,11 +43,18 @@ void Dino_GameInit()
     DinoPlayer::InitStatic();
     DinoAnimal::InitStatic();
 
-    g_Players.resize(4);
-    g_Players[0].Init(0);
-    g_Players[1].Init(1);
-    g_Players[2].Init(2);
-    g_Players[3].Init(3);
+    // Resize() appelle le constructeur par défaut;
+    // il n'y a pas de constructeur par défaut dans DinoPlayer
+    //g_Players.resize(4);
+    g_Players.emplace_back(0);
+    g_Players.emplace_back(1);
+    g_Players.emplace_back(2);
+    g_Players.emplace_back(3);
+
+    g_Lassos.emplace_back(DinoColor_BLUE);
+    g_Lassos.emplace_back(DinoColor_RED);
+    g_Lassos.emplace_back(DinoColor_YELLOW);
+    g_Lassos.emplace_back(DinoColor_GREEN);
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
@@ -50,7 +63,7 @@ void Dino_GameInit()
     {
         std::vector<DinoVertex> vs;
         textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
-        vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Prenom");
+        g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
 
 }
@@ -79,46 +92,32 @@ void Dino_GameFrame(double timeSinceStart)
     if (XDino_GetGamepad(DinoGamepadIdx::Gamepad3, gamepad))
         g_Players[3].Update(timeSinceStart, deltaTime, gamepad);
 
-    
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
+    // Purger les animaux qui sont morts.
+    // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
+    // Il faut ensuite appeler .erase() pour enlever les éléments.
+    auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
+    for (auto it2 = it; it2 < g_Animals.end(); ++it2)
+        it2->Shut();
+    g_Animals.erase(it, g_Animals.end());
+
+    // Spawner un animal si besoin.
     if (timeSinceStart > g_timeSpawnAnimal) {
-        DinoAnimal& animal = g_Animals.emplace_back();
         EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
 
         float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
         float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
-        animal.Init(timeSinceStart, kind, {x, y});
-        g_timeSpawnAnimal = timeSinceStart + 1;
+        DinoAnimal& animal = g_Animals.emplace_back(timeSinceStart, kind, DinoVec2{x, y});
+        double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono;
+        g_timeSpawnAnimal = timeSinceStart + spawnTime;
     }
 
+    // Update les animaux.
     for (DinoAnimal& animal : g_Animals)
         animal.Update(timeSinceStart, deltaTime);
-
-    
-    // Collision joueur-joueur
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Players[idxB]);
-
-    // Collision animal-animal
-    for (size_t idxA = 0; idxA < g_Animals.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Animals[idxA], g_Animals[idxB]);
-
-    // Collision joueur-animal
-    for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
-        for (size_t idxB = 0; idxB < g_Animals.size(); ++idxB)
-            DinoEntity::ResolveCollision(g_Players[idxA], g_Animals[idxB]);
-
-
-    for (DinoPlayer& player : g_Players)
-        player.ApplyLimit(terrainMin, terrainMax);
-
-    for (DinoAnimal& animal : g_Animals)
-        animal.ApplyLimit(terrainMin, terrainMax);
 
     // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
     // car il y a un lien d'héritage.
@@ -128,7 +127,31 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
 
+    for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+            DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+
+    for (DinoEntity* pEntity : entities)
+        pEntity->ApplyLimit(terrainMin, terrainMax);
+
+    if (g_Lassos.size() != g_Players.size())
+        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+    for (int i = 0; i < g_Lassos.size(); ++i)
+        g_Lassos[i].Update(g_Players[i].GetPos());
+
+    for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
+        for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
+            DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+
+    for (DinoLasso& lasso : g_Lassos)
+        for (DinoEntity* pEntity : entities)
+            if (lasso.WasInLoop(pEntity->GetPos()))
+                pEntity->ReactLoop(timeSinceStart);
+
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
+
+    // Décrémenter le chronomètre.
+    g_chrono -= deltaTime;
 
     // Affichage
 
@@ -138,42 +161,44 @@ void Dino_GameFrame(double timeSinceStart)
 
     g_Terrain.Draw();
 
+    for (DinoLasso& lasso : g_Lassos)
+        lasso.Draw();
+
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+
+        // vs : Stocke une allocation mémoire sur le CPU
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
-        XDino_DestroyVertexBuffer(vbufID);
+
+        // vbufID : Représente une allocation mémoire sur la carte graphique
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "dTime");
+
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {}, 2);
+
+        // Destructeur de 'vbuf' appelé implicitement par le compilateur
+        // Destructeur de 'vs' appelé implicitement par le compilateur
+    }
+
+    {
+        std::string text = std::format("{:.2f}", g_chrono);
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_TRANSPARENT);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
+        float tx = (RENDER_SIZE.x - textSize.x * 2) / 2;
+        float ty = 0;
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
     // Affiche le prénom.
     {
         float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
         float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
-        XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, {tx, ty}, 2);
-    }
-
-    // 1. On génère les sommets (Tu l'as déjà fait)
-    std::vector<DinoVertex> vertices;
-    Dino_GenVertices_Polyline(vertices, g_Players[0].listPosition, 5, DinoColor_BLUE);
-
-    // 2. Transférer les données au GPU (Créer le buffer)
-    if (!vertices.empty()) {
-        // On crée un buffer temporaire pour cette frame
-        uint64_t vbufTrail = XDino_CreateVertexBuffer(vertices.data(), vertices.size(), "PlayerTrail");
-
-        // 3. Demander au GPU de l'afficher
-        // On utilise XDino_TEXID_NONE car c'est une ligne de couleur unie (pas de texture)
-        XDino_Draw(vbufTrail, 0, {0, 0}, 1);
-
-        // 4. TRÈS IMPORTANT : Nettoyer le buffer après le dessin 
-        // sinon tu vas saturer la mémoire vidéo en quelques secondes !
-        XDino_DestroyVertexBuffer(vbufTrail);
+        XDino_Draw(g_vbufID_prenom->Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
 #if !XDINO_RELEASE
@@ -203,5 +228,5 @@ void Dino_GameShut()
     DinoPlayer::ShutStatic();
     DinoAnimal::ShutStatic();
 
-    XDino_DestroyVertexBuffer(vbufID_prenom);
+    g_vbufID_prenom.reset();
 }

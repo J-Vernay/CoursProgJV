@@ -1,34 +1,21 @@
-#include <iostream>
+#include "dino_draw_utils.h"
+#include "dino_geometry.h"
+
 #include <dino/dino_player.h>
 
 #include <dino/xdino.h>
 
 uint64_t DinoPlayer::s_texID = 0;
 
-
-void DinoPlayer::Init(int idxPlayer)
+DinoPlayer::DinoPlayer(int idxPlayer)
 {
     DinoVec2 windowSize = XDino_GetWindowSize();
     m_pos = {windowSize.x / 2, windowSize.y / 2};
     m_idxPlayer = idxPlayer;
-    // the iterator constructor can also be used to construct from arrays:
-    
-
-    // 2. Ajouter un point (un nouvel élément)
-    DinoVec2 position = {40, 10};
-
-    // Affichage
-    for (DinoVec2 n : listPosition) {
-        std::cout << n.x << "/" << n.y << '\n';
-    }
-
-    std::cout << '\n';
 }
 
 void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
 {
-    listPosition.push_back({m_pos.x, m_pos.y});
-    
     m_bPressedRun = false;
     m_bMoving = false;
 
@@ -43,38 +30,38 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
         m_bMoving = true;
 
     if (timeSinceStart >= m_endHitAnim) {
-        m_pos.x += gamepad.stick_left_x * speed * deltaTime;
-        m_pos.y += gamepad.stick_left_y * speed * deltaTime;
+        DinoVec2 stick = {gamepad.stick_left_x, gamepad.stick_left_y};
+        m_pos = m_pos + stick * speed * deltaTime;
+        // m_pos = operator+(m_pos, operator*(operator*(stick, speed), deltaTime))
     }
 
     if (gamepad.stick_left_x < 0)
         m_bLeft = true;
     if (gamepad.stick_left_x > 0)
         m_bLeft = false;
-
-    if (gamepad.btn_left) {
-        m_endHitAnim = timeSinceStart + 3;
-    }
 }
 
 void DinoPlayer::ReactLimit()
 {
 }
 
+void DinoPlayer::ReactLoop(double timeSinceStart)
+{
+    m_endHitAnim = timeSinceStart + 3;
+}
 
 void DinoPlayer::Draw(double timeSinceStart)
 {
-    uint64_t vbufID = GenerateVertexBuffer(timeSinceStart);
+    DinoVertexBuffer vbuf = GenerateVertexBuffer(timeSinceStart);
     DinoVec2 drawPos = {m_pos.x - 12, m_pos.y - 20};
-    XDino_Draw(vbufID, s_texID, drawPos);
-    XDino_DestroyVertexBuffer(vbufID);
+    XDino_Draw(vbuf.Get(), s_texID, drawPos);
 }
 
 void DinoPlayer::Shut()
 {
 }
 
-uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
+DinoVertexBuffer DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
 {
     float animSpeed;
     int frameCount;
@@ -140,7 +127,7 @@ uint64_t DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
     vs[5].pos = {24, 24};
     vs[5].u = umax;
     vs[5].v = vbase + 24;
-    return XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
+    return DinoVertexBuffer(vs.data(), vs.size(), "Dino");
 }
 
 void DinoPlayer::InitStatic()

@@ -14,12 +14,13 @@ private:
 
     static uint64_t s_texID;
 
-    uint64_t GenerateVertexBuffer(double timeSinceStart);
+    DinoVertexBuffer GenerateVertexBuffer(double timeSinceStart);
 
     void ReactLimit() override;
+    void ReactLoop(double timeSinceStart) override;
 
 public:
-    void Init(int idxPlayer);
+    DinoPlayer(int idxPlayer);
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
     void Draw(double timeSinceStart) override;
     void Shut();
