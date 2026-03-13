@@ -478,7 +478,8 @@ f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comme
 
 > Si on copie un type vers un autre, on copie tous ces membres, donc ici les deux objets contiennent le même vbufID et
 > leurs destructeurs vont essayer de détruire le même, donc une double destruction se produit.
-> On peut le prévenir en empêchant la copie.
+> On peut le prévenir en supprimant la copie en déclarant le constructeur de copie et l’opérateur
+> d’assignation comme delete.
 
 =========== NE PAS FAIRE ===========
 
