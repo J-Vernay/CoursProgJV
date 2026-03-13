@@ -1,0 +1,457 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Référence du fichier dino_game.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2bb994ae3c35c8ddd14b20e4aa61abb8.html">dino</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier dino_game.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Implémentation des fonctions principales de la logique de jeu.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;<a class="el" href="dino__draw__utils_8h_source.html">dino/dino_draw_utils.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="xdino_8h_source.html">dino/xdino.h</a>&gt;</code><br />
+<code>#include &lt;format&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Graphe des dépendances par inclusion de dino_game.cpp:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dino__game_8cpp__incl.svg" width="386" height="258"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<p><a href="dino__game_8cpp_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a34e4cc788612f46dea16beb4b24dd0ab" id="r_a34e4cc788612f46dea16beb4b24dd0ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a34e4cc788612f46dea16beb4b24dd0ab">Dino_GameInit</a> ()</td></tr>
+<tr class="memdesc:a34e4cc788612f46dea16beb4b24dd0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appelé au tout début, pour initialiser la logique de jeu.  <br /></td></tr>
+<tr class="separator:a34e4cc788612f46dea16beb4b24dd0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7b7408f18b3729af2f6e7f405f238e7" id="r_ac7b7408f18b3729af2f6e7f405f238e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#ac7b7408f18b3729af2f6e7f405f238e7">Dino_GameFrame</a> (double timeSinceStart)</td></tr>
+<tr class="memdesc:ac7b7408f18b3729af2f6e7f405f238e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appelé pour générer chaque frame. Doit lireles entrées de jeu avec <code><a class="el" href="xdino_8h.html#a68646c879bb2deb348cfa0ae2fc53b92" title="Récupère l&#39;état de la manette concernée.">XDino_GetGamepad()</a></code>, mettre à jour la logique du jeu, et donner les commandes de dessins avec <code><a class="el" href="xdino_8h.html#a4f9666cbfe8c98cdd2b0ed286df96489" title="Transfère les triangles à dessiner à la carte graphique.">XDino_Draw()</a></code>.  <br /></td></tr>
+<tr class="separator:ac7b7408f18b3729af2f6e7f405f238e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5be2c6012bb9e2650a622d88c610fd6" id="r_af5be2c6012bb9e2650a622d88c610fd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#af5be2c6012bb9e2650a622d88c610fd6">Dino_GameShut</a> ()</td></tr>
+<tr class="memdesc:af5be2c6012bb9e2650a622d88c610fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appelé quand l'utilisateur demande à quitter le jeu (touche ECHAP).  <br /></td></tr>
+<tr class="separator:af5be2c6012bb9e2650a622d88c610fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:aecc16ad9d1b83313d81c6179f1f046b9" id="r_aecc16ad9d1b83313d81c6179f1f046b9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#aecc16ad9d1b83313d81c6179f1f046b9">g_lastTime</a> = 0</td></tr>
+<tr class="separator:aecc16ad9d1b83313d81c6179f1f046b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8af056f2d8344643c17e2b49fe57f0bf" id="r_a8af056f2d8344643c17e2b49fe57f0bf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a8af056f2d8344643c17e2b49fe57f0bf">g_rotation</a> = 360.0</td></tr>
+<tr class="separator:a8af056f2d8344643c17e2b49fe57f0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5d89ee59e304d23b64e8daf9ebe1335" id="r_ae5d89ee59e304d23b64e8daf9ebe1335"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#ae5d89ee59e304d23b64e8daf9ebe1335">g_scale</a> = 1.0</td></tr>
+<tr class="separator:ae5d89ee59e304d23b64e8daf9ebe1335"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36d5419c91555120bed2a832ff905065" id="r_a36d5419c91555120bed2a832ff905065"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a36d5419c91555120bed2a832ff905065">g_circlePos</a> = {}</td></tr>
+<tr class="separator:a36d5419c91555120bed2a832ff905065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac88f45bdd2878e68f280864f407d2102" id="r_ac88f45bdd2878e68f280864f407d2102"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#ac88f45bdd2878e68f280864f407d2102">vbufID_polyline</a></td></tr>
+<tr class="separator:ac88f45bdd2878e68f280864f407d2102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d68a62e7c6e036c55669a7339079bc1" id="r_a8d68a62e7c6e036c55669a7339079bc1"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a8d68a62e7c6e036c55669a7339079bc1">vbufID_imageMilieu</a></td></tr>
+<tr class="separator:a8d68a62e7c6e036c55669a7339079bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229c1868b82a9d69057c8929c559679b" id="r_a229c1868b82a9d69057c8929c559679b"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a229c1868b82a9d69057c8929c559679b">vbufID_circle</a></td></tr>
+<tr class="separator:a229c1868b82a9d69057c8929c559679b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a2a2efbbb720a738e30b98ae1361f8" id="r_a26a2a2efbbb720a738e30b98ae1361f8"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a26a2a2efbbb720a738e30b98ae1361f8">texID_imageMilieu</a></td></tr>
+<tr class="separator:a26a2a2efbbb720a738e30b98ae1361f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830265b7ead7e76f104572d0c6e543d2" id="r_a830265b7ead7e76f104572d0c6e543d2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a830265b7ead7e76f104572d0c6e543d2">g_debugScroll</a> = 0</td></tr>
+<tr class="separator:a830265b7ead7e76f104572d0c6e543d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a71c0fc88089fd77029a19e674ed150" id="r_a8a71c0fc88089fd77029a19e674ed150"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__game_8cpp.html#a8a71c0fc88089fd77029a19e674ed150">CIRCLE_SPEED</a> = 300.f</td></tr>
+<tr class="separator:a8a71c0fc88089fd77029a19e674ed150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Implémentation des fonctions principales de la logique de jeu. </p>
+
+<p class="definition">Définition dans le fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+</div><h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a34e4cc788612f46dea16beb4b24dd0ab" name="a34e4cc788612f46dea16beb4b24dd0ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34e4cc788612f46dea16beb4b24dd0ab">&#9670;&#160;</a></span>Dino_GameInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GameInit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Appelé au tout début, pour initialiser la logique de jeu. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00026">26</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="dino__draw__utils_8cpp_source.html#l00006">Dino_GenVertices_Circle()</a>, <a class="el" href="dino__draw__utils_8cpp_source.html#l00112">Dino_GenVertices_Polyline()</a>, <a class="el" href="dino__game_8cpp_source.html#l00013">g_circlePos</a>, <a class="el" href="dino__game_8cpp_source.html#l00018">texID_imageMilieu</a>, <a class="el" href="dino__game_8cpp_source.html#l00017">vbufID_circle</a>, <a class="el" href="dino__game_8cpp_source.html#l00016">vbufID_imageMilieu</a>, <a class="el" href="dino__game_8cpp_source.html#l00015">vbufID_polyline</a>, <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00386">XDino_CreateGpuTexture()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00421">XDino_CreateVertexBuffer()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00399">XDino_GetGpuTextureSize()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00360">XDino_GetWindowSize()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00370">XDino_SetRenderSize()</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__linux__main_8cpp_source.html#l00177">XDino_Linux_Init()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dino__game_8cpp_a34e4cc788612f46dea16beb4b24dd0ab_cgraph.svg" width="575" height="332"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="dino__game_8cpp_a34e4cc788612f46dea16beb4b24dd0ab_icgraph.svg" width="100%" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ac7b7408f18b3729af2f6e7f405f238e7" name="ac7b7408f18b3729af2f6e7f405f238e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7b7408f18b3729af2f6e7f405f238e7">&#9670;&#160;</a></span>Dino_GameFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GameFrame </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>timeSinceStart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Appelé pour générer chaque frame. Doit lireles entrées de jeu avec <code><a class="el" href="xdino_8h.html#a68646c879bb2deb348cfa0ae2fc53b92" title="Récupère l&#39;état de la manette concernée.">XDino_GetGamepad()</a></code>, mettre à jour la logique du jeu, et donner les commandes de dessins avec <code><a class="el" href="xdino_8h.html#a4f9666cbfe8c98cdd2b0ed286df96489" title="Transfère les triangles à dessiner à la carte graphique.">XDino_Draw()</a></code>. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeSinceStart</td><td>Temps en secondes depuis le lancement du jeu. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00095">95</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="dino__game_8cpp_source.html#l00024">CIRCLE_SPEED</a>, <a class="el" href="dino__draw__utils_8cpp_source.html#l00021">Dino_GenVertices_Text()</a>, <a class="el" href="xdino_8h_source.html#l00054">DinoColor_GREY</a>, <a class="el" href="xdino_8h_source.html#l00053">DinoColor_WHITE</a>, <a class="el" href="xdino_8h_source.html#l00139">DinoGamepadIdx_ALL</a>, <a class="el" href="xdino_8h_source.html#l00152">DinoGamepad::dpad_down</a>, <a class="el" href="xdino_8h_source.html#l00149">DinoGamepad::dpad_up</a>, <a class="el" href="dino__game_8cpp_source.html#l00013">g_circlePos</a>, <a class="el" href="dino__game_8cpp_source.html#l00010">g_lastTime</a>, <a class="el" href="dino__game_8cpp_source.html#l00011">g_rotation</a>, <a class="el" href="dino__game_8cpp_source.html#l00012">g_scale</a>, <a class="el" href="xdino_8h.html#ae25e331a93ed90f8e35cac957cd0b2c0a6ce4d85a628a88bbdb3ac24a8e5a9c2e">Keyboard</a>, <a class="el" href="xdino_8h_source.html#l00159">DinoGamepad::shoulder_left</a>, <a class="el" href="dino__game_8cpp_source.html#l00018">texID_imageMilieu</a>, <a class="el" href="dino__game_8cpp_source.html#l00017">vbufID_circle</a>, <a class="el" href="dino__game_8cpp_source.html#l00016">vbufID_imageMilieu</a>, <a class="el" href="dino__game_8cpp_source.html#l00015">vbufID_polyline</a>, <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00421">XDino_CreateVertexBuffer()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00442">XDino_DestroyVertexBuffer()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00454">XDino_Draw()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00494">XDino_DrawStats()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00500">XDino_GetGamepad()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00365">XDino_GetRenderSize()</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00375">XDino_SetClearColor()</a>, <a class="el" href="xdino_8h_source.html#l00077">XDino_TEXID_FONT</a>, <a class="el" href="xdino_8h_source.html#l00074">XDino_TEXID_WHITE</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__linux__main_8cpp_source.html#l00231">XDino_Linux_Frame()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dino__game_8cpp_ac7b7408f18b3729af2f6e7f405f238e7_cgraph.svg" width="364" height="382"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="dino__game_8cpp_ac7b7408f18b3729af2f6e7f405f238e7_icgraph.svg" width="100%" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="af5be2c6012bb9e2650a622d88c610fd6" name="af5be2c6012bb9e2650a622d88c610fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5be2c6012bb9e2650a622d88c610fd6">&#9670;&#160;</a></span>Dino_GameShut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GameShut </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Appelé quand l'utilisateur demande à quitter le jeu (touche ECHAP). </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00170">170</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="dino__game_8cpp_source.html#l00018">texID_imageMilieu</a>, <a class="el" href="dino__game_8cpp_source.html#l00017">vbufID_circle</a>, <a class="el" href="dino__game_8cpp_source.html#l00016">vbufID_imageMilieu</a>, <a class="el" href="dino__game_8cpp_source.html#l00015">vbufID_polyline</a>, <a class="el" href="xdino__linux__main_8cpp_source.html#l00409">XDino_DestroyGpuTexture()</a>, et <a class="el" href="xdino__linux__main_8cpp_source.html#l00442">XDino_DestroyVertexBuffer()</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">WinMain()</a>, et <a class="el" href="xdino__linux__main_8cpp_source.html#l00261">XDino_Linux_Cleanup()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dino__game_8cpp_af5be2c6012bb9e2650a622d88c610fd6_cgraph.svg" width="354" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dino__game_8cpp_af5be2c6012bb9e2650a622d88c610fd6_icgraph.svg" width="459" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="aecc16ad9d1b83313d81c6179f1f046b9" name="aecc16ad9d1b83313d81c6179f1f046b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecc16ad9d1b83313d81c6179f1f046b9">&#9670;&#160;</a></span>g_lastTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double g_lastTime = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00010">10</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>.</p>
+
+</div>
+</div>
+<a id="a8af056f2d8344643c17e2b49fe57f0bf" name="a8af056f2d8344643c17e2b49fe57f0bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8af056f2d8344643c17e2b49fe57f0bf">&#9670;&#160;</a></span>g_rotation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double g_rotation = 360.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00011">11</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>.</p>
+
+</div>
+</div>
+<a id="ae5d89ee59e304d23b64e8daf9ebe1335" name="ae5d89ee59e304d23b64e8daf9ebe1335"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5d89ee59e304d23b64e8daf9ebe1335">&#9670;&#160;</a></span>g_scale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double g_scale = 1.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00012">12</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>.</p>
+
+</div>
+</div>
+<a id="a36d5419c91555120bed2a832ff905065" name="a36d5419c91555120bed2a832ff905065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36d5419c91555120bed2a832ff905065">&#9670;&#160;</a></span>g_circlePos</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> g_circlePos = {}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00013">13</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>, et <a class="el" href="dino__game_8cpp_source.html#l00026">Dino_GameInit()</a>.</p>
+
+</div>
+</div>
+<a id="ac88f45bdd2878e68f280864f407d2102" name="ac88f45bdd2878e68f280864f407d2102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac88f45bdd2878e68f280864f407d2102">&#9670;&#160;</a></span>vbufID_polyline</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t vbufID_polyline</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00015">15</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>, <a class="el" href="dino__game_8cpp_source.html#l00026">Dino_GameInit()</a>, et <a class="el" href="dino__game_8cpp_source.html#l00170">Dino_GameShut()</a>.</p>
+
+</div>
+</div>
+<a id="a8d68a62e7c6e036c55669a7339079bc1" name="a8d68a62e7c6e036c55669a7339079bc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d68a62e7c6e036c55669a7339079bc1">&#9670;&#160;</a></span>vbufID_imageMilieu</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t vbufID_imageMilieu</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00016">16</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>, <a class="el" href="dino__game_8cpp_source.html#l00026">Dino_GameInit()</a>, et <a class="el" href="dino__game_8cpp_source.html#l00170">Dino_GameShut()</a>.</p>
+
+</div>
+</div>
+<a id="a229c1868b82a9d69057c8929c559679b" name="a229c1868b82a9d69057c8929c559679b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a229c1868b82a9d69057c8929c559679b">&#9670;&#160;</a></span>vbufID_circle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t vbufID_circle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00017">17</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>, <a class="el" href="dino__game_8cpp_source.html#l00026">Dino_GameInit()</a>, et <a class="el" href="dino__game_8cpp_source.html#l00170">Dino_GameShut()</a>.</p>
+
+</div>
+</div>
+<a id="a26a2a2efbbb720a738e30b98ae1361f8" name="a26a2a2efbbb720a738e30b98ae1361f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26a2a2efbbb720a738e30b98ae1361f8">&#9670;&#160;</a></span>texID_imageMilieu</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t texID_imageMilieu</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00018">18</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>, <a class="el" href="dino__game_8cpp_source.html#l00026">Dino_GameInit()</a>, et <a class="el" href="dino__game_8cpp_source.html#l00170">Dino_GameShut()</a>.</p>
+
+</div>
+</div>
+<a id="a830265b7ead7e76f104572d0c6e543d2" name="a830265b7ead7e76f104572d0c6e543d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a830265b7ead7e76f104572d0c6e543d2">&#9670;&#160;</a></span>g_debugScroll</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int g_debugScroll = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00021">21</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a8a71c0fc88089fd77029a19e674ed150" name="a8a71c0fc88089fd77029a19e674ed150"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a71c0fc88089fd77029a19e674ed150">&#9670;&#160;</a></span>CIRCLE_SPEED</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float CIRCLE_SPEED = 300.f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__game_8cpp_source.html#l00024">24</a> du fichier <a class="el" href="dino__game_8cpp_source.html">dino_game.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<map id="XDino_ProfileBegin" name="XDino_ProfileBegin">
+<area shape="rect" id="Node000001" title="Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l&#39;un d..." alt="" coords="812,80,944,106"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__rdr_8cpp.html#ad7cc0200df4ae9dc2f3445ce0c5bb02c" title="Copie une liste de sommets de triangles texturés sur la carte graphique. Retourne l&#39;identifiant uniqu..." alt="" coords="591,5,764,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="835,75,763,45,730,34,732,29,765,40,837,70"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__rdr_8cpp.html#a7d5347b96a8386cfa0d2ee33abaf36bb" title="Transfère les triangles à dessiner à la carte graphique." alt="" coords="631,55,724,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="796,85,724,76,725,71,797,80"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__rdr_8cpp.html#ad13ae3c31e66f2cdf34b75465d4bac17" title="Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique." alt="" coords="598,104,757,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="797,105,757,110,757,105,796,100"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,129,543,155"/>
+<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="842,116,805,132,764,145,708,153,650,157,544,154,544,149,650,152,707,148,763,140,803,127,839,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="583,130,544,135,543,129,583,125"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,129,315,155"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="348,145,315,145,315,140,348,140"/>
+<area shape="rect" id="Node000007" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,129,77,155"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="109,145,77,145,77,140,109,140"/>
+</map>

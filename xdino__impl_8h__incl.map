@@ -1,0 +1,20 @@
+<map id="xdino_impl.h" name="xdino_impl.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="126,5,218,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,226,59,252"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,33,111,83,84,117,60,154,47,183,39,212,34,211,42,182,55,151,79,114,107,79,157,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="170,226,227,252"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,31,198,211,193,211,171,32"/>
+<area shape="rect" id="Node000004" href="$dino__draw__utils_8h.html" title="Fonctions pour dessiner des primitives de rendu." alt="" coords="235,79,384,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="197,29,274,69,271,74,194,34"/>
+<area shape="rect" id="Node000005" href="$xdino_8h.html" title="API d&#39;interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu." alt="" coords="70,153,159,178"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="170,32,127,139,123,137,165,30"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="277,108,163,149,161,144,275,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="362,153,411,178"/>
+<area shape="poly" id="edge8_Node000004_Node000007" title=" " alt="" coords="324,103,364,140,361,144,321,107"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="251,153,338,178"/>
+<area shape="poly" id="edge9_Node000004_Node000008" title=" " alt="" coords="310,105,303,138,298,137,304,104"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="102,181,59,218,56,214,99,177"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="131,177,175,214,171,218,127,181"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="83,226,146,252"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="117,179,117,211,112,211,112,179"/>
+</map>

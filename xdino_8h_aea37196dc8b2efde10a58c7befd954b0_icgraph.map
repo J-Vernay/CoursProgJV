@@ -1,0 +1,15 @@
+<map id="XDino_DestroyGpuTexture" name="XDino_DestroyGpuTexture">
+<area shape="rect" id="Node000001" title="Décharge la texture identifiée par &#39;texID&#39; de la carte graphique." alt="" coords="587,55,762,80"/>
+<area shape="rect" id="Node000002" href="$dino__game_8cpp.html#af5be2c6012bb9e2650a622d88c610fd6" title="Appelé quand l&#39;utilisateur demande à quitter le jeu (touche ECHAP)." alt="" coords="380,55,496,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="571,70,497,70,497,65,571,65"/>
+<area shape="rect" id="Node000004" href="$xdino__linux__main_8cpp.html#a8b096a8c85b239812dd34af59ae9951b" title=" " alt="" coords="141,80,289,106"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="601,87,540,95,407,101,289,99,290,94,407,96,539,90,600,81"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__rdr_8cpp.html#a1114a89a9aca94743092c9e78a348e53" title="Spécifique à la plateforme. Libère les ressources associées au rendu." alt="" coords="337,5,539,31"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="594,54,503,34,504,29,595,48"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="179,31,251,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="364,62,250,50,251,45,365,57"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="365,78,290,87,289,82,364,73"/>
+<area shape="rect" id="Node000005" href="$xdino__linux__main_8cpp.html#a4646b314f2ba6df59c9b1805dd568b18" title=" " alt="" coords="5,80,93,106"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="125,96,93,96,93,90,125,90"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="322,34,251,42,251,37,321,29"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="Dino_GameShut" name="Dino_GameShut">
+<area shape="rect" id="Node000001" title="Appelé quand l&#39;utilisateur demande à quitter le jeu (touche ECHAP)." alt="" coords="337,31,453,56"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="179,5,251,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="321,36,251,26,251,20,322,31"/>
+<area shape="rect" id="Node000003" href="$xdino__linux__main_8cpp.html#a8b096a8c85b239812dd34af59ae9951b" title=" " alt="" coords="141,55,289,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="322,56,290,60,289,55,321,51"/>
+<area shape="rect" id="Node000004" href="$xdino__linux__main_8cpp.html#a4646b314f2ba6df59c9b1805dd568b18" title=" " alt="" coords="5,55,93,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="125,70,93,70,93,65,125,65"/>
+</map>

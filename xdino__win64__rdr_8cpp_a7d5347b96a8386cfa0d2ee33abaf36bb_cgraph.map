@@ -1,0 +1,7 @@
+<map id="XDino_Draw" name="XDino_Draw">
+<area shape="rect" id="Node000001" title="Transfère les triangles à dessiner à la carte graphique." alt="" coords="5,31,99,56"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__main_8cpp.html#ab579fc5249712eea9dab54bbad4808f0" title="Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l&#39;un d..." alt="" coords="147,5,279,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,34,131,28,132,34,100,39"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__main_8cpp.html#a847ecb99f82286c5ba044e4e50d6ca2c" title="Finit un intervalle de profiling." alt="" coords="152,55,274,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="99,48,137,54,136,59,99,53"/>
+</map>

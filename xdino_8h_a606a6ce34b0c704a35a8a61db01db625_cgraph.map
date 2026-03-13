@@ -1,0 +1,7 @@
+<map id="XDino_CreateGpuTexture" name="XDino_CreateGpuTexture">
+<area shape="rect" id="Node000001" title="Charge une texture nommée &#39;pName&#39; depuis le disque jusqu&#39;à la carte graphique. Retourne l&#39;identifiant..." alt="" coords="5,31,174,56"/>
+<area shape="rect" id="Node000002" href="$xdino__linux__main_8cpp.html#a9a7f32a9d3a97c86d7e2998d754c811e" title=" " alt="" coords="224,5,407,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,31,208,27,209,33,174,37"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__rdr_8cpp.html#a5fa8e92f937b798b5855261946645c27" title="Spécifique à la plateforme. Charge une texture." alt="" coords="222,55,409,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,50,206,53,206,59,174,55"/>
+</map>

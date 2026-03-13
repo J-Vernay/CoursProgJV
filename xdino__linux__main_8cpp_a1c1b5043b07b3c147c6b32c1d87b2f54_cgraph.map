@@ -1,0 +1,23 @@
+<map id="XDino_Linux_Init" name="XDino_Linux_Init">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,125,179"/>
+<area shape="rect" id="Node000002" href="$dino__game_8cpp.html#a34e4cc788612f46dea16beb4b24dd0ab" title="Appelé au tout début, pour initialiser la logique de jeu." alt="" coords="173,153,280,179"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,164,157,164,157,169,125,169"/>
+<area shape="rect" id="Node000005" href="$xdino__linux__main_8cpp.html#a606a6ce34b0c704a35a8a61db01db625" title="Charge une texture nommée &#39;pName&#39; depuis le disque jusqu&#39;à la carte graphique. Retourne l&#39;identifiant..." alt="" coords="333,5,501,31"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="90,150,192,98,327,40,346,33,347,38,329,45,194,103,92,155"/>
+<area shape="rect" id="Node000006" href="$xdino__linux__main_8cpp.html#a9a7f32a9d3a97c86d7e2998d754c811e" title=" " alt="" coords="554,179,737,204"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="81,177,120,212,178,258,250,303,289,322,329,337,378,351,418,357,458,353,505,337,545,313,579,281,607,247,627,216,632,219,611,250,583,284,548,317,507,342,459,359,418,363,377,356,327,342,287,327,247,308,175,262,117,216,78,181"/>
+<area shape="rect" id="Node000003" href="$dino__draw__utils_8cpp.html#a8a1875e3a83c7342b6cf774e492fc9e5" title="Produit un dessin de cercle avec la couleur spécifiée. Les sommets doivent être dessiné avec XDino_TE..." alt="" coords="334,55,500,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="240,151,277,120,327,89,340,83,342,88,329,94,280,124,243,155"/>
+<area shape="rect" id="Node000004" href="$dino__draw__utils_8cpp.html#ad4e078eff3e21bb5c840aea64bbf2673" title="Produit un dessin contenant une liste de segments, tous reliés. Les sommets doivent être dessiné avec..." alt="" coords="328,104,506,130"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="278,150,349,132,350,137,280,155"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="232,152,268,97,295,66,326,40,334,35,337,40,330,44,298,70,272,101,237,154"/>
+<area shape="rect" id="Node000007" href="$xdino__linux__main_8cpp.html#ad7cc0200df4ae9dc2f3445ce0c5bb02c" title="Copie une liste de sommets de triangles texturés sur la carte graphique. Retourne l&#39;identifiant uniqu..." alt="" coords="331,153,503,179"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="281,164,315,164,315,169,281,169"/>
+<area shape="rect" id="Node000008" href="$xdino__linux__main_8cpp.html#a0bae910da7641a966b3caf0a765a16c1" title="Retourne la taille en pixels de la texture chargée sur la carte graphique." alt="" coords="329,203,505,228"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="280,177,350,196,349,201,278,182"/>
+<area shape="rect" id="Node000009" href="$xdino__linux__main_8cpp.html#a8fb3a63e6442dd880092baee74243dd3" title="Taille de la fenêtre sur l&#39;écran. Attention, différent de la résolution du rendu !" alt="" coords="340,252,495,278"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="243,177,280,208,329,238,342,244,340,249,327,243,277,212,240,181"/>
+<area shape="rect" id="Node000010" href="$xdino__linux__main_8cpp.html#a57ea716600a49f61ffff0bd33bd78a7d" title="Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille." alt="" coords="343,301,492,327"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="237,178,272,232,298,262,330,288,337,292,334,297,326,292,295,266,268,235,232,181"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="485,29,508,40,546,68,580,102,629,164,625,167,576,105,542,72,505,44,483,34"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="Dino_GenVertices_Text" name="Dino_GenVertices_Text">
+<area shape="rect" id="Node000001" title="Produit un dessin contenant du texte, avec éventuellement une couleur de fond. Les sommets doivent êt..." alt="" coords="995,56,1153,82"/>
+<area shape="rect" id="Node000002" href="$dino__game_8cpp.html#ac7b7408f18b3729af2f6e7f405f238e7" title="Appelé pour générer chaque frame. Doit lireles entrées de jeu avec XDino_GetGamepad(),..." alt="" coords="809,80,936,106"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="980,83,936,88,935,83,979,77"/>
+<area shape="rect" id="Node000008" href="$xdino__impl_8h.html#afb7598b07900a9b7f46de9fae53de8a0" title="Trucs communs entre les différentes implémentations de l&#39;API XDino. En général, cela concerne le debu..." alt="" coords="798,31,947,56"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="979,60,947,55,947,50,980,54"/>
+<area shape="rect" id="Node000003" href="$xdino__linux__main_8cpp.html#a23ab8c2bbf03b45563425c6f39f83e8e" title=" " alt="" coords="601,55,740,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="793,86,740,79,741,74,794,80"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,5,543,31"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="795,111,748,116,695,117,642,111,590,95,574,84,564,70,556,57,542,44,520,34,522,29,545,40,560,53,569,67,577,80,592,90,643,106,696,112,747,111,795,106"/>
+<area shape="rect" id="Node000004" href="$xdino__linux__main_8cpp.html#a4646b314f2ba6df59c9b1805dd568b18" title=" " alt="" coords="410,55,497,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="586,70,497,70,497,65,586,65"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,5,315,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="348,21,315,21,315,16,348,16"/>
+<area shape="rect" id="Node000007" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,5,77,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="109,21,77,21,77,16,109,16"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="782,57,740,62,740,57,782,52"/>
+<area shape="rect" id="Node000009" href="$xdino__win64__rdr_8cpp.html#ad13ae3c31e66f2cdf34b75465d4bac17" title="Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique." alt="" coords="591,5,750,31"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="782,35,750,31,750,25,783,30"/>
+<area shape="poly" id="edge10_Node000009_Node000005" title=" " alt="" coords="576,21,544,21,544,16,576,16"/>
+</map>

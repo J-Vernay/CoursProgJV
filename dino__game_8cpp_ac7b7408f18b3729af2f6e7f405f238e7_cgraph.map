@@ -1,0 +1,19 @@
+<map id="Dino_GameFrame" name="Dino_GameFrame">
+<area shape="rect" id="Node000001" title="Appelé pour générer chaque frame. Doit lireles entrées de jeu avec XDino_GetGamepad(),..." alt="" coords="5,179,132,204"/>
+<area shape="rect" id="Node000002" href="$dino__draw__utils_8cpp.html#a9473461ff91938cb3c388c767b78f785" title="Produit un dessin contenant du texte, avec éventuellement une couleur de fond. Les sommets doivent êt..." alt="" coords="190,5,348,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,177,111,112,141,73,178,40,185,36,188,40,181,44,145,77,115,115,78,180"/>
+<area shape="rect" id="Node000003" href="$xdino__linux__main_8cpp.html#ad7cc0200df4ae9dc2f3445ce0c5bb02c" title="Copie une liste de sommets de triangles texturés sur la carte graphique. Retourne l&#39;identifiant uniqu..." alt="" coords="183,55,355,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="79,177,119,134,147,110,178,89,189,84,191,89,181,94,151,114,123,137,82,180"/>
+<area shape="rect" id="Node000004" href="$xdino__linux__main_8cpp.html#a641cf6ebd62e0ffbcf34a364bb9bf03b" title="Décharge la liste de sommets identifiée par &#39;vbufID&#39; de la carte graphique." alt="" coords="180,104,358,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="94,176,179,138,197,132,199,137,181,143,97,181"/>
+<area shape="rect" id="Node000005" href="$xdino__linux__main_8cpp.html#a7d5347b96a8386cfa0d2ee33abaf36bb" title="Transfère les triangles à dessiner à la carte graphique." alt="" coords="222,153,316,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="131,181,207,171,207,177,132,186"/>
+<area shape="rect" id="Node000006" href="$xdino__linux__main_8cpp.html#afce3fa5d5fa809f786dad62cd3989b7a" title="Affiche les statistiques de consommation mémoire et de ressources chargées." alt="" coords="207,203,331,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="132,196,192,204,191,209,132,202"/>
+<area shape="rect" id="Node000007" href="$xdino__linux__main_8cpp.html#a68646c879bb2deb348cfa0ae2fc53b92" title="Récupère l&#39;état de la manette concernée." alt="" coords="199,252,339,278"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="97,202,181,238,200,245,198,250,179,243,95,207"/>
+<area shape="rect" id="Node000008" href="$xdino__linux__main_8cpp.html#a4ded9317bd5f35f70b1473c729e56d1a" title="Taille du rendu. Attention, différent de la résolution affichée à l&#39;écran !" alt="" coords="194,301,344,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="83,203,123,245,151,268,181,288,191,293,189,298,178,292,148,272,120,249,79,207"/>
+<area shape="rect" id="Node000009" href="$xdino__linux__main_8cpp.html#abded2f43911a4a13d4742539b59797e0" title="Pour indiquer la couleur d&#39;arrière&#45;plan." alt="" coords="197,351,341,376"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="78,204,116,268,145,306,181,337,188,341,185,346,178,342,141,309,111,271,74,206"/>
+</map>

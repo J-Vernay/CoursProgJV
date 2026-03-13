@@ -1,0 +1,5 @@
+<map id="XDino_RandomFloat" name="XDino_RandomFloat">
+<area shape="rect" id="Node000001" title="Génère un nombre à virgule flottante pseudo&#45;aléatoire entre &#39;min&#39; inclus et &#39;max&#39; exclus." alt="" coords="5,5,146,31"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__main_8cpp.html#a1b0e3dee2e25c778c218958184a43ab1" title=" " alt="" coords="194,5,282,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,16,178,16,178,21,146,21"/>
+</map>

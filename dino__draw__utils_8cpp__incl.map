@@ -1,0 +1,22 @@
+<map id="dino_draw_utils.cpp" name="dino_draw_utils.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="219,5,354,31"/>
+<area shape="rect" id="Node000002" href="$xdino_8h.html" title="API d&#39;interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu." alt="" coords="75,153,164,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,34,175,51,155,64,138,81,125,108,121,138,116,137,120,107,134,77,151,60,172,46,217,29"/>
+<area shape="rect" id="Node000006" href="$dino__draw__utils_8h.html" title="Fonctions pour dessiner des primitives de rendu." alt="" coords="148,79,297,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="278,33,245,69,241,66,274,29"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="322,79,382,105"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="299,29,332,66,328,69,295,33"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="405,79,469,105"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="313,29,399,70,396,74,311,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,226,69,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,181,64,218,61,214,104,177"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="93,226,146,252"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="122,179,122,211,117,211,117,179"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="171,226,228,252"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="135,177,177,214,173,218,131,181"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="206,107,151,146,148,141,203,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="192,153,242,178"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="224,105,222,137,216,137,219,105"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="265,153,353,178"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="239,103,285,141,281,145,235,107"/>
+</map>

@@ -1,0 +1,1538 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Référence du fichier xdino_win64_rdr.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2bb994ae3c35c8ddd14b20e4aa61abb8.html">dino</a></li><li class="navelem"><a class="el" href="dir_43d36a8877b182ff7b3d4649e28e2e39.html">x64-windows</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier xdino_win64_rdr.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Implémentation du rendu graphique sur Windows.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;<a class="el" href="xdino__win64__rdr_8h_source.html">dino/x64-windows/xdino_win64_rdr.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="xdino_8h_source.html">dino/xdino.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="xdino__impl_8h_source.html">dino/xdino_impl.h</a>&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;format&gt;</code><br />
+<code>#include &lt;map&gt;</code><br />
+<code>#include &lt;numbers&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;d3d11.h&gt;</code><br />
+<code>#include &lt;d3dcommon.h&gt;</code><br />
+<code>#include &lt;d3dcompiler.h&gt;</code><br />
+<code>#include &lt;dxgi.h&gt;</code><br />
+<code>#include &lt;stb/stb_image.h&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Graphe des dépendances par inclusion de xdino_win64_rdr.cpp:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp__incl.svg" width="100%" height="560"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div>
+<p><a href="xdino__win64__rdr_8cpp_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:abf78b6d9a1331866a61a051a994166b7" id="r_abf78b6d9a1331866a61a051a994166b7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#abf78b6d9a1331866a61a051a994166b7">XDINO_IMPL</a></td></tr>
+<tr class="separator:abf78b6d9a1331866a61a051a994166b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc94034b1be19ae75621fe0140ffe09c" id="r_acc94034b1be19ae75621fe0140ffe09c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#acc94034b1be19ae75621fe0140ffe09c">COM_NO_WINDOWS_H</a></td></tr>
+<tr class="separator:acc94034b1be19ae75621fe0140ffe09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a9b6c6fcbcefafee47511b2494be31bc5" id="r_a9b6c6fcbcefafee47511b2494be31bc5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a9b6c6fcbcefafee47511b2494be31bc5">XDino_Win64_CollectRessources</a> (bool bIncludeTemp=false)</td></tr>
+<tr class="separator:a9b6c6fcbcefafee47511b2494be31bc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee77bfe8f28763649ad0fb85717cbddf" id="r_aee77bfe8f28763649ad0fb85717cbddf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#aee77bfe8f28763649ad0fb85717cbddf">XDino_Win64_PurgeDeadResources</a> ()</td></tr>
+<tr class="separator:aee77bfe8f28763649ad0fb85717cbddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b04f71512315740371806b657af4aff" id="r_a6b04f71512315740371806b657af4aff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a6b04f71512315740371806b657af4aff">XDino_Win64_CreateRenderer</a> (HWND hWindow, int32_t width, int32_t height)</td></tr>
+<tr class="memdesc:a6b04f71512315740371806b657af4aff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spécifique à la plateforme. Initialise le rendu.  <br /></td></tr>
+<tr class="separator:a6b04f71512315740371806b657af4aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff5efef1703f2710d3e28a03a61ae85" id="r_a9ff5efef1703f2710d3e28a03a61ae85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a9ff5efef1703f2710d3e28a03a61ae85">XDino_Win64_ResizeRenderer</a> (int32_t width, int32_t height)</td></tr>
+<tr class="memdesc:a9ff5efef1703f2710d3e28a03a61ae85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spécifique à la plateforme. Redimensionnne le rendu.  <br /></td></tr>
+<tr class="separator:a9ff5efef1703f2710d3e28a03a61ae85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fa8e92f937b798b5855261946645c27" id="r_a5fa8e92f937b798b5855261946645c27"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a5fa8e92f937b798b5855261946645c27">XDino_Win64_CreateTexture</a> (char const *pName, int w, int h, void const *pData)</td></tr>
+<tr class="memdesc:a5fa8e92f937b798b5855261946645c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spécifique à la plateforme. Charge une texture.  <br /></td></tr>
+<tr class="separator:a5fa8e92f937b798b5855261946645c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19e4f0d170af5a9a4eb73f6274dc1217" id="r_a19e4f0d170af5a9a4eb73f6274dc1217"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a19e4f0d170af5a9a4eb73f6274dc1217">XDino_Win64_BeginDraw</a> ()</td></tr>
+<tr class="memdesc:a19e4f0d170af5a9a4eb73f6274dc1217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spécifique à la plateforme. Commence la passe de rendu.  <br /></td></tr>
+<tr class="separator:a19e4f0d170af5a9a4eb73f6274dc1217"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad13ae3c31e66f2cdf34b75465d4bac17" id="r_ad13ae3c31e66f2cdf34b75465d4bac17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#ad13ae3c31e66f2cdf34b75465d4bac17">XDino_Win64_EndDraw</a> ()</td></tr>
+<tr class="memdesc:ad13ae3c31e66f2cdf34b75465d4bac17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique.  <br /></td></tr>
+<tr class="separator:ad13ae3c31e66f2cdf34b75465d4bac17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1114a89a9aca94743092c9e78a348e53" id="r_a1114a89a9aca94743092c9e78a348e53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a1114a89a9aca94743092c9e78a348e53">XDino_Win64_DestroyRenderer</a> ()</td></tr>
+<tr class="memdesc:a1114a89a9aca94743092c9e78a348e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spécifique à la plateforme. Libère les ressources associées au rendu.  <br /></td></tr>
+<tr class="separator:a1114a89a9aca94743092c9e78a348e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb3a63e6442dd880092baee74243dd3" id="r_a8fb3a63e6442dd880092baee74243dd3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a8fb3a63e6442dd880092baee74243dd3">XDino_GetWindowSize</a> ()</td></tr>
+<tr class="memdesc:a8fb3a63e6442dd880092baee74243dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Taille de la fenêtre sur l'écran. Attention, différent de la résolution du rendu !  <br /></td></tr>
+<tr class="separator:a8fb3a63e6442dd880092baee74243dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abded2f43911a4a13d4742539b59797e0" id="r_abded2f43911a4a13d4742539b59797e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#abded2f43911a4a13d4742539b59797e0">XDino_SetClearColor</a> (<a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> color)</td></tr>
+<tr class="memdesc:abded2f43911a4a13d4742539b59797e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pour indiquer la couleur d'arrière-plan.  <br /></td></tr>
+<tr class="separator:abded2f43911a4a13d4742539b59797e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ded9317bd5f35f70b1473c729e56d1a" id="r_a4ded9317bd5f35f70b1473c729e56d1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a4ded9317bd5f35f70b1473c729e56d1a">XDino_GetRenderSize</a> ()</td></tr>
+<tr class="memdesc:a4ded9317bd5f35f70b1473c729e56d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Taille du rendu. Attention, différent de la résolution affichée à l'écran !  <br /></td></tr>
+<tr class="separator:a4ded9317bd5f35f70b1473c729e56d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57ea716600a49f61ffff0bd33bd78a7d" id="r_a57ea716600a49f61ffff0bd33bd78a7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a57ea716600a49f61ffff0bd33bd78a7d">XDino_SetRenderSize</a> (<a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> renderSize)</td></tr>
+<tr class="memdesc:a57ea716600a49f61ffff0bd33bd78a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille.  <br /></td></tr>
+<tr class="separator:a57ea716600a49f61ffff0bd33bd78a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a606a6ce34b0c704a35a8a61db01db625" id="r_a606a6ce34b0c704a35a8a61db01db625"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a606a6ce34b0c704a35a8a61db01db625">XDino_CreateGpuTexture</a> (char const *pName)</td></tr>
+<tr class="memdesc:a606a6ce34b0c704a35a8a61db01db625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Charge une texture nommée 'pName' depuis le disque jusqu'à la carte graphique. Retourne l'identifiant unique de la texture.  <br /></td></tr>
+<tr class="separator:a606a6ce34b0c704a35a8a61db01db625"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bae910da7641a966b3caf0a765a16c1" id="r_a0bae910da7641a966b3caf0a765a16c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a0bae910da7641a966b3caf0a765a16c1">XDino_GetGpuTextureSize</a> (uint64_t texID)</td></tr>
+<tr class="memdesc:a0bae910da7641a966b3caf0a765a16c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne la taille en pixels de la texture chargée sur la carte graphique.  <br /></td></tr>
+<tr class="separator:a0bae910da7641a966b3caf0a765a16c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea37196dc8b2efde10a58c7befd954b0" id="r_aea37196dc8b2efde10a58c7befd954b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#aea37196dc8b2efde10a58c7befd954b0">XDino_DestroyGpuTexture</a> (uint64_t texID)</td></tr>
+<tr class="memdesc:aea37196dc8b2efde10a58c7befd954b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décharge la texture identifiée par 'texID' de la carte graphique.  <br /></td></tr>
+<tr class="separator:aea37196dc8b2efde10a58c7befd954b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7cc0200df4ae9dc2f3445ce0c5bb02c" id="r_ad7cc0200df4ae9dc2f3445ce0c5bb02c"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#ad7cc0200df4ae9dc2f3445ce0c5bb02c">XDino_CreateVertexBuffer</a> (<a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> const *pVertices, size_t vertexCount, char const *pLabel)</td></tr>
+<tr class="memdesc:ad7cc0200df4ae9dc2f3445ce0c5bb02c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copie une liste de sommets de triangles texturés sur la carte graphique. Retourne l'identifiant unique de la liste de sommets. 'pLabel' est seulement utile pour avoir un nom de debug dans les statistiques.  <br /></td></tr>
+<tr class="separator:ad7cc0200df4ae9dc2f3445ce0c5bb02c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a641cf6ebd62e0ffbcf34a364bb9bf03b" id="r_a641cf6ebd62e0ffbcf34a364bb9bf03b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a641cf6ebd62e0ffbcf34a364bb9bf03b">XDino_DestroyVertexBuffer</a> (uint64_t vbufID)</td></tr>
+<tr class="memdesc:a641cf6ebd62e0ffbcf34a364bb9bf03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décharge la liste de sommets identifiée par 'vbufID' de la carte graphique.  <br /></td></tr>
+<tr class="separator:a641cf6ebd62e0ffbcf34a364bb9bf03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d5347b96a8386cfa0d2ee33abaf36bb" id="r_a7d5347b96a8386cfa0d2ee33abaf36bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a7d5347b96a8386cfa0d2ee33abaf36bb">XDino_Draw</a> (uint64_t vbufID, uint64_t texID, <a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> translation, double scale, double rotation)</td></tr>
+<tr class="memdesc:a7d5347b96a8386cfa0d2ee33abaf36bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfère les triangles à dessiner à la carte graphique.  <br /></td></tr>
+<tr class="separator:a7d5347b96a8386cfa0d2ee33abaf36bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce3fa5d5fa809f786dad62cd3989b7a" id="r_afce3fa5d5fa809f786dad62cd3989b7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#afce3fa5d5fa809f786dad62cd3989b7a">XDino_DrawStats</a> (int diffScroll)</td></tr>
+<tr class="memdesc:afce3fa5d5fa809f786dad62cd3989b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les statistiques de consommation mémoire et de ressources chargées.  <br /></td></tr>
+<tr class="separator:afce3fa5d5fa809f786dad62cd3989b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ea4942e6fc15f8c7b030341104df186" id="r_a7ea4942e6fc15f8c7b030341104df186"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a7ea4942e6fc15f8c7b030341104df186">XDino_MemAlloc</a> (size_t size, char const *pLabel)</td></tr>
+<tr class="memdesc:a7ea4942e6fc15f8c7b030341104df186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alloue une zone mémoire contenant au moins 'size' octets. Retourne un pointeur vers le début de cette zone mémoire.  <br /></td></tr>
+<tr class="separator:a7ea4942e6fc15f8c7b030341104df186"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2576fdc5939710dbb7011665bdbbdf8d" id="r_a2576fdc5939710dbb7011665bdbbdf8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a2576fdc5939710dbb7011665bdbbdf8d">XDino_MemFree</a> (void *pAlloc)</td></tr>
+<tr class="memdesc:a2576fdc5939710dbb7011665bdbbdf8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libère la zone mémoire commençant à 'pAlloc'.  <br /></td></tr>
+<tr class="separator:a2576fdc5939710dbb7011665bdbbdf8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a91e998f3473162cba7db08f87db354da" id="r_a91e998f3473162cba7db08f87db354da"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a91e998f3473162cba7db08f87db354da">XDino_VERTEX_BUFFER_COUNT</a> = 60000</td></tr>
+<tr class="separator:a91e998f3473162cba7db08f87db354da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25b53c76829a89d89d8e857b59afc47b" id="r_a25b53c76829a89d89d8e857b59afc47b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a25b53c76829a89d89d8e857b59afc47b">gXDino_width</a> = 1</td></tr>
+<tr class="separator:a25b53c76829a89d89d8e857b59afc47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeea48cb78df89e8a1d4682e071b57506" id="r_aeea48cb78df89e8a1d4682e071b57506"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#aeea48cb78df89e8a1d4682e071b57506">gXDino_height</a> = 1</td></tr>
+<tr class="separator:aeea48cb78df89e8a1d4682e071b57506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa199a69180036976a9b2a9722d4dc0fe" id="r_aa199a69180036976a9b2a9722d4dc0fe"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#aa199a69180036976a9b2a9722d4dc0fe">gXDino_rdrWidth</a> = 1</td></tr>
+<tr class="separator:aa199a69180036976a9b2a9722d4dc0fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73e4d6e8971bcd67aa110680dfa46c40" id="r_a73e4d6e8971bcd67aa110680dfa46c40"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a73e4d6e8971bcd67aa110680dfa46c40">gXDino_rdrHeight</a> = 1</td></tr>
+<tr class="separator:a73e4d6e8971bcd67aa110680dfa46c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbdcf279de1eafb979c12a89dcaa7af5" id="r_adbdcf279de1eafb979c12a89dcaa7af5"><td class="memItemLeft" align="right" valign="top">ID3D11Device *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#adbdcf279de1eafb979c12a89dcaa7af5">gXDino_device</a> = nullptr</td></tr>
+<tr class="separator:adbdcf279de1eafb979c12a89dcaa7af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0610a50f1d90b6b7fc836bba1567c558" id="r_a0610a50f1d90b6b7fc836bba1567c558"><td class="memItemLeft" align="right" valign="top">ID3D11DeviceContext *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a0610a50f1d90b6b7fc836bba1567c558">gXDino_context</a> = nullptr</td></tr>
+<tr class="separator:a0610a50f1d90b6b7fc836bba1567c558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5afa73f01848ad999c2c83c7dedf14d9" id="r_a5afa73f01848ad999c2c83c7dedf14d9"><td class="memItemLeft" align="right" valign="top">IDXGISwapChain *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a5afa73f01848ad999c2c83c7dedf14d9">gXDino_swapchain</a> = nullptr</td></tr>
+<tr class="separator:a5afa73f01848ad999c2c83c7dedf14d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a934f07b39f5e1e032fea5ec1586ed9e4" id="r_a934f07b39f5e1e032fea5ec1586ed9e4"><td class="memItemLeft" align="right" valign="top">ID3D11RenderTargetView *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a934f07b39f5e1e032fea5ec1586ed9e4">gXDino_rtv</a> = nullptr</td></tr>
+<tr class="separator:a934f07b39f5e1e032fea5ec1586ed9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad55edfd28e3de943e89dc14302d5a7b" id="r_aad55edfd28e3de943e89dc14302d5a7b"><td class="memItemLeft" align="right" valign="top">ID3D11VertexShader *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#aad55edfd28e3de943e89dc14302d5a7b">gXDino_vertexShader</a> = nullptr</td></tr>
+<tr class="separator:aad55edfd28e3de943e89dc14302d5a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bf9d3b2c482dca97afebd220f4197dc" id="r_a8bf9d3b2c482dca97afebd220f4197dc"><td class="memItemLeft" align="right" valign="top">ID3D11PixelShader *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a8bf9d3b2c482dca97afebd220f4197dc">gXDino_pixelShader</a> = nullptr</td></tr>
+<tr class="separator:a8bf9d3b2c482dca97afebd220f4197dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db8e1116fd83bef865084be7e060671" id="r_a8db8e1116fd83bef865084be7e060671"><td class="memItemLeft" align="right" valign="top">ID3D11InputLayout *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a8db8e1116fd83bef865084be7e060671">gXDino_inputLayout</a> = nullptr</td></tr>
+<tr class="separator:a8db8e1116fd83bef865084be7e060671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae0eb63ba7f7730c7fb5ba4fdfeb9d7f" id="r_aae0eb63ba7f7730c7fb5ba4fdfeb9d7f"><td class="memItemLeft" align="right" valign="top">ID3D11Buffer *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#aae0eb63ba7f7730c7fb5ba4fdfeb9d7f">gXDino_constantBuffer</a> = nullptr</td></tr>
+<tr class="separator:aae0eb63ba7f7730c7fb5ba4fdfeb9d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fb00283acd8ea514fca380bef65c7c0" id="r_a3fb00283acd8ea514fca380bef65c7c0"><td class="memItemLeft" align="right" valign="top">ID3D11RasterizerState *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a3fb00283acd8ea514fca380bef65c7c0">gXDino_rasterState</a> = nullptr</td></tr>
+<tr class="separator:a3fb00283acd8ea514fca380bef65c7c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59c1feba1f9a4e036f9f052876bec62e" id="r_a59c1feba1f9a4e036f9f052876bec62e"><td class="memItemLeft" align="right" valign="top">ID3D11BlendState *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a59c1feba1f9a4e036f9f052876bec62e">gXDino_blendState</a> = nullptr</td></tr>
+<tr class="separator:a59c1feba1f9a4e036f9f052876bec62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a611573d9355de12da856d0dbec9890b4" id="r_a611573d9355de12da856d0dbec9890b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a611573d9355de12da856d0dbec9890b4">gXDino_clearColor</a> = <a class="el" href="xdino_8h.html#a289347d3145bcc1ada68d75b75ba58c9">DinoColor_BLACK</a></td></tr>
+<tr class="separator:a611573d9355de12da856d0dbec9890b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dc8686a3c6b9f568dbc8d8a4eed3050" id="r_a4dc8686a3c6b9f568dbc8d8a4eed3050"><td class="memItemLeft" align="right" valign="top">std::map&lt; uint64_t, XDino_Win64_Texture &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a4dc8686a3c6b9f568dbc8d8a4eed3050">gXDino_textures</a></td></tr>
+<tr class="separator:a4dc8686a3c6b9f568dbc8d8a4eed3050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc3cb35f6097d66ce0c07d34a7e6b41d" id="r_afc3cb35f6097d66ce0c07d34a7e6b41d"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#afc3cb35f6097d66ce0c07d34a7e6b41d">gXDino_textureCounter</a> = 0</td></tr>
+<tr class="separator:afc3cb35f6097d66ce0c07d34a7e6b41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c6ac722151307c2179115accbcd017" id="r_a06c6ac722151307c2179115accbcd017"><td class="memItemLeft" align="right" valign="top">std::map&lt; uint64_t, XDino_Win64_VertexBuffer &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a06c6ac722151307c2179115accbcd017">gXDino_vertexBuffers</a></td></tr>
+<tr class="separator:a06c6ac722151307c2179115accbcd017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc8281d72b98321f3f6c065269d8e75d" id="r_acc8281d72b98321f3f6c065269d8e75d"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#acc8281d72b98321f3f6c065269d8e75d">gXDino_vertexBufferCounter</a> = 1</td></tr>
+<tr class="separator:acc8281d72b98321f3f6c065269d8e75d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5541427a8d8ee898e633df65f1122d8e" id="r_a5541427a8d8ee898e633df65f1122d8e"><td class="memItemLeft" align="right" valign="top">std::map&lt; void *, XDino_Win64_Alloc &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a5541427a8d8ee898e633df65f1122d8e">gXDino_allocs</a></td></tr>
+<tr class="separator:a5541427a8d8ee898e633df65f1122d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3202d30285c56407151212a484a40621" id="r_a3202d30285c56407151212a484a40621"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a3202d30285c56407151212a484a40621">gXDino_bDrawStats</a> = false</td></tr>
+<tr class="separator:a3202d30285c56407151212a484a40621"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1812bcbadd1d47ded48120d7706e0c3" id="r_af1812bcbadd1d47ded48120d7706e0c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#af1812bcbadd1d47ded48120d7706e0c3">gXDino_statScroll</a> = 0</td></tr>
+<tr class="separator:af1812bcbadd1d47ded48120d7706e0c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab516e94e17947e09efc5ebb46d7771af" id="r_ab516e94e17947e09efc5ebb46d7771af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#ab516e94e17947e09efc5ebb46d7771af">gXDino_statScrollUser</a> = 0</td></tr>
+<tr class="separator:ab516e94e17947e09efc5ebb46d7771af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a991fcce841c2dc9b78ac5eca8d3ce1a2" id="r_a991fcce841c2dc9b78ac5eca8d3ce1a2"><td class="memItemLeft" align="right" valign="top">constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a991fcce841c2dc9b78ac5eca8d3ce1a2">XDino_VERTEX_SHADER</a> []</td></tr>
+<tr class="separator:a991fcce841c2dc9b78ac5eca8d3ce1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92234e32b4609ea745139d2dc152ce61" id="r_a92234e32b4609ea745139d2dc152ce61"><td class="memItemLeft" align="right" valign="top">constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xdino__win64__rdr_8cpp.html#a92234e32b4609ea745139d2dc152ce61">XDino_PIXEL_SHADER</a> []</td></tr>
+<tr class="separator:a92234e32b4609ea745139d2dc152ce61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Implémentation du rendu graphique sur Windows. </p>
+
+<p class="definition">Définition dans le fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+</div><h2 class="groupheader">Documentation des macros</h2>
+<a id="abf78b6d9a1331866a61a051a994166b7" name="abf78b6d9a1331866a61a051a994166b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf78b6d9a1331866a61a051a994166b7">&#9670;&#160;</a></span>XDINO_IMPL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define XDINO_IMPL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00008">8</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+</div>
+</div>
+<a id="acc94034b1be19ae75621fe0140ffe09c" name="acc94034b1be19ae75621fe0140ffe09c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc94034b1be19ae75621fe0140ffe09c">&#9670;&#160;</a></span>COM_NO_WINDOWS_H</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COM_NO_WINDOWS_H</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00020">20</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a9b6c6fcbcefafee47511b2494be31bc5" name="a9b6c6fcbcefafee47511b2494be31bc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b6c6fcbcefafee47511b2494be31bc5">&#9670;&#160;</a></span>XDino_Win64_CollectRessources()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; XDino_Win64_CollectRessources </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bIncludeTemp</em> = <code>false</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00093">93</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00087">gXDino_allocs</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">gXDino_textures</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00078">gXDino_vertexBuffers</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">XDino_Win64_EndDraw()</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a9b6c6fcbcefafee47511b2494be31bc5_icgraph.svg" width="100%" height="365"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aee77bfe8f28763649ad0fb85717cbddf" name="aee77bfe8f28763649ad0fb85717cbddf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee77bfe8f28763649ad0fb85717cbddf">&#9670;&#160;</a></span>XDino_Win64_PurgeDeadResources()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_PurgeDeadResources </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00118">118</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00087">gXDino_allocs</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">gXDino_textures</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00078">gXDino_vertexBuffers</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">XDino_Win64_EndDraw()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_aee77bfe8f28763649ad0fb85717cbddf_icgraph.svg" width="100%" height="365"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a6b04f71512315740371806b657af4aff" name="a6b04f71512315740371806b657af4aff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b04f71512315740371806b657af4aff">&#9670;&#160;</a></span>XDino_Win64_CreateRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_CreateRenderer </td>
+          <td>(</td>
+          <td class="paramtype">HWND&#160;</td>
+          <td class="paramname"><em>hWindow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spécifique à la plateforme. Initialise le rendu. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">230</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00055">gXDino_blendState</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00053">gXDino_constantBuffer</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00047">gXDino_context</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00046">gXDino_device</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00042">gXDino_height</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00052">gXDino_inputLayout</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00051">gXDino_pixelShader</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00054">gXDino_rasterState</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00049">gXDino_rtv</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00048">gXDino_swapchain</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00078">gXDino_vertexBuffers</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00050">gXDino_vertexShader</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00041">gXDino_width</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00615">XDino_CreateGpuTexture()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00201">XDino_PIXEL_SHADER</a>, <a class="el" href="xdino_8h_source.html#l00077">XDino_TEXID_FONT</a>, <a class="el" href="xdino_8h_source.html#l00074">XDino_TEXID_WHITE</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00156">XDino_VERTEX_SHADER</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00438">XDino_Win64_CreateTexture()</a>.</p>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a6b04f71512315740371806b657af4aff_cgraph.svg" width="659" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9ff5efef1703f2710d3e28a03a61ae85" name="a9ff5efef1703f2710d3e28a03a61ae85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ff5efef1703f2710d3e28a03a61ae85">&#9670;&#160;</a></span>XDino_Win64_ResizeRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_ResizeRenderer </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spécifique à la plateforme. Redimensionnne le rendu. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00414">414</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00047">gXDino_context</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00046">gXDino_device</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00042">gXDino_height</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00049">gXDino_rtv</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00048">gXDino_swapchain</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00041">gXDino_width</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a9ff5efef1703f2710d3e28a03a61ae85_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a5fa8e92f937b798b5855261946645c27" name="a5fa8e92f937b798b5855261946645c27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fa8e92f937b798b5855261946645c27">&#9670;&#160;</a></span>XDino_Win64_CreateTexture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t XDino_Win64_CreateTexture </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>pName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>pData</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spécifique à la plateforme. Charge une texture. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00438">438</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00046">gXDino_device</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00069">gXDino_textureCounter</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">gXDino_textures</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00615">XDino_CreateGpuTexture()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a5fa8e92f937b798b5855261946645c27_icgraph.svg" width="659" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a19e4f0d170af5a9a4eb73f6274dc1217" name="a19e4f0d170af5a9a4eb73f6274dc1217"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19e4f0d170af5a9a4eb73f6274dc1217">&#9670;&#160;</a></span>XDino_Win64_BeginDraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_BeginDraw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spécifique à la plateforme. Commence la passe de rendu. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">489</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00055">gXDino_blendState</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00056">gXDino_clearColor</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00053">gXDino_constantBuffer</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00047">gXDino_context</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00042">gXDino_height</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00052">gXDino_inputLayout</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00051">gXDino_pixelShader</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00054">gXDino_rasterState</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00044">gXDino_rdrHeight</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00043">gXDino_rdrWidth</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00049">gXDino_rtv</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00050">gXDino_vertexShader</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00041">gXDino_width</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a19e4f0d170af5a9a4eb73f6274dc1217_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ad13ae3c31e66f2cdf34b75465d4bac17" name="ad13ae3c31e66f2cdf34b75465d4bac17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad13ae3c31e66f2cdf34b75465d4bac17">&#9670;&#160;</a></span>XDino_Win64_EndDraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_EndDraw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">525</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00089">gXDino_bDrawStats</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00044">gXDino_rdrHeight</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00090">gXDino_statScroll</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00091">gXDino_statScrollUser</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00048">gXDino_swapchain</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00175">XDino_ProfileBegin()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00180">XDino_ProfileEnd()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00093">XDino_Win64_CollectRessources()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00118">XDino_Win64_PurgeDeadResources()</a>, et <a class="el" href="xdino__impl_8h_source.html#l00017">XDinoImpl_DrawStats()</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00108">XDino_Win64_HandleEvent()</a>.</p>
+<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_ad13ae3c31e66f2cdf34b75465d4bac17_cgraph.svg" width="100%" height="530"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_ad13ae3c31e66f2cdf34b75465d4bac17_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a1114a89a9aca94743092c9e78a348e53" name="a1114a89a9aca94743092c9e78a348e53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1114a89a9aca94743092c9e78a348e53">&#9670;&#160;</a></span>XDino_Win64_DestroyRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Win64_DestroyRenderer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spécifique à la plateforme. Libère les ressources associées au rendu. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">541</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00055">gXDino_blendState</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00053">gXDino_constantBuffer</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00047">gXDino_context</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00046">gXDino_device</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00052">gXDino_inputLayout</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00051">gXDino_pixelShader</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00054">gXDino_rasterState</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00049">gXDino_rtv</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00048">gXDino_swapchain</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">gXDino_textures</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00050">gXDino_vertexShader</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00638">XDino_DestroyGpuTexture()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00687">XDino_DestroyVertexBuffer()</a>, <a class="el" href="xdino_8h_source.html#l00077">XDino_TEXID_FONT</a>, <a class="el" href="xdino_8h_source.html#l00074">XDino_TEXID_WHITE</a>, <a class="el" href="xdino_8h_source.html#l00100">XDino_VBUFID_EMPTY</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00093">XDino_Win64_CollectRessources()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00118">XDino_Win64_PurgeDeadResources()</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__main_8cpp_source.html#l00041">WinMain()</a>.</p>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a1114a89a9aca94743092c9e78a348e53_cgraph.svg" width="494" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a1114a89a9aca94743092c9e78a348e53_icgraph.svg" width="332" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8fb3a63e6442dd880092baee74243dd3" name="a8fb3a63e6442dd880092baee74243dd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fb3a63e6442dd880092baee74243dd3">&#9670;&#160;</a></span>XDino_GetWindowSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> XDino_GetWindowSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Taille de la fenêtre sur l'écran. Attention, différent de la résolution du rendu ! </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00590">590</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00042">gXDino_height</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00041">gXDino_width</a>.</p>
+
+</div>
+</div>
+<a id="abded2f43911a4a13d4742539b59797e0" name="abded2f43911a4a13d4742539b59797e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abded2f43911a4a13d4742539b59797e0">&#9670;&#160;</a></span>XDino_SetClearColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_SetClearColor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pour indiquer la couleur d'arrière-plan. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00595">595</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00056">gXDino_clearColor</a>.</p>
+
+</div>
+</div>
+<a id="a4ded9317bd5f35f70b1473c729e56d1a" name="a4ded9317bd5f35f70b1473c729e56d1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ded9317bd5f35f70b1473c729e56d1a">&#9670;&#160;</a></span>XDino_GetRenderSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> XDino_GetRenderSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Taille du rendu. Attention, différent de la résolution affichée à l'écran ! </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00600">600</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00044">gXDino_rdrHeight</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00043">gXDino_rdrWidth</a>.</p>
+
+</div>
+</div>
+<a id="a57ea716600a49f61ffff0bd33bd78a7d" name="a57ea716600a49f61ffff0bd33bd78a7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57ea716600a49f61ffff0bd33bd78a7d">&#9670;&#160;</a></span>XDino_SetRenderSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_SetRenderSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td>
+          <td class="paramname"><em>renderSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Modifie la taille de rendu. Les coordonnées passées dans les vertex sont en rapport à cette taille. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00605">605</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00044">gXDino_rdrHeight</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00043">gXDino_rdrWidth</a>, <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+</div>
+</div>
+<a id="a606a6ce34b0c704a35a8a61db01db625" name="a606a6ce34b0c704a35a8a61db01db625"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a606a6ce34b0c704a35a8a61db01db625">&#9670;&#160;</a></span>XDino_CreateGpuTexture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t XDino_CreateGpuTexture </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>pName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Charge une texture nommée 'pName' depuis le disque jusqu'à la carte graphique. Retourne l'identifiant unique de la texture. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00615">615</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00438">XDino_Win64_CreateTexture()</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>.</p>
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a606a6ce34b0c704a35a8a61db01db625_cgraph.svg" width="415" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a606a6ce34b0c704a35a8a61db01db625_icgraph.svg" width="424" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a0bae910da7641a966b3caf0a765a16c1" name="a0bae910da7641a966b3caf0a765a16c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bae910da7641a966b3caf0a765a16c1">&#9670;&#160;</a></span>XDino_GetGpuTextureSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> XDino_GetGpuTextureSize </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>texID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retourne la taille en pixels de la texture chargée sur la carte graphique. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00628">628</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00069">gXDino_textureCounter</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">gXDino_textures</a>.</p>
+
+</div>
+</div>
+<a id="aea37196dc8b2efde10a58c7befd954b0" name="aea37196dc8b2efde10a58c7befd954b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea37196dc8b2efde10a58c7befd954b0">&#9670;&#160;</a></span>XDino_DestroyGpuTexture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_DestroyGpuTexture </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>texID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Décharge la texture identifiée par 'texID' de la carte graphique. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00638">638</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00069">gXDino_textureCounter</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">gXDino_textures</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_aea37196dc8b2efde10a58c7befd954b0_icgraph.svg" width="555" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad7cc0200df4ae9dc2f3445ce0c5bb02c" name="ad7cc0200df4ae9dc2f3445ce0c5bb02c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7cc0200df4ae9dc2f3445ce0c5bb02c">&#9670;&#160;</a></span>XDino_CreateVertexBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t XDino_CreateVertexBuffer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> const *&#160;</td>
+          <td class="paramname"><em>pVertices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>vertexCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>pLabel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copie une liste de sommets de triangles texturés sur la carte graphique. Retourne l'identifiant unique de la liste de sommets. 'pLabel' est seulement utile pour avoir un nom de debug dans les statistiques. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00652">652</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00046">gXDino_device</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00079">gXDino_vertexBufferCounter</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00078">gXDino_vertexBuffers</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00175">XDino_ProfileBegin()</a>, et <a class="el" href="xdino__win64__main_8cpp_source.html#l00180">XDino_ProfileEnd()</a>.</p>
+<div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_ad7cc0200df4ae9dc2f3445ce0c5bb02c_cgraph.svg" width="364" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a641cf6ebd62e0ffbcf34a364bb9bf03b" name="a641cf6ebd62e0ffbcf34a364bb9bf03b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a641cf6ebd62e0ffbcf34a364bb9bf03b">&#9670;&#160;</a></span>XDino_DestroyVertexBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_DestroyVertexBuffer </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>vbufID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Décharge la liste de sommets identifiée par 'vbufID' de la carte graphique. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00687">687</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00079">gXDino_vertexBufferCounter</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00078">gXDino_vertexBuffers</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a641cf6ebd62e0ffbcf34a364bb9bf03b_icgraph.svg" width="559" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a7d5347b96a8386cfa0d2ee33abaf36bb" name="a7d5347b96a8386cfa0d2ee33abaf36bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d5347b96a8386cfa0d2ee33abaf36bb">&#9670;&#160;</a></span>XDino_Draw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_Draw </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>vbufID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>texID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td>
+          <td class="paramname"><em>translation</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scale</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>rotation</em> = <code>0.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transfère les triangles à dessiner à la carte graphique. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vbufID</td><td>Identifiant de la liste de sommets à utiliser, obtenu avec <a class="el" href="xdino_8h.html#ad7cc0200df4ae9dc2f3445ce0c5bb02c" title="Copie une liste de sommets de triangles texturés sur la carte graphique. Retourne l&#39;identifiant uniqu...">XDino_CreateVertexBuffer()</a>. </td></tr>
+    <tr><td class="paramname">texID</td><td>Identifiant de la texture à utiliser, obtenu avec <a class="el" href="xdino_8h.html#a606a6ce34b0c704a35a8a61db01db625" title="Charge une texture nommée &#39;pName&#39; depuis le disque jusqu&#39;à la carte graphique. Retourne l&#39;identifiant...">XDino_CreateGpuTexture()</a>. </td></tr>
+    <tr><td class="paramname">translation</td><td>Décalage en pixels depuis le coin en haut à gauche. </td></tr>
+    <tr><td class="paramname">scale</td><td>Mise à l'échelle. </td></tr>
+    <tr><td class="paramname">rotation</td><td>Rotation en degrés. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00699">699</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00053">gXDino_constantBuffer</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00047">gXDino_context</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00044">gXDino_rdrHeight</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00043">gXDino_rdrWidth</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">gXDino_textures</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00078">gXDino_vertexBuffers</a>, <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00175">XDino_ProfileBegin()</a>, <a class="el" href="xdino__win64__main_8cpp_source.html#l00180">XDino_ProfileEnd()</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+<div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Voici le graphe d'appel pour cette fonction :</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="xdino__win64__rdr_8cpp_a7d5347b96a8386cfa0d2ee33abaf36bb_cgraph.svg" width="284" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="afce3fa5d5fa809f786dad62cd3989b7a" name="afce3fa5d5fa809f786dad62cd3989b7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce3fa5d5fa809f786dad62cd3989b7a">&#9670;&#160;</a></span>XDino_DrawStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_DrawStats </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>diffScroll</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche les statistiques de consommation mémoire et de ressources chargées. </p>
+<ul>
+<li>'diffScroll' détermine de combien de lignes il faut faire défiler l'entrée (négatif en haut, positif en bas). </li>
+</ul>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00749">749</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00089">gXDino_bDrawStats</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00091">gXDino_statScrollUser</a>.</p>
+
+</div>
+</div>
+<a id="a7ea4942e6fc15f8c7b030341104df186" name="a7ea4942e6fc15f8c7b030341104df186"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ea4942e6fc15f8c7b030341104df186">&#9670;&#160;</a></span>XDino_MemAlloc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * XDino_MemAlloc </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>pLabel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Alloue une zone mémoire contenant au moins 'size' octets. Retourne un pointeur vers le début de cette zone mémoire. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00759">759</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00087">gXDino_allocs</a>.</p>
+
+</div>
+</div>
+<a id="a2576fdc5939710dbb7011665bdbbdf8d" name="a2576fdc5939710dbb7011665bdbbdf8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2576fdc5939710dbb7011665bdbbdf8d">&#9670;&#160;</a></span>XDino_MemFree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XDino_MemFree </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pAlloc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Libère la zone mémoire commençant à 'pAlloc'. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00774">774</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00013">DINO_CRITICAL</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00087">gXDino_allocs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a91e998f3473162cba7db08f87db354da" name="a91e998f3473162cba7db08f87db354da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91e998f3473162cba7db08f87db354da">&#9670;&#160;</a></span>XDino_VERTEX_BUFFER_COUNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t XDino_VERTEX_BUFFER_COUNT = 60000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00032">32</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a25b53c76829a89d89d8e857b59afc47b" name="a25b53c76829a89d89d8e857b59afc47b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25b53c76829a89d89d8e857b59afc47b">&#9670;&#160;</a></span>gXDino_width</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float gXDino_width = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00041">41</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00590">XDino_GetWindowSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00414">XDino_Win64_ResizeRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="aeea48cb78df89e8a1d4682e071b57506" name="aeea48cb78df89e8a1d4682e071b57506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeea48cb78df89e8a1d4682e071b57506">&#9670;&#160;</a></span>gXDino_height</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float gXDino_height = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00042">42</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00590">XDino_GetWindowSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00414">XDino_Win64_ResizeRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="aa199a69180036976a9b2a9722d4dc0fe" name="aa199a69180036976a9b2a9722d4dc0fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa199a69180036976a9b2a9722d4dc0fe">&#9670;&#160;</a></span>gXDino_rdrWidth</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float gXDino_rdrWidth = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00043">43</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00699">XDino_Draw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00600">XDino_GetRenderSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00605">XDino_SetRenderSize()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>.</p>
+
+</div>
+</div>
+<a id="a73e4d6e8971bcd67aa110680dfa46c40" name="a73e4d6e8971bcd67aa110680dfa46c40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73e4d6e8971bcd67aa110680dfa46c40">&#9670;&#160;</a></span>gXDino_rdrHeight</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float gXDino_rdrHeight = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00044">44</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00699">XDino_Draw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00600">XDino_GetRenderSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00605">XDino_SetRenderSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">XDino_Win64_EndDraw()</a>.</p>
+
+</div>
+</div>
+<a id="adbdcf279de1eafb979c12a89dcaa7af5" name="adbdcf279de1eafb979c12a89dcaa7af5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbdcf279de1eafb979c12a89dcaa7af5">&#9670;&#160;</a></span>gXDino_device</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11Device* gXDino_device = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00046">46</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00652">XDino_CreateVertexBuffer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00438">XDino_Win64_CreateTexture()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00414">XDino_Win64_ResizeRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a0610a50f1d90b6b7fc836bba1567c558" name="a0610a50f1d90b6b7fc836bba1567c558"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0610a50f1d90b6b7fc836bba1567c558">&#9670;&#160;</a></span>gXDino_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11DeviceContext* gXDino_context = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00047">47</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00699">XDino_Draw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00414">XDino_Win64_ResizeRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a5afa73f01848ad999c2c83c7dedf14d9" name="a5afa73f01848ad999c2c83c7dedf14d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5afa73f01848ad999c2c83c7dedf14d9">&#9670;&#160;</a></span>gXDino_swapchain</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">IDXGISwapChain* gXDino_swapchain = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00048">48</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">XDino_Win64_EndDraw()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00414">XDino_Win64_ResizeRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a934f07b39f5e1e032fea5ec1586ed9e4" name="a934f07b39f5e1e032fea5ec1586ed9e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a934f07b39f5e1e032fea5ec1586ed9e4">&#9670;&#160;</a></span>gXDino_rtv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11RenderTargetView* gXDino_rtv = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00049">49</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00414">XDino_Win64_ResizeRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="aad55edfd28e3de943e89dc14302d5a7b" name="aad55edfd28e3de943e89dc14302d5a7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad55edfd28e3de943e89dc14302d5a7b">&#9670;&#160;</a></span>gXDino_vertexShader</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11VertexShader* gXDino_vertexShader = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00050">50</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a8bf9d3b2c482dca97afebd220f4197dc" name="a8bf9d3b2c482dca97afebd220f4197dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bf9d3b2c482dca97afebd220f4197dc">&#9670;&#160;</a></span>gXDino_pixelShader</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11PixelShader* gXDino_pixelShader = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00051">51</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a8db8e1116fd83bef865084be7e060671" name="a8db8e1116fd83bef865084be7e060671"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8db8e1116fd83bef865084be7e060671">&#9670;&#160;</a></span>gXDino_inputLayout</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11InputLayout* gXDino_inputLayout = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00052">52</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="aae0eb63ba7f7730c7fb5ba4fdfeb9d7f" name="aae0eb63ba7f7730c7fb5ba4fdfeb9d7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae0eb63ba7f7730c7fb5ba4fdfeb9d7f">&#9670;&#160;</a></span>gXDino_constantBuffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11Buffer* gXDino_constantBuffer = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00053">53</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00699">XDino_Draw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a3fb00283acd8ea514fca380bef65c7c0" name="a3fb00283acd8ea514fca380bef65c7c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fb00283acd8ea514fca380bef65c7c0">&#9670;&#160;</a></span>gXDino_rasterState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11RasterizerState* gXDino_rasterState = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00054">54</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a59c1feba1f9a4e036f9f052876bec62e" name="a59c1feba1f9a4e036f9f052876bec62e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59c1feba1f9a4e036f9f052876bec62e">&#9670;&#160;</a></span>gXDino_blendState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D11BlendState* gXDino_blendState = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00055">55</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a611573d9355de12da856d0dbec9890b4" name="a611573d9355de12da856d0dbec9890b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a611573d9355de12da856d0dbec9890b4">&#9670;&#160;</a></span>gXDino_clearColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> gXDino_clearColor = <a class="el" href="xdino_8h.html#a289347d3145bcc1ada68d75b75ba58c9">DinoColor_BLACK</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00056">56</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00595">XDino_SetClearColor()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00489">XDino_Win64_BeginDraw()</a>.</p>
+
+</div>
+</div>
+<a id="a4dc8686a3c6b9f568dbc8d8a4eed3050" name="a4dc8686a3c6b9f568dbc8d8a4eed3050"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dc8686a3c6b9f568dbc8d8a4eed3050">&#9670;&#160;</a></span>gXDino_textures</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;uint64_t, XDino_Win64_Texture&gt; gXDino_textures</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00068">68</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00638">XDino_DestroyGpuTexture()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00699">XDino_Draw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00628">XDino_GetGpuTextureSize()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00093">XDino_Win64_CollectRessources()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00438">XDino_Win64_CreateTexture()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00541">XDino_Win64_DestroyRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00118">XDino_Win64_PurgeDeadResources()</a>.</p>
+
+</div>
+</div>
+<a id="afc3cb35f6097d66ce0c07d34a7e6b41d" name="afc3cb35f6097d66ce0c07d34a7e6b41d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc3cb35f6097d66ce0c07d34a7e6b41d">&#9670;&#160;</a></span>gXDino_textureCounter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t gXDino_textureCounter = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00069">69</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00638">XDino_DestroyGpuTexture()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00628">XDino_GetGpuTextureSize()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00438">XDino_Win64_CreateTexture()</a>.</p>
+
+</div>
+</div>
+<a id="a06c6ac722151307c2179115accbcd017" name="a06c6ac722151307c2179115accbcd017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06c6ac722151307c2179115accbcd017">&#9670;&#160;</a></span>gXDino_vertexBuffers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;uint64_t, XDino_Win64_VertexBuffer&gt; gXDino_vertexBuffers</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00078">78</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00652">XDino_CreateVertexBuffer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00687">XDino_DestroyVertexBuffer()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00699">XDino_Draw()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00093">XDino_Win64_CollectRessources()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00118">XDino_Win64_PurgeDeadResources()</a>.</p>
+
+</div>
+</div>
+<a id="acc8281d72b98321f3f6c065269d8e75d" name="acc8281d72b98321f3f6c065269d8e75d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc8281d72b98321f3f6c065269d8e75d">&#9670;&#160;</a></span>gXDino_vertexBufferCounter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t gXDino_vertexBufferCounter = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00079">79</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00652">XDino_CreateVertexBuffer()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00687">XDino_DestroyVertexBuffer()</a>.</p>
+
+</div>
+</div>
+<a id="a5541427a8d8ee898e633df65f1122d8e" name="a5541427a8d8ee898e633df65f1122d8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5541427a8d8ee898e633df65f1122d8e">&#9670;&#160;</a></span>gXDino_allocs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;void*, XDino_Win64_Alloc&gt; gXDino_allocs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00087">87</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00759">XDino_MemAlloc()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00774">XDino_MemFree()</a>, <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00093">XDino_Win64_CollectRessources()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00118">XDino_Win64_PurgeDeadResources()</a>.</p>
+
+</div>
+</div>
+<a id="a3202d30285c56407151212a484a40621" name="a3202d30285c56407151212a484a40621"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3202d30285c56407151212a484a40621">&#9670;&#160;</a></span>gXDino_bDrawStats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool gXDino_bDrawStats = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00089">89</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00749">XDino_DrawStats()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">XDino_Win64_EndDraw()</a>.</p>
+
+</div>
+</div>
+<a id="af1812bcbadd1d47ded48120d7706e0c3" name="af1812bcbadd1d47ded48120d7706e0c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1812bcbadd1d47ded48120d7706e0c3">&#9670;&#160;</a></span>gXDino_statScroll</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gXDino_statScroll = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00090">90</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">XDino_Win64_EndDraw()</a>.</p>
+
+</div>
+</div>
+<a id="ab516e94e17947e09efc5ebb46d7771af" name="ab516e94e17947e09efc5ebb46d7771af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab516e94e17947e09efc5ebb46d7771af">&#9670;&#160;</a></span>gXDino_statScrollUser</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gXDino_statScrollUser = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00091">91</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00749">XDino_DrawStats()</a>, et <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00525">XDino_Win64_EndDraw()</a>.</p>
+
+</div>
+</div>
+<a id="a991fcce841c2dc9b78ac5eca8d3ce1a2" name="a991fcce841c2dc9b78ac5eca8d3ce1a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a991fcce841c2dc9b78ac5eca8d3ce1a2">&#9670;&#160;</a></span>XDino_VERTEX_SHADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr char XDino_VERTEX_SHADER[]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00156">156</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>.</p>
+
+</div>
+</div>
+<a id="a92234e32b4609ea745139d2dc152ce61" name="a92234e32b4609ea745139d2dc152ce61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92234e32b4609ea745139d2dc152ce61">&#9670;&#160;</a></span>XDino_PIXEL_SHADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr char XDino_PIXEL_SHADER[]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Valeur initiale :</b><div class="fragment"><div class="line">= R<span class="stringliteral">&quot;(</span></div>
+<div class="line"><span class="stringliteral">sampler Sampler : register(s0);</span></div>
+<div class="line"><span class="stringliteral">Texture2D Texture : register(t0);</span></div>
+<div class="line"><span class="stringliteral"></span> </div>
+<div class="line"><span class="stringliteral">struct PSInput</span></div>
+<div class="line"><span class="stringliteral">{</span></div>
+<div class="line"><span class="stringliteral">    float4 pos: SV_Position;</span></div>
+<div class="line"><span class="stringliteral">    float2 uv: TEXCOORD0;</span></div>
+<div class="line"><span class="stringliteral">    float4 color: COLOR0;</span></div>
+<div class="line"><span class="stringliteral">};</span></div>
+<div class="line"><span class="stringliteral"></span> </div>
+<div class="line"><span class="stringliteral">struct PSOutput</span></div>
+<div class="line"><span class="stringliteral">{</span></div>
+<div class="line"><span class="stringliteral">    float4 color: SV_Target0;</span></div>
+<div class="line"><span class="stringliteral">};</span></div>
+<div class="line"><span class="stringliteral"></span> </div>
+<div class="line"><span class="stringliteral">PSOutput main(PSInput input)</span></div>
+<div class="line"><span class="stringliteral">{</span></div>
+<div class="line"><span class="stringliteral">    PSOutput output = (PSOutput)0;</span></div>
+<div class="line"><span class="stringliteral">    output.color = Texture.Sample(Sampler, input.uv);</span></div>
+<div class="line"><span class="stringliteral">    output.color *= input.color;</span></div>
+<div class="line"><span class="stringliteral">    return output;</span></div>
+<div class="line"><span class="stringliteral">}</span></div>
+<div class="line"><span class="stringliteral">)&quot;</span></div>
+</div><!-- fragment -->
+<p class="definition">Définition à la ligne <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00201">201</a> du fichier <a class="el" href="xdino__win64__rdr_8cpp_source.html">xdino_win64_rdr.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="xdino__win64__rdr_8cpp_source.html#l00230">XDino_Win64_CreateRenderer()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

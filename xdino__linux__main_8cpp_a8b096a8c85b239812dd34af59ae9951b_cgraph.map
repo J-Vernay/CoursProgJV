@@ -1,0 +1,15 @@
+<map id="XDino_Linux_Cleanup" name="XDino_Linux_Cleanup">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,88,154,114"/>
+<area shape="rect" id="Node000002" href="$dino__game_8cpp.html#af5be2c6012bb9e2650a622d88c610fd6" title="Appelé quand l&#39;utilisateur demande à quitter le jeu (touche ECHAP)." alt="" coords="257,38,374,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,85,241,64,243,69,143,90"/>
+<area shape="rect" id="Node000003" href="$xdino__linux__main_8cpp.html#aea37196dc8b2efde10a58c7befd954b0" title="Décharge la texture identifiée par &#39;texID&#39; de la carte graphique." alt="" coords="479,14,653,39"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="94,86,139,52,169,35,201,23,269,9,338,3,405,4,466,9,465,14,405,9,338,9,269,14,202,28,171,40,142,56,97,90"/>
+<area shape="rect" id="Node000004" href="$xdino__linux__main_8cpp.html#a641cf6ebd62e0ffbcf34a364bb9bf03b" title="Décharge la liste de sommets identifiée par &#39;vbufID&#39; de la carte graphique." alt="" coords="477,63,655,89"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="154,95,461,79,462,84,154,100"/>
+<area shape="rect" id="Node000005" href="$xdino__linux__main_8cpp.html#a0e84462316162d9ce7fb89152af8cd03" title=" " alt="" coords="210,139,421,165"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="143,112,238,133,237,138,142,117"/>
+<area shape="rect" id="Node000006" href="$xdino__linux__main_8cpp.html#a19b005d9e234569206ea690926217e5a" title=" " alt="" coords="202,188,429,214"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="99,112,145,144,203,175,221,181,219,186,201,180,142,148,96,117"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="373,42,463,34,464,39,374,48"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="374,54,462,63,461,68,373,59"/>
+</map>

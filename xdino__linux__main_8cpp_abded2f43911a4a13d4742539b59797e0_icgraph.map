@@ -1,0 +1,15 @@
+<map id="XDino_SetClearColor" name="XDino_SetClearColor">
+<area shape="rect" id="Node000001" title="Pour indiquer la couleur d&#39;arrière&#45;plan." alt="" coords="766,31,909,56"/>
+<area shape="rect" id="Node000002" href="$dino__game_8cpp.html#ac7b7408f18b3729af2f6e7f405f238e7" title="Appelé pour générer chaque frame. Doit lireles entrées de jeu avec XDino_GetGamepad(),..." alt="" coords="591,31,718,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="750,46,718,46,718,41,750,41"/>
+<area shape="rect" id="Node000003" href="$xdino__linux__main_8cpp.html#a23ab8c2bbf03b45563425c6f39f83e8e" title=" " alt="" coords="384,5,522,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="575,36,522,30,523,24,576,31"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,55,543,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="576,55,544,59,544,54,575,50"/>
+<area shape="rect" id="Node000004" href="$xdino__linux__main_8cpp.html#a4646b314f2ba6df59c9b1805dd568b18" title=" " alt="" coords="176,5,264,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="369,21,264,21,264,16,369,16"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,55,315,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="348,70,315,70,315,65,348,65"/>
+<area shape="rect" id="Node000007" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,55,77,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="109,70,77,70,77,65,109,65"/>
+</map>

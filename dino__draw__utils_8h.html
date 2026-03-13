@@ -1,0 +1,462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Référence du fichier dino_draw_utils.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2bb994ae3c35c8ddd14b20e4aa61abb8.html">dino</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">Référence du fichier dino_draw_utils.h</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Fonctions pour dessiner des primitives de rendu.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;<a class="el" href="xdino_8h_source.html">dino/xdino.h</a>&gt;</code><br />
+<code>#include &lt;span&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Graphe des dépendances par inclusion de dino_draw_utils.h:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dino__draw__utils_8h__incl.svg" width="355" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier :</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dino__draw__utils_8h__dep__incl.svg" width="551" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<p><a href="dino__draw__utils_8h_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Fonctions GenVertices</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>Ces fonctions génèrent des sommets dans 'out', pour être ensuite ajouté à des draw calls avec des texIDs particuliers, et avec <code>translation</code>, <code>rotation</code> et <code>scale</code>. </p>
+</td></tr>
+<tr class="memitem:a4efb4f73f0da63251e808d668366ded0" id="r_a4efb4f73f0da63251e808d668366ded0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0">EAnimalKind</a> : int { <br />
+&#160;&#160;<a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0a0cc69989e6aa8192d6e5d4618c64bbaf">Pig1</a>
+, <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0af4f99ee54db4415aaa39b14d7b8f13f5">Pig2</a>
+, <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0ac9a7a3ba024cc2237d4e50e0c2c7a3cb">Cow1</a>
+, <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0af87f77235d6e97ef370f5650b653eae0">Cow2</a>
+, <br />
+&#160;&#160;<a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0adbf217f6b3be2c25a28020d672c88ac2">Sheep1</a>
+, <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0a5960ef7fd068f42d7fc515c7b5e9345d">Sheep2</a>
+, <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0a4c0691f2ecfdeba8b1a123272cc4b517">Ostrich1</a>
+, <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0a64cc9135aa64d05cb70ec75eaf8a8f01">Ostrich2</a>
+<br />
+ }</td></tr>
+<tr class="separator:a4efb4f73f0da63251e808d668366ded0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed9df487cce91d1f57fa94cb8ef31cf5" id="r_aed9df487cce91d1f57fa94cb8ef31cf5"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5">EAnimalAnim</a> : int { <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a258f49887ef8d14ac268c92b02503aaa">Up</a>
+, <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a08a38277b0309070706f6652eeae9a53">Down</a>
+, <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a945d5e233cf7d6240f6b783b36a374ff">Left</a>
+, <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a92b09c7c48c520c3c55e497875da437c">Right</a>
+ }</td></tr>
+<tr class="separator:aed9df487cce91d1f57fa94cb8ef31cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9979e3d39104b7a6873df7b2ea7f8905" id="r_a9979e3d39104b7a6873df7b2ea7f8905"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__draw__utils_8h.html#a9979e3d39104b7a6873df7b2ea7f8905">Dino_GenVertices_Circle</a> (std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;out, float radius, <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> color=<a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>)</td></tr>
+<tr class="memdesc:a9979e3d39104b7a6873df7b2ea7f8905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produit un dessin de cercle avec la couleur spécifiée. Les sommets doivent être dessiné avec XDino_TEXID_FONT.  <br /></td></tr>
+<tr class="separator:a9979e3d39104b7a6873df7b2ea7f8905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad847c166b2d5a9414e813d15f7fd83e7" id="r_ad847c166b2d5a9414e813d15f7fd83e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__draw__utils_8h.html#ad847c166b2d5a9414e813d15f7fd83e7">Dino_GenVertices_Text</a> (std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;out, std::string_view text, <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> color=<a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>, <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> colorBackground=<a class="el" href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">DinoColor_INVISIBLE</a>, <a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> pos={0, 0})</td></tr>
+<tr class="memdesc:ad847c166b2d5a9414e813d15f7fd83e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produit un dessin contenant du texte, avec éventuellement une couleur de fond. Les sommets doivent être dessiné avec XDino_TEXID_FONT.  <br /></td></tr>
+<tr class="separator:ad847c166b2d5a9414e813d15f7fd83e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ed77dde4b9f394a2d70a4ba6162989" id="r_a66ed77dde4b9f394a2d70a4ba6162989"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__draw__utils_8h.html#a66ed77dde4b9f394a2d70a4ba6162989">Dino_GenVertices_Polyline</a> (std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;out, std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> &gt; const &amp;points, float width, <a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a> color=<a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a>)</td></tr>
+<tr class="memdesc:a66ed77dde4b9f394a2d70a4ba6162989"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produit un dessin contenant une liste de segments, tous reliés. Les sommets doivent être dessiné avec XDino_TEXID_WHITE.  <br /></td></tr>
+<tr class="separator:a66ed77dde4b9f394a2d70a4ba6162989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd881557b21b8521c4dde0bb432c2f0e" id="r_afd881557b21b8521c4dde0bb432c2f0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dino__draw__utils_8h.html#afd881557b21b8521c4dde0bb432c2f0e">Dino_GenVertices_Animal</a> (std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;out, <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0">EAnimalKind</a> kind, <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5">EAnimalAnim</a> anim, double time)</td></tr>
+<tr class="memdesc:afd881557b21b8521c4dde0bb432c2f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produit une liste de sommets qui correspond à un animal animé.  <br /></td></tr>
+<tr class="separator:afd881557b21b8521c4dde0bb432c2f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Fonctions pour dessiner des primitives de rendu. </p>
+<dl class="section author"><dt>Auteur</dt><dd>Julien Vernay </dd></dl>
+
+<p class="definition">Définition dans le fichier <a class="el" href="dino__draw__utils_8h_source.html">dino_draw_utils.h</a>.</p>
+</div><h2 class="groupheader">Documentation du type de l'énumération</h2>
+<a id="a4efb4f73f0da63251e808d668366ded0" name="a4efb4f73f0da63251e808d668366ded0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4efb4f73f0da63251e808d668366ded0">&#9670;&#160;</a></span>EAnimalKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0">EAnimalKind</a> : int</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Valeurs énumérées</th></tr><tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0a0cc69989e6aa8192d6e5d4618c64bbaf" name="a4efb4f73f0da63251e808d668366ded0a0cc69989e6aa8192d6e5d4618c64bbaf"></a>Pig1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0af4f99ee54db4415aaa39b14d7b8f13f5" name="a4efb4f73f0da63251e808d668366ded0af4f99ee54db4415aaa39b14d7b8f13f5"></a>Pig2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0ac9a7a3ba024cc2237d4e50e0c2c7a3cb" name="a4efb4f73f0da63251e808d668366ded0ac9a7a3ba024cc2237d4e50e0c2c7a3cb"></a>Cow1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0af87f77235d6e97ef370f5650b653eae0" name="a4efb4f73f0da63251e808d668366ded0af87f77235d6e97ef370f5650b653eae0"></a>Cow2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0adbf217f6b3be2c25a28020d672c88ac2" name="a4efb4f73f0da63251e808d668366ded0adbf217f6b3be2c25a28020d672c88ac2"></a>Sheep1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0a5960ef7fd068f42d7fc515c7b5e9345d" name="a4efb4f73f0da63251e808d668366ded0a5960ef7fd068f42d7fc515c7b5e9345d"></a>Sheep2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0a4c0691f2ecfdeba8b1a123272cc4b517" name="a4efb4f73f0da63251e808d668366ded0a4c0691f2ecfdeba8b1a123272cc4b517"></a>Ostrich1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4efb4f73f0da63251e808d668366ded0a64cc9135aa64d05cb70ec75eaf8a8f01" name="a4efb4f73f0da63251e808d668366ded0a64cc9135aa64d05cb70ec75eaf8a8f01"></a>Ostrich2&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__draw__utils_8h_source.html#l00052">52</a> du fichier <a class="el" href="dino__draw__utils_8h_source.html">dino_draw_utils.h</a>.</p>
+
+</div>
+</div>
+<a id="aed9df487cce91d1f57fa94cb8ef31cf5" name="aed9df487cce91d1f57fa94cb8ef31cf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed9df487cce91d1f57fa94cb8ef31cf5">&#9670;&#160;</a></span>EAnimalAnim</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5">EAnimalAnim</a> : int</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Valeurs énumérées</th></tr><tr><td class="fieldname"><a id="aed9df487cce91d1f57fa94cb8ef31cf5a258f49887ef8d14ac268c92b02503aaa" name="aed9df487cce91d1f57fa94cb8ef31cf5a258f49887ef8d14ac268c92b02503aaa"></a>Up&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aed9df487cce91d1f57fa94cb8ef31cf5a08a38277b0309070706f6652eeae9a53" name="aed9df487cce91d1f57fa94cb8ef31cf5a08a38277b0309070706f6652eeae9a53"></a>Down&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aed9df487cce91d1f57fa94cb8ef31cf5a945d5e233cf7d6240f6b783b36a374ff" name="aed9df487cce91d1f57fa94cb8ef31cf5a945d5e233cf7d6240f6b783b36a374ff"></a>Left&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aed9df487cce91d1f57fa94cb8ef31cf5a92b09c7c48c520c3c55e497875da437c" name="aed9df487cce91d1f57fa94cb8ef31cf5a92b09c7c48c520c3c55e497875da437c"></a>Right&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__draw__utils_8h_source.html#l00054">54</a> du fichier <a class="el" href="dino__draw__utils_8h_source.html">dino_draw_utils.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a9979e3d39104b7a6873df7b2ea7f8905" name="a9979e3d39104b7a6873df7b2ea7f8905"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9979e3d39104b7a6873df7b2ea7f8905">&#9670;&#160;</a></span>Dino_GenVertices_Circle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GenVertices_Circle </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>color</em> = <code><a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produit un dessin de cercle avec la couleur spécifiée. Les sommets doivent être dessiné avec XDino_TEXID_FONT. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">out</td><td>Destination dans laquelle sont ajoutés les sommets. </td></tr>
+    <tr><td class="paramname">radius</td><td>Rayon du cercle, en pixels. </td></tr>
+    <tr><td class="paramname">color</td><td>Couleur du cercle. </td></tr>
+    <tr><td class="paramname">pos</td><td>Position du coin supérieur gauche, en pixels. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__draw__utils_8cpp_source.html#l00006">6</a> du fichier <a class="el" href="dino__draw__utils_8cpp_source.html">dino_draw_utils.cpp</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00026">Dino_GameInit()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="dino__draw__utils_8h_a9979e3d39104b7a6873df7b2ea7f8905_icgraph.svg" width="100%" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ad847c166b2d5a9414e813d15f7fd83e7" name="ad847c166b2d5a9414e813d15f7fd83e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad847c166b2d5a9414e813d15f7fd83e7">&#9670;&#160;</a></span>Dino_GenVertices_Text()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> Dino_GenVertices_Text </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>color</em> = <code><a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>colorBackground</em> = <code><a class="el" href="xdino_8h.html#a93188dac74427f4871d050d62876b29d">DinoColor_INVISIBLE</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a>&#160;</td>
+          <td class="paramname"><em>pos</em> = <code>{0,&#160;0}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produit un dessin contenant du texte, avec éventuellement une couleur de fond. Les sommets doivent être dessiné avec XDino_TEXID_FONT. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">out</td><td>Destination dans laquelle sont ajoutés les sommets. </td></tr>
+    <tr><td class="paramname">text</td><td>Caractères à afficher. </td></tr>
+    <tr><td class="paramname">color</td><td>Couleur du texte. </td></tr>
+    <tr><td class="paramname">colorBackground</td><td>Couleur du rectangle affiché derrière le texte. </td></tr>
+    <tr><td class="paramname">pos</td><td>Position du coin supérieur gauche, en pixels. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>La taille en pixels de la zone de texte. </dd></dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__draw__utils_8cpp_source.html#l00021">21</a> du fichier <a class="el" href="dino__draw__utils_8cpp_source.html">dino_draw_utils.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00095">Dino_GameFrame()</a>, et <a class="el" href="xdino__impl_8h_source.html#l00017">XDinoImpl_DrawStats()</a>.</p>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="dino__draw__utils_8h_ad847c166b2d5a9414e813d15f7fd83e7_icgraph.svg" width="100%" height="390"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a66ed77dde4b9f394a2d70a4ba6162989" name="a66ed77dde4b9f394a2d70a4ba6162989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66ed77dde4b9f394a2d70a4ba6162989">&#9670;&#160;</a></span>Dino_GenVertices_Polyline()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GenVertices_Polyline </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVec2">DinoVec2</a> &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="xdino_8h.html#unionDinoColor">DinoColor</a>&#160;</td>
+          <td class="paramname"><em>color</em> = <code><a class="el" href="xdino_8h.html#a0cbdf5c8996c3f409b9505e8e277aaf7">DinoColor_WHITE</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produit un dessin contenant une liste de segments, tous reliés. Les sommets doivent être dessiné avec XDino_TEXID_WHITE. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">out</td><td>Destination dans laquelle sont ajoutés les sommets. </td></tr>
+    <tr><td class="paramname">points</td><td>Liste de points par lesquels la polyligne passe. </td></tr>
+    <tr><td class="paramname">width</td><td>Epaisseur du trait, en pixels. </td></tr>
+    <tr><td class="paramname">color</td><td>Couleur du trait. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__draw__utils_8cpp_source.html#l00112">112</a> du fichier <a class="el" href="dino__draw__utils_8cpp_source.html">dino_draw_utils.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="xdino_8h_source.html#l00037">DinoVec2::x</a>, et <a class="el" href="xdino_8h_source.html#l00038">DinoVec2::y</a>.</p>
+
+<p class="reference">Référencé par <a class="el" href="dino__game_8cpp_source.html#l00026">Dino_GameInit()</a>.</p>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Voici le graphe des appelants de cette fonction :</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="dino__draw__utils_8h_a66ed77dde4b9f394a2d70a4ba6162989_icgraph.svg" width="100%" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="afd881557b21b8521c4dde0bb432c2f0e" name="afd881557b21b8521c4dde0bb432c2f0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd881557b21b8521c4dde0bb432c2f0e">&#9670;&#160;</a></span>Dino_GenVertices_Animal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dino_GenVertices_Animal </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="xdino_8h.html#structDinoVertex">DinoVertex</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="dino__draw__utils_8h.html#a4efb4f73f0da63251e808d668366ded0">EAnimalKind</a>&#160;</td>
+          <td class="paramname"><em>kind</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5">EAnimalAnim</a>&#160;</td>
+          <td class="paramname"><em>anim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produit une liste de sommets qui correspond à un animal animé. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">out</td><td>Destination dans laquelle sont ajoutés les sommets. </td></tr>
+    <tr><td class="paramname">idxAnimal</td><td>Quel espèce d'animal afficher, entre 0 et 7. </td></tr>
+    <tr><td class="paramname">idxAnim</td><td>Quelle animation jouer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Définition à la ligne <a class="el" href="dino__draw__utils_8cpp_source.html#l00216">216</a> du fichier <a class="el" href="dino__draw__utils_8cpp_source.html">dino_draw_utils.cpp</a>.</p>
+
+<p class="reference">Références <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a08a38277b0309070706f6652eeae9a53">Down</a>, <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a945d5e233cf7d6240f6b783b36a374ff">Left</a>, <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a92b09c7c48c520c3c55e497875da437c">Right</a>, et <a class="el" href="dino__draw__utils_8h.html#aed9df487cce91d1f57fa94cb8ef31cf5a258f49887ef8d14ac268c92b02503aaa">Up</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

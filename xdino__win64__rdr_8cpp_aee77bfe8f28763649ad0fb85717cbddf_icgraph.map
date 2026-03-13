@@ -1,0 +1,14 @@
+<map id="XDino_Win64_PurgeDeadResources" name="XDino_Win64_PurgeDeadResources">
+<area shape="rect" id="Node000001" title=" " alt="" coords="820,31,1052,56"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__rdr_8cpp.html#a1114a89a9aca94743092c9e78a348e53" title="Spécifique à la plateforme. Libère les ressources associées au rendu." alt="" coords="363,5,565,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="804,39,566,26,566,21,804,34"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__rdr_8cpp.html#ad13ae3c31e66f2cdf34b75465d4bac17" title="Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique." alt="" coords="613,56,772,82"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="804,60,772,63,772,58,804,55"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,31,77,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="348,28,77,44,77,39,348,22"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="374,56,554,82"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="598,72,555,72,555,66,598,66"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,56,315,82"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="358,72,315,72,315,66,358,66"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="109,56,77,51,78,46,110,51"/>
+</map>

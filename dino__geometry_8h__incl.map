@@ -1,0 +1,11 @@
+<map id="dino_geometry.h" name="dino_geometry.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="62,5,177,31"/>
+<area shape="rect" id="Node000002" href="$xdino_8h.html" title="API d&#39;interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu." alt="" coords="75,79,164,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,31,122,63,117,63,117,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,69,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,107,64,144,61,140,104,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="93,153,146,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="122,105,122,137,117,137,117,105"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="171,153,228,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="135,103,177,140,173,144,131,107"/>
+</map>

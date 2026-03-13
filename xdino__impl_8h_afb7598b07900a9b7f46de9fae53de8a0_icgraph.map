@@ -1,0 +1,15 @@
+<map id="XDinoImpl_DrawStats" name="XDinoImpl_DrawStats">
+<area shape="rect" id="Node000001" title="Trucs communs entre les différentes implémentations de l&#39;API XDino. En général, cela concerne le debu..." alt="" coords="798,31,947,56"/>
+<area shape="rect" id="Node000002" href="$xdino__linux__main_8cpp.html#a23ab8c2bbf03b45563425c6f39f83e8e" title=" " alt="" coords="601,5,740,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="782,35,740,29,740,24,783,30"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__rdr_8cpp.html#ad13ae3c31e66f2cdf34b75465d4bac17" title="Spécifique à la plateforme. Finit la passe de rendu et envoit le travail à la carte graphique." alt="" coords="591,55,750,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="783,57,750,61,750,55,782,52"/>
+<area shape="rect" id="Node000003" href="$xdino__linux__main_8cpp.html#a4646b314f2ba6df59c9b1805dd568b18" title=" " alt="" coords="410,5,497,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="586,21,497,21,497,16,586,16"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,55,543,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="576,70,544,70,544,65,576,65"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,55,315,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="348,70,315,70,315,65,348,65"/>
+<area shape="rect" id="Node000007" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,55,77,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="109,70,77,70,77,65,109,65"/>
+</map>

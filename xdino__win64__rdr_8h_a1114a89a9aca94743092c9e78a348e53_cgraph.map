@@ -1,0 +1,11 @@
+<map id="XDino_Win64_DestroyRenderer" name="XDino_Win64_DestroyRenderer">
+<area shape="rect" id="Node000001" title="Spécifique à la plateforme. Libère les ressources associées au rendu." alt="" coords="5,80,208,106"/>
+<area shape="rect" id="Node000002" href="$xdino__win64__rdr_8cpp.html#aea37196dc8b2efde10a58c7befd954b0" title="Décharge la texture identifiée par &#39;texID&#39; de la carte graphique." alt="" coords="285,5,459,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,77,255,40,284,32,285,38,256,45,144,82"/>
+<area shape="rect" id="Node000003" href="$xdino__win64__rdr_8cpp.html#a641cf6ebd62e0ffbcf34a364bb9bf03b" title="Décharge la liste de sommets identifiée par &#39;vbufID&#39; de la carte graphique." alt="" coords="283,55,461,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,80,267,75,267,80,209,86"/>
+<area shape="rect" id="Node000004" href="$xdino__win64__rdr_8cpp.html#a9b6c6fcbcefafee47511b2494be31bc5" title=" " alt="" coords="264,104,480,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,99,249,103,248,108,208,105"/>
+<area shape="rect" id="Node000005" href="$xdino__win64__rdr_8cpp.html#aee77bfe8f28763649ad0fb85717cbddf" title=" " alt="" coords="256,153,488,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="145,104,256,140,285,147,284,152,255,145,143,109"/>
+</map>

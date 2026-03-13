@@ -1,0 +1,19 @@
+<map id="XDino_Linux_CreateTexture" name="XDino_Linux_CreateTexture">
+<area shape="rect" id="Node000001" title=" " alt="" coords="963,81,1145,107"/>
+<area shape="rect" id="Node000002" href="$xdino__linux__main_8cpp.html#a606a6ce34b0c704a35a8a61db01db625" title="Charge une texture nommée &#39;pName&#39; depuis le disque jusqu&#39;à la carte graphique. Retourne l&#39;identifiant..." alt="" coords="747,56,915,82"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="947,85,915,81,916,76,948,79"/>
+<area shape="rect" id="Node000004" href="$xdino__linux__main_8cpp.html#a1c1b5043b07b3c147c6b32c1d87b2f54" title=" " alt="" coords="394,56,513,82"/>
+<area shape="poly" id="edge9_Node000001_Node000004" title=" " alt="" coords="947,99,747,97,621,88,513,78,513,73,622,83,747,92,947,94"/>
+<area shape="rect" id="Node000003" href="$dino__game_8cpp.html#a34e4cc788612f46dea16beb4b24dd0ab" title="Appelé au tout début, pour initialiser la logique de jeu." alt="" coords="591,5,699,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="766,54,694,34,695,29,767,49"/>
+<area shape="poly" id="edge8_Node000002_Node000004" title=" " alt="" coords="731,72,513,72,513,66,731,66"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="579,38,505,58,504,53,578,33"/>
+<area shape="rect" id="Node000006" href="$xdino__win64__main_8cpp.html#afa07de294d5b620ee39644b9661f0665" title=" " alt="" coords="363,5,543,31"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="576,21,544,21,544,16,576,16"/>
+<area shape="rect" id="Node000005" href="$xdino__linux__main_8cpp.html#a4646b314f2ba6df59c9b1805dd568b18" title=" " alt="" coords="176,56,264,82"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="378,72,264,72,264,66,378,66"/>
+<area shape="rect" id="Node000007" href="$xdino__win64__main_8cpp.html#a7202590da16f97f4cef692deb9001e27" title=" " alt="" coords="125,5,315,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="348,21,315,21,315,16,348,16"/>
+<area shape="rect" id="Node000008" href="$xdino__win64__main_8cpp.html#aa0e1ecfaa9e7f124f36e8666a1cb66f9" title=" " alt="" coords="5,5,77,31"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="109,21,77,21,77,16,109,16"/>
+</map>

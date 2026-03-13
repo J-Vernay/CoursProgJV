@@ -1,0 +1,432 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino: Travaux dirigés</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dino
+   </div>
+   <div id="projectbrief">Projet de cours C++</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div><div class="header">
+  <div class="headertitle"><div class="title">Travaux dirigés</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="autotoc_md16"></a> Ce fichier contient le plan global du cours. Vous devrez compléter <code><a class="el" href="travaux__diriges_8md.html">docs/cours/travaux_diriges.md</a></code> au fur et à mesure du cours.</p>
+<h1><a class="anchor" id="autotoc_md19"></a>
+0. Prise en main de la base de code</h1>
+<p>a) Résumez en une phrase le rôle des fichiers et dossiers suivants :</p>
+<blockquote class="doxtable">
+<p>&zwj;<code><a class="el" href="xdino_8h.html" title="API d&#39;interaction entre le moteur de jeu &quot;XDino&quot; et la logique de jeu.">dino/xdino.h</a></code> : ...</p>
+<p><code>dino/x64-windows/</code> : ...</p>
+<p><code>dino/x64-linux/</code> : ...</p>
+<p><code><a class="el" href="dino__game_8cpp.html" title="Implémentation des fonctions principales de la logique de jeu.">dino/dino_game.cpp</a></code> : ...</p>
+<p><code><a class="el" href="dino__geometry_8cpp.html">dino/dino_geometry.cpp</a></code> : ...</p>
+<p><code><a class="el" href="dino__draw__utils_8cpp.html">dino/dino_draw_utils.cpp</a></code> : ...</p>
+<p><code>premake5.lua</code> : ... </p>
+</blockquote>
+<p>b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier <code><a class="el" href="xdino__win64__main_8cpp.html" title="Implémentation de la fenêtre et des événements sur Windows.">xdino_win64_main.cpp</a></code>, à la place des <code>// COMMENTAIRE</code>.</p>
+<div class="fragment"><div class="line"><span class="comment">// Fonction appelée par le gameplay pour déterminer l&#39;état du clavier et des manettes.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Déclaration des fonctions qui sont définies plus bas dans le fichier.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Boucle principale d&#39;événement, qui traite les messages que le système d&#39;exploitation nous envoit.</span></div>
+<div class="line"><span class="comment">// Tourne en boucle tant que le programme continue.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Définition des constantes.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Quand le programme se termine, on libère les ressources associés au programme.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// La fenêtre graphique vient d&#39;être construite,</span></div>
+<div class="line"><span class="comment">// on initialise des variables globales et le moteur de rendu.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Foncfion qui gère les événements que nous communique le système d&#39;exploitation.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Initialisation de la fenêtre graphique.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// L&#39;utilisateur redimensionne la fenêtre.</span></div>
+<div class="line"><span class="comment">// On ajuste le moteur de rendu en conséquence.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Expose les fonctions de la base de code.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Délègue les autres événéments à l&#39;implémentation par défaut du système d&#39;exploitation.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Expose les fonctions de la bibliothèque tierce PIX.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Fonction d&#39;entrée du programme, contient le code qui sera appelé par le système d&#39;exploitation Windows.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Le système d&#39;exploitation demande à redessiner la fenêtre.</span></div>
+<div class="line"><span class="comment">// On demande à la logique de jeu de dessiner une frame.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d&#39;erreur.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// L&#39;utilisateur a demandé à détruire la fenêtre.</span></div>
+<div class="line"><span class="comment">// On notifie le système d&#39;exploitation qu&#39;on veut arrêter.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Expose les fonctions de la bibliothèque standard.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Variables globales, accédées dans ce fichier.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Fonction qui communique avec le système d&#39;exploitation</span></div>
+<div class="line"><span class="comment">// pour créer la fenêtre graphique principale de rendu.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Expose les fonctions du système d&#39;exploitation Windows.</span></div>
+</div><!-- fragment --><p>c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde. Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps, le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels). Dans quelle direction s'est-il déplacé ? À quelle vitesse, en pixels par seconde, cela correspond-il ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut, à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il au bout d'une seconde ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>f) Par quoi est définit un triangle texturé ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>g) Qu'est-ce qu'est un "draw call" ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ? Dans la sortie textuelle quand on quitte le jeu ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>j) Ajoutez votre <code>NOM Prénom</code> en bas à droite de l'écran, sur le même modèle que <code>dTime</code>. Il vous faudra utiliser le paramètre <code>pOutSize</code> pour récupérer la taille en pixels du rectangle de texte et le positionner correctement contre le bas de l'écran grâce à <code>translation</code>.</p>
+<p>k) Qu'est-ce que le type <code>std::vector</code> ? Cherchez la page de documentation sur cppreference. Dans quelle catégorie est située cette page ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>l) Que signifie l'esperluette <code>&amp;</code> à côté du paramètre <code>out</code> dans les fonctions déclarées dans <code><a class="el" href="dino__draw__utils_8h.html" title="Fonctions pour dessiner des primitives de rendu.">dino/dino_draw_utils.h</a></code> ? Que se passe-t-il si on l'enlève ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md20"></a>
+1. Programmation du déplacement du dinosaure (F1.1-F1.4)</h1>
+<p>a) Implémentez la fonctionnalité F1.1 . Quand le bouton de course est enfoncé, doublez la vitesse de déplacement. Pour le rendu, il vous faudra dessiner un carré, soit deux triangles texturés. Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure en haut à gauche de la texture.</p>
+<p>b) Implémentez la fonctionnalité F1.2 . Comment peut-on mettre en miroir le sprite du dinosaure ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>c) Implémentez la fonctionnalité F1.3 . Notez que les sprites d'une même animation sont côte à côte. Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du jeu ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur <code>btn_left</code>.</p>
+<h1><a class="anchor" id="autotoc_md21"></a>
+2. Introduction à la programmation orientée objet en C++ (F1.5-F1.6)</h1>
+<p>a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure pour les regrouper ? L'appliquer.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>b) Créez les fichiers <code>dino_player.h</code> et <code>dino_player.cpp</code> dans le dossier <code>src/dino</code>, pour y déplacer le code concernant les dinosaures. N'oubliez pas de relancer le script <code>SetupWorkspace.bat</code>.</p>
+<p>c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un type de données ? Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ? Comment appelle-t-on cette limitation ? Quel intérêt ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Appliquez ces outils pour créer la classe <code>DinoPlayer</code> en rendant privées les données qui représentent le dinosaure.</p>
+<p>e) Créez quatre dinosaures, c'est-à-dire quatre instances de la classe <code>DinoPlayer</code>. Utilisez pour cela le type <code>std::vector&lt;DinoPlayer&gt;</code> de la bibliothèque standard. Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ? Comment s'appelle cette syntaxe ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md22"></a>
+3. Programmation du terrain</h1>
+<p>a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.</p>
+<p>c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels. Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers <code>dino_terrain.h</code> et <code>dino_terrain.cpp</code> qui contiendront la logique du terrain.</p>
+<p>e) Implémentez la fonctionnalité F2.2 .</p>
+<p>f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce. Expliquez les étapes de votre algorithme.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md23"></a>
+4. Comprendre la compilation des fichiers C++</h1>
+<p>Dans Everything, vérifier que <b>Recherche &gt; Respecter le chemin</b> est activé.</p>
+<p>a) Cherchez <code>CoursProgJV *.h|*.cpp</code>. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ? Répartissez ces dossiers en 3 catégories.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>c) Cherchez <code>CoursProgJV *.cpp|*.obj</code>. Que remarquez-vous à propos des fichiers <code>.obj</code> ? Notez leurs dossiers.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Compilez le projet en changeant de configuration (Debug/Profile/Release). Cherchez <code>CoursProgJV !tools *.exe</code>. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>e) Dans le fichier <code>premake5.lua</code>, quelles lignes font références aux fichiers et chemins observés plus tôt ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>f) Quels sont les liens entre :</p>
+<blockquote class="doxtable">
+<p>&zwj;<b>Fichiers <code>.h</code> et <code>.cpp</code> :</b> ...</p>
+<p><b>Fichiers <code>.cpp</code> et <code>.obj</code> :</b> ...</p>
+<p><b>Fichiers <code>.obj</code> et <code>.lib</code> :</b> ...</p>
+<p><b>Fichiers <code>.obj</code> et <code>.dll</code> :</b> ...</p>
+<p><b>Fichiers <code>.obj</code> et <code>.exe</code> :</b> ...</p>
+<p><b>Fichiers <code>.dll</code> et <code>.exe</code> :</b> ... </p>
+</blockquote>
+<p>g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle différence majeure ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md24"></a>
+5. Programmation des animaux</h1>
+<p>a) Implémentez la fonctionnalité F3.1 .</p>
+<p>b) Implémentez la fonctionnalité F3.2 .</p>
+<p>c) Implémentez la fonctionnalité F3.3 .</p>
+<h1><a class="anchor" id="autotoc_md25"></a>
+6. Physique de jeu</h1>
+<p>a) Implémentez la fonctionnalité F4.1 .</p>
+<p>b) Implémentez la fonctionnalité F4.2 .</p>
+<p>c) Comment détecter si deux cercles à des positions données sont en collision ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ? Quel cas particulier n'est pas résoluble ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>e) Implémentez la fonctionnalité F4.3 .</p>
+<p>f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre <code>DinoPlayer</code> et <code>DinoAnimal</code> ? L'appliquer dans la base de code.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune, comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ? L'appliquer dans la base de code.</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des <code>DinoPlayer</code> et des <code>DinoAnimal</code>. Comment faire ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md26"></a>
+7. Programmation des lassos</h1>
+<p>a) Implémentez la fonctionnalité F4.1 .</p>
+<p>b) Implémentez la fonctionnalité F4.2 en limitant à 2 secondes d'historique. Quelle méthode de <code>std::vector</code> utiliser ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ? Quelle méthode de <code>std::vector</code> utiliser ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe <code>DinoPlayer</code> n'ont pas besoin d' interagir entre elles.</p>
+<p>e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).</p>
+<h1><a class="anchor" id="autotoc_md27"></a>
+8. S'intéresser à la mémoire</h1>
+<p>a) Sur votre machine, combien de RAM est disponible ? Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ? Est-ce une opération coûteuse ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ? Que veut dire réinterpréter un pointeur ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Quelle est la taille du type <code><a class="el" href="xdino_8h.html#unionDinoColor" title="Représente une couleur de pixels, utilisée pour moduler l&#39;affichage d&#39;une texture.">DinoColor</a></code> ? du type <code><a class="el" href="xdino_8h.html#structDinoVertex" title="Représente un des sommets d&#39;un triangle envoyé à la carte graphique.">DinoVertex</a></code> ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>e) Que représente un <code>std::vector</code> ? Comment pourrait-il être représenté en mémoire ? Comment connaître la position en mémoire d'un élément étant donné son indice ? Quelle limitation cela entraîne-t-il ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>h) Quand et qui alloue la mémoire pour les variables globales ? Quand et qui alloue la mémoire pour les variables locales ? Quand et qui alloue la mémoire des <code>std::vector</code> ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md28"></a>
+9. Fonctions cachées</h1>
+<p>a) Surcharger les opérateurs <code>+</code> et <code>*</code> pour que l'on puisse additionner deux <code><a class="el" href="xdino_8h.html#structDinoVec2" title="Représente une coordonnée 2D en pixels.">DinoVec2</a></code> ensemble, et que l'on puisse multiplier un <code><a class="el" href="xdino_8h.html#structDinoVec2" title="Représente une coordonnée 2D en pixels.">DinoVec2</a></code> avec un <code>float</code>. Quelle syntaxe est utilisée ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>b) Quand on affiche un sprite, on crée un <code>std::vector&lt;<a class="el" href="xdino_8h.html#structDinoVertex" title="Représente un des sommets d&#39;un triangle envoyé à la carte graphique.">DinoVertex</a>&gt;</code>, et on spécifie les positions et UV. Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>c) Remplacez les méthodes <code>Init()</code> de <code>DinoPlayer</code>, <code>DinoAnimal</code> et <code>DinoLasso</code>. Quelle méthode de <code>std::vector</code> prend en paramètres les arguments de construction et crée une instance sans faire de copie ?</p>
+<p>d) <code>std::vector&lt;<a class="el" href="xdino_8h.html#structDinoVertex" title="Représente un des sommets d&#39;un triangle envoyé à la carte graphique.">DinoVertex</a>&gt;</code> contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin d'appeler explicitement une méthode équivalente à <code>Shut()/Destroy()</code> ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>e) Créer une classe <code>DinoVertexBuffer</code> qui accepte les mêmes arguments que <code><a class="el" href="xdino__linux__main_8cpp.html#ad7cc0200df4ae9dc2f3445ce0c5bb02c" title="Copie une liste de sommets de triangles texturés sur la carte graphique. Retourne l&#39;identifiant uniqu...">XDino_CreateVertexBuffer()</a></code> et garde le <code>vbufID</code> dans un membre privé, avec une fonction <code>Get()</code> qui retourne ce <code>vbufID</code>. Faites en sorte que <code><a class="el" href="xdino__linux__main_8cpp.html#a641cf6ebd62e0ffbcf34a364bb9bf03b" title="Décharge la liste de sommets identifiée par &#39;vbufID&#39; de la carte graphique.">XDino_DestroyVertexBuffer()</a></code> soit appelé automatiquement. Remplacez les usages des vertex buffers qui sont créés à chaque frame.</p>
+<p>f) Que se passe-t-il lorsqu'on copie un <code>DinoVertexBuffer</code> vers un autre ? Comment le prévenir ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>=========== NE PAS FAIRE ===========</p>
+<p>g) Appliquez les mêmes outils pour enlever les méthodes <code>Shut()</code> des classes <code>DinoPlayer</code>, <code>DinoAnimal</code> et <code>DinoLasso</code> (s'il y en a).</p>
+<p>h) Implémentez en debug le fait que le terrain est réinitialisé en appuyant sur le bouton <code>btn_up</code> (touche Z du clavier).</p>
+<p>i) Quelle difficulté a-t-on pour remplacer <code>Init()</code> et <code>Shut()</code> de <code>DinoTerrain</code> ? Comment changer le code ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>j) Pour le test, créer dynamiquement un <code>DinoAnimal</code> (en dehors de la logique de jeu). Convertissez le pointeur en <code>DinoEntity</code>, puis détruisez l'instance via le pointeur <code>DinoEntity</code>. Passe-t-on dans le destructeur de <code>DinoAnimal</code> ? Pourquoi ? Comment y remédier ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>=========== FIN DE NE PAS FAIRE ===========</p>
+<h1><a class="anchor" id="autotoc_md29"></a>
+10. Flow de jeu</h1>
+<p>a) Implémentez F6.1 et F6.2 .</p>
+<p>b) Implémentez F6.3.</p>
+<p>c) Implémentez F6.4.</p>
+<p>d) Implémentez F6.5.</p>
+<p>e) Implémentez F6.6.</p>
+<p>h) Implémentez F6.7.</p>
+<p>j) Implémentez F6.8.</p>
+<p>k) Sous quelle forme peut-on réorganiser toute cette logique ? Pourquoi ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>l) Utilisez le polymorphisme pour gérer l'état actuel du jeu. Qu'est-ce que cela entraîne nécessairement pour le stockage ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md30"></a>
+11. Profiling</h1>
+<p>a) Compilez le jeu avec la configuration "Profile", puis lancez le jeu.</p>
+<p>b) Prenez une capture PIX. ( <a href="https://devblogs.microsoft.com/pix/download/">https://devblogs.microsoft.com/pix/download/</a> )</p>
+<ul>
+<li>Dans <b>File &gt; Settings &gt; Symbol / PDB Options &gt; PDB Search Paths</b>, ajoutez <code>srv*c:\symcache*https://msdl.microsoft.com/download/symbols</code> (même s'il y a un texte d'erreur).</li>
+<li>Dans <b>Local Machine &gt; Capture &gt; Attach</b> (à gauche), cherchez le nom de l'exécutable (<code>Dino_PrenomNom.exe</code>), et cliquez dessus.</li>
+<li>Décochez la case <b>For GPU Capture</b>, puis appuyez sur le bouton <b>Attach</b>.</li>
+<li>Dans <b>Capture</b>, cochez <b>CPU Samples</b> avec <b>8k / sec</b>, puis appuyez sur <b>Start Capture</b>.</li>
+<li>Jouez pendant quelques secondes.</li>
+<li>Cliquez sur <b>Stop Capture</b>.</li>
+<li>Allez dans l'onglet en haut <b>Timing 1.wpix</b>, puis dans l'onglet <b>Timeline</b></li>
+</ul>
+<p>c) En haut à gauche de la fenêtre, vous pouvez voir <b>Reload Symbols</b>. Cliquez dessus. Cette étape télécharge la première fois environ 250 MiB de données dans le dossier <code>C:\symcache</code>. Dépendamment de la connexion, cela peut prendre plusieurs minutes.</p>
+<p>En utilisant Everything, quel type de fichiers se trouvent dans <code>C:\symcache</code> ? Quel est leur rôle ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>d) Sélectionnez une large bande dans la timeline. En bas à droite, sélectionnez <b>Item Type = Sampled functions</b>.</p>
+<p>Quelle part représente <code>Dino_GameFrame</code> relativement à <code>WinMain</code> ? Quelle autre fonction prend du temps ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>e) Zoomez sur la timeline (<code>Ctrl + Molette souris</code>), jusqu'à voir les frames individuellement. Double-cliquez sur un rectangle <b>Frame</b>. Vous devriez revoir les observations de la question précédente.</p>
+<p>f) Double-cliquez sur un rectangle <b>Frame</b>, puis cliquez en bas à gauche sur <b>Graph Duration in Metrics View</b>. Quelle est le temps moyen d'une frame ? Le temps minimum ? Le temps maximum ?</p>
+<blockquote class="doxtable">
+<p>&zwj;... </p>
+</blockquote>
+<p>g) Les rectangles dans la timeline PIX sont créés dans le code par des appels à <a class="el" href="xdino__win64__main_8cpp.html#ab579fc5249712eea9dab54bbad4808f0" title="Commence un intervalle de profiling visible sur PIX. Les intervalles de profiling peuvent être l&#39;un d...">XDino_ProfileBegin()</a> et <a class="el" href="xdino__win64__main_8cpp.html#a847ecb99f82286c5ba044e4e50d6ca2c" title="Finit un intervalle de profiling.">XDino_ProfileEnd()</a> . Ces appels de fonctions peuvent être imbriqués. Utilisez ces fonctions pour avoir une meilleure idée des performances du code, et répondre aux questions suivantes :</p>
+<p><b>Temps passé en moyenne pour...</b></p>
+<blockquote class="doxtable">
+<p>&zwj;<b>Créer un vertex buffer de 6 points :</b> ...</p>
+<p><b>Drawcall d'un animal :</b> ...</p>
+<p><b>Lire les entrées claviers/manette :</b> ...</p>
+<p><b>Le calcul des DinoDrawCall :</b> ...</p>
+<p><b>La logique de jeu (excluant lire les entrées et drawcalls):</b> ...</p>
+<p><b>Résoudre les collisions :</b> ...</p>
+<p><b>Calculer les intersections de lasso :</b> ...</p>
+<p><b>Le calcul des DinoDrawCall des animaux :</b> ...</p>
+<p><b>Le calcul des DinoDrawCall des lasso :</b> ... </p>
+</blockquote>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>
