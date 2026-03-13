@@ -3,7 +3,7 @@
 uint64_t DinoTree::s_texID;
 
 
-void DinoTree::ReactLoop(double timeSinceStart)
+void DinoTree::ReactLoop(double timeSinceStart, int lassoIndex)
 {
     m_bWasLooped = true;
 }
@@ -13,6 +13,7 @@ DinoTree::DinoTree(DinoVec2 pos, int idxSeason)
     m_pos = pos;
     m_idxSeason = idxSeason;
     m_bWasLooped = false;
+    canBePushed = false;
 }
 
 void DinoTree::Update(double timeSinceStart, float deltaTime)

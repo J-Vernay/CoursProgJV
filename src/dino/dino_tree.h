@@ -10,7 +10,7 @@ private:
 
     static uint64_t s_texID;
 
-    void ReactLoop(double timeSinceStart) override;
+    void ReactLoop(double timeSinceStart, int lassoIndex) override;
 
 public:
     DinoTree(DinoVec2 pos, int idxSeason);
@@ -18,7 +18,6 @@ public:
     void Draw(double timeSinceStart) override;
     bool WasLooped();
     int GetIdxSeason();
-
 
     static void InitStatic();
     static void ShutStatic();

@@ -5,9 +5,10 @@
 #include <dino/dino_lasso.h>
 
 
-DinoLasso::DinoLasso(DinoColor color)
+DinoLasso::DinoLasso(DinoColor color, int ownerIndex)
 {
     m_color = color;
+    m_ownerIndex = ownerIndex;
 }
 
 

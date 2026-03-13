@@ -116,9 +116,10 @@ void DinoPlayer::Draw(double timeSinceStart)
     XDino_Draw(vertex_buffer.GetVbufID(), s_texID, {m_pos.x - 12, m_pos.y - 20});
 }
 
-void DinoPlayer::ReactLoop(double timeSinceStart)
+void DinoPlayer::ReactLoop(double timeSinceStart, int lassoIndex)
 {
-    m_endHitAnim = timeSinceStart + 3;
+    if (lassoIndex != m_idxPlayer)
+        m_endHitAnim = timeSinceStart + 3;
 }
 
 

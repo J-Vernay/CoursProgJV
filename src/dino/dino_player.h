@@ -31,7 +31,7 @@ struct DinoPlayer : public DinoEntity {
 
     void Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad);
     void Draw(double timeSinceStart) override;
-    void ReactLoop(double timeSinceStart) override;
+    void ReactLoop(double timeSinceStart, int lassoIndex) override;
 
     void Shut();
 

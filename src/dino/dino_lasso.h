@@ -5,7 +5,8 @@
 
 class DinoLasso {
 public :
-    DinoLasso(DinoColor color);
+    int m_ownerIndex;
+    DinoLasso(DinoColor color, int ownerIndex);
     std::vector<DinoVec2> m_lasso;
     DinoColor m_color;
     void Update(DinoVec2 pos);

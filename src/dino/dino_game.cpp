@@ -27,7 +27,9 @@ struct PlayerState {
     DinoLasso lasso;
 };
 
+std::vector<int> g_FreePlayerIndices = {0, 1, 2, 3};
 std::vector<DinoGamepadIdx> g_UnassignedGamepads;
+std::vector<DinoGamepadIdx> g_AssignedGamepads;
 std::vector<PlayerState> g_players;
 std::vector<DinoTree> g_Trees;
 
@@ -98,26 +100,47 @@ void Dino_GameFrame(double timeSinceStart)
         DinoColor_GREEN,
     };
 
-    // Détection des nouveaux joueurs
-
     if (g_InLobby) {
         for (int i = 0; i < g_UnassignedGamepads.size(); i++) {
             DinoGamepadIdx idx = g_UnassignedGamepads[i];
             DinoGamepad gamepad;
             if (XDino_GetGamepad(idx, gamepad)) {
                 if (gamepad.start) {
-                    int idxPlayer = g_players.size();
-                    if (idxPlayer < 4) {
-                        g_players.emplace_back(idx, gamepad, idxPlayer, PLAYER_COLORS[idxPlayer]);
+                    if (!g_FreePlayerIndices.empty()) {
+                        int idxPlayer = g_FreePlayerIndices.front();
+                        g_FreePlayerIndices.erase(g_FreePlayerIndices.begin());
+                        g_players.emplace_back(idx, gamepad, idxPlayer, DinoLasso(PLAYER_COLORS[idxPlayer], idxPlayer));
+                        g_AssignedGamepads.emplace_back(idx);
                         g_UnassignedGamepads.erase(g_UnassignedGamepads.begin() + i);
                     }
                     break;
                 }
 
+            }
+
+        }
+
+        for (int i = 0; i < g_AssignedGamepads.size(); i++) {
+            DinoGamepadIdx idx = g_AssignedGamepads[i];
+            DinoGamepad gamepad;
+            if (XDino_GetGamepad(idx, gamepad)) {
                 if (gamepad.select) {
-                    g_InLobby = false;
-                    g_paused = false;
+                    auto it = std::find_if(g_players.begin(),
+                                           g_players.end(),
+                                           [idx](PlayerState& ps) {
+                                               return ps.gamepadIdx == idx;
+                                           });
+                    if (it != g_players.end()) {
+                        g_FreePlayerIndices.push_back(it->player.m_idxPlayer);
+                        std::sort(g_FreePlayerIndices.begin(), g_FreePlayerIndices.end());
+                        g_players.erase(it);
+                    }
+
+                    g_UnassignedGamepads.emplace_back(idx);
+                    g_AssignedGamepads.erase(g_AssignedGamepads.begin() + i);
+                    break;
                 }
+
             }
 
         }
@@ -167,23 +190,11 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     if (!g_paused) {
-        /*
-        for (size_t idxA = 0; idxA < g_players.size(); ++idxA)
-            for (size_t idxB = idxA + 1; idxB < g_players.size(); ++idxB)
-                DinoEntity::ResolveCollision(g_players[idxA].player, g_players[idxB].player);
-
-        for (size_t idxA = 0; idxA < g_spawner.m_animals.size(); ++idxA)
-            for (size_t idxB = idxA + 1; idxB < g_spawner.m_animals.size(); ++idxB)
-                DinoEntity::ResolveCollision(g_spawner.m_animals[idxA], g_spawner.m_animals[idxB]);
-
-        for (size_t idxA = 0; idxA < g_players.size(); ++idxA)
-            for (size_t idxB = 0; idxB < g_spawner.m_animals.size(); ++idxB)
-                DinoEntity::ResolveCollision(g_players[idxA].player, g_spawner.m_animals[idxB]);
-        */
 
         for (size_t idxA = 0; idxA < entities.size(); ++idxA)
-            for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+            for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB) {
                 DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+            }
 
         for (PlayerState& player : g_players)
             player.lasso.Update(player.player.GetPos());
@@ -195,13 +206,12 @@ void Dino_GameFrame(double timeSinceStart)
         for (PlayerState& player : g_players)
             for (DinoEntity* pEntity : entities)
                 if (player.lasso.WasInLoop(pEntity->GetPos()))
-                    pEntity->ReactLoop(timeSinceStart);
+                    pEntity->ReactLoop(timeSinceStart, player.lasso.m_ownerIndex);
     }
 
     if (g_InLobby) {
         for (DinoTree& tree : g_Trees)
             if (tree.WasLooped()) {
-                // Lobby -> Gameplay
                 g_InLobby = false;
                 g_terrain.Shut();
                 g_terrain.Init(RENDER_SIZE, tree.GetIdxSeason());

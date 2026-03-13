@@ -96,7 +96,7 @@ void DinoAnimal::Update(float deltaTime, double timeSinceStart)
 
 }
 
-void DinoAnimal::ReactLoop(double timeSinceStart)
+void DinoAnimal::ReactLoop(double timeSinceStart, int lassoIndex)
 {
     m_dead = true;
 }
