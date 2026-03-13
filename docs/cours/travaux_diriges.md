@@ -350,12 +350,14 @@ Quand et qui alloue la mémoire des `std::vector` ?
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> type de return + mot clé operator + symbole (+ * -) + parametre
+> puis return { a.x * b, a.y* b}
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> On a pas besoin de la spécifier car la valeur par défaut est déjà blanc (255 *4) 
+> or la multiplication serait de 1 sur chaque canal 
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
