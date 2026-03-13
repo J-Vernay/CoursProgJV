@@ -328,17 +328,17 @@ L'appliquer dans la base de code.
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> En C++ on peut utiliser le polymorphisme.
+> En C++ on peut utiliser l'héritage de class et le polymorphisme.
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> On peut mettre en commun "Drawn" et "Update".
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
 
-> ...
+> Il faut faire hériter ces deux class du même parent.
 
 ## 7. Programmation des lassos
 
@@ -353,7 +353,7 @@ Quelle méthode de `std::vector` utiliser ?
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
-> ...
+> NbJoueur * LongueurLasso = 4*120 = 480 intersections. On utilise toujours std::vector::erase().
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
@@ -376,54 +376,98 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> Sur ma machine, je possède 32 Go de RAM. Dans un programme 64 bits, l’espace d’adressage théorique est de 2^64
+> adresses. Un programme ne peut lire ou écrire que dans les zones de mémoire virtuelle qui lui sont allouées par le
+> système d’exploitation. La mémoire réellement utilisée peut être limitée par la RAM physique.
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Allouer de la mémoire signifie qu’un programme demande au système d’exploitation de réserver une zone de mémoire pour
+> y stocker des données.
+> Le système d’exploitation réserve un espace dans la mémoire virtuelle du processus et renvoie au programme l’adresse
+> de
+> début de cette zone sous forme de pointeur.
+> L’allocation a un coût et elle peut devenir plus coûteuse lorsque la taille demandée est grande ou lorsque les
+> allocations sont fréquentes.
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> En C++, un type décrit comment une suite d’octets doit être interprétée et manipulée par le programme (taille en
+> mémoire, opérations possibles, représentation des données). Un pointeur est une variable contenant l’adresse mémoire
+> d’une donnée d’un certain type. Réinterpréter un pointeur signifie traiter l’adresse pointée comme si elle contenait
+> un objet d’un autre type, on interprète les mêmes octets en utilisant un type différent.
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> DinoColor fait 4 octets et DinoVertex fait 16 octets.
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> std::vector représente une liste de plusieurs éléments de même type.
+> En mémoire, les éléments sont placés côte à côte, comme dans un tableau dynamique.
+> L’adresse d’un élément d’indice i peut être calculée par :
+> addr(i) = begin + i × sizeof(T)
+> où begin est l’adresse du premier élément et T le type stocké.
+> Cela impose que tous les éléments aient la même taille. De plus, lorsque la capacité du std::vector est
+> dépassée, il doit allouer un nouveau bloc mémoire plus grand et copier tous les éléments, ce qui peut être coûteux.
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
 Quand et qui alloue la mémoire des `std::vector` ?
 
-> ...
+> Variables globales :
+> La mémoire des variables globales est déterminée à la compilation et lors du chargement du programme, le système
+> d’exploitation réserve ces zones mémoire avant l’exécution de main.
+> Variables locales :
+> Les variables locales sont allouées à l’appel de la fonction, et le compilateur génère du code qui réserve
+> l’espace nécessaire à l’entrée de chaque fonction.
+> std::vector :
+> Un std::vector est alloué pendant l’exécution du programme via l’allocateur C++ (new / malloc).
 
 ## 9. Fonctions cachées
 
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> En C++, on surcharge les opérateurs avec la syntaxe operator+ et operator*.
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> La couleur possède une valeur par défaut (DinoColor_WHITE). Donc lorsque l’on crée les sommets pour un sprite sans
+> préciser la couleur, celle-ci est automatiquement blanche, ce qui signifie aucune modulation de la texture.
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
 et crée une instance sans faire de copie ?
 
+> Syntaxe du constructeur, la méthode est pareil que le type, et n'as pas de retour :
+> class DinoPlayer {
+> public :
+> DinoPlayer(int idxPlayer); // Si pas d'argument, constructeur par defaut.
+> // Le constructeur est une méthode avec le nom du type
+> // Le constructeur n'a pas de type de retour.
+> };
+> DinoPlayer::DinoPlayer(){
+> }
+>
+> La méthode est : emplace_back(). Par exemple :
+> g_Players.resize(4) // Ne compile plus car pas de constructeur par défaut.
+> g_Player.emplace_back(XXX); // XXX = Arguments transférés au constructeur de l'élément.
+> Elle construit l’objet directement dans le std::vector en utilisant les arguments fournis, ce qui évite une copie
+> intermédiaire.
+
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> Implicitement pour std::vector, le compilateur appelle le destructeur automatiquement et la mémoire qu'il contient est
+> libérée automatiquement, aucun appel manuel n’est nécessaire.
+> En C++, quand une variable est détruite (quand elle n'est plus accessible), le compilateur appelle automatiquement le
+> destructeur.
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
@@ -432,7 +476,9 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> Si on copie un DinoVertexBuffer vers un autre, les deux objets contiennent le même vbufID et leurs destructeurs vont
+> appeler XDino_DestroyVertexBuffer() deux fois, donc une double destruction se produit. On peut le prévenir en
+> empêchant la copie.
 
 g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
 (s'il y en a).
