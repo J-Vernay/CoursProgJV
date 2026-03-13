@@ -4,7 +4,7 @@
 #include <dino/dino_geometry.h>
 #include <dino/dino_draw_utils.h>
 
-void DinoLasso::Init(DinoColor color)
+DinoLasso::DinoLasso(DinoColor color)
 {
     m_color = color;
 }
@@ -89,9 +89,6 @@ void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)
             break;
         }
     }
-
-    if (pointsB.size() < 2)
-        return;
 
     // Dernier segment du lassoB avec tous les segments du lasso A
     a = pointsB[pointsB.size() - 2];
