@@ -151,7 +151,10 @@ b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> pour les marges a gauche et a droite, on applique le calcule :
+> marge = (largeurFenetre - largeurRectangle) / 2;
+> pour le haut et le bas c'est sensiblement similaire
+> marge = (hauteurFenetre - hauteurRectangle) / 2;
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
@@ -191,7 +194,7 @@ c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
-> ...
+> il y a un .exe pour chaque version possible de lancement du jeu ** reponse a verifier **
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
@@ -336,7 +339,7 @@ e) Que représente un `std::vector` ? Comment pourrait-il être représenté en 
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> un std :: vector
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
@@ -378,7 +381,8 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> les deux DinoVertexBuffers vont avoir le meme ID, il va donc essayé d'etre détruit deux fois. les fonction vont etr générées par le compilateur et causer une erreur de compilation
+> pour prévenir de ce comportement, il faut mettre des securités comme détruire la variable temporaire du script d'assignation par copies 
 
 =========== NE PAS FAIRE ===========
 
