@@ -28,8 +28,6 @@ uint64_t DinoControllerFields::s_texID = 0;
 
 void DinoControllerFields::Init(int playerCount)
 {
-    playerCount;
-
     DinoVec2 windowSize = {480, 360};
     this->m_pos = {windowSize.x / 2, windowSize.y / 2};
     this->m_dinoColor = playerCount;
@@ -92,7 +90,7 @@ void DinoControllerFields::ReactLoop(double timeSinceStart)
     }
 }
 
-uint64_t DinoControllerFields::GenDinoVertexBuffer(float timeSinceStart)
+DinoVertexBuffer DinoControllerFields::GenDinoVertexBuffer(float timeSinceStart)
 {
     // Choosing Animation based on current player behaviour
     int currAnimLen;
@@ -167,16 +165,14 @@ uint64_t DinoControllerFields::GenDinoVertexBuffer(float timeSinceStart)
     vs[5].u = 0 + (firstFrameOfAnim + this->m_currFrame) * 24;
     vs[5].v = 24 + this->m_dinoColor * 24;
 
-    this->vbufID_dino = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
-    return this->vbufID_dino;
+    return DinoVertexBuffer(vs.data(), vs.size(), "Dino");
 }
 
 void DinoControllerFields::Draw(double timeSinceStart)
 {
-    this->vbufID_dino = GenDinoVertexBuffer(timeSinceStart);
+    DinoVertexBuffer vbuf = GenDinoVertexBuffer(timeSinceStart);
     // -12 / -18 to move the position to the feet and not the corner of the texture
-    XDino_Draw(this->vbufID_dino, s_texID, {this->m_pos.x - 12, this->m_pos.y - 18}, DINO_SCALE);
-    XDino_DestroyVertexBuffer(this->vbufID_dino);
+    XDino_Draw(vbuf.Get(), s_texID, {this->m_pos.x - 12, this->m_pos.y - 18}, DINO_SCALE);
 }
 
 // void DinoControllerFields::DrawLasso()

@@ -269,3 +269,19 @@ void Dino_GenVertices_Animal(
     out[i + 5].v = vMax;
     out[i + 5].color = fadeInColor;
 }
+
+
+DinoVertexBuffer::DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
+{
+    m_vbufID = XDino_CreateVertexBuffer(pVertices, vertexCount, pLabel);
+}
+
+uint64_t DinoVertexBuffer::Get()
+{
+    return m_vbufID;
+}
+
+DinoVertexBuffer::~DinoVertexBuffer()
+{
+    XDino_DestroyVertexBuffer(m_vbufID);
+}

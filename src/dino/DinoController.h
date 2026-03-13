@@ -13,7 +13,6 @@ private:
     float m_dinoAnimElapsed = 0;
     float m_dinoDamageAnimTimer;
     int m_currFrame = 0;
-    int m_dinoColor = 0;
 
     bool m_dinoTakeDamage = false;
 
@@ -25,13 +24,15 @@ private:
     // uint64_t vbufID_lasso;
 
 public:
+    int m_dinoColor = 0;
+
     uint64_t vbufID_dino;
 
     static uint64_t s_texID;
 
     // Methods
 private:
-    uint64_t GenDinoVertexBuffer(float timeSinceStart);
+    DinoVertexBuffer GenDinoVertexBuffer(float timeSinceStart);
     void ReactLimit(bool xChanged) override;
     void ReactLoop(double timeSinceStart) override;
 

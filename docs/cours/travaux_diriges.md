@@ -387,29 +387,40 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32.0 GB
+> 18 milliards de Go d'espace adressable
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
 > Cela veut dire réserver une région de l'espace d'adresses pour qu'un programme puisse l'utiliser afin de stocker des
 > données
-> Le coût n'est pas normalement couteux, sauf à très grande échelle
+> Le coût de l'opération dépends de la taille de l'espace demandé
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Un type permet de définir au rpogramme comment interpréter une suite d'octets
+> Un pointeur correspond à une adresse mémoire, ainsi qu'au type nécessaire pour interpréter ce qui est stocké à cette
+> adresse
+> Réinterpréter un pointeur consiste à le lire avec un autre type que celui défini à l'origine
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> 4 octets
+> 16 octets
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> Un std::vector correspond à une liste d'objet du même type
+> Il est représenté en mémoire par un long espace mémoire qui correspond à la taille du typé multiplié par le nombre
+> d'éléments
+> Pour trouver la position en mémoire d'un élément en ayant son indice, il suffit d epartir de l'adresse mémoir du
+> vector, et se déplacer sur l'espace alloué jusqu'à atteindre l'emplacement indice * taille du type
+> La limitation qui découle de ce système est qu'à chaque modification de la taille du vecto il est nécessaire de
+> trouver un nouvel espace suffisamment grand pour stocker tout le vector
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
@@ -422,12 +433,26 @@ Quand et qui alloue la mémoire des `std::vector` ?
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> On utilise la fonction operator@ où @ est l'opérateur que l'on souhaite surcharger :
+> - operator+(DinoVec2 a, DinoVec2 b)
+> - operator*(DinoVec2 a, float b)
+>
+> Exemple :
+> DinoVec2 operator+(DinoVec2 a, DinoVec2 b){
+> return {a.x + b.x, a.y + b.y};
+> }
+>
+> C'est également possible de le mettre directement dans la struct :
+> struct DinoVec2{
+> DinoVec2 operator+(DinoVec2 other);
+> }
+>
+> Il est préférable de le faire en fonction libre
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> Car la valeur apr défauit pour la couleur n'est pas {0,0,0,0} mais {255,255,255,255}
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
@@ -436,7 +461,9 @@ et crée une instance sans faire de copie ?
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> En symétrie du constructeur, quand une variable est détruite en c++ (quand elle n'est plus accessible), le compilateur
+> appelle automatiquement le destructeur
+> Le destructeur s'appelle ~ + le nom de la classe, il n'a pas de type de retour et ne prend aucun argument
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
@@ -445,7 +472,16 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> Lorsque l'on copie un DinoVertexBuffer A vers un autre B, le DinoVertexBuffer B perd la référence à son vertex buffer,
+> et copie celle du A. Ainsi le vertex buffer du B ne pourra jamais être détruit, et lors de la destruction des 2
+> DinoVertexBuffer, le second a être appelé tentera de détruire un vertex buffer déjà détruit
+> Pour palier à celà on précise à la classe DinoVertexBuffer que les constructeurs et assignations apr copies sont
+> interdits :
+> - DinoVertexBuffer(DinoVertexBuffer const&) = delete;
+> - DinoVertexBuffer& operator=(DinoVertexBuffer const&) = delete;
+>
+> Ainsi, les tentvies de copies résulteront en une erreur de compilation, le jeu ne pourra jamais être lancé avec une
+> copie quelque part dans le code
 
 g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
 (s'il y en a).

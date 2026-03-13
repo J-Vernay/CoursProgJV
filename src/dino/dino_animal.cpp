@@ -30,6 +30,11 @@ void DinoAnimal::Init(EAnimalKind animalKind, DinoVec2 pos, double timeSinceStar
     m_timeAtBirth = timeSinceStart;
 }
 
+void DinoAnimal::Shut()
+{
+
+}
+
 void DinoAnimal::Update(float deltaTime)
 {
     constexpr float SPEED = 75.f;
@@ -81,10 +86,8 @@ void DinoAnimal::Draw(double timeSinceStart)
     std::vector<DinoVertex> vs;
     Dino_GenVertices_Animal(vs, m_kind, anim, timeSinceStart, alpha);
 
-    uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Animal");
+    DinoVertexBuffer vbuf(vs.data(), vs.size(), "Animal");
 
     // -16 / -28 to move the position to the feet and not the corner of the texture
-    XDino_Draw(vbufID, s_texID, {m_pos.x - 16, m_pos.y - 28});
-
-    XDino_DestroyVertexBuffer(vbufID);
+    XDino_Draw(vbuf.Get(), s_texID, {m_pos.x - 16, m_pos.y - 28});
 }

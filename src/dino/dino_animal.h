@@ -20,13 +20,17 @@ class DinoAnimal : public DinoEntity {
 
     void ReactLimit(bool xChanged) override;
     void ReactLoop(double timeSinceStart);
-    bool IsDead(DinoAnimal& animal);
 
 public:
     void Init(EAnimalKind animalKind, DinoVec2 pos, double timeSinceStart);
+    void Shut();
+
     void Update(float deltaTime);
+
     void Draw(double timeSinceStart);
 
     static void InitTexture();
     static void ShutTexture();
+
+    static bool IsDead(DinoAnimal& animal);
 };

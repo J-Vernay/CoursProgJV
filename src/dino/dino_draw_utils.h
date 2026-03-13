@@ -62,3 +62,16 @@ void Dino_GenVertices_Animal(
     std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time, float alpha);
 
 /// @}
+
+
+class DinoVertexBuffer {
+public:
+    DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
+    DinoVertexBuffer(DinoVertexBuffer const&) = delete;
+    DinoVertexBuffer& operator=(DinoVertexBuffer const&) = delete;
+    uint64_t Get();
+    ~DinoVertexBuffer();
+
+private:
+    uint64_t m_vbufID;
+};

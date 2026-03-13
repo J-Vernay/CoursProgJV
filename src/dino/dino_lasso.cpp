@@ -65,9 +65,8 @@ void DinoLasso::Draw()
 {
     std::vector<DinoVertex> vs;
     Dino_GenVertices_Polyline(vs, m_lasso, 4, m_color);
-    uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Lasso");
-    XDino_Draw(vbufID, XDino_TEXID_WHITE);
-    XDino_DestroyVertexBuffer(vbufID);
+    DinoVertexBuffer vbuf(vs.data(), vs.size(), "Lasso");
+    XDino_Draw(vbuf.Get(), XDino_TEXID_WHITE);
 }
 
 void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)
