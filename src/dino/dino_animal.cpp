@@ -1,6 +1,6 @@
 #include "dino_animal.h"
 
-void dino_animal::DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadius)
+dino_animal::dino_animal(DinoVec2 terrainTopLeft, float collisionRadius)
 {
     this->collisionRadius = collisionRadius;
 
@@ -10,7 +10,6 @@ void dino_animal::DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadiu
     DinoAnimal_GetRandomPos();
     DinoAnimal_GetRandomDirection();
 
-    //debug
     timeAlive = 0;
 }
 
@@ -84,10 +83,9 @@ void dino_animal::DrawEntity(double timeSinceStart)
     for (DinoVertex& v : vs)
         v.color.a = std::min(timeAlive / apparitionTime, (float)1) * 255;
 
-    uint64_t vbufID_animal = XDino_CreateVertexBuffer(vs.data(), vs.size(), "animal");
+    DinoVertexBuffer vbufID_animal(vs.data(), vs.size(), "animal");
 
-    XDino_Draw(vbufID_animal, textIdAnimal, {entityPosition.x - 16, entityPosition.y - 16}, 1);
-    XDino_DestroyVertexBuffer(vbufID_animal);
+    XDino_Draw(vbufID_animal.Get(), textIdAnimal, {entityPosition.x - 16, entityPosition.y - 16}, 1);
 }
 
 void dino_animal::LassoCatched(int playerId)

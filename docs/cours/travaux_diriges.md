@@ -404,21 +404,25 @@ Quand et qui alloue la mémoire des `std::vector` ?
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> On doit utiliser la syntaxe "operator"
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> Il n'y a pas besoin de le préciser car la struct admet des valeurs par défaut. Ainsi, lors de la compilation, le
+> compilateur génère un constructor par défaut qui admet ces valeurs renseignées.
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
 et crée une instance sans faire de copie ?
 
+> On utilise la méthode "emplace_back()". Les arguments transférés au constructeur sont placés entre parenthèse.
+
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> Car il a une méthode "destructor" qui est appelée implicitement dès que la variable n'est plus accessible. Cette
+> méthode s'occupe notamment de libérer la mémoire allouée.
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
@@ -427,7 +431,8 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> Car lorsqu'on copie un copie égalment le VbufId ce qui fait que lors de la destruction, on appelle deux fois la
+> destruction d'un même buffer
 
 g) Appliquez les mêmes outils pour enlever les méthodes `Shut()` des classes `DinoPlayer`, `DinoAnimal` et `DinoLasso`
 (s'il y en a).
@@ -438,7 +443,9 @@ sur le bouton `btn_up` (touche Z du clavier).
 i) Quelle difficulté a-t-on pour remplacer `Init()` et `Shut()` de `DinoTerrain` ?
 Comment changer le code ?
 
-> ...
+> DinoTerrain étant une variable globale sont constructor et destructor sont appelé avant, et après l'initialisation du
+> moteur graphie. Ainsi, les fonction d'envoie de texture au GPU par exemple ne peuvent pas fonctionner
+> Une méthode est de passer DinoTerrein en "std::optional"
 
 j) Pour le test, créer dynamiquement un `DinoAnimal` (en dehors de la logique de jeu).
 Convertissez le pointeur en `DinoEntity`, puis détruisez l'instance via le pointeur `DinoEntity`.

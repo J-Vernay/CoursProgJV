@@ -1,8 +1,34 @@
 #include "dino_terrain.h"
 
-DinoVec2 dino_terrain::DinoTerrain_Init(uint64_t textTerrain, int season)
+dino_terrain::dino_terrain(int season)
 {
-    textIdTerrain = textTerrain;
+    textIdTerrain = XDino_CreateGpuTexture("terrain.png");
+    GenerateFullTerrain(season);
+}
+
+dino_terrain::~dino_terrain()
+{
+    XDino_DestroyGpuTexture(textIdTerrain);
+
+    XDino_DestroyVertexBuffer(vbufID_ocean);
+    XDino_DestroyVertexBuffer(vbufID_terrain);
+    XDino_DestroyVertexBuffer(vbufID_flowers);
+}
+
+DinoVec2 dino_terrain::DinoTerrain_GetTopLeft()
+{
+    return {(480 - 256) / 2, (360 - 192) / 2};
+}
+
+void dino_terrain::DinoTerrain_Draw()
+{
+    XDino_Draw(vbufID_ocean, textIdTerrain);
+    XDino_Draw(vbufID_terrain, textIdTerrain);
+    XDino_Draw(vbufID_flowers, textIdTerrain);
+}
+
+void dino_terrain::GenerateFullTerrain(int season)
+{
     seasonId = season;
 
     std::vector<DinoVertex> terrainVector;
@@ -16,22 +42,6 @@ DinoVec2 dino_terrain::DinoTerrain_Init(uint64_t textTerrain, int season)
     vbufID_terrain = XDino_CreateVertexBuffer(terrainVector.data(), terrainVector.size(), "terrain");
 
     vbufID_flowers = XDino_CreateVertexBuffer(flowerVector.data(), flowerVector.size(), "flowers");
-
-    return {(480 - 256) / 2, (360 - 192) / 2};
-}
-
-void dino_terrain::DinoTerrain_Draw()
-{
-    XDino_Draw(vbufID_ocean, textIdTerrain);
-    XDino_Draw(vbufID_terrain, textIdTerrain);
-    XDino_Draw(vbufID_flowers, textIdTerrain);
-}
-
-void dino_terrain::DinoTerrain_ShutDown()
-{
-    XDino_DestroyVertexBuffer(vbufID_ocean);
-    XDino_DestroyVertexBuffer(vbufID_terrain);
-    XDino_DestroyVertexBuffer(vbufID_flowers);
 }
 
 void dino_terrain::GenerateTerrainBuffer(std::vector<DinoVertex>& oceanVector, std::vector<DinoVertex>& terrainVector)

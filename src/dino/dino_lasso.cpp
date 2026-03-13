@@ -53,9 +53,8 @@ void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities)
             : DinoColor_GREEN;
 
     Dino_GenVertices_Polyline(vs, lassoPoints, 5, lineColor);
-    uint64_t lassoVertexBuffer = XDino_CreateVertexBuffer(vs.data(), vs.size(), "lasso");
-    XDino_Draw(lassoVertexBuffer, XDino_TEXID_WHITE, {}, 1);
-    XDino_DestroyVertexBuffer(lassoVertexBuffer);
+    DinoVertexBuffer lassoVertexBuffer(vs.data(), vs.size(), "lasso");
+    XDino_Draw(lassoVertexBuffer.Get(), XDino_TEXID_WHITE, {}, 1);
 }
 
 void dino_lasso::CutLasso(int fromIndex)

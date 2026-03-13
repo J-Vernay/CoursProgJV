@@ -1,5 +1,7 @@
 ﻿#include "dino_player.h"
 
+#include "dino_draw_utils.h"
+
 dino_player::dino_player(DinoVec2 initialPos, float collisionRadius, uint64_t dinoTex, int dino_ID,
                          DinoVec2 terrainTopLeft)
 {
@@ -49,9 +51,6 @@ void dino_player::DinoPlayer_ReadGamePad(DinoGamepad gamepad, float deltaTime)
     //checking if dino is running
     isRunning = gamepad.btn_right;
     isStatic = gamepad.stick_left_x == 0 && gamepad.stick_left_y == 0;
-
-    if (gamepad.btn_left && !isStun)
-        DinoPlayer_Stun();
 }
 
 void dino_player::DinoPlayer_Stun()
@@ -112,9 +111,8 @@ void dino_player::DrawEntity(double timeSinceStart)
         vs[5].v = baseV + 24;
     }
 
-    uint64_t vbufID_dino1 = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Dino");
-    XDino_Draw(vbufID_dino1, texID_dino, {entityPosition.x - 12, entityPosition.y - 12}, 24);
-    XDino_DestroyVertexBuffer(vbufID_dino1);
+    DinoVertexBuffer vbufID_dino1(vs.data(), vs.size(), "Dino");
+    XDino_Draw(vbufID_dino1.Get(), texID_dino, {entityPosition.x - 12, entityPosition.y - 12}, 24);
 }
 
 void dino_player::LassoCatched(int playerId)

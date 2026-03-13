@@ -4,9 +4,14 @@
 
 class dino_terrain {
 public :
-    DinoVec2 DinoTerrain_Init(uint64_t textIdTerrain, int season);
+    dino_terrain(int season);
+    dino_terrain(dino_terrain const& other) = delete;
+    ~dino_terrain();
+
+    dino_terrain& operator=(dino_terrain const& other) = delete;
+
+    DinoVec2 DinoTerrain_GetTopLeft();
     void DinoTerrain_Draw();
-    void DinoTerrain_ShutDown();
 
 private :
     uint64_t textIdTerrain;
@@ -16,6 +21,8 @@ private :
     uint64_t vbufID_flowers;
 
     int seasonId;
+
+    void GenerateFullTerrain(int season);
 
     void GenerateTerrainBuffer(std::vector<DinoVertex>& oceanVector, std::vector<DinoVertex>& terrainVector);
     void GenerateFlowerBuffer(std::vector<DinoVertex>& flowerVector);

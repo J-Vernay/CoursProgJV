@@ -1,6 +1,7 @@
 /// @file dino_game.cpp
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
+#include "DinoGameState.h"
 #include "LassoManager.h"
 #include "dino_animal.h"
 #include "dino_player.h"
@@ -15,11 +16,8 @@
 
 // Variables globales.
 double g_lastTime = 0;
-double g_rotation = 360.0;
-double g_scale = 1.0;
 
 uint64_t texID_dino;
-uint64_t texID_terrain;
 
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
@@ -38,7 +36,7 @@ float g_timeLeft;
 std::unordered_map<DinoGamepadIdx, dino_player> gamepadDino_map;
 std::deque<dino_animal> animals;
 
-dino_terrain g_dinoTerrain;
+DinoGameState g_gameState;
 dino_EntityManager g_dinoEntityManager;
 LassoManager g_lassoManager;
 
@@ -49,6 +47,8 @@ int g_debugScroll = 0;
 
 void Dino_GameInit()
 {
+    g_gameState.ChangeGameState(DinoGameState::Season1);
+
     //DinoVec2 windowSize = XDino_GetWindowSize();
     DinoVec2 windowSize = {480, 360};
     XDino_SetRenderSize(windowSize);
@@ -56,10 +56,9 @@ void Dino_GameInit()
     // Préparation des textures.
     {
         texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
-        texID_terrain = XDino_CreateGpuTexture("terrain.png");
     }
 
-    g_terrainTopLeft = g_dinoTerrain.DinoTerrain_Init(texID_terrain, XDino_RandomInt32(0, 3));
+    g_terrainTopLeft = g_gameState.GetTopLeft();
 
     // Préparation du drawcall du prenom.
     {
@@ -85,13 +84,12 @@ void Dino_GameFrame(double timeSinceStart)
     DinoVec2 renderSize = XDino_GetRenderSize();
 
     //drawing terrain
-    g_dinoTerrain.DinoTerrain_Draw();
+    g_gameState.Update();
 
     //adding an animal, max amount is 20
     if (g_spawnTimer > std::lerp(g_endSpawnDelay, g_baseSpawnDelay, g_timeLeft / PLAYING_TIME) && animals.size() < 50) {
         int index = animals.size();
-        animals.push_back(dino_animal());
-        animals[index].DinoAnimal_Spawn(g_terrainTopLeft, 8);
+        animals.emplace_back(g_terrainTopLeft, 8);
         g_dinoEntityManager.AddEntity(&animals[index]);
         g_spawnTimer = 0;
     }
@@ -104,10 +102,10 @@ void Dino_GameFrame(double timeSinceStart)
         if (!bSuccess)
             continue;
 
-        if (gamepad.btn_down && !gamepad.btn_up)
-            g_scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            g_scale *= 1.01;
+        if (gamepad.btn_up) {
+
+            g_gameState.ChangeGameState((DinoGameState::game_state)XDino_RandomInt32(2, 5));
+        }
 
         //spawning dino_players
         if (!gamepadDino_map.contains(gamepadIdx)
@@ -143,18 +141,16 @@ void Dino_GameFrame(double timeSinceStart)
         std::string text = std::format("{:04.1f}", g_timeLeft);
         std::vector<DinoVertex> vs;
         DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {240 - textSize.x / 2, 0}, 2);
-        XDino_DestroyVertexBuffer(vbufID);
+        DinoVertexBuffer vbufID(vs.data(), vs.size(), "dTime");
+        XDino_Draw(vbufID.Get(), XDino_TEXID_FONT, {240 - textSize.x / 2, 0}, 2);
     }
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
-        XDino_DestroyVertexBuffer(vbufID);
+        DinoVertexBuffer vbufID(vs.data(), vs.size(), "dTime");
+        XDino_Draw(vbufID.Get(), XDino_TEXID_FONT, {}, 2);
     }
     {
         DinoVec2 translation = {renderSize.x - textSize_prenom.x * 2, renderSize.y - textSize_prenom.y * 2};
@@ -185,11 +181,10 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    g_dinoTerrain.DinoTerrain_ShutDown();
+    g_dinoTerrain.reset();
     dino_animal::DinoAnimal_ShutStatic();
 
     XDino_DestroyVertexBuffer(vbufID_prenom);
 
     XDino_DestroyGpuTexture(texID_dino);
-    XDino_DestroyGpuTexture(texID_terrain);
 }

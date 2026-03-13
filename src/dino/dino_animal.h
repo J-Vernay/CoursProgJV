@@ -9,7 +9,8 @@ class dino_animal : public dino_Entity {
 public :
     bool wasCatched = false;
 
-    void DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadius);
+    dino_animal(DinoVec2 terrainTopLeft, float collisionRadius);
+    //void DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadius);
     void Update(float deltaTime) override;
     void DinoAnimal_InstantDespawn(std::vector<dino_Entity>& entities, int index);
 
