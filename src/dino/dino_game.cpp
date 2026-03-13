@@ -169,11 +169,21 @@ void Dino_GameFrame(double timeSinceStart)
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+
+        // vs : Stocke une allocation mémoire sur le CPU
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
+
+        // vbufID : Représente une allocation mémoire sur la carte graphique
         uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
+
         XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
+
+        // Libère l'allocation mémoire de la carte graphique
         XDino_DestroyVertexBuffer(vbufID);
+
+        // Qui libère la mémoire du CPU ?
+        // Le compilateur appelle implicitement le destructeur de std::vector
     }
 
     {
