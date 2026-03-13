@@ -4,7 +4,7 @@
 #include <dino/dino_geometry.h>
 #include <dino/dino_draw_utils.h>
 
-void DinoLasso::Init(DinoColor color)
+DinoLasso::DinoLasso(DinoColor color)
 {
     m_color = color;
 }
