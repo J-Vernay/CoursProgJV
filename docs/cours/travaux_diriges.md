@@ -240,14 +240,14 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> en compartant la distance entre chacun des cercles et en verifiant si la magnitude au carré du vecteur ésultant est
+> en compartant la distance entre chacun des cercles et en verifiant si la magnitude au carré du vecteur résultant est
 > plus petite que la taille d'une collision
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> en applliquant un theoreme de pythagore on peut retrouver la distance minimale qui doit séparer les deux entités selon
-> leurs axe d'alignement de depart
+> on cherche le vecteur qui sépare les deux cercles,on le divise en deux, le multiplie par -1 et on l'additionne a la
+> position des deux cercles. a noter que ce calcule n'est pas possible si les deux cercles sont parfaitement supperposés
 
 e) Implémentez la fonctionnalité F4.3 .
 
@@ -290,14 +290,16 @@ Quelle méthode de `std::vector` utiliser ?
 c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments sont calculés (en comptant les 4 joueurs) ?
 Quelle méthode de `std::vector` utiliser ?
 
-> comme on ne check la collision qu'avec le drnier segment du lasso, on appelle la fonction "CheckCollision" NombreDeJoueur * LongueurDeChaqueLasso (en l'occurence 4*120 = 480)
+> comme on ne check la collision qu'avec le drnier segment du lasso, on appelle la fonction "CheckCollision"
+> NombreDeJoueur * LongueurDeChaqueLasso (en l'occurence 4*120 = 480)
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
 
 e) Comment détecter qu'une position est à l'intérieur d'un contour fermé définis par des segments ?
 
-> on calcule le nombre d'intersection entre le contour et le segment défini par "position qu'on sait a l'exterieur" et "position checkée"
+> on calcule le nombre d'intersection entre le contour et le segment défini par "position qu'on sait a l'exterieur" et "
+> position checkée"
 > si ce nombre d'intersection est pair (0 compris) la position checkée est a l'exterieur du contour, sinon a l'interieur
 
 f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h).
@@ -351,16 +353,18 @@ Quand et qui alloue la mémoire des `std::vector` ?
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> NomDeClass Opéraor + (type other), NomDeClass Opérator * (type other), etc ...
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> parce que c'est spécifié dans son constructeur par défault
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
 et crée une instance sans faire de copie ?
+
+> emplace_back
 
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
