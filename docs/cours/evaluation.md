@@ -30,11 +30,11 @@ dans les questions de `travaux_diriges.md`, et dans les notes de cours (en PDF d
 Une fois le cours terminé, des fonctionnalités du jeu vous seront laissés
 à faire en autonomie. Il est conseillé de passer dessus au plus environ une journée.
 Le projet est à rendre d'ici deux semaines plus tard, sous la forme d'un `git push` de votre branche.
-Je prendrai l'état du dossier tel qu'il aura été le vendredi 27 mars à minuit.
+Je prendrai l'état du dossier tel qu'il aura été le dimanche 29 mars à 23h59.
 
 Seront jugés le bon fonctionnement des fonctionnalités (50%), et l'état global de la base de code (50%) :
 
-* Code commenté de telle sorte à pouvoir générer la documentation des classes.
+* Code commenté
 * Séparation des responsabilités via encapsulation par différentes classes.
 * Pas de fonctions de 200 lignes qui touchent à tout.
 * Code lisible (variables bien nommées)
