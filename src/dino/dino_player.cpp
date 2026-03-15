@@ -64,7 +64,8 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoTerrain terr
 
 }
 
-DinoVertexBuffer DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
+DinoVertexBuffer DinoPlayer::
+GenerateVertexBuffer(double timeSinceStart)
 {
     anim current = Get_Current_Anim();
     int frame = int(timeSinceStart * current.Speed) % int(current.NbFrames);
@@ -125,6 +126,7 @@ void DinoPlayer::ReactLoop(double timeSinceStart, int lassoIndex)
 
 void DinoPlayer::Shut()
 {
+    XDino_DestroyGpuTexture(s_texID);
 }
 
 void DinoPlayer::InitStatic()

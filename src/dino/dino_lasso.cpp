@@ -15,7 +15,7 @@ DinoLasso::DinoLasso(DinoColor color, int ownerIndex)
 void DinoLasso::Update(DinoVec2 pos)
 {
     constexpr float UPDATE_PER_SECONDE = 60.f;
-    constexpr float LASSO_TIME = 2.f;
+    constexpr float LASSO_TIME = 4.f;
 
     m_lasso.push_back(pos);
     if (m_lasso.size() > LASSO_TIME * UPDATE_PER_SECONDE)

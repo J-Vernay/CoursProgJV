@@ -28,6 +28,12 @@ struct PlayerState {
 };
 
 std::vector<int> g_FreePlayerIndices = {0, 1, 2, 3};
+constexpr DinoColor PLAYER_COLORS[4] = {
+    DinoColor_BLUE,
+    DinoColor_RED,
+    DinoColor_YELLOW,
+    DinoColor_GREEN,
+};
 std::vector<DinoGamepadIdx> g_UnassignedGamepads;
 std::vector<DinoGamepadIdx> g_AssignedGamepads;
 std::vector<PlayerState> g_players;
@@ -52,6 +58,10 @@ int g_debugScroll = 0;
 // Constantes.
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
+void Initialize_Lobby()
+{
+    g_InLobby = true;
+};
 
 void Dino_GameInit()
 {
@@ -92,13 +102,6 @@ void Dino_GameFrame(double timeSinceStart)
     g_lastTime = timeSinceStart;
 
     XDino_SetRenderSize({480, 360});
-
-    constexpr DinoColor PLAYER_COLORS[4] = {
-        DinoColor_BLUE,
-        DinoColor_RED,
-        DinoColor_YELLOW,
-        DinoColor_GREEN,
-    };
 
     if (g_InLobby) {
         for (int i = 0; i < g_UnassignedGamepads.size(); i++) {
@@ -242,7 +245,7 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     // Affichage du timer
-    {
+    if (!g_InLobby) {
 
         std::string text = std::format("{:2.2f}", g_chrono);
         std::vector<DinoVertex> vs;
@@ -254,16 +257,71 @@ void Dino_GameFrame(double timeSinceStart)
                    {tx, 0},
                    2);
     }
+    else {
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, "Choose a tree to start", DinoColor_WHITE, DinoColor_GREY);
+        DinoVertexBuffer vertex_buffer = {vs.data(), vs.size(), "Title"};
+        float tx = (RENDER_SIZE.x - textSize.x * 2) / 2;
+        XDino_Draw(vertex_buffer.GetVbufID(),
+                   XDino_TEXID_FONT,
+                   {tx, 0},
+                   2);
+
+        for (size_t i = 0; i < g_players.size(); ++i) {
+            PlayerState& player = g_players[i];
+            vs.clear();
+            std::string text = "score player #" + std::to_string(i + 1);
+            textSize = Dino_GenVertices_Text(
+                vs,
+                text,
+                PLAYER_COLORS[player.player.m_idxPlayer],
+                DinoColor_BLACK
+            );
+
+            DinoVertexBuffer new_vertex_buffer = {vs.data(), vs.size(), "PlayerScore"};
+
+            float x = 0;
+            float y = 40 + i * 20;
+
+            XDino_Draw(new_vertex_buffer.GetVbufID(),
+                       XDino_TEXID_FONT,
+                       {x, y},
+                       2);
+        }
+
+    }
 
     if (!g_paused && !g_InLobby) {
         g_chrono -= deltaTime;
 
     }
 
+    if (g_chrono <= 0) {
+        g_InLobby = true;
+        DinoVec2 terrainMin = g_terrain.GetTopLeft();
+        DinoVec2 terrainMax = g_terrain.GetBottomRight();
+        for (int i = 0; i < 4; ++i) {
+            float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+            float y = terrainMin.y + 80;
+            g_Trees.emplace_back(DinoVec2{x, y}, i);
+        }
+        g_chrono = 60;
+        g_spawner.m_animals.clear();
+    }
+
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
+
+    if (g_paused) {
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
+        float tx = (RENDER_SIZE.x - textSize.x * 6) / 2;
+        float ty = (RENDER_SIZE.y - textSize.y * 6) / 2;
+        XDino_Draw(vbuf.GetVbufID(), XDino_TEXID_FONT, {tx, ty}, 6);
+    }
 
 #if !XDINO_RELEASE
     // Affichage des statistiques si on appuie sur SHIFT.
