@@ -45,7 +45,7 @@ void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities)
     for (int j = 0; j < lassoPoints.size() - 4; j++) {
         DinoVec2 C = lassoPoints[j];
         DinoVec2 D = lassoPoints[j + 1];
-        if (ArePointsEqual(C, D))
+        if (ArePointsToClose(C, D))
             continue;
         if (Dino_IntersectSegment(A, B, C, D)) {
             for (dino_Entity* entity : entities) {
@@ -65,9 +65,9 @@ void dino_lasso::CutLasso(int fromIndex)
     lassoPoints.erase(lassoPoints.begin(), lassoPoints.begin() + fromIndex);
 }
 
-bool dino_lasso::ArePointsEqual(DinoVec2 p1, DinoVec2 p2)
+bool dino_lasso::ArePointsToClose(DinoVec2 p1, DinoVec2 p2)
 {
-    return p1.x == p2.x && p1.y == p2.y;
+    return fabs(p1.x - p2.x) < 0.005f && fabs(p1.y - p2.y) < 0.005f;
 }
 
 bool dino_lasso::IsPointInLoop(DinoVec2 p, int index1, int index2)
@@ -78,7 +78,7 @@ bool dino_lasso::IsPointInLoop(DinoVec2 p, int index1, int index2)
     for (int j = index1; j < index2; j++) {
         DinoVec2 C = lassoPoints[j];
         DinoVec2 D = lassoPoints[j + 1];
-        if (ArePointsEqual(C, D))
+        if (ArePointsToClose(C, D))
             continue;
         if (Dino_IntersectSegment(p, p2, C, D)) {
             intersectionCount++;

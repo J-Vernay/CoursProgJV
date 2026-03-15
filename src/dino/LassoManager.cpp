@@ -47,7 +47,7 @@ void LassoManager::CheckLassoCollision()
             for (int k = 0; k < lassos[j].lassoPoints.size() - 4; k++) {
                 DinoVec2 C = lassos[j].lassoPoints[k];
                 DinoVec2 D = lassos[j].lassoPoints[k + 1];
-                if (lassos[j].ArePointsEqual(C, D))
+                if (lassos[j].ArePointsToClose(C, D))
                     continue;
 
                 if (Dino_IntersectSegment(A, B, C, D)) {

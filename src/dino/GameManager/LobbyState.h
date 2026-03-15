@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <deque>
 #include <optional>
 #include <dino/dino_geometry.h>
 #include <dino/GameManager/GameState.h>
@@ -13,14 +14,15 @@ class LobbyState : public GameState {
 
 public:
     LobbyState(DinoGameState* dino_game_state, int season);
-    
+
     uint64_t texId_terrain;
-    
-    void EnterState() override;
+
+    void EnterState(double timeSinceStart) override;
     void UpdateState(float deltaTime, double timeSinceStart) override;
     void ExitState() override;
 
 private:
+    int FindUnusedId();
     std::deque<dino_tree> m_trees;
     std::optional<dino_terrain> m_dinoTerrain;
 };

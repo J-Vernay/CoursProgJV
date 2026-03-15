@@ -41,7 +41,7 @@ void Dino_GameInit()
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "name");
     }
 
-    g_gameState.Init();
+    g_gameState.Init(0);
     dino_animal::DinoAnimal_InitStatic();
 }
 
@@ -60,7 +60,6 @@ void Dino_GameFrame(double timeSinceStart)
     //drawing terrain
     g_gameState.Update(deltaTime, timeSinceStart);
 
-    
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     //DEBUG ONLY
     {
@@ -74,8 +73,6 @@ void Dino_GameFrame(double timeSinceStart)
         DinoVec2 translation = {renderSize.x - textSize_prenom.x * 2, renderSize.y - textSize_prenom.y * 2};
         XDino_Draw(vbufID_prenom, XDino_TEXID_FONT, translation, 2);
     }
-
-    
 
 #if !XDINO_RELEASE
     //DEBUG ONLY

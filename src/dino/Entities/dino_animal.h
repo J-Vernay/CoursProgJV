@@ -1,18 +1,18 @@
 #pragma once
 
 #include "dino_Entity.h"
-
 #include <dino/xdino.h>
 #include <dino/dino_draw_utils.h>
+
+//forward declaration
+class DinoGameState;
 
 class dino_animal : public dino_Entity {
 public :
     bool wasCatched = false;
 
-    dino_animal(DinoVec2 terrainTopLeft, float collisionRadius);
-    //void DinoAnimal_Spawn(DinoVec2 terrainTopLeft, float collisionRadius);
+    dino_animal(DinoGameState& dino_game_state, float collisionRadius);
     void Update(float deltaTime) override;
-    void DinoAnimal_InstantDespawn(std::vector<dino_Entity>& entities, int index);
 
     static void DinoAnimal_InitStatic();
     static void DinoAnimal_ShutStatic();
@@ -27,14 +27,19 @@ private :
     bool moving = true;
     DinoVec2 animalMovingDirection;
 
+    DinoVec2 popUPosition;
+    int givenPoints;
+    int catchingPlayerId;
+
     EAnimalKind animalType;
     EAnimalAnim animalAnimDirection = EAnimalAnim::Up;
 
     void DinoAnimal_GetRandomPos();
     void DinoAnimal_GetRandomDirection();
 
-    float apparitionTime = 0.2f;
+    const float apparitionTime = 0.2f;
+    const float despawnTime = 1.0f;
     float timeAlive;
 
-    DinoVec2 m_terrainTopLeft;
+    DinoGameState* m_dinoGameState;
 };

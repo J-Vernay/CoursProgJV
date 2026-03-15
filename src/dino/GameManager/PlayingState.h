@@ -13,8 +13,8 @@ class PlayingState : public GameState {
 
 public:
     PlayingState(DinoGameState* dino_game_state, int season);
-    
-    void EnterState() override;
+
+    void EnterState(double timeSinceStart) override;
     void UpdateState(float deltaTime, double timeSinceStart) override;
     void ExitState() override;
 
@@ -25,9 +25,9 @@ private:
 
     const float PLAYING_TIME = 60;
     float g_timeLeft;
-    
+
     bool isPaused = false;
-    
+
     std::optional<dino_terrain> m_dinoTerrain;
     std::unordered_map<DinoGamepadIdx, DinoGamepad> lastFrameInputs_map;
 };
