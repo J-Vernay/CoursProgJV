@@ -3,7 +3,7 @@
 #include "dino_Entity.h"
 
 #include <dino/xdino.h>
-#include "dino_draw_utils.h"
+#include <dino/dino_draw_utils.h>
 
 class dino_animal : public dino_Entity {
 public :

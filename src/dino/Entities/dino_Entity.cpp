@@ -1,4 +1,4 @@
-#include "dino_Entity.h"
+#include <dino/Entities/dino_Entity.h>
 
 void dino_Entity::MoveIfOutOfBounds(DinoVec2 terrainTopLeft)
 {

@@ -1,5 +1,5 @@
-#include "dino_EntityManager.h"
-#include "dino_animal.h"
+#include <dino/Entities/dino_EntityManager.h>
+#include <dino/Entities/dino_animal.h>
 
 void dino_EntityManager::UpdateAndDrawEntities(double timeSinceStart, float deltaTime)
 {
@@ -15,9 +15,10 @@ void dino_EntityManager::UpdateAndDrawEntities(double timeSinceStart, float delt
     }
 }
 
-void dino_EntityManager::SimpleDrawEntities(double timeSinceStart)
+void dino_EntityManager::DrawEntitiesWithTerrainClamping(double timeSinceStart, DinoVec2 terrainTopLeft)
 {
     for (dino_Entity* entity : entities) {
+        entity->MoveIfOutOfBounds(terrainTopLeft);
         entity->DrawEntity(timeSinceStart);
     }
 }
@@ -39,6 +40,15 @@ void dino_EntityManager::DinoCollision_HandleCollisions(DinoVec2 terrainTopLeft)
 void dino_EntityManager::AddEntity(dino_Entity* entity)
 {
     entities.push_back(entity);
+}
+
+void dino_EntityManager::RemoveEntity(dino_Entity& entity)
+{
+    for (int i = entities.size() - 1; i >= 0; i--) {
+                if (entities[i] == &entity) {
+                    entities.erase(entities.begin() + i);
+                }
+            }
 }
 
 void dino_EntityManager::ResolveEntityCollision(dino_Entity* e1, dino_Entity* e2)

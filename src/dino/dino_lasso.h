@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dino_player.h"
+#include <dino/Entities/dino_player.h>
 
 #include <dino/xdino.h>
 

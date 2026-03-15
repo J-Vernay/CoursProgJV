@@ -1,4 +1,4 @@
-#include "dino_animal.h"
+#include <dino/Entities/dino_animal.h>
 
 dino_animal::dino_animal(DinoVec2 terrainTopLeft, float collisionRadius)
 {

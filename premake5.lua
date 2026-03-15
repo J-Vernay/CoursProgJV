@@ -98,7 +98,7 @@ project "Dino_AloysDemagnee"
   -- On fait une application graphique (en opposition à une application console = purement texte)
   kind "WindowedApp"
   -- Compile tous les fichiers qui sont directement dans le dossier src
-  files { "src/dino/*" }
+  files { "src/dino/*", "src/dino/Entities/*", "src/dino/GameManager/*" }
 
   links { "Dino_External" }
 

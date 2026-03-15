@@ -1,6 +1,6 @@
-﻿#include "dino_player.h"
+﻿#include <dino/Entities/dino_player.h>
 
-#include "dino_draw_utils.h"
+#include <dino/dino_draw_utils.h>
 
 dino_player::dino_player(DinoVec2 initialPos, float collisionRadius, uint64_t dinoTex, int dino_ID,
                          DinoVec2 terrainTopLeft)
