@@ -23,7 +23,6 @@ public:
     dino_EntityManager g_dinoEntityManager;
     LassoManager g_lassoManager;
     std::unordered_map<DinoGamepadIdx, dino_player> gamepadDino_map;
-    std::unordered_map<DinoGamepadIdx, DinoGamepad> lastFrameInputs_map;
     std::deque<dino_animal> animals;
 
     void Init();

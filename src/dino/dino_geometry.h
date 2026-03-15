@@ -9,3 +9,4 @@ DinoVec2 operator+(DinoVec2 a, DinoVec2 b);
 DinoVec2 operator-(DinoVec2 a, DinoVec2 b);
 DinoVec2 operator*(DinoVec2 a, float b);
 DinoVec2 operator*(float a, DinoVec2 b);
+DinoVec2 operator/(DinoVec2 a, float b);

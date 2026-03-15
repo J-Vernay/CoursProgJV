@@ -33,14 +33,6 @@ void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
         if (!bSuccess)
             continue;
-
-        //DEBUG ONLY
-        /*if (gamepad.btn_up) {
-
-            g_gameState.ChangeGameState(std::make_unique<PlayingState>());
-        }*/
-        
-        //lastFrameInputs_map[gamepadIdx] = gamepad;
         
         //spawning dino_players
         if (!m_dinoGameState->gamepadDino_map.contains(gamepadIdx)

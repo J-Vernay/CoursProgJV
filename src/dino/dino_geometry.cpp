@@ -46,3 +46,8 @@ DinoVec2 operator*(float a, DinoVec2 b)
 {
     return {b.x * a, b.y * a};
 }
+
+DinoVec2 operator/(DinoVec2 a, float b)
+{
+    return {a.x / b, a.y / b};
+}

@@ -23,13 +23,6 @@ DinoGameState g_gameState;
 uint64_t vbufID_prenom;
 DinoVec2 textSize_prenom;
 
-float g_spawnTimer;
-const float g_baseSpawnDelay = 3;
-const float g_endSpawnDelay = 0.5f;
-
-const float PLAYING_TIME = 60;
-float g_timeLeft;
-
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -50,7 +43,6 @@ void Dino_GameInit()
 
     g_gameState.Init();
     dino_animal::DinoAnimal_InitStatic();
-    g_timeLeft = PLAYING_TIME;
 }
 
 void Dino_GameFrame(double timeSinceStart)
