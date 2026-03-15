@@ -28,6 +28,8 @@ private:
 
     bool isPaused = false;
 
+    int selectedPauseOption;
+
     std::optional<dino_terrain> m_dinoTerrain;
     std::unordered_map<DinoGamepadIdx, DinoGamepad> lastFrameInputs_map;
 };

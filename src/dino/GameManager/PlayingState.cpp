@@ -26,8 +26,18 @@ void PlayingState::UpdateState(float deltaTime, double timeSinceStart)
 
         //pause button management
         if (gamepad.start && !lastFrameInputs_map.find(gamepadIdx)->second.start) {
-            isPaused = !isPaused;
+            if (!isPaused) {
+                isPaused = true;
+                selectedPauseOption = 0;
+            }
         }
+        if (gamepad.dpad_up && !lastFrameInputs_map.find(gamepadIdx)->second.dpad_up) {
+            selectedPauseOption = selectedPauseOption - 1 < 0 ? 3 : selectedPauseOption - 1;
+        }
+        if (gamepad.dpad_down && !lastFrameInputs_map.find(gamepadIdx)->second.dpad_down) {
+            selectedPauseOption = (selectedPauseOption + 1) % 4;
+        }
+        //
 
         //updating dino_players
         if (m_dinoGameState->gamepadDino_map.contains(gamepadIdx) && !isPaused) {
@@ -88,9 +98,44 @@ void PlayingState::UpdateState(float deltaTime, double timeSinceStart)
 
     if (isPaused) {
         std::vector<DinoVertex> vs;
-        DinoVec2 textSize = Dino_GenVertices_Text(vs, "Pause", DinoColor_WHITE, DinoColor_BLACK);
+        DinoVec2 textSize = Dino_GenVertices_Text(vs,
+                                                  "Pause",
+                                                  DinoColor_WHITE,
+                                                  DinoColor_BLACK);
         DinoVertexBuffer vbufID(vs.data(), vs.size(), "PauseTxt");
-        XDino_Draw(vbufID.Get(), XDino_TEXID_FONT, DinoVec2{240, 180} - textSize * 2.5, 5);
+        XDino_Draw(vbufID.Get(), XDino_TEXID_FONT, DinoVec2{240, 100} - textSize * 1.5, 3);
+
+        vs.clear();
+        DinoVec2 textSize2 = Dino_GenVertices_Text(vs,
+                                                   "Recommencer",
+                                                   DinoColor_WHITE,
+                                                   selectedPauseOption == 0 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID2(vs.data(), vs.size(), "RestartTxt");
+        XDino_Draw(vbufID2.Get(), XDino_TEXID_FONT, DinoVec2{240, 150} - textSize2, 2);
+
+        vs.clear();
+        DinoVec2 textSize3 = Dino_GenVertices_Text(vs,
+                                                   "Lobby",
+                                                   DinoColor_WHITE,
+                                                   selectedPauseOption == 1 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID3(vs.data(), vs.size(), "LobbyTxt");
+        XDino_Draw(vbufID3.Get(), XDino_TEXID_FONT, DinoVec2{240, 180} - textSize3, 2);
+
+        vs.clear();
+        DinoVec2 textSize4 = Dino_GenVertices_Text(vs,
+                                                   "Chrono",
+                                                   DinoColor_WHITE,
+                                                   selectedPauseOption == 2 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID4(vs.data(), vs.size(), "ChronoTxt");
+        XDino_Draw(vbufID4.Get(), XDino_TEXID_FONT, DinoVec2{240, 210} - textSize4, 2);
+
+        vs.clear();
+        DinoVec2 textSize5 = Dino_GenVertices_Text(vs,
+                                                   "Reprendre",
+                                                   DinoColor_WHITE,
+                                                   selectedPauseOption == 3 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID5(vs.data(), vs.size(), "ResumeTxt");
+        XDino_Draw(vbufID5.Get(), XDino_TEXID_FONT, DinoVec2{240, 240} - textSize5, 2);
     }
 
     if (g_timeLeft <= 0) {
