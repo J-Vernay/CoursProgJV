@@ -14,7 +14,7 @@ DinoPlayer::DinoPlayer(int idxPlayer)
     m_idxPlayer = idxPlayer;
 }
 
-void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad, bool& pause)
+void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad)
 {
     m_bPressedRun = false;
     m_bMoving = false;
@@ -34,9 +34,7 @@ void DinoPlayer::Update(double timeSinceStart, float deltaTime, DinoGamepad game
         m_pos = m_pos + stick * speed * deltaTime;
         // m_pos = operator+(m_pos, operator*(operator*(stick, speed), deltaTime))
     }
-
-    if (gamepad.start)
-        pause = !pause;
+    
 
     if (gamepad.stick_left_x < 0)
         m_bLeft = true;

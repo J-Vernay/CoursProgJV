@@ -66,7 +66,7 @@ void Dino_GameInit()
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "Antoine BOULANGER", DinoColor_WHITE, DinoColor_GREY);
         g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
 
@@ -139,7 +139,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (!g_bPause) {
         for (PlayerState& player : g_Players)
-            player.dino.Update(timeSinceStart, deltaTime, player.gamepad);
+            player.dino.Update(timeSinceStart, deltaTime, player.gamepad );
     }
     if (!g_bPause && !g_bLobby) {
         // Purger les animaux qui sont morts.
@@ -225,7 +225,7 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    g_Terrain.Draw();
+    g_Terrain.Draw(timeSinceStart);
 
     for (PlayerState& player : g_Players)
         player.lasso.Draw();

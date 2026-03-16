@@ -23,7 +23,7 @@ private:
 public:
     bool m_inGame = false;
     DinoPlayer(int idxPlayer);
-    void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad, bool& pause);
+    void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
     void Draw(double timeSinceStart) override;
     void Shut();
 
