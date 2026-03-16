@@ -7,7 +7,7 @@
 class LassoManager {
 public :
     void SimpleDrawLasso();
-    void UpdateLassos(std::vector<dino_Entity*>& entities);
+    void UpdateLassos(std::vector<dino_Entity*>& entities, double timeSinceStart);
     void AddLasso(dino_player& player);
     void RemovePlayer(dino_player& player);
 

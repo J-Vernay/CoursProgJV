@@ -8,10 +8,10 @@ void LassoManager::SimpleDrawLasso()
         lasso.SimpleDrawLasso();
 }
 
-void LassoManager::UpdateLassos(std::vector<dino_Entity*>& entities)
+void LassoManager::UpdateLassos(std::vector<dino_Entity*>& entities, double timeSinceStart)
 {
     for (int i = lassos.size() - 1; i >= 0; i--) {
-        lassos[i].UpdateLasso(entities);
+        lassos[i].UpdateLasso(entities, timeSinceStart);
     }
 
     CheckLassoCollision();

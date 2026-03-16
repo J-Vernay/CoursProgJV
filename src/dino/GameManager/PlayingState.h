@@ -19,6 +19,7 @@ public:
     void ExitState() override;
 
 private:
+    int currentSeason;
     float g_spawnTimer = 0;
     const float g_baseSpawnDelay = 3;
     const float g_endSpawnDelay = 0.5f;

@@ -25,16 +25,21 @@ void dino_lasso::SimpleDrawLasso()
     XDino_Draw(lassoVertexBuffer.Get(), XDino_TEXID_WHITE, {}, 1);
 }
 
-void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities)
+void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities, double timeSinceStart)
 {
     DinoVec2 newPos = attachedPlayer->entityPosition;
     int playerId = attachedPlayer->dinoID;
 
-    lassoPoints.push_back(newPos);
+    if (lassoPoints.size() <= 0 || LenghtSQR(newPos, lassoPoints.back()) > 0.0001f) {
+        lassoPoints.push_back(newPos);
+        lassoPointsTime.push_back(timeSinceStart);
+    }
 
     //removing old vertices
-    if (lassoPoints.size() > 120)
-        lassoPoints.erase(lassoPoints.begin(), lassoPoints.begin() + lassoPoints.size() - 120);
+    while (lassoPointsTime.size() > 0 && lassoPointsTime.front() < timeSinceStart - LASSO_POINT_LIVING_TIME) {
+        lassoPoints.erase(lassoPoints.begin());
+        lassoPointsTime.erase(lassoPointsTime.begin());
+    }
 
     if (lassoPoints.size() < 4)
         return;
@@ -54,6 +59,7 @@ void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities)
                 }
             }
             lassoPoints.erase(lassoPoints.begin() + j, lassoPoints.end());
+            lassoPointsTime.erase(lassoPointsTime.begin() + j, lassoPointsTime.end());
             break;
         }
     }
@@ -63,16 +69,19 @@ void dino_lasso::UpdateLasso(std::vector<dino_Entity*>& entities)
 void dino_lasso::CutLasso(int fromIndex)
 {
     lassoPoints.erase(lassoPoints.begin(), lassoPoints.begin() + fromIndex);
+    lassoPointsTime.erase(lassoPointsTime.begin(), lassoPointsTime.begin() + fromIndex);
 }
 
 bool dino_lasso::ArePointsToClose(DinoVec2 p1, DinoVec2 p2)
 {
-    return fabs(p1.x - p2.x) < 0.005f && fabs(p1.y - p2.y) < 0.005f;
+    float dx = p1.x - p2.x;
+    float dy = p1.y - p2.y;
+    return dx * dx + dy * dy < 0.0001f;
 }
 
 bool dino_lasso::IsPointInLoop(DinoVec2 p, int index1, int index2)
 {
-    DinoVec2 p2 = {0, 0};
+    DinoVec2 p2 = {1000, p.y};
     int intersectionCount = 0;
 
     for (int j = index1; j < index2; j++) {
@@ -91,4 +100,11 @@ bool dino_lasso::IsPointInLoop(DinoVec2 p, int index1, int index2)
 bool dino_lasso::IsMyPlayer(dino_player& player)
 {
     return &player == attachedPlayer;
+}
+
+float dino_lasso::LenghtSQR(DinoVec2 p1, DinoVec2 p2)
+{
+    float dx = p1.x - p2.x;
+    float dy = p1.y - p2.y;
+    return dx * dx + dy * dy;
 }

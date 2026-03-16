@@ -82,7 +82,7 @@ void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
     m_dinoTerrain->DinoTerrain_Draw();
 
     //drawing all entities
-    m_dinoGameState->g_lassoManager.UpdateLassos(m_dinoGameState->g_dinoEntityManager.entities);
+    m_dinoGameState->g_lassoManager.UpdateLassos(m_dinoGameState->g_dinoEntityManager.entities, timeSinceStart);
     m_dinoGameState->g_dinoEntityManager.DrawEntitiesWithTerrainClamping(
         timeSinceStart,
         m_dinoGameState->g_terrainTopLeft);

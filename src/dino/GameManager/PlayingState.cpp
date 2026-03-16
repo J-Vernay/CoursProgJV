@@ -4,10 +4,22 @@
 
 PlayingState::PlayingState(DinoGameState* dino_game_state, int season)
 {
+    currentSeason = season;
     m_dinoGameState = dino_game_state;
     m_dinoTerrain.emplace(season);
     g_timeLeft = PLAYING_TIME;
     g_spawnTimer = 0;
+
+    //when restarting prevent double clicking on pause, is reset on first frame if isn't pressed anymore
+    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
+        DinoGamepad gamepad{};
+        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
+        if (!bSuccess)
+            continue;
+
+        gamepad.start = true;
+        lastFrameInputs_map[gamepadIdx] = gamepad;
+    }
 }
 
 void PlayingState::EnterState(double timeSinceStart)
@@ -25,17 +37,42 @@ void PlayingState::UpdateState(float deltaTime, double timeSinceStart)
             continue;
 
         //pause button management
-        if (gamepad.start && !lastFrameInputs_map.find(gamepadIdx)->second.start) {
+        if (gamepad.start && !lastFrameInputs_map[gamepadIdx].start) {
             if (!isPaused) {
                 isPaused = true;
-                selectedPauseOption = 0;
+                //selecting resume by default
+                selectedPauseOption = 3;
+            }
+            else {
+                switch (selectedPauseOption) {
+                case 0: //Restart
+                    m_dinoGameState->ChangeGameState(std::make_unique<PlayingState>(m_dinoGameState, currentSeason));
+                    return;
+                case 1: //Lobby
+                    m_dinoGameState->g_scoreManager.ResetScores(m_dinoGameState->gamepadDino_map);
+                    m_dinoGameState->ChangeGameState(
+                        std::make_unique<LobbyState>(m_dinoGameState, XDino_RandomInt32(0, 3)));
+                    break;
+                case 2: //Chrono
+                    //nothing, controlled by left and right
+                    break;
+                case 3: //Resume
+                    isPaused = false;
+                    break;
+                }
             }
         }
-        if (gamepad.dpad_up && !lastFrameInputs_map.find(gamepadIdx)->second.dpad_up) {
+        if (gamepad.dpad_up && !lastFrameInputs_map[gamepadIdx].dpad_up && isPaused) {
             selectedPauseOption = selectedPauseOption - 1 < 0 ? 3 : selectedPauseOption - 1;
         }
-        if (gamepad.dpad_down && !lastFrameInputs_map.find(gamepadIdx)->second.dpad_down) {
+        if (gamepad.dpad_down && !lastFrameInputs_map[gamepadIdx].dpad_down && isPaused) {
             selectedPauseOption = (selectedPauseOption + 1) % 4;
+        }
+        if (gamepad.dpad_right && !lastFrameInputs_map[gamepadIdx].dpad_right && isPaused) {
+            g_timeLeft = std::clamp(g_timeLeft + 10, 0.0f, PLAYING_TIME);
+        }
+        if (gamepad.dpad_left && !lastFrameInputs_map[gamepadIdx].dpad_left && isPaused) {
+            g_timeLeft = std::clamp(g_timeLeft - 10, 0.0f, PLAYING_TIME);
         }
         //
 
@@ -90,7 +127,7 @@ void PlayingState::UpdateState(float deltaTime, double timeSinceStart)
         //m_dinoGameState->g_dinoEntityManager.DinoCollision_HandleCollisions(m_dinoGameState->g_terrainTopLeft);
     }
     else {
-        m_dinoGameState->g_lassoManager.UpdateLassos(m_dinoGameState->g_dinoEntityManager.entities);
+        m_dinoGameState->g_lassoManager.UpdateLassos(m_dinoGameState->g_dinoEntityManager.entities, timeSinceStart);
         m_dinoGameState->g_dinoEntityManager.UpdateAndDrawEntities(PLAYING_TIME - g_timeLeft, deltaTime);
         //resolving all collisions between entities
         m_dinoGameState->g_dinoEntityManager.DinoCollision_HandleCollisions(m_dinoGameState->g_terrainTopLeft);
@@ -138,7 +175,7 @@ void PlayingState::UpdateState(float deltaTime, double timeSinceStart)
         XDino_Draw(vbufID5.Get(), XDino_TEXID_FONT, DinoVec2{240, 240} - textSize5, 2);
     }
 
-    if (g_timeLeft <= 0) {
+    if (g_timeLeft <= 0 && !isPaused) {
         m_dinoGameState->ChangeGameState(std::make_unique<LobbyState>(m_dinoGameState, XDino_RandomInt32(0, 3)));
     }
 }
