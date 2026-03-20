@@ -25,6 +25,7 @@ struct PlayerState {
     DinoGamepad gamepad;
     DinoPlayer player;
     DinoLasso lasso;
+    int score;
 };
 
 std::vector<int> g_FreePlayerIndices = {0, 1, 2, 3};
@@ -170,6 +171,14 @@ void Dino_GameFrame(double timeSinceStart)
             player.player.Update(timeSinceStart, deltaTime, g_terrain, player.gamepad);
     }
 
+    // TO REMOVE
+    if (g_players.size() > 0) {
+        if (g_players[0].gamepad.btn_up) {
+            g_players[0].score += 10;
+        }
+
+    }
+
     if (!g_paused && !g_InLobby) {
         auto it = std::remove_if(g_spawner.m_animals.begin(), g_spawner.m_animals.end(), DinoAnimal::IsDead);
         for (auto it2 = it; it2 < g_spawner.m_animals.end(); ++it2)
@@ -270,7 +279,7 @@ void Dino_GameFrame(double timeSinceStart)
         for (size_t i = 0; i < g_players.size(); ++i) {
             PlayerState& player = g_players[i];
             vs.clear();
-            std::string text = "score player #" + std::to_string(i + 1);
+            std::string text = " Player " + std::to_string(i + 1) + " \n " + std::to_string(g_players[i].score);
             textSize = Dino_GenVertices_Text(
                 vs,
                 text,
@@ -280,13 +289,16 @@ void Dino_GameFrame(double timeSinceStart)
 
             DinoVertexBuffer new_vertex_buffer = {vs.data(), vs.size(), "PlayerScore"};
 
+            DinoVec2 topLeft = g_terrain.GetTopLeft();
+            DinoVec2 bottomRight = g_terrain.GetBottomRight();
+            float ty = bottomRight.y / 4;
             float x = 0;
-            float y = 40 + i * 20;
+            float y = topLeft.y + i * ty;
 
             XDino_Draw(new_vertex_buffer.GetVbufID(),
                        XDino_TEXID_FONT,
                        {x, y},
-                       2);
+                       1.2f);
         }
 
     }

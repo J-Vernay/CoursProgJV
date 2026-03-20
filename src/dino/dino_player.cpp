@@ -126,7 +126,7 @@ void DinoPlayer::ReactLoop(double timeSinceStart, int lassoIndex)
 
 void DinoPlayer::Shut()
 {
-    XDino_DestroyGpuTexture(s_texID);
+    //XDino_DestroyGpuTexture(s_texID);
 }
 
 void DinoPlayer::InitStatic()
