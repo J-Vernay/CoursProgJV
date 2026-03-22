@@ -2,6 +2,7 @@
 /// @brief Implémentation des fonctions principales de la logique de jeu.
 
 #include "dino_tree.h"
+#include "game_state.h"
 
 #include <algorithm>
 #include <dino/dino_terrain.h>
@@ -10,22 +11,26 @@
 #include <dino/dino_player.h>
 #include <dino/dino_animal.h>
 #include <dino/dino_lasso.h>
+#include <dino/dino_score.h>
+//#include <dino/Dino_GameStates.h>
 #include <iostream>
 
 #include <format>
 #include <map>
+
+//DinoGameState g_gameState;
 
 // Variables globales.
 double g_lastTime = 0;
 double g_rotation = 360.0;
 double g_scale = 1.0;
 
+
 struct PlayerState {
     DinoGamepadIdx gamepadIdx;
     DinoGamepad gamepad;
     DinoPlayer player;
     DinoLasso lasso;
-    int score;
 };
 
 std::vector<int> g_FreePlayerIndices = {0, 1, 2, 3};
@@ -42,12 +47,18 @@ std::vector<DinoTree> g_Trees;
 
 DinoTerrain g_terrain;
 DinoAnimalSpawner g_spawner;
+DinoScoreManager g_scoreManager;
 
 
 double g_chrono = 60;
 bool g_paused = false;
 bool g_InLobby = true;
+bool g_bWasPauseUpPressed = false;
+bool g_bWasPauseDownPressed = false;
+bool g_bWasPauseLeftPressed = false;
+bool g_bWasPauseRightPressed = false;
 bool g_bWasStartPressed = false;
+int currentPauseButton = 0;
 
 uint64_t vbuffID_nom;
 DinoVec2 text_Size_nom;
@@ -68,7 +79,8 @@ void Dino_GameInit()
 {
     DinoPlayer::InitStatic();
     DinoTree::InitStatic();
-    g_spawner.Init();
+    g_spawner.Init(g_scoreManager);
+    g_scoreManager.ResetScores();
 
     for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
         g_UnassignedGamepads.emplace_back(idx);
@@ -116,6 +128,7 @@ void Dino_GameFrame(double timeSinceStart)
                         g_players.emplace_back(idx, gamepad, idxPlayer, DinoLasso(PLAYER_COLORS[idxPlayer], idxPlayer));
                         g_AssignedGamepads.emplace_back(idx);
                         g_UnassignedGamepads.erase(g_UnassignedGamepads.begin() + i);
+                        g_scoreManager.AddPlayer(idxPlayer);
                     }
                     break;
                 }
@@ -135,11 +148,11 @@ void Dino_GameFrame(double timeSinceStart)
                                                return ps.gamepadIdx == idx;
                                            });
                     if (it != g_players.end()) {
+                        g_scoreManager.RemovePlayer(it->player.m_idxPlayer);
                         g_FreePlayerIndices.push_back(it->player.m_idxPlayer);
                         std::sort(g_FreePlayerIndices.begin(), g_FreePlayerIndices.end());
                         g_players.erase(it);
                     }
-
                     g_UnassignedGamepads.emplace_back(idx);
                     g_AssignedGamepads.erase(g_AssignedGamepads.begin() + i);
                     break;
@@ -161,22 +174,44 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Mettre en pause le jeu
     if (!g_InLobby) {
-        if (bPressedStart && !g_bWasStartPressed)
-            g_paused = !g_paused;
+        if (bPressedStart && !g_bWasStartPressed) {
+            if (!g_paused) {
+                g_paused = !g_paused;
+                currentPauseButton = 3;
+            }
+            else {
+                switch (currentPauseButton) {
+                case 0:
+                    //Replay
+                    g_InLobby = true;
+                    g_paused = false;
+                    g_InLobby = false;
+                    break;
+                case 1:
+                    //Lobby
+                    g_scoreManager.ResetScores();
+                    g_InLobby = true;
+                    g_paused = false;
+                    break;
+                case 2:
+                    //Chrono
+                    break;
+                case 3:
+                    // Resume
+                    g_paused = false;
+                    break;
+
+                }
+            }
+
+        }
+
         g_bWasStartPressed = bPressedStart;
     }
 
     if (!g_paused) {
         for (PlayerState& player : g_players)
             player.player.Update(timeSinceStart, deltaTime, g_terrain, player.gamepad);
-    }
-
-    // TO REMOVE
-    if (g_players.size() > 0) {
-        if (g_players[0].gamepad.btn_up) {
-            g_players[0].score += 10;
-        }
-
     }
 
     if (!g_paused && !g_InLobby) {
@@ -219,6 +254,7 @@ void Dino_GameFrame(double timeSinceStart)
             for (DinoEntity* pEntity : entities)
                 if (player.lasso.WasInLoop(pEntity->GetPos()))
                     pEntity->ReactLoop(timeSinceStart, player.lasso.m_ownerIndex);
+        g_scoreManager.EndAnimalBonus();
     }
 
     if (g_InLobby) {
@@ -276,33 +312,8 @@ void Dino_GameFrame(double timeSinceStart)
                    {tx, 0},
                    2);
 
-        for (size_t i = 0; i < g_players.size(); ++i) {
-            PlayerState& player = g_players[i];
-            vs.clear();
-            std::string text = " Player " + std::to_string(i + 1) + " \n " + std::to_string(g_players[i].score);
-            textSize = Dino_GenVertices_Text(
-                vs,
-                text,
-                PLAYER_COLORS[player.player.m_idxPlayer],
-                DinoColor_BLACK
-            );
-
-            DinoVertexBuffer new_vertex_buffer = {vs.data(), vs.size(), "PlayerScore"};
-
-            DinoVec2 topLeft = g_terrain.GetTopLeft();
-            DinoVec2 bottomRight = g_terrain.GetBottomRight();
-            float ty = bottomRight.y / 4;
-            float x = 0;
-            float y = topLeft.y + i * ty;
-
-            XDino_Draw(new_vertex_buffer.GetVbufID(),
-                       XDino_TEXID_FONT,
-                       {x, y},
-                       1.2f);
-        }
-
     }
-
+    g_scoreManager.DrawScores(g_terrain);
     if (!g_paused && !g_InLobby) {
         g_chrono -= deltaTime;
 
@@ -327,12 +338,79 @@ void Dino_GameFrame(double timeSinceStart)
         pEntity->Draw(timeSinceStart);
 
     if (g_paused) {
+        bool bPressedUp = false;
+        bool bPressedDown = false;
+        bool bPressedLeft = false;
+        bool bPressedRight = false;
+
+        for (PlayerState& player : g_players) {
+            DinoGamepad gamepad;
+            if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
+                bPressedUp = bPressedUp || gamepad.dpad_up;
+                bPressedDown = bPressedDown || gamepad.dpad_down;
+                bPressedLeft = bPressedLeft || gamepad.dpad_left;
+                bPressedRight = bPressedRight || gamepad.dpad_right;
+            }
+        }
+
+        if (bPressedUp && !g_bWasPauseUpPressed)
+            currentPauseButton = (currentPauseButton + 3) % 4;
+        if (bPressedDown && !g_bWasPauseDownPressed)
+            currentPauseButton = (currentPauseButton + 1) % 4;
+
+        g_bWasPauseUpPressed = bPressedUp;
+        g_bWasPauseDownPressed = bPressedDown;
+
+        if (currentPauseButton == 2) {
+            if (bPressedLeft && !g_bWasPauseLeftPressed)
+                g_chrono = std::max(10.0, g_chrono - 10.0);
+
+            if (bPressedRight && !g_bWasPauseRightPressed)
+                g_chrono = std::min(60.0, g_chrono + 10.0);
+
+        }
+
+        g_bWasPauseLeftPressed = bPressedLeft;
+        g_bWasPauseRightPressed = bPressedRight;
+
         std::vector<DinoVertex> vs;
         DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
         DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
-        float tx = (RENDER_SIZE.x - textSize.x * 6) / 2;
-        float ty = (RENDER_SIZE.y - textSize.y * 6) / 2;
-        XDino_Draw(vbuf.GetVbufID(), XDino_TEXID_FONT, {tx, ty}, 6);
+        float tx = (RENDER_SIZE.x - textSize.x * 4) / 2;
+        float ty = (RENDER_SIZE.y - textSize.y * 20) / 2;
+        XDino_Draw(vbuf.GetVbufID(), XDino_TEXID_FONT, {tx, ty}, 4);
+
+        vs.clear();
+        DinoVec2 textSize2 = Dino_GenVertices_Text(vs,
+                                                   "Recommencer",
+                                                   DinoColor_WHITE,
+                                                   currentPauseButton == 0 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID2(vs.data(), vs.size(), "RestartTxt");
+        XDino_Draw(vbufID2.GetVbufID(), XDino_TEXID_FONT, DinoVec2{240, 150} - textSize2, 2);
+
+        vs.clear();
+        DinoVec2 textSize3 = Dino_GenVertices_Text(vs,
+                                                   "Lobby",
+                                                   DinoColor_WHITE,
+                                                   currentPauseButton == 1 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID3(vs.data(), vs.size(), "LobbyTxt");
+        XDino_Draw(vbufID3.GetVbufID(), XDino_TEXID_FONT, DinoVec2{240, 180} - textSize3, 2);
+
+        vs.clear();
+        DinoVec2 textSize4 = Dino_GenVertices_Text(vs,
+                                                   "Chrono",
+                                                   DinoColor_WHITE,
+                                                   currentPauseButton == 2 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID4(vs.data(), vs.size(), "ChronoTxt");
+        XDino_Draw(vbufID4.GetVbufID(), XDino_TEXID_FONT, DinoVec2{240, 210} - textSize4, 2);
+
+        vs.clear();
+        DinoVec2 textSize5 = Dino_GenVertices_Text(vs,
+                                                   "Reprendre",
+                                                   DinoColor_WHITE,
+                                                   currentPauseButton == 3 ? DinoColor_GREY : DinoColor_BLACK);
+        DinoVertexBuffer vbufID5(vs.data(), vs.size(), "ResumeTxt");
+        XDino_Draw(vbufID5.GetVbufID(), XDino_TEXID_FONT, DinoVec2{240, 240} - textSize5, 2);
     }
 
 #if !XDINO_RELEASE

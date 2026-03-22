@@ -4,9 +4,10 @@
 
 
 #pragma region AnimalSpawner
-void DinoAnimalSpawner::Init()
+void DinoAnimalSpawner::Init(DinoScoreManager& scoreManager)
 {
     m_texID = XDino_CreateGpuTexture("animals.png");
+    m_ScoreManager = &scoreManager;
 }
 
 void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double chrono)
@@ -22,7 +23,7 @@ void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double ch
     if (timeSinceStart - m_timeSinceLastSpawn > spawnTime) {
         int animalIdx = XDino_RandomInt32(0, 7);
 
-        m_animals.emplace_back(timeSinceStart, animalIdx, m_texID);
+        m_animals.emplace_back(timeSinceStart, animalIdx, *m_ScoreManager, m_texID);
 
         m_timeSinceLastSpawn = timeSinceStart;
     }
@@ -41,8 +42,10 @@ void DinoAnimalSpawner::Shut()
 #pragma endregion
 
 #pragma region AnimalBehaviours
-DinoAnimal::DinoAnimal(double timeSinceStart, int animalIndex, uint64_t texID)
+
+DinoAnimal::DinoAnimal(double timeSinceStart, int animalIndex, DinoScoreManager& scoreManager, uint64_t texID)
 {
+    m_ScoreManager = &scoreManager;
     m_animalType = animalIndex;
     m_texID = texID;
     m_spawnTime = timeSinceStart;
@@ -60,67 +63,99 @@ DinoAnimal::DinoAnimal(double timeSinceStart, int animalIndex, uint64_t texID)
 
 void DinoAnimal::Update(float deltaTime, double timeSinceStart)
 {
-
     constexpr float SPEED = 100;
+    if (!m_dead) {
+        float minX = m_posTopLeft.x + 12;
+        float maxX = m_posTopLeft.x + TERRAIN_SIZE.x - 12;
+        float minY = m_posTopLeft.y + 12;
+        float maxY = m_posTopLeft.y + TERRAIN_SIZE.y - 12;
+
+        bool hitBorder = false;
+
+        if (m_pos.x < minX) {
+            m_pos.x = minX;
+            hitBorder = true;
+        }
+        if (m_pos.x > maxX) {
+            m_pos.x = maxX;
+            hitBorder = true;
+        }
+        if (m_pos.y < minY) {
+            m_pos.y = minY;
+            hitBorder = true;
+        }
+        if (m_pos.y > maxY) {
+            m_pos.y = maxY;
+            hitBorder = true;
+        }
+
+        // Nouvelle direction aléatoire si on touche le bord
+        if (hitBorder) {
+            m_dir = XDino_RandomUnitVec2();
+        }
+    }
+    else {
+        canBePushed = false;
+        m_dir.x = 0;
+        m_dir.y = -1;
+        timeDead += deltaTime;
+    }
+
     m_pos.x += m_dir.x * SPEED * deltaTime;
     m_pos.y += m_dir.y * SPEED * deltaTime;
-
-    float minX = m_posTopLeft.x + 12;
-    float maxX = m_posTopLeft.x + TERRAIN_SIZE.x - 12;
-    float minY = m_posTopLeft.y + 12;
-    float maxY = m_posTopLeft.y + TERRAIN_SIZE.y - 12;
-
-    bool hitBorder = false;
-
-    if (m_pos.x < minX) {
-        m_pos.x = minX;
-        hitBorder = true;
-    }
-    if (m_pos.x > maxX) {
-        m_pos.x = maxX;
-        hitBorder = true;
-    }
-    if (m_pos.y < minY) {
-        m_pos.y = minY;
-        hitBorder = true;
-    }
-    if (m_pos.y > maxY) {
-        m_pos.y = maxY;
-        hitBorder = true;
-    }
-
-    // Nouvelle direction aléatoire si on touche le bord
-    if (hitBorder) {
-        m_dir = XDino_RandomUnitVec2();
-    }
 
 }
 
 void DinoAnimal::ReactLoop(double timeSinceStart, int lassoIndex)
 {
+    if (m_dead)
+        return;
     m_dead = true;
+    catchPlayerId = lassoIndex;
+    pointsValue = m_ScoreManager->AddScore(lassoIndex, (EAnimalKind)m_animalType);
+    timeDead = 0;
 }
 
 bool DinoAnimal::IsDead(DinoAnimal& animal)
 {
-    return animal.m_dead;
+    return (animal.m_dead && animal.timeDead > animal.despawnTime);
 }
 
 
 void DinoAnimal::Draw(double timeSinceStart)
 {
     constexpr float TIME_FADE_IN = 1;
-    float alpha = (timeSinceStart - m_spawnTime) / TIME_FADE_IN;
-    alpha = std::clamp(alpha, 0.0f, 1.0f);
-    DinoVertexBuffer vbuf = GenerateVertexBuffer(timeSinceStart, alpha);
-    XDino_Draw(vbuf.GetVbufID(), m_texID, {m_pos.x - 16, m_pos.y - 32});
+
+    if (m_dead) {
+        std::string text = std::format("+{0:02}", pointsValue);
+        DinoColor textColor =
+            catchPlayerId == 0
+                ? DinoColor_BLUE
+                : catchPlayerId == 1
+                ? DinoColor_RED
+                : catchPlayerId == 2
+                ? DinoColor_YELLOW
+                : DinoColor_GREEN;
+
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, textColor, DinoColor{255, 255, 255, 0});
+        DinoVec2 position = DinoVec2{0, -20.5f} + m_pos + DinoVec2{-textSize.x / 2, 0};
+        DinoVertexBuffer vbufID(vs.data(), vs.size(), "playerScore");
+        XDino_Draw(vbufID.GetVbufID(), XDino_TEXID_FONT, position, 1);
+    }
+    else {
+        float alpha = (timeSinceStart - m_spawnTime) / TIME_FADE_IN;
+        alpha = std::clamp(alpha, 0.0f, 1.0f);
+        DinoVertexBuffer vbuf = GenerateVertexBuffer(m_dead ? 0 : timeSinceStart, alpha);
+        XDino_Draw(vbuf.GetVbufID(), m_texID, {m_pos.x - 16, m_pos.y - 32});
+    }
 }
 
 DinoVertexBuffer DinoAnimal::GenerateVertexBuffer(double timeSinceStart, float alpha)
 {
     uint8_t a = (uint8_t)(alpha * 255);
     int frameAnim = int(timeSinceStart * 2) % 4;
-    uint16_t uMin = m_animalType * 128 + frameAnim * 32;
+    uint16_t uMin = (int)m_animalType * 128 + frameAnim * 32;
     uint16_t uMax = uMin + 32;
     uint16_t vMin = 0;
 

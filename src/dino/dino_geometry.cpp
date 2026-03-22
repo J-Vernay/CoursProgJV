@@ -41,3 +41,8 @@ DinoVec2 operator*(float a, DinoVec2 b)
 {
     return {a * b.x, a * b.y};
 }
+
+DinoVec2 operator-(DinoVec2 a, DinoVec2 b)
+{
+    return {a.x - b.x, a.y - b.y};
+}
