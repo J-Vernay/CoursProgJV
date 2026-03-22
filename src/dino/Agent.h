@@ -14,7 +14,8 @@ public:
         Sheep2,
         Autruche1,
         Autribute2,
-        Player
+        Player,
+        Arbre
     };
     
     DinoVec2 position = {};

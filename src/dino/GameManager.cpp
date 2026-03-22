@@ -1,10 +1,19 @@
+#include "Animal.h"
+#include "Terrain.h"
+#include "Tree.h"
 #include "xdino.h"
 
 #include <iostream>
 #include <dino/GameManager.h>
 
-GameManager::GameManager()
+GameManager::GameManager() : treesList(0, 4)
 {
+    for (size_t i = 0 ; i < 4; i++) {
+        treesList.AddBack(new Tree(i, *this));
+    }
+
+    terrain = new Terrain();
+    terrain->SetUpTerrain();
 }
 
 void GameManager::ShutDown()
@@ -13,22 +22,73 @@ void GameManager::ShutDown()
     playersScore.Clear();
 }
 
-void GameManager::StartGame(int _numberPlayer)
+void GameManager::StartGame()
 {
     currentTime = gameTimer;
     textTimer = XDino_CreateGpuTexture("monogram-bitmap.png");
-    numberPlayer = _numberPlayer;
+    numberPlayer = _currentplayerConnected.size();
 
     for (int i = 0; i < numberPlayer; i++) {
         playersScore.AddBack(0);
     }
 }
 
-void GameManager::UpdateGame(float deltaTime)
+void GameManager::Update(float deltaTime)
 {
-    if (!isPaused)
-        currentTime -= deltaTime;
+    terrain->Update(deltaTime);
     
+    if (IsInGame)
+    {
+        if (isPaused)
+        {
+            inputCooldown -= deltaTime;
+            if (inputCooldown < 0) inputCooldown = 0;
+            
+            HandlePauseMenu();
+        }
+        else
+        {
+            currentTime -= deltaTime;
+        }
+
+        if (currentTime <= 0)
+        {
+            IsInGame = false;
+            playersScore.Clear();
+            numberPlayer = 0;
+        }
+        
+        DrawGame();
+        
+        if (isPaused)
+        {
+            DrawPauseMenu();
+        }
+    }
+    else
+    {
+        DrawLobby(deltaTime);
+    }
+}
+
+void GameManager::DrawLobby(float deltaTime)
+{
+    DinoVec2 renderSize = XDino_GetRenderSize();
+    
+    for (size_t i=0 ; i < 4; i++) {
+
+        DinoVec2 position = {
+            96,
+            renderSize.y / 2 
+        };
+        
+        treesList[i]->SetPosition(position.x + i*80, position.y-64);
+        treesList[i]->Update(deltaTime);
+    }
+}
+
+void GameManager::DrawGame()
+{
     DrawTimer();
     DrawScores();
 }
@@ -300,5 +360,221 @@ bool GameManager::IsPaused()
 
 void GameManager::AddScore(int playerId, int score)
 {
+    if (!IsInGame || playerId >= playersScore.GetSize())
+        return;
+    
     playersScore[playerId] += score;
+}
+
+void GameManager::HandlePauseMenu()
+{
+    if (!isPaused) return;
+    
+    for (int i = 0; i < 4; i++)
+    {
+        DinoGamepad gamepad{};
+        XDino_GetGamepad((DinoGamepadIdx)i, gamepad);
+        
+        if (inputCooldown <= 0)
+        {
+            if (gamepad.dpad_up)
+            {
+                selectedOption = (selectedOption - 1 + 4) % 4;
+                inputCooldown = 0.2f;
+            }
+            else if (gamepad.dpad_down)
+            {
+                selectedOption = (selectedOption + 1) % 4;
+                inputCooldown = 0.2f;
+            }
+            
+            if (selectedOption == ADJUST_TIMER)
+            {
+                if (gamepad.dpad_left)
+                {
+                    AdjustTimer(-10);
+                    inputCooldown = 0.2f;
+                }
+                else if (gamepad.dpad_right)
+                {
+                    AdjustTimer(10);
+                    inputCooldown = 0.2f;
+                }
+            }
+            
+            if (gamepad.btn_right)
+            {
+                switch (selectedOption)
+                {
+                case RESTART:
+                    RestartGame();
+                    break;
+                case RETURN_TO_LOBBY:
+                    ReturnToLobby();
+                    break;
+                case RESUME:
+                    isPaused = false;
+                    break;
+                case ADJUST_TIMER:
+                    break;
+                }
+                inputCooldown = 0.2f;
+            }
+        }
+    }
+}
+
+void GameManager::RestartGame()
+{
+    currentTime = gameTimer;
+    
+    for (int i = 0; i < playersScore.GetSize(); i++)
+    {
+        playersScore[i] = 0;
+    }
+    
+    if (playerList != nullptr)
+    {
+        for (int i = 0; i < playerList->GetSize(); i++)
+        {
+            (*playerList)[i]->Start();
+        }
+    }
+    
+    isPaused = false;
+}
+
+void GameManager::ReturnToLobby()
+{
+    IsInGame = false;
+    isPaused = false;
+    
+    playersScore.Clear();
+    numberPlayer = 0;
+}
+
+void GameManager::AdjustTimer(int seconds)
+{
+    currentTime += seconds;
+    
+    if (currentTime < 0)
+        currentTime = 0;
+    if (currentTime > gameTimer)
+        currentTime = gameTimer;
+}
+
+void GameManager::DrawPauseMenu()
+{
+    if (!isPaused) return;
+    
+    DinoVec2 render = XDino_GetRenderSize();
+    
+    {
+        std::vector<DinoVertex> vs(6);
+        
+        vs[0].pos = {0, 0};
+        vs[1].pos = {render.x, 0};
+        vs[2].pos = {0, render.y};
+        vs[3].pos = {render.x, 0};
+        vs[4].pos = {0, render.y};
+        vs[5].pos = {render.x, render.y};
+        
+        DinoColor darkOverlay = {0, 0, 0, 180};
+        for (int i = 0; i < 6; i++)
+            vs[i].color = darkOverlay;
+        
+        for (int i = 0; i < 6; i++)
+        {
+            vs[i].u = 0;
+            vs[i].v = 0;
+        }
+        
+        uint64_t overlayBuff = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Overlay");
+        XDino_Draw(overlayBuff, textTimer, {}, 1);
+        XDino_DestroyVertexBuffer(overlayBuff);
+    }
+    
+    float startY = 80;
+    
+    if (selectedOption == RESTART)
+        DrawPauseMenuOption(0, startY, {18, 5, 3, 15, 13, 13, 5, 14, 3, 5, 18}, true);
+    else
+        DrawPauseMenuOption(0, startY, {18, 5, 3, 15, 13, 13, 5, 14, 3, 5, 18}, false);
+    
+    if (selectedOption == RETURN_TO_LOBBY)
+        DrawPauseMenuOption(1, startY + 40, {18, 5, 20, 15, 21, 18}, true);
+    else
+        DrawPauseMenuOption(1, startY + 40, {18, 5, 20, 15, 21, 18}, false);
+    
+    {
+        DinoVec2 pos = {render.x / 2 - 50, startY + 80};
+        int colorID = (selectedOption == ADJUST_TIMER) ? 2 : -1;
+        
+        uint64_t buffLess = DrawLetter(28, colorID);
+        XDino_Draw(buffLess, textTimer, pos, 1);
+        XDino_DestroyVertexBuffer(buffLess);
+        pos.x += 12;
+        
+        int chronoLetters[] = {3, 8, 18, 15, 14, 15};
+        for (int letter : chronoLetters)
+        {
+            uint64_t buff = DrawLetter(letter, colorID);
+            XDino_Draw(buff, textTimer, pos, 1);
+            XDino_DestroyVertexBuffer(buff);
+            pos.x += 8;
+        }
+        
+        pos.x += 8;
+        
+        int dizaines = ((int)currentTime / 10) % 10;
+        int unites = (int)currentTime % 10;
+        
+        uint64_t buffDiz = DrawNumber(dizaines, colorID);
+        XDino_Draw(buffDiz, textTimer, pos, 0.5f);
+        XDino_DestroyVertexBuffer(buffDiz);
+        pos.x += 12;
+        
+        uint64_t buffUnit = DrawNumber(unites, colorID);
+        XDino_Draw(buffUnit, textTimer, pos, 0.5f);
+        XDino_DestroyVertexBuffer(buffUnit);
+        pos.x += 12;
+        
+        uint64_t buffS = DrawLetter(19, colorID);
+        XDino_Draw(buffS, textTimer, pos, 1);
+        XDino_DestroyVertexBuffer(buffS);
+        pos.x += 12;
+        
+        uint64_t buffGreater = DrawLetter(29, colorID);
+        XDino_Draw(buffGreater, textTimer, pos, 1);
+        XDino_DestroyVertexBuffer(buffGreater);
+    }
+    
+    if (selectedOption == RESUME)
+        DrawPauseMenuOption(3, startY + 120, {18, 5, 16, 18, 5, 14, 4, 18, 5}, true);
+    else
+        DrawPauseMenuOption(3, startY + 120, {18, 5, 16, 18, 5, 14, 4, 18, 5}, false);
+}
+
+void GameManager::DrawPauseMenuOption(int optionIndex, float posY, std::vector<int> letters, bool isSelected)
+{
+    DinoVec2 render = XDino_GetRenderSize();
+    
+    float textWidth = letters.size() * 8;
+    float posX = render.x / 2 - textWidth / 2;
+    
+    int colorID = isSelected ? 2 : -1;
+    
+    for (int letter : letters)
+    {
+        if (letter == 32)
+        {
+            posX += 8;
+            continue;
+        }
+        
+        uint64_t letterBuff = DrawLetter(letter, colorID);
+        XDino_Draw(letterBuff, textTimer, {posX, posY}, 1);
+        XDino_DestroyVertexBuffer(letterBuff);
+        posX += 8;
+    }
 }

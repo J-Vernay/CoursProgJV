@@ -27,7 +27,6 @@ private:
     int terrainAnimFrame=0;
     float timeBetweenFrames = 0;
 
-    int randomSaison;
 
     //Flower
     int numberFlowers = 30;
@@ -57,4 +56,5 @@ public:
 
     DinoVec2 _MINI_terrainBound = {};
     DinoVec2 _MAXI_terrainBound = {};
+    int randomSaison = 0;
 };

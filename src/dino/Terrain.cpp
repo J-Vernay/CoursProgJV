@@ -18,8 +18,6 @@ void Terrain::SetUpTerrain()
     oceanScale = renderSize.x / 2 + renderSize.y / 2;
 
     texID_terrain = XDino_CreateGpuTexture("terrain.png");
-
-    randomSaison = XDino_RandomInt32(0, 3);
     
     DrawOcean();
     DrawTerrain();
@@ -223,11 +221,33 @@ void Terrain::DrawSoloFlower(DinoArray<DinoVertex>& vs, int idVertex, float x, f
 
 void Terrain::DrawTerrain()
 {
+    if (vbufID_ocean != 0)
+    {
+        XDino_DestroyVertexBuffer(vbufID_ocean);
+        vbufID_ocean = 0;
+    }
+    
+    for (size_t i = 0; i < framesAnim.size(); i++)
+    {
+        XDino_DestroyVertexBuffer(framesAnim[i]);
+    }
+    framesAnim.clear();
+    
+    if (buf_flower != 0)
+    {
+        XDino_DestroyVertexBuffer(buf_flower);
+        buf_flower = 0;
+    }
+    
+    DrawOcean();
+    
     for (int i = 0; i < 4; i++)
     {
         uint64_t id = DrawTuilesTerrain(i, i == 0);
         framesAnim.emplace_back(id);
     }
+    
+    DrawFlowers();
 }
 
 
@@ -253,22 +273,24 @@ void Terrain::ApplyAnimation(float deltaTime)
     {
         timeBetweenFrames = 0;
         terrainAnimFrame = (terrainAnimFrame+1) % framesAnim.size();
-        std::cout << (terrainAnimFrame+1) % framesAnim.size() << std::endl;
     }
-
     
     XDino_Draw(framesAnim[terrainAnimFrame], texID_terrain, terrainPos);
 }
 
 void Terrain::ShutDown()
 {
-    XDino_DestroyVertexBuffer(vbufID_ocean);
+    if (vbufID_ocean != 0)
+        XDino_DestroyVertexBuffer(vbufID_ocean);
 
-    XDino_DestroyGpuTexture(texID_terrain);
+    if (texID_terrain != 0)
+        XDino_DestroyGpuTexture(texID_terrain);
     
     for (size_t i = 0; i < framesAnim.size(); i++)
-        XDino_DestroyVertexBuffer(framesAnim[i]);
-
+    {
+        if (framesAnim[i] != 0)
+            XDino_DestroyVertexBuffer(framesAnim[i]);
+    }
     
     if (buf_flower != 0)
         XDino_DestroyVertexBuffer(buf_flower);

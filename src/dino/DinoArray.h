@@ -13,8 +13,6 @@ public:
         data.reserve(capacity);
         data.resize(size);
     }
-
-    // Implémenter le reste DinoArray
 };
 #else
 

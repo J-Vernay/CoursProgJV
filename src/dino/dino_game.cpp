@@ -29,7 +29,7 @@ uint64_t vbufID_imageMilieu;
 uint64_t texID_imageMilieu;
 
 constexpr float DINO_SPEED = 150.f;
-constexpr int NUMBER_PLAYERS = 2;
+constexpr int NUMBER_PLAYERS = 4;
 
 constexpr float WORLD_OFFSET_X = 420.f / 4.f;
 constexpr float WORLD_OFFSET_Y = 360.f / 4.f;
@@ -62,24 +62,14 @@ void Dino_GameInit()
 
     gameManager = new GameManager();
     
-    terrain = new Terrain();
-    
-    terrain->SetUpTerrain();
-    _MINI_terrainBounds = terrain->_MINI_terrainBound;
-    _MAXI_terrainBounds = terrain->_MAXI_terrainBound;
+    _MINI_terrainBounds = gameManager->terrain->_MINI_terrainBound;
+    _MAXI_terrainBounds = gameManager->terrain->_MAXI_terrainBound;
     
     players = new DinoArray<DinoPlayer*>(0, NUMBER_PLAYERS);
     animals = new DinoArray<Animal*>(0, 1000);
     agentsList = new DinoArray<Agent*>(0, 1000);
 
     collisionManager = new CollisionManager(*gameManager);
-    
-    for (int i = 0; i < NUMBER_PLAYERS; i++)
-    {
-        DinoPlayer* player = new DinoPlayer(DINO_SPEED, i, _MINI_terrainBounds, _MAXI_terrainBounds, *collisionManager, *gameManager);
-        players->AddBack(player);
-        agentsList->AddBack(player);
-    }
 
     collisionManager->SetPlayers(players);
     collisionManager->SetAgents(agentsList);
@@ -91,10 +81,14 @@ void Dino_GameInit()
 
     gameManager->SetPlayers(players);
     
-    gameManager->StartGame(4);
+    for (Tree* agent : gameManager->treesList)
+    {
+        agentsList->AddBack(reinterpret_cast<Agent*>(agent));
+    }
 }
 
 float currentFrameAnim = 0;
+float elapsedConnectionTime = 0;
 
 void Dino_GameFrame(double timeSinceStart)
 {
@@ -103,32 +97,105 @@ void Dino_GameFrame(double timeSinceStart)
 
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
+
+    elapsedConnectionTime -= deltaTime;
     
-    // Affichage
-
+    if (!gameManager->IsInGame) 
+    {
+        for (int i = 0; i < NUMBER_PLAYERS; i++)
+        {
+            DinoGamepad gamepad{};
+            XDino_GetGamepad((DinoGamepadIdx)i, gamepad);
+            
+            auto it = std::find(gameManager->_currentplayerConnected.begin(), gameManager->_currentplayerConnected.end(), i);
+            bool isConnected = (it != gameManager->_currentplayerConnected.end());
+            
+            if (gamepad.start && !isConnected && elapsedConnectionTime <= 0)
+            {
+                elapsedConnectionTime = 0.5f;
+                
+                gameManager->_currentplayerConnected.push_back(i);
+                
+                DinoPlayer* player = new DinoPlayer(
+                    DINO_SPEED, 
+                    i, 
+                    _MINI_terrainBounds, 
+                    _MAXI_terrainBounds, 
+                    *collisionManager, 
+                    *gameManager
+                );
+                
+                players->AddBack(player);
+                agentsList->AddBack(player);
+                
+                collisionManager->SetPlayers(players);
+                collisionManager->SetAgents(agentsList);
+                
+                player->Start();
+                
+                std::cout << "Player " << i << " CONNECTED" << std::endl;
+            }
+            
+            else if (gamepad.select && isConnected && elapsedConnectionTime <= 0)
+            {
+                elapsedConnectionTime = 0.5f;
+                
+                gameManager->_currentplayerConnected.erase(it);
+                
+                for (int j = 0; j < players->GetSize(); j++)
+                {
+                    DinoPlayer* player = (*players)[j];
+                    if (player->ID == i) 
+                    {
+                        player->ShutDown();
+                        players->RemoveAt(j);
+                        
+                        for (int k = 0; k < agentsList->GetSize(); k++)
+                        {
+                            if ((*agentsList)[k] == player)
+                            {
+                                agentsList->RemoveAt(k);
+                                break;
+                            }
+                        }
+                        
+                        delete player;
+                        
+                        collisionManager->SetPlayers(players);
+                        collisionManager->SetAgents(agentsList);
+                        
+                        std::cout << "Player " << i << " DISCONNECTED" << std::endl;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-
     XDino_SetClearColor(CLEAR_COLOR);
     
-    terrain->Update(deltaTime);
-    
-    elapsedTimeBeforeNewAnimal += deltaTime;
-
-    timeToSpawnAnimal = 0.5f + (2- 0.5f) * gameManager->GetCurrentT_Time();
-    
-    if (elapsedTimeBeforeNewAnimal >= timeToSpawnAnimal && !gameManager->IsPaused())
+    if (gameManager->IsInGame)
     {
-        int animalType = XDino_RandomInt32(0, 7);
-        elapsedTimeBeforeNewAnimal = 0;
+        timeToSpawnAnimal = 0.5f + (2 - 0.5f) * gameManager->GetCurrentT_Time();
+        elapsedTimeBeforeNewAnimal += deltaTime;
+        
+        if (elapsedTimeBeforeNewAnimal >= timeToSpawnAnimal && !gameManager->IsPaused())
+        {
+            int animalType = XDino_RandomInt32(0, 7);
+            elapsedTimeBeforeNewAnimal = 0;
 
-        Animal* animal = new Animal(animalType,_MINI_terrainBounds, _MAXI_terrainBounds, *gameManager);
-        
-        animals->AddBack(animal);
-        agentsList->AddBack(animal);
-        
-        collisionManager->SetAgents(agentsList);
-        collisionManager->SetAnimals(animals);
+            Animal* animal = new Animal(animalType, _MINI_terrainBounds, _MAXI_terrainBounds, *gameManager);
+            
+            animals->AddBack(animal);
+            agentsList->AddBack(animal);
+            
+            collisionManager->SetAgents(agentsList);
+            collisionManager->SetAnimals(animals);
+        }
     }
+
+    gameManager->Update(deltaTime);
 
     for (DinoPlayer* player : *players) {
         player->UpdateLasso(deltaTime);
@@ -138,16 +205,12 @@ void Dino_GameFrame(double timeSinceStart)
     {
         agent->Update(deltaTime);
     }
-
-    gameManager->UpdateGame(deltaTime);    
-
-    //Collision Manager
+    
     collisionManager->Update(deltaTime);
     collisionManager->ShuffleByVerticalPosition(agentsList);
     collisionManager->CheckLassoCollisionPlayer(players);
     collisionManager->ApplyPlayersCollision(*agentsList);
 
-    // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         std::vector<DinoVertex> vs;
@@ -180,7 +243,6 @@ void Dino_GameFrame(double timeSinceStart)
     }
 #endif
 }
-
 void Dino_GameShut()
 {
     terrain->ShutDown();

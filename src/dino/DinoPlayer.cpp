@@ -1,5 +1,6 @@
 #include "DinoPlayer.h"
 #include "GameManager.h"
+#include "Tree.h"
 
 #include <cmath>
 #include <iostream>
@@ -75,10 +76,13 @@ void DinoPlayer::Move(float deltaTime)
         
     isMoving = std::abs(gamepad.stick_left_x) > 0.1 || std::abs(gamepad.stick_left_y) > 0.1;
     
-    //PauseGame
-    if (gamepad.start) {
+    static float pauseCooldown = 0;
+    if (gamepad.start && gameManager.IsInGame && pauseCooldown <= 0) {
         gameManager.SetTimerState();
+        pauseCooldown = 0.3f;
     }
+    pauseCooldown -= deltaTime;
+    if (pauseCooldown < 0) pauseCooldown = 0;
     
     if (gameManager.IsPaused())
     {
@@ -86,7 +90,6 @@ void DinoPlayer::Move(float deltaTime)
         return;
     }
 
-    //Running
     if (gamepad.btn_right && isMoving)
     {
         speed = baseSpeed * 2;
@@ -100,16 +103,15 @@ void DinoPlayer::Move(float deltaTime)
     if (elapsedTimeDamage > 0) {
         elapsedTimeDamage -= deltaTime;
         isDamaged = true;
-    }else {
+    } else {
         isDamaged = false;
     }
         
     if (!isDamaged)
     {
-        //Set Anim move
         if (isRunning) {
             SetAnimationValues(17, 6, 16);
-        }else {
+        } else {
             if (isMoving) {
                 SetAnimationValues(4, 6, 8);
             }
@@ -118,10 +120,10 @@ void DinoPlayer::Move(float deltaTime)
             }
         }
 
-        //Moving
         position.x += gamepad.stick_left_x * speed * deltaTime;
         position.y += gamepad.stick_left_y * speed * deltaTime;
-    }else
+    }
+    else
     {
         SetAnimationValues(13, 4, 8);
     }
@@ -219,6 +221,38 @@ void DinoPlayer::ApplyBounds()
     if (position.y < miniBound.y)position.y = miniBound.y + 1;
     if (position.x > maxiBound.x)position.x = maxiBound.x - 1;
     if (position.y > maxiBound.y)position.y = maxiBound.y - 1;
+
+    if (gameManager.IsInGame)
+        return;
+    
+    for (Tree* tree : gameManager.treesList)
+    {
+        DinoVec2 treeMin = tree->GetMinBouced();
+        DinoVec2 treeMax = tree->GetMaxBouced();
+    
+        bool isColliding = (position.x > treeMin.x && position.x < treeMax.x &&
+                            position.y > treeMin.y && position.y < treeMax.y);
+    
+        if (isColliding)
+        {
+            float overlapLeft   = position.x - treeMin.x;
+            float overlapRight  = treeMax.x - position.x;
+            float overlapTop    = position.y - treeMin.y;
+            float overlapBottom = treeMax.y - position.y;
+        
+            float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
+        
+            if (minOverlap == overlapLeft)
+                position.x = treeMin.x - 1;   
+            else if (minOverlap == overlapRight)
+                position.x = treeMax.x + 1; 
+            else if (minOverlap == overlapTop)
+                position.y = treeMin.y - 1;
+            else if (minOverlap == overlapBottom)
+                position.y = treeMax.y + 1;
+        }
+    }
+    
 }
 
 void DinoPlayer::TakeDamage()
@@ -264,7 +298,6 @@ void DinoPlayer::RemoveOldLassoPoints()
     {
         if (lassoPoints[i].timeAlive >= 2.0f)
         {
-            std::cout << "Removing lasso point, buff=" << lassoPoints[i].buff << std::endl;
             if (lassoPoints[i].buff != 0)
             {
                 XDino_DestroyVertexBuffer(lassoPoints[i].buff);
@@ -289,9 +322,6 @@ void DinoPlayer::AddLassoPoint()
     
     LassoPoint point = {pos, buff, 0};
     lassoPoints.AddBack(point);
-    
-    std::cout << "After AddBack, size: " << lassoPoints.GetSize() 
-              << " | last buff: " << lassoPoints[lassoPoints.GetSize()-1].buff << std::endl;
 }
 
 uint64_t DinoPlayer::DrawLassoPoint()

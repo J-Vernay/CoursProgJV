@@ -14,6 +14,15 @@ CollisionManager::CollisionManager(GameManager& _gameManager): gameManager(_game
 
 void CollisionManager::Update(float deltaTime)
 {
+    if (!gameManager.IsInGame && animalList != nullptr) {
+        for (int i = (int)animalList->GetSize() - 1; i >= 0; i--) {
+            if (!(*animalList)[i]->readyToDelete) {
+                (*animalList)[i]->readyToDelete = true;
+                (*animalList)[i]->TakeDamage();
+            }
+        }
+    }
+
     for (int i = (int)agentsList->GetSize() - 1; i >= 0; i--)
     {
         if ((*agentsList)[i]->readyToDelete)
@@ -23,7 +32,7 @@ void CollisionManager::Update(float deltaTime)
 
             if (animal != nullptr)
             {
-                for (int j = 0; j < (int)animalList->GetSize(); j++)
+                for (int j = (int)animalList->GetSize() - 1; j >= 0; j--)
                 {
                     if ((*animalList)[j] == animal)
                     {
