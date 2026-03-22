@@ -24,13 +24,23 @@ double g_lastTime = 0;
 struct PlayerState {
     DinoGamepadIdx gamepadIdx;
     DinoGamepad gamepad;
+    DinoColor playerColor;
     DinoPlayer dino;
     DinoLasso lasso;
+    int score = 0;
+};
+
+struct ScoreNotif {
+    int points;
+    DinoVec2 position;
+    DinoColor color;
+    double spawnTime;
 };
 
 std::vector<DinoGamepadIdx> g_UnassignedGamepads;
 std::vector<PlayerState> g_Players;
 std::vector<DinoTree> g_Trees;
+std::vector<ScoreNotif> g_ScoreNotifs;
 
 DinoTerrain g_Terrain;
 std::vector<DinoAnimal> g_Animals;
@@ -108,7 +118,7 @@ void Dino_GameFrame(double timeSinceStart)
                 if (gamepad.start) {
                     int idxPlayer = g_Players.size();
                     if (idxPlayer < 4) {
-                        g_Players.emplace_back(idx, gamepad, idxPlayer, PLAYER_COLORS[idxPlayer]);
+                        g_Players.emplace_back(idx, gamepad, PLAYER_COLORS[idxPlayer], idxPlayer, PLAYER_COLORS[idxPlayer]);
                         g_UnassignedGamepads.erase(g_UnassignedGamepads.begin() + i);
                     }
                     break;
@@ -149,6 +159,12 @@ void Dino_GameFrame(double timeSinceStart)
         for (auto it2 = it; it2 < g_Animals.end(); ++it2)
             it2->Shut();
         g_Animals.erase(it, g_Animals.end());
+
+        auto it3 = std::remove_if(g_ScoreNotifs.begin(), g_ScoreNotifs.end(), 
+        [timeSinceStart](ScoreNotif& notif) {
+            return timeSinceStart - notif.spawnTime > 2.0;
+        });
+            g_ScoreNotifs.erase(it3, g_ScoreNotifs.end());
 
         // Spawner un animal si besoin.
         if (timeSinceStart > g_timeSpawnAnimal) {
@@ -194,11 +210,34 @@ void Dino_GameFrame(double timeSinceStart)
             for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
                 DinoLasso::ResolveCollision(g_Players[idxA].lasso, g_Players[idxB].lasso);
 
+        for (PlayerState& player : g_Players) {
+            int countPerSpecies[4] = {0, 0, 0, 0};
+            for(DinoAnimal& animal : g_Animals) {
+                if (player.lasso.WasInLoop(animal.GetPos())) {
+                    int espece = (int)animal.GetKind() / 2;
+                    countPerSpecies[espece]++;
+                    int points = countPerSpecies[espece] * 10;
+                    player.score += points;
+
+                    ScoreNotif notif;
+                    notif.position = animal.GetPos();
+                    notif.points = points;
+                    notif.color = player.playerColor;
+                    notif.spawnTime = timeSinceStart;
+                    g_ScoreNotifs.push_back(notif);
+                }
+            }
+            
+        }
+        
+            
         for (PlayerState& player : g_Players)
             for (DinoEntity* pEntity : entities)
                 if (player.lasso.WasInLoop(pEntity->GetPos()))
                     pEntity->ReactLoop(timeSinceStart);
     }
+
+   
 
     if (g_bLobby) {
         for (DinoTree& tree : g_Trees)
@@ -244,6 +283,16 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
+
+    for(ScoreNotif notif : g_ScoreNotifs) {
+        double timeAlive = timeSinceStart - notif.spawnTime;
+        double posY = notif.position.y - timeAlive * 20;
+        std::string text = std::format("+{}", notif.points);
+        std::vector<DinoVertex> vs;
+        Dino_GenVertices_Text(vs, text, notif.color, DinoColor_TRANSPARENT);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "notif");
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {notif.position.x, (float)posY}, 2);
+    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {

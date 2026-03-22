@@ -71,6 +71,11 @@ void DinoAnimal::Shut()
 {
 }
 
+EAnimalKind DinoAnimal::GetKind()
+{
+    return m_kind;
+}
+
 void DinoAnimal::InitStatic()
 {
     s_texID = XDino_CreateGpuTexture("animals.png");

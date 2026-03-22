@@ -23,7 +23,7 @@ public:
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart) override;
     void Shut();
-
+    EAnimalKind GetKind();
     static bool IsDead(DinoAnimal& animal);
     static void InitStatic();
     static void ShutStatic();
