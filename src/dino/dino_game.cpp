@@ -311,6 +311,17 @@ void Dino_GameFrame(double timeSinceStart)
         // Destructeur de 'vs' appelé implicitement par le compilateur
     }
 
+    if(g_bLobby) {
+        for (int i = 0; i < g_Players.size(); ++i) {
+            PlayerState& player = g_Players[i];
+            float ty = RENDER_SIZE.y / 3 + i * 30.f;
+            std::string text = std::format("+{}", player.score);
+            std::vector<DinoVertex> vs;
+            DinoVec2 textSize = Dino_GenVertices_Text(vs, text, player.playerColor, DinoColor_GREY);
+            DinoVertexBuffer vbuf(vs.data(), vs.size(), "Player Score");
+            XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {0, ty}, 2);
+        }
+    }
     if (g_bPause) {
         std::vector<DinoVertex> vs;
         DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
