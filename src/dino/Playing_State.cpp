@@ -1,7 +1,12 @@
+#include "Lobby_state.h"
+
 #include <algorithm>
 #include <format>
+#include <iostream>
 #include <dino/Dino_GameStates.h>
 #include <dino/Playing_state.h>
+#include <stdio.h>
+#include <string>
 
 PlayState::PlayState(DinoGameState* dinoGameState, int season)
 {
@@ -11,6 +16,8 @@ PlayState::PlayState(DinoGameState* dinoGameState, int season)
 
 void PlayState::EnterState(double timeSinceStart)
 {
+    std::cout << "PlayingState::EnterState" << std::endl;
+    m_bWasStartPressed = true;
     m_terrain.Init(DinoGameState::RENDER_SIZE, m_season);
     m_dinoGameState->g_spawner.Init(m_dinoGameState->g_scoreManager);
     m_chrono = 60.0;
@@ -19,6 +26,7 @@ void PlayState::EnterState(double timeSinceStart)
 
 void PlayState::UpdateState(float deltaTime, double timeSinceStart)
 {
+    std::cout << "PlayingState::UpdateState" << std::endl;
     bool bPressedStart = false;
     for (DinoGameState::PlayerState& player : m_dinoGameState->g_players) {
         DinoGamepad gamepad;
@@ -37,10 +45,13 @@ void PlayState::UpdateState(float deltaTime, double timeSinceStart)
             switch (m_currentPauseButton) {
             case 0: // Restart
                 m_dinoGameState->g_scoreManager.ResetScores();
+                m_paused = false;
                 m_dinoGameState->ChangeState(
                     std::make_unique<PlayState>(m_dinoGameState, m_season),
                     timeSinceStart
+
                 );
+                m_paused = false;
                 return;
             case 1: // Lobby
                 m_dinoGameState->g_scoreManager.ResetScores();
@@ -144,13 +155,15 @@ void PlayState::UpdatePauseInput()
 
 void PlayState::DrawState(float deltaTime, double timeSinceStart)
 {
+    std::cout << "PlayingState::DrawState" << std::endl;
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     XDino_SetClearColor(CLEAR_COLOR);
     XDino_SetRenderSize(DinoGameState::RENDER_SIZE);
 
-    m_terrain.Draw();
+    m_terrain.Draw(timeSinceStart);
 
-    for (DinoGameState::PlayerState& player : m_dinoGameState->g_players)
+    for (DinoGameState::PlayerState& player : m_dinoGameState->g_players
+    )
         player.lasso.Draw();
 
     std::string text = std::format("{:2.2f}", m_chrono);
@@ -170,8 +183,9 @@ void PlayState::DrawState(float deltaTime, double timeSinceStart)
     m_dinoGameState->g_scoreManager.DrawScores(m_terrain);
 
     std::sort(m_entities.begin(), m_entities.end(), DinoEntity::CompareVerticalPos);
-    for (DinoEntity* pEntity : m_entities)
+    for (DinoEntity* pEntity : m_entities) {
         pEntity->Draw(timeSinceStart);
+    }
 
     if (m_paused)
         DrawPauseMenu();
@@ -192,7 +206,6 @@ void PlayState::DrawPauseMenu()
                 (DinoGameState::RENDER_SIZE.y - ts.y * 20) / 2},
                4);
 
-    // Menu entries: label, y position, button index
     struct Entry {
         const char* label;
         float y;

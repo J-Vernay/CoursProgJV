@@ -63,17 +63,18 @@ void DinoTerrain::Init(DinoVec2 rdrSize, int idxSeason)
 
 }
 
-void DinoTerrain::Draw()
+void DinoTerrain::Draw(double timeSinceStart)
 {
     XDino_Draw(m_vbufID, m_texID);
-}
-
-void DinoTerrain::Update(double timeSinceStart)
-{
     int idxAnim = int(timeSinceStart * 3) % 4;
     uint64_t vbufID = CreateEdges(m_idxSeason, idxAnim, m_posTopLeft);
     XDino_Draw(vbufID, m_texID);
     XDino_DestroyVertexBuffer(vbufID);
+}
+
+void DinoTerrain::Update(double timeSinceStart)
+{
+
 }
 
 void DinoTerrain::Shut()

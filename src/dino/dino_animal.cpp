@@ -6,6 +6,11 @@
 #pragma region AnimalSpawner
 void DinoAnimalSpawner::Init(DinoScoreManager& scoreManager)
 {
+    if (m_texID != 0)
+        XDino_DestroyGpuTexture(m_texID);
+
+    m_animals.clear();
+    m_timeSinceLastSpawn = 0;
     m_texID = XDino_CreateGpuTexture("animals.png");
     m_ScoreManager = &scoreManager;
 }
@@ -37,7 +42,13 @@ void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double ch
 
 void DinoAnimalSpawner::Shut()
 {
+    for (auto& animal : m_animals)
+        animal.Shut();
+    m_animals.clear();
+
     XDino_DestroyGpuTexture(m_texID);
+    m_texID = 0;
+    m_timeSinceLastSpawn = 0;
 }
 #pragma endregion
 

@@ -7,7 +7,7 @@ constexpr DinoVec2 TERRAIN_SIZE = {TILE_COUNT.x * 16, TILE_COUNT.y * 16};
 class DinoTerrain {
 public:
     void Init(DinoVec2 rdrSiz, int idxSeason);
-    void Draw();
+    void Draw(double timeSinceStart);
     void Update(double timeSinceStart);
     void Shut();
     uint64_t CreateEdges(int idxSeason, int idxAnim, DinoVec2 posTopLeft);

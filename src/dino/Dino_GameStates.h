@@ -1,7 +1,6 @@
 #pragma once
 
 #include "game_state.h"
-#include <dino/Lobby_state.h>
 #include <dino/dino_terrain.h>
 #include <dino/dino_animal.h>
 #include <dino/dino_score.h>
@@ -45,6 +44,7 @@ public:
 
     void Init(double timeSinceStart);
     void Update(float deltaTime, double timeSinceStart);
+    void DrawState(float deltaTime, double timeSinceStart);
     void ChangeState(std::unique_ptr<GameState> newState, double timeSinceStart);
     void Shut();
 

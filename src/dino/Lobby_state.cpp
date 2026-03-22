@@ -1,6 +1,10 @@
 #include "Playing_state.h"
 
+#include <stdio.h>
+#include <string>
 #include <algorithm>
+#include <iostream>
+#include <ostream>
 #include <dino/Dino_GameStates.h>
 #include <dino/Lobby_state.h>
 #include <dino/dino_tree.h>
@@ -14,6 +18,7 @@ LobbyState::LobbyState(DinoGameState* dino_gameState, int season)
 
 void LobbyState::EnterState(double timeSinceStart)
 {
+    std::cout << "LobbyState::EnterState" << std::endl;
     m_terrain.Init(DinoGameState::RENDER_SIZE, m_season);
     DinoVec2 terrainMin = m_terrain.GetTopLeft();
     DinoVec2 terrainMax = m_terrain.GetBottomRight();
@@ -26,6 +31,12 @@ void LobbyState::EnterState(double timeSinceStart)
 
 void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
 {
+    std::cout << "LobbyState::UpdateState" << std::endl;
+    for (DinoGameState::PlayerState& player : m_dinoGameState->g_players) {
+        DinoGamepad gamepad;
+        if (XDino_GetGamepad(player.gamepadIdx, gamepad))
+            player.gamepad = gamepad;
+    }
 
     for (int i = 0; i < m_dinoGameState->unassignedGamepads.size(); i++) {
         DinoGamepadIdx idx = m_dinoGameState->unassignedGamepads[i];
@@ -105,8 +116,6 @@ void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
 
     for (DinoTree& tree : m_trees)
         if (tree.WasLooped()) {
-            m_terrain.Shut();
-            //m_terrain.Init(DinoGameState::RENDER_SIZE, tree.GetIdxSeason());
             m_trees.clear();
             m_dinoGameState->ChangeState(
                 std::make_unique<PlayState>(m_dinoGameState, tree.GetIdxSeason()),
@@ -119,7 +128,7 @@ void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
 void LobbyState::DrawState(float deltaTime, double timeSinceStart)
 {
     //Draw
-
+    std::cout << "LobbyState::DrawState" << std::endl;
     std::vector<DinoVertex> vs;
     DinoVec2 textSize = Dino_GenVertices_Text(vs, "Choose a tree to start", DinoColor_WHITE, DinoColor_GREY);
     DinoVertexBuffer vertex_buffer = {vs.data(), vs.size(), "Title"};
@@ -137,7 +146,7 @@ void LobbyState::DrawState(float deltaTime, double timeSinceStart)
     DinoVec2 renderSize = XDino_GetRenderSize();
 
     //Affichage de terrain
-    m_terrain.Draw();
+    m_terrain.Draw(timeSinceStart);
 
     for (DinoGameState::PlayerState& player : m_dinoGameState->g_players)
         player.lasso.Draw();
@@ -163,4 +172,5 @@ void LobbyState::ExitState()
     m_terrain.Shut();
     m_trees.clear();
     m_entities.clear();
+    std::cout << "LobbyState::ExitState" << std::endl;
 }
