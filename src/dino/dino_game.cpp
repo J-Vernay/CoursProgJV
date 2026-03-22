@@ -12,7 +12,7 @@
 #include <dino/dino_animal.h>
 #include <dino/dino_lasso.h>
 #include <dino/dino_score.h>
-//#include <dino/Dino_GameStates.h>
+#include <dino/Dino_GameStates.h>
 #include <iostream>
 
 #include <format>

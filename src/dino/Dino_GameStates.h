@@ -11,46 +11,46 @@
 #include <memory>
 #include <vector>
 
-constexpr DinoVec2 RENDER_SIZE = {480, 360};
-
-constexpr DinoColor PLAYER_COLORS[4] = {
-    DinoColor_BLUE,
-    DinoColor_RED,
-    DinoColor_YELLOW,
-    DinoColor_GREEN,
-};
-
-struct PlayerState {
-    DinoGamepadIdx gamepadIdx;
-    DinoGamepad gamepad;
-    DinoPlayer player;
-    DinoLasso lasso;
-};
 
 class DinoGameState {
 public:
-    void Init();
-    void Shut();
-    void Frame(double timeSinceStart);
+    static constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
-    void TransitionTo(std::unique_ptr<GameState> newState, double timeSinceStart);
+    static constexpr DinoColor PLAYER_COLORS[4] = {
+        DinoColor_BLUE,
+        DinoColor_RED,
+        DinoColor_YELLOW,
+        DinoColor_GREEN,
+    };
 
-    DinoTerrain terrain;
-    DinoAnimalSpawner spawner;
-    DinoScoreManager scoreManager;
-
-    std::vector<PlayerState> players;
-    std::vector<int> freePlayerIndices = {0, 1, 2, 3};
-    std::vector<DinoGamepadIdx> unassignedGamepads;
-    std::vector<DinoGamepadIdx> assignedGamepads;
-    std::vector<DinoTree> trees;
-
-    double chrono = 60.0;
-
-private:
-    std::unique_ptr<GameState> m_currentState;
-    double m_lastTime = 0.0;
+    struct PlayerState {
+        DinoGamepadIdx gamepadIdx;
+        DinoGamepad gamepad;
+        DinoPlayer player;
+        DinoLasso lasso;
+    };
 
     uint64_t m_vbuffID_nom = 0;
     DinoVec2 m_textSize_nom = {};
+    double m_lastTime = 0.0;
+
+    DinoAnimalSpawner g_spawner;
+    DinoScoreManager g_scoreManager;
+
+    std::vector<PlayerState> g_players;
+    std::vector<int> freePlayerIndices = {0, 1, 2, 3};
+    std::vector<DinoGamepadIdx> unassignedGamepads;
+    std::vector<DinoGamepadIdx> assignedGamepads;
+
+
+    void Init(double timeSinceStart);
+    void Update(float deltaTime, double timeSinceStart);
+    void ChangeState(std::unique_ptr<GameState> newState, double timeSinceStart);
+    void Shut();
+
+private:
+    std::unique_ptr<GameState> currentState;
+    std::unique_ptr<GameState> nextState;
+
+
 };
