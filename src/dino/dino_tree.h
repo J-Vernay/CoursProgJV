@@ -7,14 +7,14 @@ class DinoTree : public DinoEntity {
 private:
     int m_idxSeason;
     bool m_bWasLooped;
-
+    double m_spawnTime;
     static uint64_t s_texID;
 
     void ReactLimit() override;
     void ReactLoop(double timeSinceStart) override;
 
 public:
-    DinoTree(DinoVec2 pos, int idxSeason);
+    DinoTree(DinoVec2 pos, int idxSeason, double spawmTime);
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart) override;
     bool WasLooped();

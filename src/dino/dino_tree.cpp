@@ -8,13 +8,19 @@ void DinoTree::ReactLimit()
 
 void DinoTree::ReactLoop(double timeSinceStart)
 {
-    m_bWasLooped = true;
+    if(timeSinceStart - m_spawnTime < 5.0) {
+        return;
+    }
+    else {
+        m_bWasLooped = true;
+    }
 }
 
-DinoTree::DinoTree(DinoVec2 pos, int idxSeason)
+DinoTree::DinoTree(DinoVec2 pos, int idxSeason, double spawnTime)
 {
     m_pos = pos;
     m_idxSeason = idxSeason;
+    m_spawnTime = spawnTime;
     m_bWasLooped = false;
 }
 
@@ -26,6 +32,8 @@ void DinoTree::Draw(double timeSinceStart)
 {
     std::vector<DinoVertex> vs;
 
+    double timeAlive = timeSinceStart - m_spawnTime;
+    
     uint16_t umin = 48 + m_idxSeason * 80;
     uint16_t umax = 80 + m_idxSeason * 80;
     uint16_t vmin = 16;
@@ -51,6 +59,17 @@ void DinoTree::Draw(double timeSinceStart)
     vs[5].u = umax;
     vs[5].v = vmax;
 
+
+    uint8_t alpha = 255;
+    if (timeAlive < 5.0f) {
+        alpha = (timeAlive * 255) / 5.0f;
+    }
+  
+    
+    for (DinoVertex& v : vs) {
+        v.color = {255, 255, 255, alpha};
+    }
+    
     DinoVertexBuffer vbuf(vs.data(), vs.size(), "Tree");
     XDino_Draw(vbuf.Get(), s_texID, {m_pos.x - 16, m_pos.y - 40});
 }

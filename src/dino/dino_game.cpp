@@ -16,7 +16,7 @@
 
 constexpr double SPAWNTIME_BEGIN = 1;
 constexpr double SPAWNTIME_END = 0.033;
-constexpr double CHRONO_INIT = 60;
+constexpr double CHRONO_INIT = 15;
 
 // Variables globales.
 double g_lastTime = 0;
@@ -75,7 +75,7 @@ void Dino_GameInit()
     for (int i = 0; i < 4; ++i) {
         float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
         float y = terrainMin.y + 80;
-        g_Trees.emplace_back(DinoVec2{x, y}, i);
+        g_Trees.emplace_back(DinoVec2{x, y}, i, 0);
     }
 
 }
@@ -215,6 +215,18 @@ void Dino_GameFrame(double timeSinceStart)
     if (!g_bPause && !g_bLobby) {
         // Décrémenter le chronomètre.
         g_chrono -= deltaTime;
+    }
+
+    if(g_chrono <= 0) {
+        g_bLobby = true;
+        g_Animals.clear();
+        g_chrono = CHRONO_INIT;
+        
+        for (int i = 0; i < 4; ++i) {
+            float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+            float y = terrainMin.y + 80;
+            g_Trees.emplace_back(DinoVec2{x, y}, i, timeSinceStart);
+        }
     }
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
