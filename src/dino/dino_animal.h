@@ -5,6 +5,7 @@
 #include <dino/xdino.h>
 
 struct DinoAnimal : public DinoEntity {
+public:
     DinoVec2 m_dir = {};
     DinoVec2 m_targetPos = {};
     double m_spawnTime = 0;
@@ -26,6 +27,10 @@ struct DinoAnimal : public DinoEntity {
     static bool IsDead(DinoAnimal& animal);
     void Shut();
     DinoVertexBuffer GenerateVertexBuffer(double timeSinceStart, float alpha);
+
+private:
+
+
 };
 
 struct DinoAnimalSpawner {

@@ -7,7 +7,6 @@
 
 void DinoGameState::Init(double timeSinceStart)
 {
-
     DinoPlayer::InitStatic();
     DinoTree::InitStatic();
     g_scoreManager.ResetScores();
@@ -57,5 +56,4 @@ void DinoGameState::Shut()
 {
     XDino_DestroyVertexBuffer(m_vbuffID_nom);
     currentState->ExitState();
-    DinoPlayer::ShutStatic();
 }

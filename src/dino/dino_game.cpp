@@ -47,7 +47,6 @@ void Dino_GameFrame(double timeSinceStart)
 
     DinoVec2 renderSize = XDino_GetRenderSize();
 
-    //drawing terrain
     g_gameState.Update(deltaTime, timeSinceStart);
 
 #if !XDINO_RELEASE
@@ -69,4 +68,6 @@ void Dino_GameFrame(double timeSinceStart)
 void Dino_GameShut()
 {
     g_gameState.Shut();
+    DinoTree::ShutStatic();
+    DinoPlayer::ShutStatic();
 }

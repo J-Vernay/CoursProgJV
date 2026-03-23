@@ -26,6 +26,7 @@ void LobbyState::EnterState(double timeSinceStart)
         float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
         float y = terrainMin.y + 80;
         m_trees.emplace_back(DinoVec2{x, y}, i);
+        m_trees[i].canStartGame = !m_dinoGameState->gamePreviouslyEnded;
     }
 }
 
@@ -114,14 +115,17 @@ void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
 
     m_terrain.Update(timeSinceStart);
 
-    for (DinoTree& tree : m_trees)
-        if (tree.WasLooped()) {
+    for (DinoTree& tree : m_trees) {
+        tree.Update(timeSinceStart, deltaTime);
+        if (tree.WasLooped() && tree.canStartGame) {
             m_trees.clear();
             m_dinoGameState->ChangeState(
                 std::make_unique<PlayState>(m_dinoGameState, tree.GetIdxSeason()),
                 timeSinceStart);
             break;
+
         }
+    }
 
 }
 
@@ -129,14 +133,6 @@ void LobbyState::DrawState(float deltaTime, double timeSinceStart)
 {
     //Draw
     std::cout << "LobbyState::DrawState" << std::endl;
-    std::vector<DinoVertex> vs;
-    DinoVec2 textSize = Dino_GenVertices_Text(vs, "Choose a tree to start", DinoColor_WHITE, DinoColor_GREY);
-    DinoVertexBuffer vertex_buffer = {vs.data(), vs.size(), "Title"};
-    float tx = (DinoGameState::RENDER_SIZE.x - textSize.x * 2) / 2;
-    XDino_Draw(vertex_buffer.GetVbufID(),
-               XDino_TEXID_FONT,
-               {tx, 0},
-               2);
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
@@ -165,6 +161,15 @@ void LobbyState::DrawState(float deltaTime, double timeSinceStart)
 
     for (DinoEntity* pEntity : m_entities)
         pEntity->Draw(timeSinceStart);
+
+    std::vector<DinoVertex> vs;
+    DinoVec2 textSize = Dino_GenVertices_Text(vs, "Choose a tree to start", DinoColor_WHITE, DinoColor_GREY);
+    DinoVertexBuffer vertex_buffer = {vs.data(), vs.size(), "Title"};
+    float tx = (DinoGameState::RENDER_SIZE.x - textSize.x * 2) / 2;
+    XDino_Draw(vertex_buffer.GetVbufID(),
+               XDino_TEXID_FONT,
+               {tx, 0},
+               2);
 }
 
 void LobbyState::ExitState()

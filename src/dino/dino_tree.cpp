@@ -18,11 +18,18 @@ DinoTree::DinoTree(DinoVec2 pos, int idxSeason)
 
 void DinoTree::Update(double timeSinceStart, float deltaTime)
 {
+    if (!canStartGame) {
+        m_timeSinceGameEnded += deltaTime;
+        if (m_timeUnselectable < m_timeSinceGameEnded) {
+            canStartGame = true;
+        }
+    }
 }
 
 void DinoTree::Draw(double timeSinceStart)
 {
     std::vector<DinoVertex> vs;
+    DinoColor treeColor = canStartGame ? DinoColor_WHITE : DinoColor_TRANSPARENT;
 
     uint16_t umin = 48 + m_idxSeason * 80;
     uint16_t umax = 80 + m_idxSeason * 80;
@@ -33,21 +40,27 @@ void DinoTree::Draw(double timeSinceStart)
     vs[0].pos = {0, 0};
     vs[0].u = umin;
     vs[0].v = vmin;
+    vs[0].color = treeColor;
     vs[1].pos = {32, 0};
     vs[1].u = umax;
     vs[1].v = vmin;
+    vs[1].color = treeColor;
     vs[2].pos = {0, 48};
     vs[2].u = umin;
     vs[2].v = vmax;
+    vs[2].color = treeColor;
     vs[3].pos = {32, 0};
     vs[3].u = umax;
     vs[3].v = vmin;
+    vs[3].color = treeColor;
     vs[4].pos = {0, 48};
     vs[4].u = umin;
     vs[4].v = vmax;
+    vs[4].color = treeColor;
     vs[5].pos = {32, 48};
     vs[5].u = umax;
     vs[5].v = vmax;
+    vs[5].color = treeColor;
 
     DinoVertexBuffer vbuf(vs.data(), vs.size(), "Tree");
     XDino_Draw(vbuf.GetVbufID(), s_texID, {m_pos.x - 16, m_pos.y - 40});

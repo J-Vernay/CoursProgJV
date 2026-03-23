@@ -7,6 +7,8 @@ class DinoTree : public DinoEntity {
 private:
     int m_idxSeason;
     bool m_bWasLooped;
+    float m_timeUnselectable = 5;
+    float m_timeSinceGameEnded = 0;
 
     static uint64_t s_texID;
 
@@ -16,6 +18,7 @@ public:
     DinoTree(DinoVec2 pos, int idxSeason);
     void Update(double timeSinceStart, float deltaTime);
     void Draw(double timeSinceStart) override;
+    bool canStartGame = true;
     bool WasLooped();
     int GetIdxSeason();
 

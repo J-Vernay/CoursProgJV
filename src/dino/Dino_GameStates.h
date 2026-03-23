@@ -32,6 +32,7 @@ public:
     uint64_t m_vbuffID_nom = 0;
     DinoVec2 m_textSize_nom = {};
     double m_lastTime = 0.0;
+    bool gamePreviouslyEnded = false;
 
     DinoAnimalSpawner g_spawner;
     DinoScoreManager g_scoreManager;

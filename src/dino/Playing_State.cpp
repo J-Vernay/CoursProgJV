@@ -17,6 +17,7 @@ PlayState::PlayState(DinoGameState* dinoGameState, int season)
 void PlayState::EnterState(double timeSinceStart)
 {
     std::cout << "PlayingState::EnterState" << std::endl;
+    m_dinoGameState->gamePreviouslyEnded = false;
     m_bWasStartPressed = true;
     m_terrain.Init(DinoGameState::RENDER_SIZE, m_season);
     m_dinoGameState->g_spawner.Init(m_dinoGameState->g_scoreManager);
@@ -28,48 +29,49 @@ void PlayState::UpdateState(float deltaTime, double timeSinceStart)
 {
     std::cout << "PlayingState::UpdateState" << std::endl;
     bool bPressedStart = false;
+    bool bPressedBtnRight = false;
     for (DinoGameState::PlayerState& player : m_dinoGameState->g_players) {
         DinoGamepad gamepad;
         if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
             player.gamepad = gamepad;
             bPressedStart = bPressedStart || gamepad.start;
+            bPressedBtnRight = bPressedBtnRight || gamepad.btn_right;
         }
     }
-
     if (bPressedStart && !m_bWasStartPressed) {
         if (!m_paused) {
             m_paused = true;
             m_currentPauseButton = 3;
         }
-        else {
-            switch (m_currentPauseButton) {
-            case 0: // Restart
-                m_dinoGameState->g_scoreManager.ResetScores();
-                m_paused = false;
-                m_dinoGameState->ChangeState(
-                    std::make_unique<PlayState>(m_dinoGameState, m_season),
-                    timeSinceStart
-
-                );
-                m_paused = false;
-                return;
-            case 1: // Lobby
-                m_dinoGameState->g_scoreManager.ResetScores();
-                m_dinoGameState->ChangeState(
-                    std::make_unique<LobbyState>(m_dinoGameState, m_season),
-                    timeSinceStart
-                );
-                return;
-            case 2: // Chrono 
-                break;
-            case 3: // Resume
-                m_paused = false;
-                break;
-            }
-        }
     }
     m_bWasStartPressed = bPressedStart;
 
+    if (bPressedBtnRight) {
+        switch (m_currentPauseButton) {
+        case 0: // Restart
+            m_dinoGameState->g_scoreManager.ResetScores();
+            m_paused = false;
+            m_dinoGameState->ChangeState(
+                std::make_unique<PlayState>(m_dinoGameState, m_season),
+                timeSinceStart
+
+            );
+            m_paused = false;
+            return;
+        case 1: // Lobby
+            m_dinoGameState->g_scoreManager.ResetScores();
+            m_dinoGameState->ChangeState(
+                std::make_unique<LobbyState>(m_dinoGameState, m_season),
+                timeSinceStart
+            );
+            return;
+        case 2: // Chrono 
+            break;
+        case 3: // Resume
+            m_paused = false;
+            break;
+        }
+    }
     if (m_paused) {
         UpdatePauseInput();
         return;
@@ -116,6 +118,7 @@ void PlayState::UpdateState(float deltaTime, double timeSinceStart)
             std::make_unique<LobbyState>(m_dinoGameState, m_season),
             timeSinceStart
         );
+        m_dinoGameState->gamePreviouslyEnded = true;
         return;
     }
 
