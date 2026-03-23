@@ -62,6 +62,12 @@ void DinoPlayer::Shut()
 {
 }
 
+void DinoPlayer::Reset()
+{
+    DinoVec2 renderSize = XDino_GetRenderSize();
+    m_pos = {renderSize.x / 2, renderSize.y / 2};
+}
+
 DinoVertexBuffer DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
 {
     float animSpeed;

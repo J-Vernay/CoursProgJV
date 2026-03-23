@@ -26,6 +26,7 @@ public:
     void Update(double timeSinceStart, float deltaTime, DinoGamepad gamepad);
     void Draw(double timeSinceStart) override;
     void Shut();
+    void Reset();
 
     static void InitStatic();
     static void ShutStatic();

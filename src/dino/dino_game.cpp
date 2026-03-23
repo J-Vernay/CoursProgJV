@@ -47,6 +47,7 @@ std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
 double g_chrono = CHRONO_INIT;
 bool g_bWasStartPressed = false;
+bool g_bWasDpadPressed = false;
 bool g_bPause = false;
 bool g_bLobby = true;
 
@@ -55,6 +56,7 @@ DinoVec2 textSize_prenom;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
+int g_pauseMenuIdx = 0;
 
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
@@ -144,6 +146,68 @@ void Dino_GameFrame(double timeSinceStart)
         g_bWasStartPressed = bPressedStart;
     }
 
+    if(g_bPause) {
+        bool bPressedUp = false;
+        bool bPressedDown = false;
+        bool bPressedLeft = false;
+        bool bPressedRight = false;
+        bool bPressedConfirm = false;
+        for (PlayerState& player : g_Players) {
+            DinoGamepad gamepad;
+            if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
+                player.gamepad = gamepad;
+                bPressedUp = bPressedUp || gamepad.dpad_up;
+                bPressedDown = bPressedDown || gamepad.dpad_down;
+                bPressedLeft = bPressedLeft || gamepad.dpad_left;
+                bPressedRight = bPressedRight || gamepad.dpad_right;
+                bPressedConfirm = bPressedConfirm || gamepad.btn_right;
+            }
+        }
+
+        if (bPressedUp && !g_bWasDpadPressed) {
+            g_pauseMenuIdx--;
+            if(g_pauseMenuIdx < 0) g_pauseMenuIdx = 3;
+        }
+        g_bWasDpadPressed = bPressedUp;
+
+        if (bPressedDown && !g_bWasDpadPressed) {
+            g_pauseMenuIdx++;
+            if(g_pauseMenuIdx > 3) g_pauseMenuIdx = 0;
+        }
+        g_bWasDpadPressed = bPressedDown;
+
+        if(g_pauseMenuIdx == 2) {
+            if(bPressedLeft) g_chrono -= 10;
+            if(bPressedRight) g_chrono += 10;
+        }
+
+        if(bPressedConfirm) {
+            switch (g_pauseMenuIdx) {
+                default:
+                    break;
+                case 0 :
+                    g_chrono = CHRONO_INIT;
+                    for(PlayerState& player : g_Players) {
+                        player.dino.Reset();
+                    }
+                    // reset g_chrono et player pos
+                    break;
+                case 1 :
+                    g_bLobby = true;
+                    g_bPause = false;
+                    for(PlayerState players : g_Players) {
+                        players.score = 0;
+                    }
+                    break;
+                case 2 :
+                    //nothing 
+                    break;
+                case 3 :
+                    g_bPause = false;
+                    break;
+            }
+        }
+    }
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
 
@@ -323,13 +387,40 @@ void Dino_GameFrame(double timeSinceStart)
         }
     }
     if (g_bPause) {
-        std::vector<DinoVertex> vs;
-        DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
-        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
-        float tx = (RENDER_SIZE.x - textSize.x * 6) / 2;
-        float ty = (RENDER_SIZE.y - textSize.y * 6) / 2;
-        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 6);
+        constexpr float SCALE_TITLE = 4.f;
+        constexpr float SCALE_ITEM  = 2.f;
+        constexpr float GAP         = 10.f;
+
+        float currentY = RENDER_SIZE.y * 0.15f;
+
+        {
+            std::vector<DinoVertex> vs;
+            DinoVec2 sz = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
+            DinoVertexBuffer vbuf(vs.data(), vs.size(), "Pause Title");
+            float tx = (RENDER_SIZE.x - sz.x * SCALE_TITLE) / 2.f;
+            XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, currentY}, SCALE_TITLE);
+            currentY += sz.y * SCALE_TITLE + GAP * 2.f;
+        }
+
+        struct MenuItem { const char* label; int idx; };
+        const MenuItem items[] = {
+            { "RESET",     0 },
+            { "LOBBY",     1 },
+            { "CHRONO",    2 },
+            { "REPRENDRE", 3 },
+        };
+
+        for (const MenuItem& item : items) {
+            DinoColor color = (g_pauseMenuIdx == item.idx) ? DinoColor_YELLOW : DinoColor_WHITE;
+            std::vector<DinoVertex> vs;
+            DinoVec2 sz = Dino_GenVertices_Text(vs, item.label, color, DinoColor_BLACK);
+            DinoVertexBuffer vbuf(vs.data(), vs.size(), item.label);
+            float tx = (RENDER_SIZE.x - sz.x * SCALE_ITEM) / 2.f;
+            XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, currentY}, SCALE_ITEM);
+            currentY += sz.y * SCALE_ITEM + GAP;
+        }
     }
+    
     {
         std::string text = std::format("{:.2f}", g_chrono);
         std::vector<DinoVertex> vs;
