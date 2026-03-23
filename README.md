@@ -2,6 +2,11 @@
 
 [Voir les crédits et licences du support de cours](assets/CREDITS.md)
 
+## Me contacter
+
+- Discord : jvernay
+- Courriel : edu@jvernay.fr
+
 ## Logiciels
 
 - Téléchargez et installez **Microsoft PIX on Windows**, un logiciel qui permet de
