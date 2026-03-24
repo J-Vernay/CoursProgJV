@@ -42,8 +42,7 @@ void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double ch
 
 void DinoAnimalSpawner::Shut()
 {
-    for (auto& animal : m_animals)
-        animal.Shut();
+    DinoAnimal::ShutStatic();
     m_animals.clear();
 
     XDino_DestroyGpuTexture(m_texID);
@@ -109,7 +108,7 @@ void DinoAnimal::Update(float deltaTime, double timeSinceStart)
         canBePushed = false;
         m_dir.x = 0;
         m_dir.y = -1;
-        timeDead += deltaTime;
+        m_timeDead += deltaTime;
     }
 
     m_pos.x += m_dir.x * SPEED * deltaTime;
@@ -122,14 +121,14 @@ void DinoAnimal::ReactLoop(double timeSinceStart, int lassoIndex)
     if (m_dead)
         return;
     m_dead = true;
-    catchPlayerId = lassoIndex;
-    pointsValue = m_ScoreManager->AddScore(lassoIndex, (EAnimalKind)m_animalType);
-    timeDead = 0;
+    m_catchPlayerId = lassoIndex;
+    m_pointsValue = m_ScoreManager->AddScore(lassoIndex, (EAnimalKind)m_animalType);
+    m_timeDead = 0;
 }
 
 bool DinoAnimal::IsDead(DinoAnimal& animal)
 {
-    return (animal.m_dead && animal.timeDead > animal.despawnTime);
+    return (animal.m_dead && animal.m_timeDead > animal.m_despawnTime);
 }
 
 
@@ -138,13 +137,13 @@ void DinoAnimal::Draw(double timeSinceStart)
     constexpr float TIME_FADE_IN = 1;
 
     if (m_dead) {
-        std::string text = std::format("+{0:02}", pointsValue);
+        std::string text = std::format("+{0:02}", m_pointsValue);
         DinoColor textColor =
-            catchPlayerId == 0
+            m_catchPlayerId == 0
                 ? DinoColor_BLUE
-                : catchPlayerId == 1
+                : m_catchPlayerId == 1
                 ? DinoColor_RED
-                : catchPlayerId == 2
+                : m_catchPlayerId == 2
                 ? DinoColor_YELLOW
                 : DinoColor_GREEN;
 
@@ -228,7 +227,7 @@ DinoVertexBuffer DinoAnimal::GenerateVertexBuffer(double timeSinceStart, float a
 
 };
 
-void DinoAnimal::Shut()
+void DinoAnimal::ShutStatic()
 {
 }
 

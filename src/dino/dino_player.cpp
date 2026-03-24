@@ -124,11 +124,6 @@ void DinoPlayer::ReactLoop(double timeSinceStart, int lassoIndex)
 }
 
 
-void DinoPlayer::Shut()
-{
-    //XDino_DestroyGpuTexture(s_texID);
-}
-
 void DinoPlayer::InitStatic()
 {
     s_texID = XDino_CreateGpuTexture("dinosaurs.png");

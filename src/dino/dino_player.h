@@ -20,24 +20,27 @@ struct anim {
 };
 
 struct DinoPlayer : public DinoEntity {
-    DinoPlayer(int idxPlayer);
-    bool m_bRight = false;
-    double m_endHitAnim = 0;
-    animState m_currentAnim = Idle;
-    int m_idxPlayer = 0;
-    std::vector<anim> m_anims;
-    static uint64_t s_texID;
 
+public:
+    DinoPlayer(int idxPlayer);
+    static uint64_t s_texID;
+    int m_idxPlayer = 0;
 
     void Update(double timeSinceStart, float deltaTime, DinoTerrain terrain, DinoGamepad gamepad);
     void Draw(double timeSinceStart) override;
     void ReactLoop(double timeSinceStart, int lassoIndex) override;
 
-    void Shut();
+    static void InitStatic();
+    static void ShutStatic();
+
+private:
+    bool m_bRight = false;
+    double m_endHitAnim = 0;
+    animState m_currentAnim = Idle;
+
+    std::vector<anim> m_anims;
 
     DinoVertexBuffer GenerateVertexBuffer(double timeSinceStart);
     anim Get_Current_Anim();
 
-    static void InitStatic();
-    static void ShutStatic();
 };

@@ -121,7 +121,7 @@ et le positionner correctement contre le bas de l'écran grâce à `translation`
 k) Qu'est-ce que le type `std::vector` ? Cherchez la page de documentation sur cppreference.
 Dans quelle catégorie est située cette page ?
 
-> un tableau à taille dynamique de différent types, dans ce cas ce sont des vectors
+> un tableau à taille dynamique de différent types
 
 l) Que signifie l'esperluette `&` à côté du paramètre `out` dans les fonctions déclarées
 dans `dino/dino_draw_utils.h` ? Que se passe-t-il si on l'enlève ?
@@ -139,7 +139,7 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> En inversant les UV.
+> En inversant les valeurs U des vertex.
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
@@ -292,7 +292,6 @@ Quel cas particulier n'est pas résoluble ?
 
 > On prends la direction entre les deux cercles que l'on divise en deux, chacun des deux cercle est repoussé de la
 > direction opposé à l'autre.
-> d = ((Ra+rb) - ab) / pas eu le temps de noter
 > Le risque est la division par zero si les 2 sont parfaitement au meme endroit
 
 e) Implémentez la fonctionnalité F4.3 .
@@ -315,7 +314,8 @@ comme la réaction à un événement du type "limite du terrain" ? L'appliquer d
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> Les méthodes gérant les collisions et les limites de terrain sont des méthodes qu'on peut utiliser ce principe.
+> Les méthodes gérant les collisions et les limites de terrain sont des méthodes qu'on peut utiliser ce principe. De
+> meme pour draw et update.
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
@@ -337,6 +337,7 @@ c) Implémentez la fonctionnalité F4.3 . Combien d'intersections de segments so
 Quelle méthode de `std::vector` utiliser ?
 
 > On a 12 vérifications par frame On utilisera la méthode .size() pour ne pas calculer toutes les positions du lasso.
+> Soit environ 480.
 
 d) Implémentez la fonctionnalité F4.4 , tout en faisant que les instances de la classe `DinoPlayer` n'ont pas besoin d'
 interagir entre elles.
@@ -361,7 +362,7 @@ Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets p
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> Le programmedemande à l'OS de l'espace dans la mémoir pour y stocker des valeurs qui lui sont/seront utiles. L'OS
+> Le programme demande à l'OS de l'espace dans la mémoire pour y stocker des valeurs qui lui sont/seront utiles. L'OS
 > cherche un emplacement dans la RAM, "Map" (récupère l'adresse où il a stocké) puis retourne l'adresse (pointeur) au
 > programme. Une allocation mémoire est d'autant plus couteuse que la taille demandée augmente.
 
@@ -405,6 +406,7 @@ et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est 
 > DinoVec2 operator+(DinoVec2 a, DinoVec2 b);
 > DinoVec2 operator*(DinoVec2 a, float b);
 > DinoVec2 operator*(float a, DinoVec2 b);
+> On utilise donc la syntaxe operator.
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?

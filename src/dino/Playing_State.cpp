@@ -16,7 +16,6 @@ PlayState::PlayState(DinoGameState* dinoGameState, int season)
 
 void PlayState::EnterState(double timeSinceStart)
 {
-    std::cout << "PlayingState::EnterState" << std::endl;
     m_dinoGameState->gamePreviouslyEnded = false;
     m_bWasStartPressed = true;
     m_terrain.Init(DinoGameState::RENDER_SIZE, m_season);
@@ -27,7 +26,6 @@ void PlayState::EnterState(double timeSinceStart)
 
 void PlayState::UpdateState(float deltaTime, double timeSinceStart)
 {
-    std::cout << "PlayingState::UpdateState" << std::endl;
     bool bPressedStart = false;
     bool bPressedBtnRight = false;
     for (DinoGameState::PlayerState& player : m_dinoGameState->g_players) {
@@ -82,8 +80,7 @@ void PlayState::UpdateState(float deltaTime, double timeSinceStart)
 
     auto& animals = m_dinoGameState->g_spawner.m_animals;
     auto it = std::remove_if(animals.begin(), animals.end(), DinoAnimal::IsDead);
-    for (auto it2 = it; it2 < animals.end(); ++it2)
-        it2->Shut();
+    DinoAnimal::ShutStatic();
     animals.erase(it, animals.end());
     m_dinoGameState->g_spawner.Update(deltaTime, timeSinceStart, m_chrono);
 
@@ -158,7 +155,6 @@ void PlayState::UpdatePauseInput()
 
 void PlayState::DrawState(float deltaTime, double timeSinceStart)
 {
-    std::cout << "PlayingState::DrawState" << std::endl;
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
     XDino_SetClearColor(CLEAR_COLOR);
     XDino_SetRenderSize(DinoGameState::RENDER_SIZE);

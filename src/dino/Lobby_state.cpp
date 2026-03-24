@@ -18,7 +18,6 @@ LobbyState::LobbyState(DinoGameState* dino_gameState, int season)
 
 void LobbyState::EnterState(double timeSinceStart)
 {
-    std::cout << "LobbyState::EnterState" << std::endl;
     m_terrain.Init(DinoGameState::RENDER_SIZE, m_season);
     DinoVec2 terrainMin = m_terrain.GetTopLeft();
     DinoVec2 terrainMax = m_terrain.GetBottomRight();
@@ -32,7 +31,6 @@ void LobbyState::EnterState(double timeSinceStart)
 
 void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
 {
-    std::cout << "LobbyState::UpdateState" << std::endl;
     for (DinoGameState::PlayerState& player : m_dinoGameState->g_players) {
         DinoGamepad gamepad;
         if (XDino_GetGamepad(player.gamepadIdx, gamepad))
@@ -132,7 +130,6 @@ void LobbyState::UpdateState(float deltaTime, double timeSinceStart)
 void LobbyState::DrawState(float deltaTime, double timeSinceStart)
 {
     //Draw
-    std::cout << "LobbyState::DrawState" << std::endl;
 
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
 
@@ -177,5 +174,4 @@ void LobbyState::ExitState()
     m_terrain.Shut();
     m_trees.clear();
     m_entities.clear();
-    std::cout << "LobbyState::ExitState" << std::endl;
 }
