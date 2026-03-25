@@ -35,6 +35,7 @@ void DinoEntity::ApplyTerrainLimit(DinoTerrain terrain)
     DinoVec2 pos = m_pos;
     DinoVec2 topLeftCorner = terrain.GetTopLeft();
     DinoVec2 bottomRightCorner = terrain.GetBottomRight();
+
     pos.x = std::clamp(pos.x, topLeftCorner.x, bottomRightCorner.x);
     pos.y = std::clamp(pos.y, topLeftCorner.y, bottomRightCorner.y);
 

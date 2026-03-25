@@ -10,12 +10,13 @@
 #include <map>
 #include <dino/DinoController.h>
 #include <dino/dino_terrain.h>
+#include <dino/dino_tree.h>
 
 #include <format>
 
 constexpr double SPAWNTIME_BEGIN = 1;
 constexpr double SPAWNTIME_END = 0.2;
-constexpr double CHRONO_INIT = 60;
+constexpr double CHRONO_INIT = 10;
 
 // Variables globales.
 double g_lastTime = 0;
@@ -23,15 +24,16 @@ double g_lastTime = 0;
 uint64_t vbufID_prenom;
 DinoVec2 textSize_Prenom;
 
-std::map<DinoGamepadIdx, DinoController> GamepadControllers;
-std::vector<DinoController*> g_players;
 uint64_t texID_dino;
 
+std::map<DinoGamepadIdx, DinoController> GamepadControllers;
+std::vector<DinoController*> g_players;
 std::vector<DinoLasso> g_Lassos;
+std::vector<DinoAnimal> g_Animals;
+std::vector<DinoTree> g_Trees;
 
 DinoTerrain g_terrain;
 
-std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
 double g_chrono = CHRONO_INIT;
 
@@ -39,14 +41,15 @@ bool g_wasStartPressed = false;
 bool g_pause = false;
 bool g_lobby = true;
 
+constexpr DinoVec2 TERRAIN_SIZE = {24, 16};
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
+constexpr int FLOWER_NUMBER_PER_TYPE = 60;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
 void Dino_GameInit()
 {
-    // DinoVec2 windowSize = XDino_GetWindowSize();
     XDino_SetRenderSize(RENDER_SIZE);
 
     int playerCount = 0;
@@ -82,14 +85,24 @@ void Dino_GameInit()
         vbufID_prenom = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Nom");
     }
 
+    int idxSeason = XDino_RandomInt32(0, 3);
+    g_terrain.Init(TERRAIN_SIZE, FLOWER_NUMBER_PER_TYPE, idxSeason);
+
+    DinoVec2 terrainMin = g_terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_terrain.GetBottomRight();
+    for (int i = 0; i < 4; ++i) {
+        float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+        float y = terrainMin.y + 80;
+        g_Trees.emplace_back(DinoVec2{x, y}, i, 0);
+    }
+
     // Preparing the texture for the dino
     texID_dino = XDino_CreateGpuTexture("dinosaurs.png");
-
-    g_terrain.Init(DinoVec2{24, 16}, 10);
 
     // Preparing texture of animals
     DinoAnimal::InitTexture();
     DinoController::InitTexture();
+    DinoTree::InitTexture();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -120,10 +133,6 @@ void Dino_GameFrame(double timeSinceStart)
                 controller.QuitGame();
                 g_Lassos[controller.m_dinoColor].isInGame = false;
             }
-
-            if (gamepad.shoulder_right) {
-                g_lobby = false;
-            }
         }
         else {
             pressedStart = pressedStart || gamepad.start;
@@ -141,6 +150,17 @@ void Dino_GameFrame(double timeSinceStart)
             g_pause = !g_pause; // g_pause prend l'inverse de g_pause
         g_wasStartPressed = pressedStart;
     }
+
+    // // First frame of new lobby
+    // if (g_lobby && g_Trees.size() == 0) {
+    //     DinoVec2 terrainMin = g_terrain.GetTopLeft();
+    //     DinoVec2 terrainMax = g_terrain.GetBottomRight();
+    //     for (int i = 0; i < 4; ++i) {
+    //         float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+    //         float y = terrainMin.y + 80;
+    //         g_Trees.emplace_back(DinoVec2{x, y}, i);
+    //     }
+    // }
 
     // Managing animal logic
 
@@ -174,35 +194,73 @@ void Dino_GameFrame(double timeSinceStart)
     std::vector<DinoEntity*> entities;
     for (DinoController* player : g_players)
         entities.emplace_back(player);
+
     for (DinoAnimal& animal : g_Animals)
-        entities.emplace_back(&animal);
+        if (!g_lobby)
+            entities.emplace_back(&animal);
 
-    for (size_t idxA = 0; idxA < entities.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
-            DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+    if (g_lobby) {
+        for (DinoTree& tree : g_Trees) {
+            entities.emplace_back(&tree);
+            tree.Update(timeSinceStart, deltaTime);
+        }
+    }
 
-    for (DinoEntity* pEntity : entities)
-        pEntity->ApplyTerrainLimit(g_terrain);
+    {
+        for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+            for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+                DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
 
-    if (g_Lassos.size() != g_players.size())
-        DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
-    for (int i = 0; i < g_Lassos.size(); ++i)
-        g_Lassos[i].Update(g_players[i]->GetPos());
-
-    for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
-        for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
-            DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
-
-    for (DinoLasso& lasso : g_Lassos)
         for (DinoEntity* pEntity : entities)
-            if (lasso.WasInLoop(pEntity->GetPos()))
-                pEntity->ReactLoop(timeSinceStart);
+            pEntity->ApplyTerrainLimit(g_terrain);
+
+        if (g_Lassos.size() != g_players.size())
+            DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
+        for (int i = 0; i < g_Lassos.size(); ++i)
+            g_Lassos[i].Update(g_players[i]->GetPos());
+
+        for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
+            for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
+                DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
+
+        for (DinoLasso& lasso : g_Lassos)
+            for (DinoEntity* pEntity : entities)
+                if (lasso.WasInLoop(pEntity->GetPos()))
+                    pEntity->ReactLoop(timeSinceStart);
+    }
+
+    if (g_lobby) {
+        for (DinoTree& tree : g_Trees)
+            if (tree.WasLooped()) {
+                // Lobby -> Gameplay
+                g_lobby = false;
+                g_terrain.Shut();
+                g_terrain.Init(TERRAIN_SIZE, FLOWER_NUMBER_PER_TYPE, tree.GetIdxSeason());
+                g_Trees.clear();
+                break;
+            }
+    }
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     // Décrémenter le chronomètre.
     if (!g_lobby && !g_pause)
         g_chrono -= deltaTime;
+
+    if (g_chrono <= 0.f && !g_lobby) {
+        g_lobby = true;
+        g_chrono = CHRONO_INIT;
+
+        g_Animals.clear();
+
+        DinoVec2 terrainMin = g_terrain.GetTopLeft();
+        DinoVec2 terrainMax = g_terrain.GetBottomRight();
+        for (int i = 0; i < 4; ++i) {
+            float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+            float y = terrainMin.y + 80;
+            g_Trees.emplace_back(DinoVec2{x, y}, i, 5);
+        }
+    }
 
     // -- Affichage -- 
 
@@ -297,6 +355,7 @@ void Dino_GameShut()
     XDino_DestroyGpuTexture(texID_dino);
     DinoAnimal::ShutTexture();
     DinoController::ShutTexture();
+    DinoTree::ShutTexture();
 
     g_terrain.Shut();
 }

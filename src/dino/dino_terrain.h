@@ -4,10 +4,10 @@
 
 class DinoTerrain {
 
-    DinoVec2 sizeInTiles;
-    DinoVec2 translation;
-    int flwrNbrPerGroup;
-    int season;
+    DinoVec2 m_sizeInTiles;
+    DinoVec2 m_translation;
+    int m_flwrNbrPerGroup;
+    int m_season;
 
     uint64_t texID_terrain;
     uint64_t vbufID_bg;
@@ -15,7 +15,7 @@ class DinoTerrain {
     uint64_t vbufID_flwrs;
 
 public:
-    void Init(DinoVec2 sizeOfTerrainInTiles, int NbrOfFlowersPerGroup);
+    void Init(DinoVec2 sizeOfTerrainInTiles, int NbrOfFlowersPerGroup, int season);
     void Shut();
 
     void DrawBG();
