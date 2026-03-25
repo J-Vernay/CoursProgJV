@@ -10,6 +10,9 @@ private:
     DinoColor m_color;
 
 public:
+    bool isInGame;
+
+
     void Init(DinoColor color);
     void Update(DinoVec2 pos);
     bool WasInLoop(DinoVec2 pos);

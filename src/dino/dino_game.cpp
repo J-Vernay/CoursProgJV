@@ -23,8 +23,8 @@ double g_lastTime = 0;
 uint64_t vbufID_prenom;
 DinoVec2 textSize_Prenom;
 
-std::map<DinoGamepadIdx, DinoControllerFields> GamepadControllers;
-std::vector<DinoControllerFields*> g_players;
+std::map<DinoGamepadIdx, DinoController> GamepadControllers;
+std::vector<DinoController*> g_players;
 uint64_t texID_dino;
 
 std::vector<DinoLasso> g_Lassos;
@@ -35,6 +35,11 @@ std::vector<DinoAnimal> g_Animals;
 double g_timeSpawnAnimal = 0;
 double g_chrono = CHRONO_INIT;
 
+bool g_wasStartPressed = false;
+bool g_pause = false;
+bool g_lobby = true;
+
+constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -42,8 +47,7 @@ int g_debugScroll = 0;
 void Dino_GameInit()
 {
     // DinoVec2 windowSize = XDino_GetWindowSize();
-    DinoVec2 windowSize = {480, 360};
-    XDino_SetRenderSize(windowSize);
+    XDino_SetRenderSize(RENDER_SIZE);
 
     int playerCount = 0;
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
@@ -52,7 +56,7 @@ void Dino_GameInit()
         if (!bSuccess)
             continue;
 
-        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
+        DinoController& controller = GamepadControllers[gamepadIdx];
         controller = {};
 
         g_players.emplace_back(&controller);
@@ -85,7 +89,7 @@ void Dino_GameInit()
 
     // Preparing texture of animals
     DinoAnimal::InitTexture();
-    DinoControllerFields::InitTexture();
+    DinoController::InitTexture();
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -94,36 +98,49 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
-
-        if (gamepad.start)
-            return;
-    }
-
     // Gestion des entrées et mise à jour de la logique des dinos.
+
+    // Lecture des inputs des joueurs
+    bool pressedStart = false;
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
         DinoGamepad gamepad{};
         bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
         if (!bSuccess)
             continue;
 
-        DinoControllerFields& controller = GamepadControllers[gamepadIdx];
+        DinoController& controller = GamepadControllers[gamepadIdx];
+
+        if (g_lobby) {
+            if (gamepad.start) {
+                controller.EnterGame();
+                g_Lassos[controller.m_dinoColor].isInGame = true;
+            }
+
+            if (gamepad.select) {
+                controller.QuitGame();
+                g_Lassos[controller.m_dinoColor].isInGame = false;
+            }
+
+            if (gamepad.shoulder_right) {
+                g_lobby = false;
+            }
+        }
+        else {
+            pressedStart = pressedStart || gamepad.start;
+        }
+
+        if (g_pause) {
+            continue;
+        }
 
         controller.DinoMovement(gamepad, deltaTime);
     }
 
-    // for (DinoControllerFields* playerA : g_players) {
-    //     for (DinoControllerFields* playerB : g_players) {
-    //         if (playerA == playerB)
-    //             continue;
-    //
-    //         playerA->CheckForOtherLassIntersections(*playerB);
-    //     }
-    // }
+    if (!g_lobby) {
+        if (pressedStart && !g_wasStartPressed)
+            g_pause = !g_pause; // g_pause prend l'inverse de g_pause
+        g_wasStartPressed = pressedStart;
+    }
 
     // Managing animal logic
 
@@ -135,7 +152,7 @@ void Dino_GameFrame(double timeSinceStart)
         it2->Shut();
     g_Animals.erase(it, g_Animals.end());
 
-    if (timeSinceStart > g_timeSpawnAnimal) {
+    if (timeSinceStart > g_timeSpawnAnimal && !g_lobby && !g_pause) {
         DinoAnimal& animal = g_Animals.emplace_back();
         EAnimalKind kind = (EAnimalKind)XDino_RandomInt32(0, 7);
 
@@ -149,12 +166,13 @@ void Dino_GameFrame(double timeSinceStart)
         g_timeSpawnAnimal = timeSinceStart + spawnTime;
     }
     for (DinoAnimal& animal : g_Animals)
-        animal.Update(deltaTime);
+        if (!g_pause)
+            animal.Update(deltaTime);
 
     // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
     // car il y a un lien d'héritage.
     std::vector<DinoEntity*> entities;
-    for (DinoControllerFields* player : g_players)
+    for (DinoController* player : g_players)
         entities.emplace_back(player);
     for (DinoAnimal& animal : g_Animals)
         entities.emplace_back(&animal);
@@ -183,7 +201,8 @@ void Dino_GameFrame(double timeSinceStart)
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
     // Décrémenter le chronomètre.
-    g_chrono -= deltaTime;
+    if (!g_lobby && !g_pause)
+        g_chrono -= deltaTime;
 
     // -- Affichage -- 
 
@@ -216,6 +235,15 @@ void Dino_GameFrame(double timeSinceStart)
     //
     //     controller.Draw(deltaTime);
     // }
+
+    if (g_pause) {
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
+        float tx = (RENDER_SIZE.x - textSize.x * 6) / 2;
+        float ty = (RENDER_SIZE.y - textSize.y * 6) / 2;
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 6);
+    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
@@ -268,7 +296,7 @@ void Dino_GameShut()
 
     XDino_DestroyGpuTexture(texID_dino);
     DinoAnimal::ShutTexture();
-    DinoControllerFields::ShutTexture();
+    DinoController::ShutTexture();
 
     g_terrain.Shut();
 }

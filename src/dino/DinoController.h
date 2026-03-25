@@ -2,8 +2,9 @@
 
 #include <dino/xdino.h>
 #include <dino/dino_entity.h>
+#include <dino/dino_draw_utils.h> 
 
-struct DinoControllerFields : public DinoEntity {
+struct DinoController : public DinoEntity {
 
     // Fields
 private:
@@ -32,13 +33,15 @@ public:
 
     // Methods
 private:
-    DinoVertexBuffer GenDinoVertexBuffer(float timeSinceStart);
+    DinoVertexBuffer GenDinoVertexBuffer(double timeSinceStart);
     void ReactLimit(bool xChanged) override;
     void ReactLoop(double timeSinceStart) override;
 
 public:
     void Init(int playerCount);
     // void Shut();
+    void EnterGame();
+    void QuitGame();
 
     void DinoMovement(DinoGamepad gamepad, float deltaTime);
     void Draw(double timeSinceStart) override;

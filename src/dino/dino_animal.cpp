@@ -28,6 +28,8 @@ void DinoAnimal::Init(EAnimalKind animalKind, DinoVec2 pos, double timeSinceStar
     m_kind = animalKind;
 
     m_timeAtBirth = timeSinceStart;
+
+    m_isInGame = true;
 }
 
 void DinoAnimal::Shut()

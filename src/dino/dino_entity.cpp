@@ -1,3 +1,4 @@
+#include "DinoController.h"
 #include "dino_terrain.h"
 
 #include <algorithm>
@@ -5,6 +6,10 @@
 
 void DinoEntity::ResolveCollision(DinoEntity& playerA, DinoEntity& playerB)
 {
+    if (!playerA.m_isInGame || !playerB.m_isInGame) {
+        return;
+    }
+
     DinoVec2& a = playerA.m_pos;
     DinoVec2& b = playerB.m_pos;
     float ab = sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));

@@ -6,6 +6,8 @@ class DinoEntity {
 protected:
     DinoVec2 m_pos = {};
 
+    bool m_isInGame = false;
+
     // Appelée quand ApplyLimit() détecte le bord du terrain
     virtual void ReactLimit(bool xChanged) = 0;
 

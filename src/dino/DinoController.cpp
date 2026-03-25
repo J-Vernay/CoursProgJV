@@ -24,9 +24,9 @@ constexpr DinoVec2 UPPER_RIGHT = {24, 0};
 constexpr DinoVec2 LOWER_LEFT = {0, 24};
 constexpr DinoVec2 LOWER_RIGHT = {24, 24};
 
-uint64_t DinoControllerFields::s_texID = 0;
+uint64_t DinoController::s_texID = 0;
 
-void DinoControllerFields::Init(int playerCount)
+void DinoController::Init(int playerCount)
 {
     DinoVec2 windowSize = {480, 360};
     this->m_pos = {windowSize.x / 2, windowSize.y / 2};
@@ -47,10 +47,23 @@ void DinoControllerFields::Init(int playerCount)
 //     
 // }
 
-void DinoControllerFields::DinoMovement(DinoGamepad gamepad, float deltaTime)
+void DinoController::EnterGame()
+{
+    m_isInGame = true;
+}
+
+void DinoController::QuitGame()
+{
+    m_isInGame = false;
+}
+
+void DinoController::DinoMovement(DinoGamepad gamepad, float deltaTime)
 {
     m_gamepad = gamepad;
 
+    if (!m_isInGame) {
+        return;
+    }
     if (this->m_dinoTakeDamage)
         return;
 
@@ -78,11 +91,11 @@ void DinoControllerFields::DinoMovement(DinoGamepad gamepad, float deltaTime)
     // CheckForOwnLassoIntersections();
 }
 
-void DinoControllerFields::ReactLimit(bool xChanged)
+void DinoController::ReactLimit(bool xChanged)
 {
 }
 
-void DinoControllerFields::ReactLoop(double timeSinceStart)
+void DinoController::ReactLoop(double timeSinceStart)
 {
     if (!m_dinoTakeDamage) {
         this->m_dinoDamageAnimTimer = timeSinceStart + ANIM_HURT_LEN;
@@ -90,7 +103,7 @@ void DinoControllerFields::ReactLoop(double timeSinceStart)
     }
 }
 
-DinoVertexBuffer DinoControllerFields::GenDinoVertexBuffer(float timeSinceStart)
+DinoVertexBuffer DinoController::GenDinoVertexBuffer(double timeSinceStart)
 {
     // Choosing Animation based on current player behaviour
     int currAnimLen;
@@ -168,8 +181,12 @@ DinoVertexBuffer DinoControllerFields::GenDinoVertexBuffer(float timeSinceStart)
     return DinoVertexBuffer(vs.data(), vs.size(), "Dino");
 }
 
-void DinoControllerFields::Draw(double timeSinceStart)
+void DinoController::Draw(double timeSinceStart)
 {
+    if (!m_isInGame) {
+        return;
+    }
+
     DinoVertexBuffer vbuf = GenDinoVertexBuffer(timeSinceStart);
     // -12 / -18 to move the position to the feet and not the corner of the texture
     XDino_Draw(vbuf.Get(), s_texID, {this->m_pos.x - 12, this->m_pos.y - 18}, DINO_SCALE);
@@ -229,12 +246,12 @@ void DinoControllerFields::Draw(double timeSinceStart)
 //     }
 // }
 
-void DinoControllerFields::InitTexture()
+void DinoController::InitTexture()
 {
     s_texID = XDino_CreateGpuTexture("dinosaurs.png");
 }
 
-void DinoControllerFields::ShutTexture()
+void DinoController::ShutTexture()
 {
     XDino_DestroyGpuTexture(s_texID);
 }

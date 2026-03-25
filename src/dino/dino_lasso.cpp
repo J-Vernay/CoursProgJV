@@ -63,6 +63,10 @@ bool DinoLasso::WasInLoop(DinoVec2 pos)
 
 void DinoLasso::Draw()
 {
+    if (!this->isInGame) {
+        return;
+    }
+
     std::vector<DinoVertex> vs;
     Dino_GenVertices_Polyline(vs, m_lasso, 4, m_color);
     DinoVertexBuffer vbuf(vs.data(), vs.size(), "Lasso");
@@ -71,6 +75,10 @@ void DinoLasso::Draw()
 
 void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)
 {
+    if (!lassoA.isInGame || !lassoB.isInGame) {
+        return;
+    }
+
     if (lassoA.m_lasso.size() < 2 || lassoB.m_lasso.size() < 2)
         return;
 
