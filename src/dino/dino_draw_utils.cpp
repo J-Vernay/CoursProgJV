@@ -271,6 +271,7 @@ DinoVertexBuffer::DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCou
 
 DinoVertexBuffer::~DinoVertexBuffer()
 {
+    printf("Destroy VBO %llu\n", m_vbufID);
     XDino_DestroyVertexBuffer(m_vbufID);
 }
 

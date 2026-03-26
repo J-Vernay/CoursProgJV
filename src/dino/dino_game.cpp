@@ -118,6 +118,16 @@ void Dino_GameFrame(double timeSinceStart)
         DinoColor_GREEN,
     };
 
+    // Lecture des inputs des joueurs
+
+    for (PlayerState& player : g_Players) {
+        DinoGamepad gamepad;
+        if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
+            player.gamepad = gamepad;
+            bPressedStart = bPressedStart || gamepad.start;
+        }
+    }
+
     switch (g_state) {
     case lobby: {
 
@@ -168,16 +178,6 @@ void Dino_GameFrame(double timeSinceStart)
             }
         std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
-        // Lecture des inputs des joueurs
-
-        for (PlayerState& player : g_Players) {
-            DinoGamepad gamepad;
-            if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
-                player.gamepad = gamepad;
-                bPressedStart = bPressedStart || gamepad.start;
-            }
-        }
-
         for (PlayerState& player : g_Players)
             player.dino.Update(timeSinceStart, deltaTime, player.gamepad);
 
@@ -186,17 +186,6 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     case gamePaused: {
-
-        // Lecture des inputs des joueurs
-
-        for (PlayerState& player : g_Players) {
-            DinoGamepad gamepad;
-            if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
-                player.gamepad = gamepad;
-                bPressedStart = bPressedStart || gamepad.start;
-            }
-        }
-
         // sortir de pause le jeu
         if (bPressedStart && !g_bWasStartPressed)
             g_state = inGame;
@@ -214,17 +203,6 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     case inGame: {
-
-        // Lecture des inputs des joueurs
-
-        for (PlayerState& player : g_Players) {
-            DinoGamepad gamepad;
-            if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
-                player.gamepad = gamepad;
-                bPressedStart = bPressedStart || gamepad.start;
-            }
-        }
-
         // Purger les animaux qui sont morts.
         // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
         // Il faut ensuite appeler .erase() pour enlever les éléments.
@@ -241,8 +219,9 @@ void Dino_GameFrame(double timeSinceStart)
             float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
             DinoAnimal& animal = g_Animals.emplace_back(timeSinceStart, kind, DinoVec2{x, y});
-            double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono;
+            double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono + 2;
             g_timeSpawnAnimal = timeSinceStart + spawnTime;
+            }
         }
 
         // Update les animaux.
@@ -284,7 +263,7 @@ void Dino_GameFrame(double timeSinceStart)
 
         break;
     }
-    }
+    
 
     // Affichage
 
@@ -297,8 +276,10 @@ void Dino_GameFrame(double timeSinceStart)
     for (PlayerState& player : g_Players)
         player.lasso.Draw();
 
-    for (DinoEntity* pEntity : entities)
+    for (DinoEntity* pEntity : entities) {
+        DinoVec2 test = pEntity->m_pos;
         pEntity->Draw(timeSinceStart);
+    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
