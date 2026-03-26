@@ -16,7 +16,7 @@
 
 constexpr double SPAWNTIME_BEGIN = 1;
 constexpr double SPAWNTIME_END = 0.2;
-constexpr double CHRONO_INIT = 10;
+constexpr double CHRONO_INIT = 60;
 
 // Variables globales.
 double g_lastTime = 0;
@@ -43,7 +43,7 @@ bool g_lobby = true;
 
 constexpr DinoVec2 TERRAIN_SIZE = {24, 16};
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
-constexpr int FLOWER_NUMBER_PER_TYPE = 60;
+constexpr int FLOWER_NUMBER_PER_TYPE = 10;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
