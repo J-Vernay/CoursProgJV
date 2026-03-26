@@ -2,7 +2,7 @@
 
 #include <dino/xdino.h>
 #include <dino/dino_entity.h>
-#include <dino/dino_draw_utils.h> 
+#include <dino/dino_draw_utils.h>
 
 struct DinoController : public DinoEntity {
 
@@ -35,7 +35,7 @@ public:
 private:
     DinoVertexBuffer GenDinoVertexBuffer(double timeSinceStart);
     void ReactLimit(bool xChanged) override;
-    void ReactLoop(double timeSinceStart) override;
+    void ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor) override;
 
 public:
     void Init(int playerCount);

@@ -95,7 +95,7 @@ void DinoController::ReactLimit(bool xChanged)
 {
 }
 
-void DinoController::ReactLoop(double timeSinceStart)
+void DinoController::ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor)
 {
     if (!m_dinoTakeDamage) {
         this->m_dinoDamageAnimTimer = timeSinceStart + ANIM_HURT_LEN;

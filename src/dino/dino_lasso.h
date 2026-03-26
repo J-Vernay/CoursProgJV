@@ -7,9 +7,8 @@ private:
     std::vector<DinoVec2> m_lasso;
     std::vector<DinoVec2> m_loopLasso;
 
-    DinoColor m_color;
-
 public:
+    DinoColor m_color;
     bool isInGame;
 
 

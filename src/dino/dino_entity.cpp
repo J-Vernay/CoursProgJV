@@ -4,6 +4,11 @@
 #include <algorithm>
 #include <dino/dino_entity.h>
 
+EAnimalKind DinoEntity::GetKind()
+{
+    return EAnimalKind::Other;
+}
+
 void DinoEntity::ResolveCollision(DinoEntity& playerA, DinoEntity& playerB)
 {
     if (!playerA.m_isInGame || !playerB.m_isInGame) {

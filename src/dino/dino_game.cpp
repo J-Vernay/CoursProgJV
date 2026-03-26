@@ -223,10 +223,27 @@ void Dino_GameFrame(double timeSinceStart)
             for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
                 DinoLasso::ResolveCollision(g_Lassos[idxA], g_Lassos[idxB]);
 
-        for (DinoLasso& lasso : g_Lassos)
-            for (DinoEntity* pEntity : entities)
-                if (lasso.WasInLoop(pEntity->GetPos()))
-                    pEntity->ReactLoop(timeSinceStart);
+        std::vector<EAnimalKind> kinds;
+        EAnimalKind currKind;
+        int sameKindCount = 0;
+        for (DinoLasso& lasso : g_Lassos) {
+            for (DinoEntity* pEntity : entities) {
+                if (lasso.WasInLoop(pEntity->GetPos())) {
+                    if (pEntity->GetKind() != EAnimalKind::Other) {
+                        currKind = pEntity->GetKind();
+                        kinds.emplace_back(currKind);
+                        for (EAnimalKind kind : kinds) {
+                            if (kind == currKind)
+                                sameKindCount++;
+                        }
+                    }
+                    pEntity->ReactLoop(timeSinceStart, sameKindCount, lasso.m_color);
+                    sameKindCount = 0;
+                }
+            }
+            kinds.clear();
+            currKind = EAnimalKind::Other;
+        }
     }
 
     if (g_lobby) {
@@ -274,25 +291,9 @@ void Dino_GameFrame(double timeSinceStart)
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
 
-    // Dessin de la "polyligne"
-    // XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
-
-    // // Drawing Animals
-    // for (DinoAnimal& animal : g_Animals)
-    //     animal.Draw(timeSinceStart);
-    //
-    // // Drawing Dinos
-    // for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-    //
-    //     DinoGamepad gamepad{};
-    //     bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-    //     if (!bSuccess)
-    //         continue;
-    //
-    //     DinoControllerFields& controller = GamepadControllers[gamepadIdx];
-    //
-    //     controller.Draw(deltaTime);
-    // }
+    for (DinoAnimal& animal : g_Animals) {
+        animal.DrawScoreText(deltaTime);
+    }
 
     if (g_pause) {
         std::vector<DinoVertex> vs;

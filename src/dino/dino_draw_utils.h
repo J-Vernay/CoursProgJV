@@ -49,7 +49,7 @@ void Dino_GenVertices_Polyline(
 
 // À bouger dans vos fichiers dino_animal.cpp/dino_animal.h
 
-enum class EAnimalKind : int { Pig1, Pig2, Cow1, Cow2, Sheep1, Sheep2, Ostrich1, Ostrich2 };
+enum class EAnimalKind : int { Pig1, Pig2, Cow1, Cow2, Sheep1, Sheep2, Ostrich1, Ostrich2, Other };
 
 enum class EAnimalAnim : int { Up, Down, Left, Right };
 

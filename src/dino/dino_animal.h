@@ -10,6 +10,9 @@ class DinoAnimal : public DinoEntity {
     DinoVec2 m_dir = {};
 
     EAnimalKind m_kind = {};
+    int m_scoreToGive = 0;
+    double m_timeToDisplayScore = 0;
+    DinoColor m_scoreColor = {};
 
     double m_timeAtBirth = 0;
     bool m_dead = false;
@@ -19,7 +22,7 @@ class DinoAnimal : public DinoEntity {
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
     void ReactLimit(bool xChanged) override;
-    void ReactLoop(double timeSinceStart);
+    void ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor) override;
 
 public:
     void Init(EAnimalKind animalKind, DinoVec2 pos, double timeSinceStart);
@@ -27,7 +30,10 @@ public:
 
     void Update(float deltaTime);
 
+    EAnimalKind GetKind() override;
+
     void Draw(double timeSinceStart);
+    void DrawScoreText(double deltaTime);
 
     static void InitTexture();
     static void ShutTexture();
