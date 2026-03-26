@@ -6,7 +6,7 @@ void DinoTree::ReactLimit(bool xChanged)
 {
 }
 
-void DinoTree::ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor)
+void DinoTree::ReactLoop(double timeSinceStart, int score, DinoColor lassoColor)
 {
     if (m_unusableTimer > 0.f)
         return;

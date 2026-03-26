@@ -7,7 +7,6 @@
 #include <dino/dino_animal.h>
 
 constexpr float FADE_IN_DURATION = 0.5f;
-constexpr int SCORE_PER_ANIMAL = 10;
 constexpr float SCORE_DISPLAY_TIME = 1.f;
 
 uint64_t DinoAnimal::s_texID = 0;
@@ -69,9 +68,9 @@ void DinoAnimal::ReactLimit(bool xChanged)
     }
 }
 
-void DinoAnimal::ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor)
+void DinoAnimal::ReactLoop(double timeSinceStart, int score, DinoColor lassoColor)
 {
-    m_scoreToGive = sameKindCount * SCORE_PER_ANIMAL;
+    m_scoreToGive = score;
     m_timeToDisplayScore = SCORE_DISPLAY_TIME;
     m_scoreColor = lassoColor;
 }

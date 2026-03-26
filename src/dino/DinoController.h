@@ -35,7 +35,7 @@ public:
 private:
     DinoVertexBuffer GenDinoVertexBuffer(double timeSinceStart);
     void ReactLimit(bool xChanged) override;
-    void ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor) override;
+    void ReactLoop(double timeSinceStart, int score, DinoColor lassoColor) override;
 
 public:
     void Init(int playerCount);

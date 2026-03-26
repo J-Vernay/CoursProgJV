@@ -22,7 +22,7 @@ class DinoAnimal : public DinoEntity {
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
     void ReactLimit(bool xChanged) override;
-    void ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor) override;
+    void ReactLoop(double timeSinceStart, int score, DinoColor lassoColor) override;
 
 public:
     void Init(EAnimalKind animalKind, DinoVec2 pos, double timeSinceStart);

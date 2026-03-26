@@ -16,7 +16,7 @@ protected:
 public:
     virtual void Draw(double timeSinceStart) = 0;
     void ApplyTerrainLimit(DinoTerrain terrain);
-    virtual void ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor) = 0;
+    virtual void ReactLoop(double timeSinceStart, int score, DinoColor lassoColor) = 0;
 
     virtual EAnimalKind GetKind();
 

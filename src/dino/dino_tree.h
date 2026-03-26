@@ -12,7 +12,7 @@ private:
     static uint64_t s_texID;
 
     void ReactLimit(bool xChanged) override;
-    void ReactLoop(double timeSinceStart, int sameKindCount, DinoColor lassoColor) override;
+    void ReactLoop(double timeSinceStart, int score, DinoColor lassoColor) override;
 
 public:
     DinoTree(DinoVec2 pos, int idxSeason, float timeToBeUnusable);

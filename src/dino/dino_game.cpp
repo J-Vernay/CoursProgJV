@@ -3,6 +3,7 @@
 
 #include "dino_animal.h"
 #include "dino_lasso.h"
+#include "dino_score.h"
 
 #include <algorithm>
 #include <dino/dino_draw_utils.h>
@@ -27,8 +28,9 @@ DinoVec2 textSize_Prenom;
 uint64_t texID_dino;
 
 std::map<DinoGamepadIdx, DinoController> GamepadControllers;
-std::vector<DinoController*> g_players;
+std::vector<DinoController*> g_Players;
 std::vector<DinoLasso> g_Lassos;
+std::vector<DinoScore> g_Scores;
 std::vector<DinoAnimal> g_Animals;
 std::vector<DinoTree> g_Trees;
 
@@ -44,6 +46,7 @@ bool g_lobby = true;
 constexpr DinoVec2 TERRAIN_SIZE = {24, 16};
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
 constexpr int FLOWER_NUMBER_PER_TYPE = 10;
+constexpr int SCORE_PER_ANIMAL = 10;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -62,21 +65,30 @@ void Dino_GameInit()
         DinoController& controller = GamepadControllers[gamepadIdx];
         controller = {};
 
-        g_players.emplace_back(&controller);
+        g_Players.emplace_back(&controller);
 
         controller.Init(playerCount);
         playerCount++;
     }
 
-    g_Lassos.resize(g_players.size());
-    if (g_players.size() >= 1)
+    g_Lassos.resize(g_Players.size());
+    g_Scores.resize(g_Players.size());
+    if (g_Players.size() >= 1) {
         g_Lassos[0].Init(DinoColor_BLUE);
-    if (g_players.size() >= 2)
+        g_Scores[0].Init(0, DinoColor_BLUE);
+    }
+    if (g_Players.size() >= 2) {
         g_Lassos[1].Init(DinoColor_RED);
-    if (g_players.size() >= 3)
+        g_Scores[1].Init(1, DinoColor_RED);
+    }
+    if (g_Players.size() >= 3) {
         g_Lassos[2].Init(DinoColor_YELLOW);
-    if (g_players.size() >= 4)
+        g_Scores[2].Init(2, DinoColor_YELLOW);
+    }
+    if (g_Players.size() >= 4) {
         g_Lassos[3].Init(DinoColor_GREEN);
+        g_Scores[3].Init(3, DinoColor_GREEN);
+    }
 
     // Préparation du drawcall du nom en bas à droite
     {
@@ -127,11 +139,13 @@ void Dino_GameFrame(double timeSinceStart)
             if (gamepad.start) {
                 controller.EnterGame();
                 g_Lassos[controller.m_dinoColor].isInGame = true;
+                g_Scores[controller.m_dinoColor].isInGame = true;
             }
 
             if (gamepad.select) {
                 controller.QuitGame();
                 g_Lassos[controller.m_dinoColor].isInGame = false;
+                g_Scores[controller.m_dinoColor].isInGame = false;
             }
         }
         else {
@@ -192,7 +206,7 @@ void Dino_GameFrame(double timeSinceStart)
     // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
     // car il y a un lien d'héritage.
     std::vector<DinoEntity*> entities;
-    for (DinoController* player : g_players)
+    for (DinoController* player : g_Players)
         entities.emplace_back(player);
 
     for (DinoAnimal& animal : g_Animals)
@@ -214,10 +228,10 @@ void Dino_GameFrame(double timeSinceStart)
         for (DinoEntity* pEntity : entities)
             pEntity->ApplyTerrainLimit(g_terrain);
 
-        if (g_Lassos.size() != g_players.size())
+        if (g_Lassos.size() != g_Players.size())
             DINO_CRITICAL("Il devrait y avoir autant de lassos que de joueurs");
         for (int i = 0; i < g_Lassos.size(); ++i)
-            g_Lassos[i].Update(g_players[i]->GetPos());
+            g_Lassos[i].Update(g_Players[i]->GetPos());
 
         for (size_t idxA = 0; idxA < g_Lassos.size(); ++idxA)
             for (size_t idxB = idxA + 1; idxB < g_Lassos.size(); ++idxB)
@@ -226,7 +240,9 @@ void Dino_GameFrame(double timeSinceStart)
         std::vector<EAnimalKind> kinds;
         EAnimalKind currKind;
         int sameKindCount = 0;
-        for (DinoLasso& lasso : g_Lassos) {
+        int score = 0;
+        for (int i = 0; i < g_Lassos.size(); ++i) {
+            DinoLasso& lasso = g_Lassos[i];
             for (DinoEntity* pEntity : entities) {
                 if (lasso.WasInLoop(pEntity->GetPos())) {
                     if (pEntity->GetKind() != EAnimalKind::Other) {
@@ -237,7 +253,10 @@ void Dino_GameFrame(double timeSinceStart)
                                 sameKindCount++;
                         }
                     }
-                    pEntity->ReactLoop(timeSinceStart, sameKindCount, lasso.m_color);
+                    score = SCORE_PER_ANIMAL * sameKindCount;
+
+                    pEntity->ReactLoop(timeSinceStart, score, lasso.m_color);
+                    g_Scores[i].AddScore(score);
                     sameKindCount = 0;
                 }
             }
@@ -254,6 +273,11 @@ void Dino_GameFrame(double timeSinceStart)
                 g_terrain.Shut();
                 g_terrain.Init(TERRAIN_SIZE, FLOWER_NUMBER_PER_TYPE, tree.GetIdxSeason());
                 g_Trees.clear();
+
+                for (DinoScore& score : g_Scores) {
+                    score.Reset();
+                }
+
                 break;
             }
     }
@@ -287,6 +311,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (DinoLasso& lasso : g_Lassos)
         lasso.Draw();
+
+    for (DinoScore& score : g_Scores)
+        score.DrawScore();
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
