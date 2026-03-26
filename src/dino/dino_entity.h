@@ -19,6 +19,7 @@ public:
     virtual void ReactLoop(double timeSinceStart, int score, DinoColor lassoColor) = 0;
 
     virtual EAnimalKind GetKind();
+    virtual int GetPlayerNbr();
 
     static void ResolveCollision(DinoEntity& entityA, DinoEntity& entityB);
     DinoVec2 GetPos();

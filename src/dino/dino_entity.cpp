@@ -9,6 +9,11 @@ EAnimalKind DinoEntity::GetKind()
     return EAnimalKind::Other;
 }
 
+int DinoEntity::GetPlayerNbr()
+{
+    return -1; // if not a player
+}
+
 void DinoEntity::ResolveCollision(DinoEntity& playerA, DinoEntity& playerB)
 {
     if (!playerA.m_isInGame || !playerB.m_isInGame) {

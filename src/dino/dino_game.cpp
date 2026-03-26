@@ -138,14 +138,14 @@ void Dino_GameFrame(double timeSinceStart)
         if (g_lobby) {
             if (gamepad.start) {
                 controller.EnterGame();
-                g_Lassos[controller.m_dinoColor].isInGame = true;
-                g_Scores[controller.m_dinoColor].isInGame = true;
+                g_Lassos[controller.m_dinoNbr].isInGame = true;
+                g_Scores[controller.m_dinoNbr].isInGame = true;
             }
 
             if (gamepad.select) {
                 controller.QuitGame();
-                g_Lassos[controller.m_dinoColor].isInGame = false;
-                g_Scores[controller.m_dinoColor].isInGame = false;
+                g_Lassos[controller.m_dinoNbr].isInGame = false;
+                g_Scores[controller.m_dinoNbr].isInGame = false;
             }
         }
         else {
@@ -254,8 +254,10 @@ void Dino_GameFrame(double timeSinceStart)
                         }
                     }
                     score = SCORE_PER_ANIMAL * sameKindCount;
-
-                    pEntity->ReactLoop(timeSinceStart, score, lasso.m_color);
+                    
+                    if (i != pEntity->GetPlayerNbr()) // prevents auto loop
+                        pEntity->ReactLoop(timeSinceStart, score, lasso.m_color);
+                        
                     g_Scores[i].AddScore(score);
                     sameKindCount = 0;
                 }

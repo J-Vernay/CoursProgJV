@@ -25,7 +25,8 @@ private:
     // uint64_t vbufID_lasso;
 
 public:
-    int m_dinoColor = 0;
+    int m_dinoNbr = 0;
+    int GetPlayerNbr() override;
 
     uint64_t vbufID_dino;
 

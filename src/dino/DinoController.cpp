@@ -30,7 +30,7 @@ void DinoController::Init(int playerCount)
 {
     DinoVec2 windowSize = {480, 360};
     this->m_pos = {windowSize.x / 2, windowSize.y / 2};
-    this->m_dinoColor = playerCount;
+    this->m_dinoNbr = playerCount;
 
     // if (playerCount == 0)
     //     m_lassoColor = DinoColor{77, 146, 188, 255}; // BLUE
@@ -103,6 +103,11 @@ void DinoController::ReactLoop(double timeSinceStart, int score, DinoColor lasso
     }
 }
 
+int DinoController::GetPlayerNbr()
+{
+    return m_dinoNbr;
+}
+
 DinoVertexBuffer DinoController::GenDinoVertexBuffer(double timeSinceStart)
 {
     // Choosing Animation based on current player behaviour
@@ -156,27 +161,27 @@ DinoVertexBuffer DinoController::GenDinoVertexBuffer(double timeSinceStart)
 
     vs[0].pos = this->m_dinoGoingLeft ? UPPER_RIGHT : UPPER_LEFT;
     vs[0].u = 0 + (firstFrameOfAnim + this->m_currFrame) * 24;
-    vs[0].v = 0 + this->m_dinoColor * 24;
+    vs[0].v = 0 + this->m_dinoNbr * 24;
 
     vs[1].pos = this->m_dinoGoingLeft ? UPPER_LEFT : UPPER_RIGHT;
     vs[1].u = 24 + (firstFrameOfAnim + this->m_currFrame) * 24;
-    vs[1].v = 0 + this->m_dinoColor * 24;
+    vs[1].v = 0 + this->m_dinoNbr * 24;
 
     vs[2].pos = this->m_dinoGoingLeft ? LOWER_RIGHT : LOWER_LEFT;
     vs[2].u = 0 + (firstFrameOfAnim + this->m_currFrame) * 24;
-    vs[2].v = 24 + this->m_dinoColor * 24;
+    vs[2].v = 24 + this->m_dinoNbr * 24;
 
     vs[3].pos = this->m_dinoGoingLeft ? UPPER_LEFT : UPPER_RIGHT;
     vs[3].u = 24 + (firstFrameOfAnim + this->m_currFrame) * 24;
-    vs[3].v = 0 + this->m_dinoColor * 24;
+    vs[3].v = 0 + this->m_dinoNbr * 24;
 
     vs[4].pos = this->m_dinoGoingLeft ? LOWER_LEFT : LOWER_RIGHT;
     vs[4].u = 24 + (firstFrameOfAnim + this->m_currFrame) * 24;
-    vs[4].v = 24 + this->m_dinoColor * 24;
+    vs[4].v = 24 + this->m_dinoNbr * 24;
 
     vs[5].pos = this->m_dinoGoingLeft ? LOWER_RIGHT : LOWER_LEFT;
     vs[5].u = 0 + (firstFrameOfAnim + this->m_currFrame) * 24;
-    vs[5].v = 24 + this->m_dinoColor * 24;
+    vs[5].v = 24 + this->m_dinoNbr * 24;
 
     return DinoVertexBuffer(vs.data(), vs.size(), "Dino");
 }
