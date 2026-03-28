@@ -61,7 +61,7 @@ bool DinoLasso::WasInLoop(DinoVec2 pos)
     return (nbCollisions % 2) == 1;
 }
 
-void DinoLasso::Draw()
+void DinoLasso::Draw() const
 {
     std::vector<DinoVertex> vs;
     Dino_GenVertices_Polyline(vs, m_lasso, 4, m_color);
