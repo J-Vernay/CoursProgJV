@@ -3,6 +3,7 @@
 
 #include "dino_animal.h"
 #include "dino_lasso.h"
+#include "dino_pause.h"
 #include "dino_score.h"
 
 #include <algorithm>
@@ -40,8 +41,18 @@ double g_timeSpawnAnimal = 0;
 double g_chrono = CHRONO_INIT;
 
 bool g_wasStartPressed = false;
-bool g_pause = false;
 bool g_lobby = true;
+bool g_pause = false;
+
+struct dpadState {
+    bool prev_dpad_up = false;
+    bool prev_dpad_down = false;
+    bool prev_dpad_left = false;
+    bool prev_dpad_right = false;
+    bool prev_btn_right = false;
+};
+
+std::vector<dpadState> g_dpadStates;
 
 constexpr DinoVec2 TERRAIN_SIZE = {24, 16};
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
@@ -54,6 +65,8 @@ int g_debugScroll = 0;
 void Dino_GameInit()
 {
     XDino_SetRenderSize(RENDER_SIZE);
+    
+    DinoPause::Init(RENDER_SIZE);
 
     int playerCount = 0;
     for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
@@ -73,6 +86,7 @@ void Dino_GameInit()
 
     g_Lassos.resize(g_Players.size());
     g_Scores.resize(g_Players.size());
+    g_dpadStates.resize(g_Players.size());
     if (g_Players.size() >= 1) {
         g_Lassos[0].Init(DinoColor_BLUE);
         g_Scores[0].Init(0, DinoColor_BLUE);
@@ -151,8 +165,50 @@ void Dino_GameFrame(double timeSinceStart)
         else {
             pressedStart = pressedStart || gamepad.start;
         }
-
+        
         if (g_pause) {
+            if (gamepad.dpad_up && !g_dpadStates[controller.m_dinoNbr].prev_dpad_up)
+                DinoPause::Scroll(true);
+            if (gamepad.dpad_down && !g_dpadStates[controller.m_dinoNbr].prev_dpad_down)
+                DinoPause::Scroll(false);
+            if (gamepad.dpad_left && !g_dpadStates[controller.m_dinoNbr].prev_dpad_left)
+                DinoPause::ChangeTimer(true, g_chrono, CHRONO_INIT);
+            if (gamepad.dpad_right && !g_dpadStates[controller.m_dinoNbr].prev_dpad_right)
+                DinoPause::ChangeTimer(false, g_chrono, CHRONO_INIT);
+            if (gamepad.btn_right && !g_dpadStates[controller.m_dinoNbr].prev_dpad_right) {
+                int selection = DinoPause::GetCurrSelection();
+                
+                switch (selection) {
+                    case 0:
+                        g_chrono = CHRONO_INIT;
+                        g_Animals.clear();
+                        for (DinoScore& score : g_Scores) {
+                            score.Reset();
+                        }
+                        g_pause = false;
+                        break;
+                    
+                    case 1:
+                        g_chrono = 0.01f;
+                        g_pause = false;
+                        break;
+                    
+                    case 2:
+                        break;
+                    
+                    case 3:
+                        g_pause = false;
+                        break;
+                }
+            }
+            
+            // Update previous state
+            g_dpadStates[controller.m_dinoNbr].prev_dpad_up = gamepad.dpad_up;
+            g_dpadStates[controller.m_dinoNbr].prev_dpad_down = gamepad.dpad_down;
+            g_dpadStates[controller.m_dinoNbr].prev_dpad_left = gamepad.dpad_left;
+            g_dpadStates[controller.m_dinoNbr].prev_dpad_right = gamepad.dpad_right;
+            g_dpadStates[controller.m_dinoNbr].prev_btn_right = gamepad.btn_right;
+            
             continue;
         }
 
@@ -161,20 +217,9 @@ void Dino_GameFrame(double timeSinceStart)
 
     if (!g_lobby) {
         if (pressedStart && !g_wasStartPressed)
-            g_pause = !g_pause; // g_pause prend l'inverse de g_pause
+            g_pause = true;
         g_wasStartPressed = pressedStart;
     }
-
-    // // First frame of new lobby
-    // if (g_lobby && g_Trees.size() == 0) {
-    //     DinoVec2 terrainMin = g_terrain.GetTopLeft();
-    //     DinoVec2 terrainMax = g_terrain.GetBottomRight();
-    //     for (int i = 0; i < 4; ++i) {
-    //         float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
-    //         float y = terrainMin.y + 80;
-    //         g_Trees.emplace_back(DinoVec2{x, y}, i);
-    //     }
-    // }
 
     // Managing animal logic
 
@@ -305,8 +350,10 @@ void Dino_GameFrame(double timeSinceStart)
         }
     }
 
+    // ---------------
     // -- Affichage -- 
-
+    // ---------------
+    
     g_terrain.DrawBG();
     g_terrain.DrawTerrain();
     g_terrain.DrawFlwrs();
@@ -319,18 +366,14 @@ void Dino_GameFrame(double timeSinceStart)
 
     for (DinoEntity* pEntity : entities)
         pEntity->Draw(timeSinceStart);
-
+    
     for (DinoAnimal& animal : g_Animals) {
         animal.DrawScoreText(deltaTime);
     }
 
+    // Affichage du menu Pause
     if (g_pause) {
-        std::vector<DinoVertex> vs;
-        DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
-        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
-        float tx = (RENDER_SIZE.x - textSize.x * 6) / 2;
-        float ty = (RENDER_SIZE.y - textSize.y * 6) / 2;
-        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 6);
+        DinoPause::DrawPauseMenu();
     }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
