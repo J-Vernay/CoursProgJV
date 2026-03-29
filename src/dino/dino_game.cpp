@@ -8,6 +8,7 @@
 #include <dino/dino_animal.h>
 #include <dino/dino_lasso.h>
 #include <dino/dino_tree.h>
+#include <dino/dino_score.h>
 
 #include <format>
 #include <algorithm>
@@ -41,8 +42,8 @@ bool g_bWasStartPressed = false;
 bool g_bPause = false;
 bool g_bLobby = true;
 
-//std::optional<DinoVertexBuffer> g_vbufID_prenom;
-//DinoVec2 textSize_prenom;
+std::optional<DinoVertexBuffer> g_vbufID_prenom;
+DinoVec2 textSize_prenom;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
@@ -63,20 +64,11 @@ void Dino_GameInit()
 
     int idxSeason = XDino_RandomInt32(0, 3);
     g_Terrain.Init(RENDER_SIZE, idxSeason);
-    /*
-        // Préparation du drawcall du prénom
-        {
-            std::vector<DinoVertex> vs;
-            if (!g_Players.empty()) {
-                std::string scoreText = std::format("Score: {}", g_Players[0].score);
-                textSize_prenom = Dino_GenVertices_Text(vs, scoreText, DinoColor_WHITE, DinoColor_GREY);
-            }
-            else {
-                textSize_prenom = Dino_GenVertices_Text(vs, "Corentin MARESCAUX", DinoColor_WHITE, DinoColor_GREY);
-            }
-    
-            g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
-        }*/
+
+    // Préparation du drawcall du prénom
+    std::vector<DinoVertex> vs;
+    textSize_prenom = Dino_GenVertices_Text(vs, "Corentin MARESCAUX", DinoColor_WHITE, DinoColor_GREY);
+    g_vbufID_prenom.emplace(vs.data(), vs.size(), "PrenomStatic");
 
     DinoVec2 terrainMin = g_Terrain.GetTopLeft();
     DinoVec2 terrainMax = g_Terrain.GetBottomRight();
@@ -211,36 +203,40 @@ void Dino_GameFrame(double timeSinceStart)
                     */
 
         for (PlayerState& player : g_Players) {
-            // On ne traite que si le lasso a une boucle
             if (player.lasso.HasLoop()) {
 
-                int compteursParEspece[10] = {0};
-                int scoreGagneCetteFois = 0;
+                int countSpeciment[10] = {0};
+                // Supprime scoreGagneCetteFois si tu ajoutes les points directement au joueur
 
-                // 1. D'ABORD : On traite les animaux pour le score
                 for (DinoAnimal& animal : g_Animals) {
                     if (player.lasso.WasInLoop(animal.GetPos())) {
                         int type = (int)animal.GetKind();
                         if (type >= 0 && type < 10) {
-                            compteursParEspece[type]++;
-                            scoreGagneCetteFois += (compteursParEspece[type] * 10);
+                            countSpeciment[type]++;
+                            int points = countSpeciment[type] * 10;
+
+                            // On ajoute DIRECTEMENT au score du joueur
+                            player.score += points;
+
+                            DinoScoreManager::AddNotification(animal.GetPos(),
+                                                              points,
+                                                              player.dino.GetColor(),
+                                                              timeSinceStart);
+
+                            animal.ReactLoop(timeSinceStart);
                         }
-                        animal.ReactLoop(timeSinceStart);
                     }
                 }
-                player.score += scoreGagneCetteFois;
 
-                // 2. ENSUITE : On traite les arbres pour pouvoir lancer la partie !
                 if (g_bLobby) {
                     for (DinoTree& tree : g_Trees) {
                         if (player.lasso.WasInLoop(tree.GetPos())) {
-                            tree.ReactLoop(timeSinceStart); // Cela va mettre "WasLooped" à vrai
+                            tree.ReactLoop(timeSinceStart);
                         }
                     }
                 }
             }
         }
-
     }
 
     if (g_bLobby) {
@@ -310,34 +306,32 @@ void Dino_GameFrame(double timeSinceStart)
         float ty = 0;
         XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
-    /*
-        // Affiche le prénom.
-        {
-            float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
-            float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
-            XDino_Draw(g_vbufID_prenom->Get(), XDino_TEXID_FONT, {tx, ty}, 2);
-        }*/
 
-    {
-        std::string textToShow = "Corentin MARESCAUX";
+    // 1. APPEL DES NOTIFICATIONS SUR LES ANIMAUX (Ce qui manquait !)
+    DinoScoreManager::DrawNotifications(timeSinceStart);
 
-        // On vérifie s'il y a un joueur pour afficher son score
-        if (!g_Players.empty()) {
-            textToShow = std::format("Score: {}", g_Players[0].score);
+    // 2. AFFICHAGE DES SCORES DES JOUEURS (MILIEU GAUCHE)
+    if (!g_Players.empty()) {
+        float hauteurEntree = 20.0f;
+        float totalHeight = g_Players.size() * hauteurEntree;
+        float startY = (RENDER_SIZE.y - totalHeight) / 2.0f;
+
+        for (size_t i = 0; i < g_Players.size(); ++i) {
+            std::string scoreText = std::format("P{} : {}", i + 1, g_Players[i].score);
+            std::vector<DinoVertex> vs;
+            DinoVec2 size = Dino_GenVertices_Text(vs, scoreText, g_Players[i].dino.GetColor(), DinoColor_BLACK);
+            DinoVertexBuffer vbuf(vs.data(), vs.size(), "ScoreP");
+
+            XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {0.0f, startY}, 2);
+            startY += size.y * 2;
         }
+    }
 
-        std::vector<DinoVertex> vs;
-        DinoVec2 size = Dino_GenVertices_Text(vs, textToShow, DinoColor_WHITE, DinoColor_GREY);
-
-        // On crée un buffer local (temporaire) pour cette frame
-        // C'est beaucoup plus sûr car il est détruit proprement à la fin du bloc { }
-        DinoVertexBuffer vbuf(vs.data(), vs.size(), "DynamicText");
-
-        // Positionnement en bas à droite
-        float tx = (RENDER_SIZE.x - size.x * 2);
-        float ty = (RENDER_SIZE.y - size.y * 2);
-
-        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 2);
+    // 3. AFFICHAGE DU PRÉNOM (BAS DROITE) - Utilise le buffer du Init
+    if (g_vbufID_prenom.has_value()) {
+        float tx = RENDER_SIZE.x - (textSize_prenom.x * 2);
+        float ty = RENDER_SIZE.y - (textSize_prenom.y * 2);
+        XDino_Draw(g_vbufID_prenom->Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
 #if !XDINO_RELEASE
@@ -369,5 +363,5 @@ void Dino_GameShut()
     DinoPlayer::ShutStatic();
     DinoAnimal::ShutStatic();
 
-    //g_vbufID_prenom.reset();
+    g_vbufID_prenom.reset();
 }

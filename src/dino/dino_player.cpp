@@ -139,3 +139,18 @@ void DinoPlayer::ShutStatic()
 {
     XDino_DestroyGpuTexture(s_texID);
 }
+
+DinoColor DinoPlayer::GetColor() const
+{
+    constexpr DinoColor PLAYER_COLORS[4] = {
+        DinoColor_BLUE,
+        DinoColor_RED,
+        DinoColor_YELLOW,
+        DinoColor_GREEN,
+    };
+
+    if (m_idxPlayer >= 0 && m_idxPlayer < 4)
+        return PLAYER_COLORS[m_idxPlayer];
+
+    return DinoColor_WHITE; // Couleur par défaut par sécurité
+}
