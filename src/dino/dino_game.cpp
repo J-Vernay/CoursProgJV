@@ -43,10 +43,16 @@ bool g_bLobby = true;
 std::optional<DinoVertexBuffer> g_vbufID_prenom;
 DinoVec2 textSize_prenom;
 
+
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
+
+
+
+
+bool isPaused;
 
 
 void Dino_GameInit()
@@ -66,7 +72,7 @@ void Dino_GameInit()
     // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        textSize_prenom = Dino_GenVertices_Text(vs, "warrick VEDRENNE", DinoColor_WHITE, DinoColor_GREY);
         g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
 
@@ -205,6 +211,11 @@ void Dino_GameFrame(double timeSinceStart)
             if (tree.WasLooped()) {
                 // Lobby -> Gameplay
                 g_bLobby = false;
+
+				g_chrono = CHRONO_INIT;
+    			g_timeSpawnAnimal = 0;
+
+
                 g_Terrain.Shut();
                 g_Terrain.Init(RENDER_SIZE, tree.GetIdxSeason());
                 g_Trees.clear();
