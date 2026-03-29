@@ -219,6 +219,13 @@ void Dino_GameFrame(double timeSinceStart)
             float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
 
             DinoAnimal& animal = g_Animals.emplace_back(timeSinceStart, kind, DinoVec2{x, y});
+
+            entities.clear();
+            for (PlayerState& player : g_Players)
+                entities.emplace_back(&player.dino);
+            for (DinoAnimal& animal : g_Animals)
+                entities.emplace_back(&animal);
+            
             double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono + 2;
             g_timeSpawnAnimal = timeSinceStart + spawnTime;
             }
