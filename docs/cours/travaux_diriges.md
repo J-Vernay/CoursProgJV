@@ -423,7 +423,7 @@ j) Implémentez F6.8.
 
 k) Sous quelle forme peut-on réorganiser toute cette logique ? Pourquoi ?
 
-> ...
+> sous la forme d'une state machine pour éviter les états troubles entre plusieurs états (en pause && en lobby qui n'est pas sensé arrivé) + code plus clair
 
 l) Utilisez le polymorphisme pour gérer l'état actuel du jeu.
 Qu'est-ce que cela entraîne nécessairement pour le stockage ?

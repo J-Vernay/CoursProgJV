@@ -26,11 +26,14 @@ struct PlayerState {
     DinoGamepad gamepad;
     DinoPlayer dino;
     DinoLasso lasso;
+
+    int score = 0; 
 };
 
 std::vector<DinoGamepadIdx> g_UnassignedGamepads;
 std::vector<PlayerState> g_Players;
 std::vector<DinoTree> g_Trees;
+
 
 DinoTerrain g_Terrain;
 std::vector<DinoAnimal> g_Animals;
@@ -55,6 +58,38 @@ int g_debugScroll = 0;
 
 constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
+void Dino_ResetToLobby()// il faut déclarer ma fonction avant de m'en servir (le fichier Dino_Game.h n'existe pas)
+{
+    // clear les animaux
+    for (DinoAnimal& animal : g_Animals)
+        animal.Shut();
+    g_Animals.clear();
+
+    //reset des variables
+    g_chrono = CHRONO_INIT;
+    g_state = lobby;
+    g_timeSpawnAnimal = 0;
+            
+    // si des joueur veulent arreter de jouer, on retire les joueurs
+    g_UnassignedGamepads.clear();
+
+    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
+        g_UnassignedGamepads.emplace_back(idx);
+
+    // replacer les arbres
+    g_Trees.clear();
+
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+
+    for (int i = 0; i < 4; ++i) {
+        float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+        float y = terrainMin.y + 80;
+        g_Trees.emplace_back(DinoVec2{x, y}, i);
+    }
+            
+    g_Players.clear();
+}
 
 void Dino_GameInit()
 {
@@ -260,12 +295,20 @@ void Dino_GameFrame(double timeSinceStart)
 
         for (PlayerState& player : g_Players)
             for (DinoEntity* pEntity : entities)
-                if (player.lasso.WasInLoop(pEntity->GetPos()))
+                if (player.lasso.WasInLoop(pEntity->GetPos())) {
                     pEntity->ReactLoop(timeSinceStart);
+                    if (dynamic_cast<DinoAnimal*>(pEntity)) player.score ++;
+                }
 
         // Décrémenter le chronomètre.
         g_chrono -= deltaTime;
 
+        //  detecter lma fin de la partie
+        if (g_chrono <= 0.0) {
+            Dino_ResetToLobby();
+            return;
+        }
+        
         std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
 
         break;
@@ -305,6 +348,7 @@ void Dino_GameFrame(double timeSinceStart)
         // Destructeur de 'vs' appelé implicitement par le compilateur
     }
 
+    // afficher le chrono
     {
         std::string text = std::format("{:.2f}", g_chrono);
         std::vector<DinoVertex> vs;
@@ -313,6 +357,25 @@ void Dino_GameFrame(double timeSinceStart)
         float tx = (RENDER_SIZE.x - textSize.x * 2) / 2;
         float ty = 0;
         XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 2);
+    }
+
+    //afficher les scores
+    float y = 20;
+
+    for (size_t i = 0; i < g_Players.size(); ++i) {
+        PlayerState& player = g_Players[i];
+
+        std::string text = std::format("P{} : {}", i + 1, player.score); // i+1 pour éviter le player0 qui serait bizarre
+
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_BLACK, PLAYER_COLORS[i]);
+
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Score");
+
+        float x = 10; // à gauche
+        float ty = y + i * (textSize.y * 2 + 5);
+
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {x, ty}, 2);
     }
 
     // Affiche le prénom.
