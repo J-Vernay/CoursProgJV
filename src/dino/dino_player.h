@@ -1,7 +1,7 @@
 #pragma once
 
 #include "dino_entity.h"
-
+#include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
 
 class DinoPlayer : public DinoEntity {
