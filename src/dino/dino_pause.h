@@ -1,6 +1,15 @@
 #pragma once
 #include <dino/xdino.h>
-#include <dino/dino_game.h>
+#include <vector>
 
-void Pause_Update(bool bPressedStart, bool& bWasStartPressed, EGameState& state);
-void Pause_Draw(double timeSinceStart);
+enum class EGameState;
+struct PlayerState;
+
+enum class EPauseAction { None, Resume, Restart, BackToLobby };
+
+void Pause_Update(std::vector<PlayerState>& players,
+                  double& chrono,
+                  EGameState& state,
+                  EPauseAction& action);
+
+void Pause_Draw(double timeSinceStart, double chrono);

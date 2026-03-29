@@ -88,6 +88,7 @@ void Dino_GameFrame(double timeSinceStart)
             entities.emplace_back(&tree);
 
     // Update selon état
+    auto pauseAction = EPauseAction::None;
     switch (g_state) {
     case EGameState::Lobby: Lobby_Update(timeSinceStart,
                                          deltaTime,
@@ -110,11 +111,43 @@ void Dino_GameFrame(double timeSinceStart)
                                            g_bWasStartPressed,
                                            g_state);
         break;
-    case EGameState::Paused: Pause_Update(bPressedStart, g_bWasStartPressed, g_state);
+    case EGameState::Paused: Pause_Update(g_Players, g_chrono, g_state, pauseAction);
         break;
     }
 
-    // Reconstruire entities 
+    // Gérer les actions de pause
+    if (pauseAction == EPauseAction::Restart) {
+        g_Animals.clear();
+        g_chrono = CHRONO_INIT;
+        for (PlayerState& player : g_Players) {
+            player.score = 0;
+            for (int& c : player.captureCountPerKind)
+                c = 0;
+            player.dino.Reset();
+        }
+    }
+    else if (pauseAction == EPauseAction::BackToLobby) {
+        for (DinoAnimal& animal : g_Animals)
+            animal.Shut();
+        g_Animals.clear();
+        g_chrono = CHRONO_INIT;
+        g_Players.clear();
+        g_UnassignedGamepads.clear();
+        for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
+            g_UnassignedGamepads.emplace_back(idx);
+        g_Terrain.Shut();
+        g_Terrain.Init(RENDER_SIZE, XDino_RandomInt32(0, 3));
+        g_Trees.clear();
+        DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+        DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+        for (int i = 0; i < 4; ++i) {
+            float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+            float y = terrainMin.y + 80;
+            g_Trees.emplace_back(DinoVec2{x, y}, i);
+        }
+    }
+
+    // Reconstruire entities APRÈS update
     entities.clear();
     for (PlayerState& player : g_Players)
         entities.emplace_back(&player.dino);
@@ -139,7 +172,7 @@ void Dino_GameFrame(double timeSinceStart)
         Score_Draw(g_Players, timeSinceStart);
         break;
     case EGameState::Paused: InGame_Draw(timeSinceStart, g_Players, entities);
-        Pause_Draw(timeSinceStart);
+        Pause_Draw(timeSinceStart, g_chrono);
         Score_Draw(g_Players, timeSinceStart);
         break;
     }

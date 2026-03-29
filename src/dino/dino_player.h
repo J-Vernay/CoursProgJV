@@ -27,4 +27,5 @@ public:
 
     static void InitStatic();
     static void ShutStatic();
+    void Reset();
 };

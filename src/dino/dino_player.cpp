@@ -93,7 +93,7 @@ DinoVertexBuffer DinoPlayer::GenerateVertexBuffer(double timeSinceStart)
         ubase = 0;
     }
 
-    int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+    int uAnim = (static_cast<int>(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
 
     std::vector<DinoVertex> vs;
     uint16_t umin, umax;
@@ -138,4 +138,13 @@ void DinoPlayer::InitStatic()
 void DinoPlayer::ShutStatic()
 {
     XDino_DestroyGpuTexture(s_texID);
+}
+
+void DinoPlayer::Reset()
+{
+    DinoVec2 renderSize = XDino_GetRenderSize();
+    m_pos = {renderSize.x / 2, renderSize.y / 2};
+    m_endHitAnim = 0;
+    m_bMoving = false;
+    m_bPressedRun = false;
 }

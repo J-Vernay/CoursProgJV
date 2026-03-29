@@ -6,6 +6,8 @@
 
 enum class EGameState { Lobby, InGame, Paused };
 
+constexpr double CHRONO_INIT = 60;
+
 struct PlayerState {
     DinoGamepadIdx gamepadIdx;
     DinoGamepad gamepad;

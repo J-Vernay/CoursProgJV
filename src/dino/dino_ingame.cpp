@@ -10,7 +10,6 @@
 
 constexpr double SPAWNTIME_BEGIN = 1;
 constexpr double SPAWNTIME_END = 0.033;
-constexpr double CHRONO_INIT = 60;
 
 static int GetAnimalTypeIndex(EAnimalKind kind)
 {
