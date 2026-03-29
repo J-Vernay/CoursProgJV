@@ -261,6 +261,11 @@ void Dino_GameFrame(double timeSinceStart)
     if (!g_bPause && !g_bLobby) {
         // Décrémenter le chronomètre.
         g_chrono -= deltaTime;
+
+        if (g_chrono <= 0) {
+            g_chrono = 0;
+            Dino_BackToLobby();
+        }
     }
 
     std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);

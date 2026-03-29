@@ -11,7 +11,7 @@ void DinoPause::Update(double timeSinceStart, bool& bPause, bool& bLobby, double
     bool hasKb = XDino_GetGamepad(DinoGamepadIdx::Keyboard, kb);
     bool hasGp = XDino_GetGamepad(static_cast<DinoGamepadIdx>(0), gp);
 
-    // 1. NAVIGATION (Flèches Haut/Bas)
+    // Navigation
     if (timeSinceStart > s_lastNavTime + 0.18) {
         bool up = (hasKb && kb.dpad_up) || (hasGp && (gp.dpad_up || gp.stick_left_y < -0.5f));
         bool down = (hasKb && kb.dpad_down) || (hasGp && (gp.dpad_down || gp.stick_left_y > 0.5f));
@@ -25,12 +25,13 @@ void DinoPause::Update(double timeSinceStart, bool& bPause, bool& bLobby, double
             s_lastNavTime = timeSinceStart;
         }
 
-        if (s_selection < 0) s_selection = 3;
-        if (s_selection > 3) s_selection = 0;
+        if (s_selection < 0)
+            s_selection = 3;
+        if (s_selection > 3)
+            s_selection = 0;
     }
 
-    // 2. CHRONO (Le bloc que j'avais oublié !)
-    // On ne modifie le chrono que si on est sur la ligne d'index 1
+    // Chrono
     if (s_selection == 1) {
         if (timeSinceStart > s_lastNavTime + 0.15) {
             bool left = (hasKb && kb.dpad_left) || (hasGp && (gp.dpad_left || gp.stick_left_x < -0.5f));
@@ -47,7 +48,7 @@ void DinoPause::Update(double timeSinceStart, bool& bPause, bool& bLobby, double
         }
     }
 
-    // 3. VALIDATION (Touche Entrée / Start)
+    // Validation
     bool validate = (hasKb && kb.start) || (hasGp && gp.start);
 
     if (validate && (timeSinceStart > openTime + 0.2)) {
@@ -73,7 +74,6 @@ void DinoPause::Draw()
         DinoColor col = (s_selection == i) ? DinoColor_WHITE : DinoColor_GREY;
         std::string label = options[i];
 
-        // Affichage spécial pour la ligne Chrono
         if (i == 1) {
             label = (s_selection == i) ? "<  " + label + "  >" : label;
         }
