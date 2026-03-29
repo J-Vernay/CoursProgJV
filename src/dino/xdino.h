@@ -24,6 +24,10 @@ void Dino_GameInit();
 /// @param timeSinceStart Temps en secondes depuis le lancement du jeu.
 void Dino_GameFrame(double timeSinceStart);
 
+void Dino_RestartGame();
+
+void Dino_BackToLobby();
+
 /// Appelé quand l'utilisateur demande à quitter le jeu (touche ECHAP).
 void Dino_GameShut();
 
@@ -146,21 +150,21 @@ constexpr DinoGamepadIdx DinoGamepadIdx_ALL[] = {
 
 /// Structure contenant l'état d'une manette (ou du clavier utilisé comme manette).
 struct DinoGamepad {
-    bool dpad_up : 1;        ///< Si clavier : Flèche du haut
-    bool dpad_left : 1;      ///< Si clavier : Flèche gauche
-    bool dpad_right : 1;     ///< Si clavier : Flèche droite
-    bool dpad_down : 1;      ///< Si clavier : Flèche du bas
-    bool btn_up : 1;         ///< Si clavier : Z ou W
-    bool btn_left : 1;       ///< Si clavier : Q ou A
-    bool btn_right : 1;      ///< Si clavier : D
-    bool btn_down : 1;       ///< Si clavier : S
-    bool start : 1;          ///< Si clavier : ESPACE ou ENTREE
-    bool select : 1;         ///< Si clavier : SHIFT
-    bool shoulder_left : 1;  ///< Si clavier : CTRL
+    bool dpad_up : 1; ///< Si clavier : Flèche du haut
+    bool dpad_left : 1; ///< Si clavier : Flèche gauche
+    bool dpad_right : 1; ///< Si clavier : Flèche droite
+    bool dpad_down : 1; ///< Si clavier : Flèche du bas
+    bool btn_up : 1; ///< Si clavier : Z ou W
+    bool btn_left : 1; ///< Si clavier : Q ou A
+    bool btn_right : 1; ///< Si clavier : D
+    bool btn_down : 1; ///< Si clavier : S
+    bool start : 1; ///< Si clavier : ESPACE ou ENTREE
+    bool select : 1; ///< Si clavier : SHIFT
+    bool shoulder_left : 1; ///< Si clavier : CTRL
     bool shoulder_right : 1; ///< Si clavier : ALT
 
-    float stick_left_x;  ///< Entre -1 et 1. Si clavier : dérivé de 'dpad'
-    float stick_left_y;  ///< Entre -1 et 1. Si clavier : dérivdé de 'dpad'
+    float stick_left_x; ///< Entre -1 et 1. Si clavier : dérivé de 'dpad'
+    float stick_left_y; ///< Entre -1 et 1. Si clavier : dérivdé de 'dpad'
     float stick_right_x; ///< Entre -1 et 1. Si clavier : dérivé de 'btn'
     float stick_right_y; ///< Entre -1 et 1. Si clavier : dérivé de 'btn'
 

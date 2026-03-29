@@ -347,6 +347,42 @@ void Dino_GameFrame(double timeSinceStart)
 #endif
 }
 
+void Dino_RestartGame()
+{
+    g_chrono = CHRONO_INIT;
+
+    for (auto& animal : g_Animals)
+        animal.Shut();
+    g_Animals.clear();
+
+    for (auto& player : g_Players) {
+        player.score = 0;
+    }
+
+    g_timeSpawnAnimal = 0; // Pour qu'un animal apparaisse vite
+}
+
+void Dino_BackToLobby()
+{
+    g_bLobby = true;
+    g_chrono = CHRONO_INIT;
+
+    // Nettoyage
+    for (auto& animal : g_Animals)
+        animal.Shut();
+    g_Animals.clear();
+
+    // Recréer les arbres du lobby
+    g_Trees.clear();
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+    for (int i = 0; i < 4; ++i) {
+        float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+        float y = terrainMin.y + 80;
+        g_Trees.emplace_back(DinoVec2{x, y}, i);
+    }
+}
+
 void Dino_GameShut()
 {
     // For-range loop

@@ -19,11 +19,10 @@ void DinoPause::Update(double timeSinceStart, bool& bPause, bool& bLobby, double
             s_selection--;
             s_lastNavTime = timeSinceStart;
         }
-        else
-            if (down) {
-                s_selection++;
-                s_lastNavTime = timeSinceStart;
-            }
+        else if (down) {
+            s_selection++;
+            s_lastNavTime = timeSinceStart;
+        }
 
         if (s_selection < 0)
             s_selection = 3;
@@ -52,9 +51,20 @@ void DinoPause::Update(double timeSinceStart, bool& bPause, bool& bLobby, double
     // --- VALIDATION ---
     bool validate = (hasKb && kb.btn_down) || (hasGp && gp.btn_down);
     if (validate) {
-        if (s_selection == 0)
-            bPause = false; // Reprendre
-        // On ne fait rien pour le bouton Chrono ici, car il réagit aux flèches
+        if (s_selection == 0) {
+            // REPRENDRE
+            bPause = false;
+        }
+        else if (s_selection == 2) {
+            // RETOUR AU LOBBY
+            Dino_BackToLobby();
+            bPause = false; // On enlève la pause pour revenir au lobby interactif
+        }
+        else if (s_selection == 3) {
+            // RECOMMENCER
+            Dino_RestartGame();
+            bPause = false;
+        }
     }
 }
 
