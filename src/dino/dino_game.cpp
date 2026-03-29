@@ -41,6 +41,7 @@ double g_timeSpawnAnimal = 0;
 double g_chrono = CHRONO_INIT;
 bool g_bWasStartPressed = false;
 bool g_bPause = false;
+double g_pauseDebounceTime = 0;
 bool g_bLobby = true;
 
 std::optional<DinoVertexBuffer> g_vbufID_prenom;
@@ -130,8 +131,13 @@ void Dino_GameFrame(double timeSinceStart)
 
     // Mettre en pause le jeu
     if (!g_bLobby) {
-        if (bPressedStart && !g_bWasStartPressed)
-            g_bPause = !g_bPause; // g_bPause prend l'inverse de g_bPause
+        if (bPressedStart && !g_bWasStartPressed) {
+            if (!g_bPause) {
+                g_bPause = true;
+                // On enregistre l'instant précis où on a fait pause
+                g_pauseDebounceTime = timeSinceStart;
+            }
+        }
         g_bWasStartPressed = bPressedStart;
     }
 
@@ -291,7 +297,8 @@ void Dino_GameFrame(double timeSinceStart)
     }
 
     if (g_bPause) {
-        DinoPause::Update(timeSinceStart, g_bPause, g_bLobby, g_chrono);
+        // On n'envoie plus justPaused, on va comparer le temps à l'intérieur
+        DinoPause::Update(timeSinceStart, g_bPause, g_bLobby, g_chrono, g_pauseDebounceTime);
         DinoPause::Draw();
     }
 

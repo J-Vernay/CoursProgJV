@@ -7,7 +7,7 @@
 class DinoPause {
 public:
     // On passe les variables par référence pour pouvoir les modifier directement
-    static void Update(double timeSinceStart, bool& bPause, bool& bLobby, double& chrono);
+    static void Update(double timeSinceStart, bool& bPause, bool& bLobby, double& chrono, double openTime);
     static void Draw();
 
 private:
