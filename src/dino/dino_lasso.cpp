@@ -103,3 +103,8 @@ void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)
     }
 
 }
+
+bool DinoLasso::HasLoop() const
+{
+    return m_loopLasso.size() >= 3;
+}

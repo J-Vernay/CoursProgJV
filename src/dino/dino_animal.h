@@ -17,7 +17,6 @@ private:
     uint64_t GenerateVertexBuffer(double timeSinceStart);
 
     void ReactLimit() override;
-    void ReactLoop(double timeSinceStart) override;
 
 public:
     DinoAnimal(double timeSinceStart, EAnimalKind animal, DinoVec2 pos);
@@ -26,6 +25,13 @@ public:
     void Shut();
 
     static bool IsDead(DinoAnimal& animal);
+
+    EAnimalKind GetKind() const
+    {
+        return m_kind;
+    }
+
+    void ReactLoop(double timeSinceStart) override;
     static void InitStatic();
     static void ShutStatic();
 };

@@ -12,6 +12,7 @@ public:
     DinoLasso(DinoColor color);
     void Update(DinoVec2 pos);
     bool WasInLoop(DinoVec2 pos);
+    bool HasLoop() const;
     void Draw();
 
     static void ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB);
