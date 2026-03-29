@@ -5,12 +5,27 @@
 #include <dino/dino_terrain.h>
 #include "dino_game.h"
 #include "dino_player.h"
-
+#include <dino/dino_score.h>
 #include <algorithm>
 
 constexpr double SPAWNTIME_BEGIN = 1;
 constexpr double SPAWNTIME_END = 0.033;
 constexpr double CHRONO_INIT = 60;
+
+static int GetAnimalTypeIndex(EAnimalKind kind)
+{
+    switch (kind) {
+    case EAnimalKind::Pig1:
+    case EAnimalKind::Pig2: return 0;
+    case EAnimalKind::Cow1:
+    case EAnimalKind::Cow2: return 1;
+    case EAnimalKind::Sheep1:
+    case EAnimalKind::Sheep2: return 2;
+    case EAnimalKind::Ostrich1:
+    case EAnimalKind::Ostrich2: return 3;
+    }
+    return 0;
+}
 
 void InGame_Update(double timeSinceStart, float deltaTime,
                    std::vector<PlayerState>& players,
@@ -35,7 +50,6 @@ void InGame_Update(double timeSinceStart, float deltaTime,
     animals.erase(it, animals.end());
 
     // Spawn animal
-    // Spawn animal
     if (timeSinceStart > timeSpawnAnimal) {
         auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
         DinoVec2 terrainMin = terrain.GetTopLeft();
@@ -46,7 +60,7 @@ void InGame_Update(double timeSinceStart, float deltaTime,
         double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * chrono;
         timeSpawnAnimal = timeSinceStart + spawnTime;
 
-        // Reconstruire entities car emplace_back a pu réallouer g_Animals
+        // Reconstruire entities
         entities.clear();
         for (PlayerState& player : players)
             entities.emplace_back(&player.dino);
@@ -80,10 +94,23 @@ void InGame_Update(double timeSinceStart, float deltaTime,
         for (size_t idxB = idxA + 1; idxB < players.size(); ++idxB)
             DinoLasso::ResolveCollision(players[idxA].lasso, players[idxB].lasso);
 
-    for (PlayerState& player : players)
-        for (DinoEntity* pEntity : entities)
-            if (player.lasso.WasInLoop(pEntity->GetPos()))
+    for (PlayerState& player : players) {
+        for (DinoEntity* pEntity : entities) {
+            if (player.lasso.WasInLoop(pEntity->GetPos())) {
                 pEntity->ReactLoop(timeSinceStart);
+
+                // Calculer le score si c'est un animal
+                auto animal = dynamic_cast<DinoAnimal*>(pEntity);
+                if (animal) {
+                    int typeIdx = GetAnimalTypeIndex(animal->GetKind());
+                    player.captureCountPerKind[typeIdx]++;
+                    int points = player.captureCountPerKind[typeIdx] * 10;
+                    player.score += points;
+                    Score_AddNotification(animal->GetPos(), points, player.lasso.GetColor(), timeSinceStart);
+                }
+            }
+        }
+    }
 
     // Chrono
     chrono -= deltaTime;

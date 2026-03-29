@@ -3,8 +3,6 @@
 #include <vector>
 #include <dino/dino_game.h>
 
-enum class EGameState;
-struct PlayerState;
 class DinoAnimal;
 class DinoEntity;
 class DinoTerrain;

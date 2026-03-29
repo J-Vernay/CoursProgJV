@@ -101,5 +101,9 @@ void DinoLasso::ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB)
             break;
         }
     }
+}
 
+DinoColor DinoLasso::GetColor() const
+{
+    return m_color;
 }

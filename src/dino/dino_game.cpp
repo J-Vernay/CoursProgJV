@@ -9,6 +9,7 @@
 #include <dino/dino_ingame.h>
 #include <dino/dino_pause.h>
 #include <dino/dino_game.h>
+#include <dino/dino_score.h>
 
 
 #include <format>
@@ -113,7 +114,7 @@ void Dino_GameFrame(double timeSinceStart)
         break;
     }
 
-    // Reconstruire entities APRÈS update car g_Trees a pu être vidé
+    // Reconstruire entities 
     entities.clear();
     for (PlayerState& player : g_Players)
         entities.emplace_back(&player.dino);
@@ -132,11 +133,14 @@ void Dino_GameFrame(double timeSinceStart)
 
     switch (g_state) {
     case EGameState::Lobby: Lobby_Draw(timeSinceStart, g_Players, entities);
+        Score_Draw(g_Players, timeSinceStart);
         break;
     case EGameState::InGame: InGame_Draw(timeSinceStart, g_Players, entities);
+        Score_Draw(g_Players, timeSinceStart);
         break;
     case EGameState::Paused: InGame_Draw(timeSinceStart, g_Players, entities);
         Pause_Draw(timeSinceStart);
+        Score_Draw(g_Players, timeSinceStart);
         break;
     }
 

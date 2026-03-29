@@ -80,3 +80,8 @@ void DinoAnimal::ShutStatic()
 {
     XDino_DestroyGpuTexture(s_texID);
 }
+
+EAnimalKind DinoAnimal::GetKind() const
+{
+    return m_kind;
+}

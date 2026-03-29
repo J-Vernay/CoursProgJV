@@ -3,7 +3,6 @@
 #include <dino/xdino.h>
 
 class DinoLasso {
-private:
     std::vector<DinoVec2> m_lasso;
     DinoColor m_color;
     std::vector<DinoVec2> m_loopLasso;
@@ -15,4 +14,5 @@ public:
     void Draw();
 
     static void ResolveCollision(DinoLasso& lassoA, DinoLasso& lassoB);
+    DinoColor GetColor() const;
 };

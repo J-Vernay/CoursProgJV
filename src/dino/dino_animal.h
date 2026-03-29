@@ -6,7 +6,6 @@
 
 
 class DinoAnimal : public DinoEntity {
-private:
     DinoVec2 m_dir = {};
     EAnimalKind m_kind = {};
     double m_spawnTime = 0;
@@ -28,4 +27,6 @@ public:
     static bool IsDead(DinoAnimal& animal);
     static void InitStatic();
     static void ShutStatic();
+
+    EAnimalKind GetKind() const;
 };

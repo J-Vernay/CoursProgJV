@@ -11,6 +11,8 @@ struct PlayerState {
     DinoGamepad gamepad;
     DinoPlayer dino;
     DinoLasso lasso;
+    int score = 0;
+    int captureCountPerKind[8] = {0, 0, 0, 0};
 
     PlayerState(DinoGamepadIdx idx, DinoGamepad gp, int idxPlayer, DinoColor color)
         : gamepadIdx(idx)
