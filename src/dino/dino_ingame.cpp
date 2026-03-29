@@ -111,6 +111,12 @@ void InGame_Update(double timeSinceStart, float deltaTime,
         }
     }
 
+    if (chrono <= 0) {
+        chrono = 0;
+        state = EGameState::Paused;
+        g_bGameOver = true;
+    }
+
     // Chrono
     chrono -= deltaTime;
 }

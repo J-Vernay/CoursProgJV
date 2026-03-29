@@ -8,6 +8,8 @@ enum class EGameState { Lobby, InGame, Paused };
 
 constexpr double CHRONO_INIT = 60;
 
+inline bool g_bGameOver = false;
+
 struct PlayerState {
     DinoGamepadIdx gamepadIdx;
     DinoGamepad gamepad;

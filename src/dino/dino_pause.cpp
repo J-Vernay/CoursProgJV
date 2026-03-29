@@ -27,7 +27,6 @@ void Pause_Update(std::vector<PlayerState>& players,
 {
     action = EPauseAction::None;
 
-    // Collecter les inputs de tous les joueurs
     bool bDpadUp = false, bDpadDown = false;
     bool bDpadLeft = false, bDpadRight = false;
     bool bConfirm = false;
@@ -39,15 +38,27 @@ void Pause_Update(std::vector<PlayerState>& players,
             bDpadDown = bDpadDown || gp.dpad_down;
             bDpadLeft = bDpadLeft || gp.dpad_left;
             bDpadRight = bDpadRight || gp.dpad_right;
-            bConfirm = bConfirm || gp.btn_down;
+            bConfirm = bConfirm || gp.btn_down || gp.start;
         }
     }
 
+    // Si game over, forcer la sélection sur Recommencer minimum
+    if (g_bGameOver && g_selectedOption == 0)
+        g_selectedOption = 1;
+
     // Navigation
-    if (bDpadUp && !g_bWasDpadUp)
+    if (bDpadUp && !g_bWasDpadUp) {
         g_selectedOption = (g_selectedOption - 1 + 4) % 4;
-    if (bDpadDown && !g_bWasDpadDown)
+        // Sauter "Reprendre" si game over
+        if (g_bGameOver && g_selectedOption == 0)
+            g_selectedOption = 3;
+    }
+    if (bDpadDown && !g_bWasDpadDown) {
         g_selectedOption = (g_selectedOption + 1) % 4;
+        // Sauter "Reprendre" si game over
+        if (g_bGameOver && g_selectedOption == 0)
+            g_selectedOption = 1;
+    }
 
     // Modifier le chrono
     if (g_selectedOption == 3) {
@@ -60,16 +71,22 @@ void Pause_Update(std::vector<PlayerState>& players,
     // Confirmer
     if (bConfirm && !g_bWasConfirm) {
         switch (g_selectedOption) {
-        case 0: // Reprendre
-            action = EPauseAction::Resume;
-            state = EGameState::InGame;
+        case 0: // Reprendre (seulement si pas game over)
+            if (!g_bGameOver) {
+                action = EPauseAction::Resume;
+                state = EGameState::InGame;
+            }
             break;
         case 1: // Recommencer
             action = EPauseAction::Restart;
+            g_bGameOver = false;
+            g_selectedOption = 0;
             state = EGameState::InGame;
             break;
         case 2: // Retour au lobby
             action = EPauseAction::BackToLobby;
+            g_bGameOver = false;
+            g_selectedOption = 0;
             state = EGameState::Lobby;
             break;
         case 3: // Chrono
@@ -86,16 +103,21 @@ void Pause_Update(std::vector<PlayerState>& players,
 
 void Pause_Draw(double timeSinceStart, double chrono)
 {
-    // Fond semi-transparent
     std::vector<DinoVertex> vs;
-    DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
+    DinoVec2 textSize = Dino_GenVertices_Text(vs,
+                                              g_bGameOver ? "-- GAME OVER --" : "-- PAUSE --",
+                                              DinoColor_WHITE,
+                                              DinoColor_BLACK);
     DinoVertexBuffer vbuf(vs.data(), vs.size(), "Pause");
     float tx = (RENDER_SIZE.x - textSize.x * 4) / 2;
     float ty = RENDER_SIZE.y / 4;
     XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 4);
 
-    // Options du menu
     for (int i = 0; i < 4; i++) {
+        // Griser "Reprendre" si game over
+        if (i == 0 && g_bGameOver)
+            continue;
+
         std::string label;
         if (i == 3)
             label = std::format("Chrono: {:.0f}s  (< >)", chrono);
