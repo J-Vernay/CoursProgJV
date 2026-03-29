@@ -422,12 +422,21 @@ j) Implémentez F6.8.
 
 k) Sous quelle forme peut-on réorganiser toute cette logique ? Pourquoi ?
 
-> ...
+> En utilisant le state machine en gérant la logique de chaque état dans un fichier
+> différent, on sépare aussi la logique de game.cpp.
+>
+> On évite surtout les if/else a répétition.
 
 l) Utilisez le polymorphisme pour gérer l'état actuel du jeu.
 Qu'est-ce que cela entraîne nécessairement pour le stockage ?
 
-> ...
+> Les classes LobbyState, InGameState, PausedState héritent de GameState
+> et redéfinissent ces méthodes.
+> Cela entraîne nécessairement un stockage par POINTEUR : GameState* g_currentState;
+>
+> Car le polymorphisme ne fonctionne qu'avec des pointeurs ou des références.
+> Si on stockait par valeur (GameState g_state), on perdrait le type réel
+> de l'objet.
 
 ## 11. Profiling
 
