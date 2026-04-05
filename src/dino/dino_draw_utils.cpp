@@ -262,3 +262,18 @@ void Dino_GenVertices_Animal(
     out[i + 5].u = uMax;
     out[i + 5].v = vMax;
 }
+
+DinoVertexBuffer::DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel)
+{
+    vbufId = XDino_CreateVertexBuffer(pVertices, vertexCount, pLabel);
+}
+
+DinoVertexBuffer::~DinoVertexBuffer()
+{
+    XDino_DestroyVertexBuffer(vbufId);
+}
+
+uint64_t DinoVertexBuffer::Get()
+{
+    return vbufId;
+}

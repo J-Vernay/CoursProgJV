@@ -61,4 +61,14 @@ enum class EAnimalAnim : int { Up, Down, Left, Right };
 void Dino_GenVertices_Animal(
     std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time);
 
+class DinoVertexBuffer {
+public:
+    DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
+    ~DinoVertexBuffer();
+    uint64_t Get();
+
+private:
+    uint64_t vbufId;
+};
+
 /// @}
