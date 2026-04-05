@@ -1,0 +1,234 @@
+#include <algorithm>
+#include <dino/dino_animal.h>
+#include <dino/dino_draw_utils.h>
+
+
+#pragma region AnimalSpawner
+void DinoAnimalSpawner::Init(DinoScoreManager& scoreManager)
+{
+    if (m_texID != 0)
+        XDino_DestroyGpuTexture(m_texID);
+
+    m_animals.clear();
+    m_timeSinceLastSpawn = 0;
+    m_texID = XDino_CreateGpuTexture("animals.png");
+    m_ScoreManager = &scoreManager;
+}
+
+void DinoAnimalSpawner::Update(float deltaTime, double timeSinceStart, double chrono)
+{
+    constexpr double SPAWNTIME_BEGIN = 1;
+    constexpr double SPAWNTIME_END = 0.033;
+    constexpr double CHRONO_INIT = 60;
+
+    double t = 1.0 - chrono / CHRONO_INIT;
+    t = std::clamp(t, 0.0, 1.0);
+
+    double spawnTime = SPAWNTIME_BEGIN + (SPAWNTIME_END - SPAWNTIME_BEGIN) * t;
+    if (timeSinceStart - m_timeSinceLastSpawn > spawnTime) {
+        int animalIdx = XDino_RandomInt32(0, 7);
+
+        m_animals.emplace_back(timeSinceStart, animalIdx, *m_ScoreManager, m_texID);
+
+        m_timeSinceLastSpawn = timeSinceStart;
+    }
+
+    for (auto& animal : m_animals) {
+        animal.Update(deltaTime, timeSinceStart);
+    }
+
+}
+
+
+void DinoAnimalSpawner::Shut()
+{
+    DinoAnimal::ShutStatic();
+    m_animals.clear();
+
+    XDino_DestroyGpuTexture(m_texID);
+    m_texID = 0;
+    m_timeSinceLastSpawn = 0;
+}
+#pragma endregion
+
+#pragma region AnimalBehaviours
+
+DinoAnimal::DinoAnimal(double timeSinceStart, int animalIndex, DinoScoreManager& scoreManager, uint64_t texID)
+{
+    m_ScoreManager = &scoreManager;
+    m_animalType = animalIndex;
+    m_texID = texID;
+    m_spawnTime = timeSinceStart;
+    DinoVec2 rdrSize = XDino_GetRenderSize();
+    m_posTopLeft = {
+        (rdrSize.x - TERRAIN_SIZE.x) / 2,
+        (rdrSize.y - TERRAIN_SIZE.y) / 2
+    };
+    m_pos = DinoVec2(m_posTopLeft.x + XDino_RandomFloat(2, TILE_COUNT.x) * 16 - 32,
+                     m_posTopLeft.y + XDino_RandomFloat(1, TILE_COUNT.y) * 16 - 32
+    );
+
+    m_dir = XDino_RandomUnitVec2();
+}
+
+void DinoAnimal::Update(float deltaTime, double timeSinceStart)
+{
+    constexpr float SPEED = 100;
+    if (!m_dead) {
+        float minX = m_posTopLeft.x + 12;
+        float maxX = m_posTopLeft.x + TERRAIN_SIZE.x - 12;
+        float minY = m_posTopLeft.y + 12;
+        float maxY = m_posTopLeft.y + TERRAIN_SIZE.y - 12;
+
+        bool hitBorder = false;
+
+        if (m_pos.x < minX) {
+            m_pos.x = minX;
+            hitBorder = true;
+        }
+        if (m_pos.x > maxX) {
+            m_pos.x = maxX;
+            hitBorder = true;
+        }
+        if (m_pos.y < minY) {
+            m_pos.y = minY;
+            hitBorder = true;
+        }
+        if (m_pos.y > maxY) {
+            m_pos.y = maxY;
+            hitBorder = true;
+        }
+
+        // Nouvelle direction aléatoire si on touche le bord
+        if (hitBorder) {
+            m_dir = XDino_RandomUnitVec2();
+        }
+    }
+    else {
+        canBePushed = false;
+        m_dir.x = 0;
+        m_dir.y = -1;
+        m_timeDead += deltaTime;
+    }
+
+    m_pos.x += m_dir.x * SPEED * deltaTime;
+    m_pos.y += m_dir.y * SPEED * deltaTime;
+
+}
+
+void DinoAnimal::ReactLoop(double timeSinceStart, int lassoIndex)
+{
+    if (m_dead)
+        return;
+    m_dead = true;
+    m_catchPlayerId = lassoIndex;
+    m_pointsValue = m_ScoreManager->AddScore(lassoIndex, (EAnimalKind)m_animalType);
+    m_timeDead = 0;
+}
+
+bool DinoAnimal::IsDead(DinoAnimal& animal)
+{
+    return (animal.m_dead && animal.m_timeDead > animal.m_despawnTime);
+}
+
+
+void DinoAnimal::Draw(double timeSinceStart)
+{
+    constexpr float TIME_FADE_IN = 1;
+
+    if (m_dead) {
+        std::string text = std::format("+{0:02}", m_pointsValue);
+        DinoColor textColor =
+            m_catchPlayerId == 0
+                ? DinoColor_BLUE
+                : m_catchPlayerId == 1
+                ? DinoColor_RED
+                : m_catchPlayerId == 2
+                ? DinoColor_YELLOW
+                : DinoColor_GREEN;
+
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, textColor, DinoColor{255, 255, 255, 0});
+        DinoVec2 position = DinoVec2{0, -20.5f} + m_pos + DinoVec2{-textSize.x / 2, 0};
+        DinoVertexBuffer vbufID(vs.data(), vs.size(), "playerScore");
+        XDino_Draw(vbufID.GetVbufID(), XDino_TEXID_FONT, position, 1);
+    }
+    else {
+        float alpha = (timeSinceStart - m_spawnTime) / TIME_FADE_IN;
+        alpha = std::clamp(alpha, 0.0f, 1.0f);
+        DinoVertexBuffer vbuf = GenerateVertexBuffer(m_dead ? 0 : timeSinceStart, alpha);
+        XDino_Draw(vbuf.GetVbufID(), m_texID, {m_pos.x - 16, m_pos.y - 32});
+    }
+}
+
+DinoVertexBuffer DinoAnimal::GenerateVertexBuffer(double timeSinceStart, float alpha)
+{
+    uint8_t a = (uint8_t)(alpha * 255);
+    int frameAnim = int(timeSinceStart * 2) % 4;
+    uint16_t uMin = (int)m_animalType * 128 + frameAnim * 32;
+    uint16_t uMax = uMin + 32;
+    uint16_t vMin = 0;
+
+    if (fabs(m_dir.x) > fabs(m_dir.y)) {
+        if (m_dir.x < 0) {
+            vMin = 0;
+        }
+        else {
+            vMin = 0;
+            uint16_t tmp = uMin;
+            uMin = uMax;
+            uMax = tmp;
+        }
+    }
+    else {
+        if (m_dir.y > 0) {
+            vMin = 32;
+        }
+        else {
+            vMin = 64;
+        }
+
+    }
+
+    uint16_t vMax = vMin + 32;
+
+    // Dessin de la texture centrale qu'on peut bouger.
+    {
+        std::vector<DinoVertex> vs;
+        vs.resize(6);
+        vs[0].pos = {0, 0};
+        vs[1].pos = {32, 0};
+        vs[2].pos = {0, 32};
+        vs[3].pos = {32, 0};
+        vs[4].pos = {0, 32};
+        vs[5].pos = {32, 32};
+        vs[0].u = uMin;
+        vs[0].v = vMin;
+        vs[1].u = uMax;
+        vs[1].v = vMin;
+        vs[2].u = uMin;
+        vs[2].v = vMax;
+        vs[3].u = uMax;
+        vs[3].v = vMin;
+        vs[4].u = uMin;
+        vs[4].v = vMax;
+        vs[5].u = uMax;
+        vs[5].v = vMax;
+        vs[0].color = {{0xFF, 0xFF, 0xFF, a}};
+        vs[1].color = {{0xFF, 0xFF, 0xFF, a}};
+        vs[2].color = {{0xFF, 0xFF, 0xFF, a}};
+        vs[3].color = {{0xFF, 0xFF, 0xFF, a}};
+        vs[4].color = {{0xFF, 0xFF, 0xFF, a}};
+        vs[5].color = {{0xFF, 0xFF, 0xFF, a}};
+
+        return {vs.data(), vs.size(), "Animal"};
+
+    }
+
+};
+
+void DinoAnimal::ShutStatic()
+{
+}
+
+#pragma endregion
