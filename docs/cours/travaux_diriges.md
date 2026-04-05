@@ -7,108 +7,123 @@ Vous devrez compléter `docs/cours/travaux_diriges.md` au fur et à mesure du co
 
 a) Résumez en une phrase le rôle des fichiers et dossiers suivants :
 
-> `dino/xdino.h` : ...
+> `dino/xdino.h` : Gère le lien entre le jeu et le moteur custom "XDino".
 >
-> `dino/x64-windows/` : ...
+> `dino/x64-windows/` : Contient l'ensemble des dépendances liées à Windows.
 >
-> `dino/x64-linux/` : ...
+> `dino/x64-linux/` : Contient l'ensemble des dépendances liées à Linux.
 >
-> `dino/dino_game.cpp` : ...
+> `dino/dino_game.cpp` : Implémente la logique principale du jeu. Utilise les fonctions d'initialisation et de fermeture
+> du programme, ainsi que l'"Update" pour gérer la génération des frames.
 >
-> `dino/dino_geometry.cpp` : ...
+> `dino/dino_geometry.cpp` : Implémente une fonction qui vérifie et retourne vrai si deux segments AB et CD se coupent.
 >
-> `dino/dino_draw_utils.cpp` : ...
+> `dino/dino_draw_utils.cpp` : Implémente les fonctions qui permettent de dessiner à l'écran. Une pour dessiner un
+> cercle, une autre pour dessiner une boite de dialogue, avec ou sans texte, et enfin une pour dessiner un ensemble de
+> segments reliants un ensemble de points entre eux.
 >
-> `premake5.lua` : ...
+> `premake5.lua` : Renseigne l'ensemble des paramètres et configurations ("Système de Build") de la solution, tels que
+> le dossier de Build, les plateformes acceptées, ou encore l'ensemble des configuration possibles (Debug / Profile /
+> Release).
 
 b) Remettez les 20 commentaires suivants aux bons endroits dans le fichier `xdino_win64_main.cpp`, à la place des
 `// COMMENTAIRE`.
 
 ```cpp
-// Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
+// X Fonction appelée par le gameplay pour déterminer l'état du clavier et des manettes.
 
-// Déclaration des fonctions qui sont définies plus bas dans le fichier.
+// X Déclaration des fonctions qui sont définies plus bas dans le fichier.
 
-// Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
-// Tourne en boucle tant que le programme continue.
+// X Boucle principale d'événement, qui traite les messages que le système d'exploitation nous envoit.
+// X Tourne en boucle tant que le programme continue.
 
-// Définition des constantes.
+// X Définition des constantes.
 
-// Quand le programme se termine, on libère les ressources associés au programme.
+// X Quand le programme se termine, on libère les ressources associés au programme.
 
-// La fenêtre graphique vient d'être construite,
-// on initialise des variables globales et le moteur de rendu.
+// X La fenêtre graphique vient d'être construite,
+// X on initialise des variables globales et le moteur de rendu.
 
-// Foncfion qui gère les événements que nous communique le système d'exploitation.
+// X Fonction qui gère les événements que nous communique le système d'exploitation.
 
-// Initialisation de la fenêtre graphique.
+// X Initialisation de la fenêtre graphique.
 
-// L'utilisateur redimensionne la fenêtre.
-// On ajuste le moteur de rendu en conséquence.
+// X L'utilisateur redimensionne la fenêtre.
+// X On ajuste le moteur de rendu en conséquence.
 
-// Expose les fonctions de la base de code.
+// X Expose les fonctions de la base de code.
 
-// Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
+// X Délègue les autres événéments à l'implémentation par défaut du système d'exploitation.
 
-// Expose les fonctions de la bibliothèque tierce PIX.
+// X Expose les fonctions de la bibliothèque tierce PIX.
 
-// Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
+// X Fonction d'entrée du programme, contient le code qui sera appelé par le système d'exploitation Windows.
 
-// Le système d'exploitation demande à redessiner la fenêtre.
-// On demande à la logique de jeu de dessiner une frame.
+// X Le système d'exploitation demande à redessiner la fenêtre.
+// X On demande à la logique de jeu de dessiner une frame.
 
-// Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
+// X Appelé par la macro DINO_CRITICAL pour afficher une popup en cas d'erreur.
 
-// L'utilisateur a demandé à détruire la fenêtre.
-// On notifie le système d'exploitation qu'on veut arrêter.
+// X L'utilisateur a demandé à détruire la fenêtre.
+// X On notifie le système d'exploitation qu'on veut arrêter.
 
-// Expose les fonctions de la bibliothèque standard.
+// X Expose les fonctions de la bibliothèque standard.
 
-// Variables globales, accédées dans ce fichier.
+// X Variables globales, accédées dans ce fichier.
 
-// Fonction qui communique avec le système d'exploitation
-// pour créer la fenêtre graphique principale de rendu.
+// X Fonction qui communique avec le système d'exploitation
+// X pour créer la fenêtre graphique principale de rendu.
 
-// Expose les fonctions du système d'exploitation Windows.
+// X Expose les fonctions du système d'exploitation Windows.
 ```
 
 c) Je dirige le cercle vers la droite, à une vitesse de 300 pixels par seconde.
 Le temps entre deux frames est 20 millisecondes. Quelle distance en pixel a été parcouru entre ces deux frames ?
 
-> ...
+> 6 pixels (20ms -> 50fps -> 300px / 50fps = 6px/fps)
 
 d) Le temps entre deux frames est 10 millisecondes. Pendant ce temps,
 le cercle s'est dirigé suivant le vecteur (-30, 40) (en pixels).
 Dans quelle direction s'est-il déplacé ?
 À quelle vitesse, en pixels par seconde, cela correspond-il ?
 
-> ...
+> Comme l'origine est en haut à gauche, on se dirige vers le coin inférieur gauche (sud / sud-ouest)
+> Le vecteur de déplacement (-30,40) est de magnitude 50 (√(-30² + 40²) = √(900 + 1600) = √(2500) = 50).
+> 10ms correspond à 100FPS, soit 5000px/s (50px/f * 100fps)
 
 e) Le cercle est à la position (100, 200). Il se dirige en diagonale droite-haut,
 à la vitesse de 100 pixels par seconde. À quelle position le cercle est-il
 au bout d'une seconde ?
 
-> ...
+> d = 100px, et dx et dy sont égaux car en diagonal
+> d = √(dx² + dy²) = √(2dx²) = √2 * |dx|
+> |dx| = d / √2 ≈ 100 / 1.41 ≈71px
+> |dx| = |dy|
+> vec d = (|dx|, -|dy|) = (71,-71)
+> vec B = vec A + vec d = (100,200) + (71,-71) = (171,129)
 
 f) Par quoi est définit un triangle texturé ?
 
-> ...
+> Un triangle texturé est défini par un ensemble de 3 vertex, qui ont chacuns une position à l'écran et des coordonnées
+> UV, et une texture appliquée selon ces coordonnées UV
 
 g) Qu'est-ce qu'est un "draw call" ?
 
-> ...
+> Le Draw Call demande de faire les opérations sur les géométries et textures qui ont été envoyée au préalable par le
+> CPU (RAM) au GPU (VRAM)
 
 h) Qu'est-ce qui est affiché quand on maintient MAJ/SHIFT dans le jeu ?
 Dans la sortie textuelle quand on quitte le jeu ?
 
-> ...
+> Un menu de debug avec un ensemble de ligne détaillant par exemple la totalité des vertex des différents objets
 
 i) À quoi servent les configurations Debug|Profile|Release ? Donnez un exemple.
 
-> ...
+> Les configurations permettent de choisir comment compiler le code de manière arbitraire. Par exemple on peut intégrer
+> des outils de débug qui n'apparaitront pas lorsque la configuration 'Release' est choisie
 
 j) Ajoutez votre `NOM Prénom` en bas à droite de l'écran,
-sur le même modèle que `dTime`. Il vous faudra utiliser le paramètre
+sur le même modèle que `dTime`. Il vous faudra utiliser la valeur de retour
 `pOutSize` pour récupérer la taille en pixels du rectangle de texte
 et le positionner correctement contre le bas de l'écran grâce à `translation`.
 
@@ -132,14 +147,18 @@ Choisissez les coordonnées UV de telle sorte à afficher le sprite de dinosaure
 b) Implémentez la fonctionnalité F1.2 .
 Comment peut-on mettre en miroir le sprite du dinosaure ?
 
-> ...
+> Il suffit d'inverser les UVs selon l'axe horizontal
 
 c) Implémentez la fonctionnalité F1.3 .
 Notez que les sprites d'une même animation sont côte à côte.
 Quel calcul permet de récupérer les coordonnées UV de la bonne animation, étant donné le temps écoulé depuis le début du
 jeu ?
 
-> ...
+> int uAnim = ((int)(timeSinceStart * animSpeed) % frameCount) * 24 + ubase;
+> La frame est calculée selon la vitesse de l'animation et le temps écoulé, le tout modulo la taille de l'anim (pour
+> s'assurer de bien loop l'anim. Le tout est ensuite multiplié par 24, pour les 24px de chaque sprite. Enfin, on y
+> ajoute la valeur de Ubase qui correspond à la position de la première frame de l'anim, afin de s'assurer de bien se
+> situer au bon endroit de la tilemap
 
 d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en appuyant sur `btn_left`.
 
@@ -148,7 +167,8 @@ d) Implémentez la fonctionnalité F1.4 ; déclenchez l'animation de dégâts en
 a) Comment transformer les différentes variables globales qui représentent l'état du dinosaure
 pour les regrouper ? L'appliquer.
 
-> ...
+> Pour regrouper l'ensembles des variables qui constituent l'état du dino, il suffit de créer une struct avec l'ensemble
+> de ces variables
 
 b) Créez les fichiers `dino_player.h` et `dino_player.cpp` dans le dossier `src/dino`,
 pour y déplacer le code concernant les dinosaures.
@@ -158,7 +178,10 @@ c) En C++, quel terme utilise-t-on pour une fonction qui est associée à un typ
 Quel outil permet de limiter la modification d'un type de données à ce genre de fonctions ?
 Comment appelle-t-on cette limitation ? Quel intérêt ?
 
-> ...
+> On parle de fonction memebres, ou de méthodes
+> Les modificateurs d'accessibilité (private / public) permettent de modifier le scope d'une fonction
+> On appelle cette limitation l'encapsulation, et elle permet de structurer son code pour plus facilement identifier,
+> en cas d'erreurs, les éléments potentiellement responsables
 
 d) Appliquez ces outils pour créer la classe `DinoPlayer` en rendant privées les données
 qui représentent le dinosaure.
@@ -168,20 +191,24 @@ Utilisez pour cela le type `std::vector<DinoPlayer>` de la bibliothèque standar
 Quelle syntaxe permet d'itérer sur tous les éléments d'un tableau, sans manipuler d'indices de cases ?
 Comment s'appelle cette syntaxe ?
 
-> ...
+> Pour itérer sur l'ensemble des éléments d'un tableau, on utilise un for range :
+> for (MyClass myElementOfTypeMyClass : MyArrayOfElements)
 
 ## 3. Programmation du terrain
 
 a) Elargissez la fenêtre du jeu. Pourquoi y a-t-il de l'espace inutilisé sur les côtés de l'écran ?
 
-> ...
+> On suppose que la résolution de rendu est en format 1:1 (carré) et non pas en format 16:9 (forme de l'écran)
 
 b) Forcez la résolution du rendu à 480 pixels de long par 360 pixels de haut.
 
 c) On veut positionner un rectangle de taille 256x192 pixels au centre d'un rectangle de 480x360 pixels.
 Quel calcul faire pour obtenir la taille des marges en haut, à gauche, à droite et en bas ?
 
-> ...
+> Puisque le rectangle est au centre les marges du haut et du bas, et celles de la gauche et de la droite seront égales
+> entre elles
+> Marges à gauche et à droite (axe horizontal) : Mhorizontal = (480 - 256) / 2 = 112
+> Marges du haut et du bas (axe vertical) : Mvertical = (360 - 192) / 2 = 84
 
 d) Implémentez la fonctionnalité F2.1 . Mettez votre code dans des fichiers `dino_terrain.h` et `dino_terrain.cpp`
 qui contiendront la logique du terrain.
@@ -191,7 +218,16 @@ e) Implémentez la fonctionnalité F2.2 .
 f) Implémentez la fonctionnalité F2.3 . Faites en sorte qu'il y ait toujours exactement 10 fleurs de chaque espèce.
 Expliquez les étapes de votre algorithme.
 
-> ...
+> Lors de la génération du terrain :
+> - Mélange aléatoire des tuiles, puis vérification si une fleur peut y être posée (si ce n'est aps un bord et que
+    > toutes les fleurs n'ont pas été posées)
+    >
+
+- Si c'est le cas, enregistrer dans deux vectors la position et l'uv de la fleur
+
+>
+> Une fois que le terrain a fini de générer, appel de la génération des fleurs avec en paramètres les deux vectors
+> - Placement de chaque fleur selon la position sauvegardée et l'uv associé
 
 ## 4. Comprendre la compilation des fichiers C++
 
@@ -200,43 +236,72 @@ Dans Everything, vérifier que **Recherche > Respecter le chemin** est activé.
 a) Cherchez `CoursProgJV *.h|*.cpp`. Quels sont les 6 dossiers du projet à contenir des fichiers Header et C++ ?
 Répartissez ces dossiers en 3 catégories.
 
-> ...
+> - Code source :
+    >
+
+- "CoursProgJV\src\dino"
+
+> - Code d'interaction avec l'OS :
+    >
+
+- linux : "CoursProgJV\src\dino\x64-linux"
+
+> - Windows : "CoursProgJV\src\dino\x64-windows"
+> - Code Externe (dépendances ?) :
+    >
+
+- "CoursProgJV\external\pix\Include\WinPixEventRuntime"
+
+> - "CoursProgJV\external\sokol"
+    >
+
+- "CoursProgJV\external\stb"
 
 c) Cherchez `CoursProgJV *.cpp|*.obj`. Que remarquez-vous à propos des fichiers `.obj` ? Notez leurs dossiers.
 
-> ...
+> Il y a un obj par cpp (multiplié par el nombre de build). Leurs dossiers sont "CoursProgJV\build\x64-windows\Debug ||
+> Profile || Release\Dino_NomPrenom"
 
 d) Compilez le projet en changeant de configuration (Debug/Profile/Release).
 Cherchez `CoursProgJV !tools *.exe`. Quel(s) fichier(s) obtenez-vous ? Notez leurs dossiers.
 
-> ...
+> On obtient une version de chaque exécutable, dans le dossier builds, chacun dans un sous dossier du nom de la
+> configuration
 
 e) Dans le fichier `premake5.lua`, quelles lignes font références aux fichiers et chemins observés plus tôt ?
 
-> ...
+> - 16 : `location "build"`
+> - 19 : `targetdir "build/%{cfg.platform}/%{cfg.buildcfg}"`
+> - 93 : `files { "external/**.cpp", "external/**.h" }`
+> - 101 : `files { "src/dino/*" }`
+> - 107 : `files { "src/dino/x64-windows/*" }`
+> - 115 : `files { "src/dino/x64-linux/*" }`
 
 f) Quels sont les liens entre :
 
-> **Fichiers `.h` et `.cpp` :** ...
+> **Fichiers `.h` et `.cpp` :** .h possèdes les étapes du préprocesseur nécessaires au .cpp
 >
-> **Fichiers `.cpp` et `.obj` :** ...
+> **Fichiers `.cpp` et `.obj` :** .obj est la version compilée du .cpp
 >
-> **Fichiers `.obj` et `.lib` :** ...
+> **Fichiers `.obj` et `.lib` :** .lib est la version archivée des .obj
 >
-> **Fichiers `.obj` et `.dll` :** ...
+> **Fichiers `.obj` et `.dll` :** .dll contient un ensemble dynamique des .obj d'un programme. On peut patcher un dll
+> sans avoir à changer le .exe
 >
-> **Fichiers `.obj` et `.exe` :** ...
+> **Fichiers `.obj` et `.exe` :** .exe possède l'ensemble des liens (linker) entre les obj
 >
-> **Fichiers `.dll` et `.exe` :** ...
+> **Fichiers `.dll` et `.exe` :** le .exe peut exécuter du code qui se situe dans le .dll
 
 g) Quel est le rôle du préprocesseur ? Comment reconnait-on les directives de préprocesseur ?
 
-> ...
+> Il réalise toutes les étapes nécessaire à la compilation, comme les include par exemple. Les directives de
+> préprocesseurs sont précédées d'un #
 
 h) Quel est le rôle de l'éditeur de liens ? Quels sont les deux types de fichiers qu'il peut produire ? Quelle
 différence majeure ?
 
-> ...
+> L'éditeur de lien s'occupe d'agencer les lien entre chaque scripts pour que le .exe puissent les utiliser correctement
+> Il peut produire soit le .exe lui-même, soit des .dll que le .exe peut utiliser
 
 ## 5. Programmation des animaux
 
@@ -254,33 +319,40 @@ b) Implémentez la fonctionnalité F4.2 .
 
 c) Comment détecter si deux cercles à des positions données sont en collision ?
 
-> ...
+> on vérifie si la distance entre le centre des deux cercles est inférieur à la somme du rayon ce chaque cercle
 
 d) Comment repousser deux cercles en collision de façon minimale et qu'il ne soient plus en collision ?
 Quel cas particulier n'est pas résoluble ?
 
-> ...
+> on calcule la taille de l'overlap, et on déplace chaque cercle de la moitié de cette distance dans le sens opposé à
+> l'autre cercle. De cette manière les cercles s'éloigne jusqu'à ne se toucher plus qu'en un point.
+> Le calcul pour trouver cette distance nécessite de faire une division par la distance entre les cercles, ce qui fait
+> que le cas où les objets sont exactement à al même position n'est pas résoluble
 
 e) Implémentez la fonctionnalité F4.3 .
 
 f) Implémentez la fonctionnalité F4.4 . Pourquoi y a-t-il duplication de code ?
 
-> ...
+> Il y a de la duplication de code car les joueurs et les animaux ne sont pas du même type, il faut donc gérer trois
+> cas, les joueurs entre-eux, les animaux entre-eux, et les joueurs avec les animaux.
 
 g) Quelle fonctionnalité du C++ permet de dédupliquer la logique commune entre `DinoPlayer` et `DinoAnimal` ?
 L'appliquer dans la base de code.
 
-> ...
+> On peut utiliser de l'héritage pour n'utiliser qu'une seule fonction (présente dans la classe parente) pour gérer les
+> colissions des classes enfants (joueurs et animaux)
 
 h) Quelle fonctionnalité du C++ permet de gérer différemment un point de logique commune,
 comme la réaction à un événement du type "limite du terrain" ? L'appliquer dans la base de code.
 
-> ...
+> Pour gérer différemment un point de logique commune on utilise du polymorphise. Cela permet aux classe enfant
+> d'implémenter leur propre comportement lors d'un appel de logique commun à tous les enfants
 
 i) Quelles méthodes de classes pourraient être mises en commune suivant le même principe ?
 L'appliquer dans la base de code.
 
-> ...
+> - ResolveCollision (simple héritage)
+> - ApplyLimit (polymorphisme)
 
 j) Implémentez la fonctionnalité F4.5. Cela implique de trier un tableau qui peut contenir à la fois des `DinoPlayer` et
 des `DinoAnimal`. Comment faire ?
@@ -315,27 +387,40 @@ f) Implémentez F5.6 et F5.7 via une logique commune, comme mentionné dans (6.h
 a) Sur votre machine, combien de RAM est disponible ?
 Dans un programme 64-bits, combien d'octets sont adressables ? À quels octets peut-on lire et écrire ?
 
-> ...
+> 32.0 GB
+> 18 milliards de Go d'espace adressable
 
 b) Que veut dire "allouer de la mémoire" sur un ordinateur moderne ?
 Est-ce une opération coûteuse ?
 
-> ...
+> Cela veut dire réserver une région de l'espace d'adresses pour qu'un programme puisse l'utiliser afin de stocker des
+> données
+> Le coût de l'opération dépends de la taille de l'espace demandé
 
 c) En C++, à quoi correspond un type ? À quoi correspond un pointeur ?
 Que veut dire réinterpréter un pointeur ?
 
-> ...
+> Un type permet de définir au rpogramme comment interpréter une suite d'octets
+> Un pointeur correspond à une adresse mémoire, ainsi qu'au type nécessaire pour interpréter ce qui est stocké à cette
+> adresse
+> Réinterpréter un pointeur consiste à le lire avec un autre type que celui défini à l'origine
 
 d) Quelle est la taille du type `DinoColor` ? du type `DinoVertex` ?
 
-> ...
+> 4 octets
+> 16 octets
 
 e) Que représente un `std::vector` ? Comment pourrait-il être représenté en mémoire ?
 Comment connaître la position en mémoire d'un élément étant donné son indice ?
 Quelle limitation cela entraîne-t-il ?
 
-> ...
+> Un std::vector correspond à une liste d'objet du même type
+> Il est représenté en mémoire par un long espace mémoire qui correspond à la taille du typé multiplié par le nombre
+> d'éléments
+> Pour trouver la position en mémoire d'un élément en ayant son indice, il suffit d epartir de l'adresse mémoir du
+> vector, et se déplacer sur l'espace alloué jusqu'à atteindre l'emplacement indice * taille du type
+> La limitation qui découle de ce système est qu'à chaque modification de la taille du vecto il est nécessaire de
+> trouver un nouvel espace suffisamment grand pour stocker tout le vector
 
 h) Quand et qui alloue la mémoire pour les variables globales ?
 Quand et qui alloue la mémoire pour les variables locales ?
@@ -348,12 +433,26 @@ Quand et qui alloue la mémoire des `std::vector` ?
 a) Surcharger les opérateurs `+` et `*` pour que l'on puisse additionner deux `DinoVec2` ensemble,
 et que l'on puisse multiplier un `DinoVec2` avec un `float`. Quelle syntaxe est utilisée ?
 
-> ...
+> On utilise la fonction operator@ où @ est l'opérateur que l'on souhaite surcharger :
+> - operator+(DinoVec2 a, DinoVec2 b)
+> - operator*(DinoVec2 a, float b)
+>
+> Exemple :
+> DinoVec2 operator+(DinoVec2 a, DinoVec2 b){
+> return {a.x + b.x, a.y + b.y};
+> }
+>
+> C'est également possible de le mettre directement dans la struct :
+> struct DinoVec2{
+> DinoVec2 operator+(DinoVec2 other);
+> }
+>
+> Il est préférable de le faire en fonction libre
 
 b) Quand on affiche un sprite, on crée un `std::vector<DinoVertex>`, et on spécifie les positions et UV.
 Pourquoi n'a-t-on pas besoin de spécifier la couleur de modulation du sprite ?
 
-> ...
+> Car la valeur apr défauit pour la couleur n'est pas {0,0,0,0} mais {255,255,255,255}
 
 c) Remplacez les méthodes `Init()` de `DinoPlayer`, `DinoAnimal` et `DinoLasso`.
 Quelle méthode de `std::vector` prend en paramètres les arguments de construction
@@ -362,7 +461,9 @@ et crée une instance sans faire de copie ?
 d) `std::vector<DinoVertex>` contient une allocation mémoire. Pourquoi n'y a-t-il pas besoin
 d'appeler explicitement une méthode équivalente à `Shut()/Destroy()` ?
 
-> ...
+> En symétrie du constructeur, quand une variable est détruite en c++ (quand elle n'est plus accessible), le compilateur
+> appelle automatiquement le destructeur
+> Le destructeur s'appelle ~ + le nom de la classe, il n'a pas de type de retour et ne prend aucun argument
 
 e) Créer une classe `DinoVertexBuffer` qui accepte les mêmes arguments que `XDino_CreateVertexBuffer()`
 et garde le `vbufID` dans un membre privé, avec une fonction `Get()` qui retourne ce `vbufID`.
@@ -371,7 +472,16 @@ Remplacez les usages des vertex buffers qui sont créés à chaque frame.
 
 f) Que se passe-t-il lorsqu'on copie un `DinoVertexBuffer` vers un autre ? Comment le prévenir ?
 
-> ...
+> Lorsque l'on copie un DinoVertexBuffer A vers un autre B, le DinoVertexBuffer B perd la référence à son vertex buffer,
+> et copie celle du A. Ainsi le vertex buffer du B ne pourra jamais être détruit, et lors de la destruction des 2
+> DinoVertexBuffer, le second a être appelé tentera de détruire un vertex buffer déjà détruit
+> Pour palier à celà on précise à la classe DinoVertexBuffer que les constructeurs et assignations apr copies sont
+> interdits :
+> - DinoVertexBuffer(DinoVertexBuffer const&) = delete;
+> - DinoVertexBuffer& operator=(DinoVertexBuffer const&) = delete;
+>
+> Ainsi, les tentvies de copies résulteront en une erreur de compilation, le jeu ne pourra jamais être lancé avec une
+> copie quelque part dans le code
 
 =========== NE PAS FAIRE ===========
 

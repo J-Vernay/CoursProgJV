@@ -1,0 +1,54 @@
+#pragma once
+
+#include <dino/xdino.h>
+#include <dino/dino_entity.h>
+#include <dino/dino_draw_utils.h>
+
+struct DinoController : public DinoEntity {
+
+    // Fields
+private:
+    double m_dinoCurrentSpeed;
+    bool m_dinoGoingLeft = false;
+
+    float m_dinoAnimElapsed = 0;
+    float m_dinoDamageAnimTimer;
+    int m_currFrame = 0;
+
+    bool m_dinoTakeDamage = false;
+
+    DinoGamepad m_gamepad;
+
+    // std::vector<DinoVec2> m_lasso;
+    // DinoColor m_lassoColor = {77, 146, 188, 255};
+    // float m_lassoLifeSpan = 2.f;
+    // uint64_t vbufID_lasso;
+
+public:
+    int m_dinoNbr = 0;
+    int GetPlayerNbr() override;
+
+    uint64_t vbufID_dino;
+
+    static uint64_t s_texID;
+
+    // Methods
+private:
+    DinoVertexBuffer GenDinoVertexBuffer(double timeSinceStart);
+    void ReactLimit(bool xChanged) override;
+    void ReactLoop(double timeSinceStart, int score, DinoColor lassoColor) override;
+
+public:
+    void Init(int playerCount);
+    // void Shut();
+    void EnterGame();
+    void QuitGame();
+
+    void DinoMovement(DinoGamepad gamepad, float deltaTime);
+    void Draw(double timeSinceStart) override;
+    // void DrawLasso();
+    // void CheckForOwnLassoIntersections();
+    // void CheckForOtherLassIntersections(DinoControllerFields& other);
+    static void InitTexture();
+    static void ShutTexture();
+};

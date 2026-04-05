@@ -1,0 +1,32 @@
+#pragma once
+
+#include <dino/xdino.h>
+
+class DinoTerrain {
+
+    DinoVec2 m_sizeInTiles;
+    DinoVec2 m_translation;
+    int m_flwrNbrPerGroup;
+    int m_season;
+
+    uint64_t texID_terrain;
+    uint64_t vbufID_bg;
+    uint64_t vbufID_terrain;
+    uint64_t vbufID_flwrs;
+
+public:
+    void Init(DinoVec2 sizeOfTerrainInTiles, int NbrOfFlowersPerGroup, int season);
+    void Shut();
+
+    void DrawBG();
+    void DrawTerrain();
+    void DrawFlwrs();
+
+    DinoVec2 GetTopLeft();
+    DinoVec2 GetBottomRight();
+
+private:
+    uint64_t GenBgVertexBuffer();
+    uint64_t GenTerrainVertexBuffer();
+    uint64_t GenFlwrVertexBuffer(std::vector<DinoVec2> flwrPos, std::vector<DinoVec2> flwrUVs);
+};

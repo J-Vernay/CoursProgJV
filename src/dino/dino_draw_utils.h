@@ -49,7 +49,7 @@ void Dino_GenVertices_Polyline(
 
 // À bouger dans vos fichiers dino_animal.cpp/dino_animal.h
 
-enum class EAnimalKind : int { Pig1, Pig2, Cow1, Cow2, Sheep1, Sheep2, Ostrich1, Ostrich2 };
+enum class EAnimalKind : int { Pig1, Pig2, Cow1, Cow2, Sheep1, Sheep2, Ostrich1, Ostrich2, Other };
 
 enum class EAnimalAnim : int { Up, Down, Left, Right };
 
@@ -59,6 +59,19 @@ enum class EAnimalAnim : int { Up, Down, Left, Right };
 /// @param idxAnimal Quel espèce d'animal afficher, entre 0 et 7.
 /// @param idxAnim Quelle animation jouer.
 void Dino_GenVertices_Animal(
-    std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time);
+    std::vector<DinoVertex>& out, EAnimalKind kind, EAnimalAnim anim, double time, float alpha);
 
 /// @}
+
+
+class DinoVertexBuffer {
+public:
+    DinoVertexBuffer(DinoVertex const* pVertices, size_t vertexCount, char const* pLabel);
+    DinoVertexBuffer(DinoVertexBuffer const&) = delete;
+    DinoVertexBuffer& operator=(DinoVertexBuffer const&) = delete;
+    uint64_t Get();
+    ~DinoVertexBuffer();
+
+private:
+    uint64_t m_vbufID;
+};
