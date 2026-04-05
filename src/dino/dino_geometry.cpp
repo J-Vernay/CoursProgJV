@@ -23,6 +23,25 @@ bool Dino_IntersectSegment(DinoVec2 A, DinoVec2 B, DinoVec2 C, DinoVec2 D)
 
     if (dot_AB_AC <= dot_AB_AD)
         return 0 <= dot_AB_AD && dot_AB_AC <= dot_AB_AB;
-    else
-        return 0 <= dot_AB_AC && dot_AB_AD <= dot_AB_AB;
+    return 0 <= dot_AB_AC && dot_AB_AD <= dot_AB_AB;
+}
+
+DinoVec2 operator+(DinoVec2 a, DinoVec2 b)
+{
+    return {a.x + b.x, a.y + b.y};
+}
+
+DinoVec2 operator*(DinoVec2 a, float b)
+{
+    return {a.x * b, a.y * b};
+}
+
+DinoVec2 operator*(float a, DinoVec2 b)
+{
+    return {a * b.x, a * b.y};
+}
+
+DinoVec2 operator-(DinoVec2 a, DinoVec2 b)
+{
+    return {a.x - b.x, a.y - b.y};
 }
