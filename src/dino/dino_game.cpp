@@ -1,176 +1,108 @@
-/// @file dino_game.cpp
-/// @brief Implémentation des fonctions principales de la logique de jeu.
-
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
+#include <dino/dino_terrain.h>
+#include <dino/dino_player.h>
+#include <dino/dino_animal.h>
+#include <dino/dino_tree.h>
+
+#include "dino_gamestate.h"
+#include "dino_lobbystate.h"
 
 #include <format>
+#include <optional>
+#include <vector>
 
-// Variables globales.
-double g_lastTime = 0;
-double g_rotation = 360.0;
-double g_scale = 1.0;
-DinoVec2 g_circlePos = {};
+constexpr DinoVec2 RENDER_SIZE = {480, 360};
 
-uint64_t vbufID_polyline;
-uint64_t vbufID_imageMilieu;
-uint64_t vbufID_circle;
-uint64_t texID_imageMilieu;
+double                       g_lastTime = 0;
+std::vector<DinoGamepadIdx>  g_unassignedGamepads;
+std::vector<PlayerState>     g_players;
+DinoTerrain                  g_terrain;
+GameState*                   g_currentState = nullptr;
 
-// Variable globale pour l'affichage de debug.
+std::optional<DinoVertexBuffer> g_vbufID_prenom;
+DinoVec2                        g_textSize_prenom;
+
 int g_debugScroll = 0;
 
-// Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
 
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
-    g_circlePos = {windowSize.x / 2, windowSize.y / 2};
+    XDino_SetRenderSize(RENDER_SIZE);
 
-    // Préparation du drawcall de la polyline (zigzag en fond).
-    {
-        constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
+    DinoPlayer::InitStatic();
+    DinoAnimal::InitStatic();
+    DinoTree::InitStatic();
 
-        std::vector<DinoVec2> polyline;
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
-        std::vector<DinoVertex> vs;
-        Dino_GenVertices_Polyline(vs, polyline, 100, POLYLINE_COLOR);
-        vbufID_polyline = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
-    }
+    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
+        g_unassignedGamepads.emplace_back(idx);
 
-    // Préparation du drawcall de l'image au milieu qu'on peut tourner.
-    {
-        constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
-        constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
-        constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
-        constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
+    int idxSeason = XDino_RandomInt32(0, 3);
+    g_terrain.Init(RENDER_SIZE, idxSeason);
 
-        texID_imageMilieu = XDino_CreateGpuTexture("animals.png");
-        DinoVec2 texSize = XDino_GetGpuTextureSize(texID_imageMilieu);
-
-        std::vector<DinoVertex> vs;
-        vs.resize(6);
-        vs[0].pos = {-2, -1};
-        vs[0].color = PURPLE;
-        vs[1].pos = {2, -1};
-        vs[1].color = CYAN;
-        vs[2].pos = {-2, 1};
-        vs[2].color = PINK;
-        vs[3].pos = {2, -1};
-        vs[3].color = CYAN;
-        vs[4].pos = {-2, 1};
-        vs[4].color = PINK;
-        vs[5].pos = {2, 1};
-        vs[5].color = ORANGE;
-        vs[0].u = 0;
-        vs[0].v = 0;
-        vs[1].u = texSize.x;
-        vs[1].v = 0;
-        vs[2].u = 0;
-        vs[2].v = texSize.y;
-        vs[3].u = texSize.x;
-        vs[3].v = 0;
-        vs[4].u = 0;
-        vs[4].v = texSize.y;
-        vs[5].u = texSize.x;
-        vs[5].v = texSize.y;
-
-        vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
-    }
-
-    // Préparation du drawcall du cercle qu'on peut bouger.
     {
         std::vector<DinoVertex> vs;
-        Dino_GenVertices_Circle(vs, 20);
-        vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
+        g_textSize_prenom = Dino_GenVertices_Text(vs, "Antoine BOULANGER", DinoColor_WHITE, DinoColor_GREY);
+        g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
+
+    GameContext ctx{g_unassignedGamepads, g_players, g_terrain, RENDER_SIZE};
+    g_currentState = new LobbyState(0.0, ctx);
 }
 
 void Dino_GameFrame(double timeSinceStart)
 {
-    // Prendre en compte le temps qui passe.
-
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
-    // Gestion des entrées et mise à jour de la logique de jeu.
+    XDino_SetRenderSize(RENDER_SIZE);
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+    GameContext ctx{g_unassignedGamepads, g_players, g_terrain, RENDER_SIZE};
 
-        if (gamepad.btn_down && !gamepad.btn_up)
-            g_scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            g_scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            g_rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            g_rotation -= 90.0 * deltaTime;
-
-        g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+    GameState* nextState = g_currentState->Update(timeSinceStart, deltaTime, ctx);
+    if (nextState) {
+        delete g_currentState;
+        g_currentState = nextState;
     }
 
-    // Affichage
-
     constexpr DinoColor CLEAR_COLOR = {50, 50, 80, 255};
-
     XDino_SetClearColor(CLEAR_COLOR);
 
-    // Dessin de la "polyligne"
-    XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
+    g_currentState->Draw(timeSinceStart, ctx);
 
-    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    // DinoVec2 windowSize = XDino_GetWindowSize();
-    // XDino_SetRenderSize(windowSize);
-    DinoVec2 renderSize = XDino_GetRenderSize();
-
-    // Dessin de la texture centrale qu'on peut bouger.
-    DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
-    double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
-    XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
-
-    // Dessin du cercle que l'on peut bouger.
-    XDino_Draw(vbufID_circle, XDino_TEXID_FONT, g_circlePos);
-
-    // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
-        XDino_DestroyVertexBuffer(vbufID);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "dTime");
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {}, 2);
+    }
+
+    {
+        float tx = RENDER_SIZE.x - g_textSize_prenom.x * 2;
+        float ty = RENDER_SIZE.y - g_textSize_prenom.y * 2;
+        XDino_Draw(g_vbufID_prenom->Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
 #if !XDINO_RELEASE
-    // Affichage des statistiques si on appuie sur SHIFT.
     DinoGamepad keyboard;
-    bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
-    if (bKeyboardOk && keyboard.shoulder_left) {
-        int diff = 0;
-        if (keyboard.dpad_up)
-            diff -= 1;
-        if (keyboard.dpad_down)
-            diff += 1;
-        XDino_DrawStats(diff);
-    }
+    if (XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard) && keyboard.shoulder_left)
+        XDino_DrawStats(keyboard.dpad_up ? -1 : keyboard.dpad_down ? 1 : 0);
 #endif
 }
 
 void Dino_GameShut()
 {
-    XDino_DestroyVertexBuffer(vbufID_circle);
-    XDino_DestroyVertexBuffer(vbufID_imageMilieu);
-    XDino_DestroyVertexBuffer(vbufID_polyline);
-    XDino_DestroyGpuTexture(texID_imageMilieu);
+    delete g_currentState;
+    g_currentState = nullptr;
+
+    for (PlayerState& player : g_players)
+        player.dino.Shut();
+
+    g_terrain.Shut();
+    DinoTree::ShutStatic();
+    DinoPlayer::ShutStatic();
+    DinoAnimal::ShutStatic();
+
+    g_vbufID_prenom.reset();
 }
