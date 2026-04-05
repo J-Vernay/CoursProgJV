@@ -3,93 +3,123 @@
 
 #include <dino/dino_draw_utils.h>
 #include <dino/xdino.h>
+#include <dino/dino_player.h>
+#include <dino/dino_terrain.h>
+#include <dino/dino_animal.h>
+#include <dino/dino_lasso.h>
+#include <dino/dino_tree.h>
 
 #include <format>
+#include <algorithm>
+#include <optional>
+
+
+constexpr double SPAWNTIME_BEGIN = 1;
+constexpr double SPAWNTIME_END = 0.033;
+constexpr double CHRONO_INIT = 60;
 
 // Variables globales.
 double g_lastTime = 0;
-double g_rotation = 360.0;
-double g_scale = 1.0;
-DinoVec2 g_circlePos = {};
 
-uint64_t vbufID_polyline;
-uint64_t vbufID_imageMilieu;
-uint64_t vbufID_circle;
-uint64_t texID_imageMilieu;
+struct PlayerState {
+    DinoGamepadIdx gamepadIdx;
+    DinoGamepad gamepad;
+    DinoPlayer dino;
+    DinoLasso lasso;
+
+    int score = 0; 
+};
+
+std::vector<DinoGamepadIdx> g_UnassignedGamepads;
+std::vector<PlayerState> g_Players;
+std::vector<DinoTree> g_Trees;
+
+
+DinoTerrain g_Terrain;
+std::vector<DinoAnimal> g_Animals;
+double g_timeSpawnAnimal = 0;
+double g_chrono = CHRONO_INIT;
+bool g_bWasStartPressed = false;
+
+
+enum GameState {
+    inGame,
+    gamePaused,
+    lobby
+};
+
+GameState g_state = lobby;
+
+std::optional<DinoVertexBuffer> g_vbufID_prenom;
+DinoVec2 textSize_prenom;
 
 // Variable globale pour l'affichage de debug.
 int g_debugScroll = 0;
 
-// Constantes.
-constexpr float CIRCLE_SPEED = 300.f; // Nombre de pixels parcourus en une seconde.
+constexpr DinoVec2 RENDER_SIZE = {480, 360};
+
+void Dino_ResetToLobby()// il faut déclarer ma fonction avant de m'en servir (le fichier Dino_Game.h n'existe pas)
+{
+    // clear les animaux
+    for (DinoAnimal& animal : g_Animals)
+        animal.Shut();
+    g_Animals.clear();
+
+    //reset des variables
+    g_chrono = CHRONO_INIT;
+    g_state = lobby;
+    g_timeSpawnAnimal = 0;
+            
+    // si des joueur veulent arreter de jouer, on retire les joueurs
+    g_UnassignedGamepads.clear();
+
+    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
+        g_UnassignedGamepads.emplace_back(idx);
+
+    // replacer les arbres
+    g_Trees.clear();
+
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+
+    for (int i = 0; i < 4; ++i) {
+        float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+        float y = terrainMin.y + 80;
+        g_Trees.emplace_back(DinoVec2{x, y}, i);
+    }
+            
+    g_Players.clear();
+}
 
 void Dino_GameInit()
 {
-    DinoVec2 windowSize = XDino_GetWindowSize();
-    XDino_SetRenderSize(windowSize);
-    g_circlePos = {windowSize.x / 2, windowSize.y / 2};
+    XDino_SetRenderSize(RENDER_SIZE);
 
-    // Préparation du drawcall de la polyline (zigzag en fond).
-    {
-        constexpr DinoColor POLYLINE_COLOR = {70, 70, 100, 255};
+    DinoPlayer::InitStatic();
+    DinoAnimal::InitStatic();
+    DinoTree::InitStatic();
 
-        std::vector<DinoVec2> polyline;
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.25f);
-        polyline.emplace_back(windowSize.x * 0.2f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.6f, windowSize.y * 0.75f);
-        polyline.emplace_back(windowSize.x * 0.8f, windowSize.y * 0.50f);
-        std::vector<DinoVertex> vs;
-        Dino_GenVertices_Polyline(vs, polyline, 100, POLYLINE_COLOR);
-        vbufID_polyline = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Polyline");
-    }
+    for (DinoGamepadIdx idx : DinoGamepadIdx_ALL)
+        g_UnassignedGamepads.emplace_back(idx);
 
-    // Préparation du drawcall de l'image au milieu qu'on peut tourner.
-    {
-        constexpr DinoColor PURPLE{0x7F, 0x58, 0xAF, 0xFF};
-        constexpr DinoColor CYAN{0x64, 0xC5, 0xEB, 0xFF};
-        constexpr DinoColor PINK{0xE8, 0x4D, 0x8A, 0xFF};
-        constexpr DinoColor ORANGE{0xFE, 0xB3, 0x26, 0xFF};
+    int idxSeason = XDino_RandomInt32(0, 3);
+    g_Terrain.Init(RENDER_SIZE, idxSeason);
 
-        texID_imageMilieu = XDino_CreateGpuTexture("animals.png");
-        DinoVec2 texSize = XDino_GetGpuTextureSize(texID_imageMilieu);
-
-        std::vector<DinoVertex> vs;
-        vs.resize(6);
-        vs[0].pos = {-2, -1};
-        vs[0].color = PURPLE;
-        vs[1].pos = {2, -1};
-        vs[1].color = CYAN;
-        vs[2].pos = {-2, 1};
-        vs[2].color = PINK;
-        vs[3].pos = {2, -1};
-        vs[3].color = CYAN;
-        vs[4].pos = {-2, 1};
-        vs[4].color = PINK;
-        vs[5].pos = {2, 1};
-        vs[5].color = ORANGE;
-        vs[0].u = 0;
-        vs[0].v = 0;
-        vs[1].u = texSize.x;
-        vs[1].v = 0;
-        vs[2].u = 0;
-        vs[2].v = texSize.y;
-        vs[3].u = texSize.x;
-        vs[3].v = 0;
-        vs[4].u = 0;
-        vs[4].v = texSize.y;
-        vs[5].u = texSize.x;
-        vs[5].v = texSize.y;
-
-        vbufID_imageMilieu = XDino_CreateVertexBuffer(vs.data(), vs.size(), "ImageMilieu");
-    }
-
-    // Préparation du drawcall du cercle qu'on peut bouger.
+    // Préparation du drawcall du prénom
     {
         std::vector<DinoVertex> vs;
-        Dino_GenVertices_Circle(vs, 20);
-        vbufID_circle = XDino_CreateVertexBuffer(vs.data(), vs.size(), "Circle");
+        textSize_prenom = Dino_GenVertices_Text(vs, "Julien VERNAY", DinoColor_WHITE, DinoColor_GREY);
+        g_vbufID_prenom.emplace(vs.data(), vs.size(), "Prenom");
     }
+
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+    for (int i = 0; i < 4; ++i) {
+        float x = terrainMin.x + (1 + i) * ((terrainMax.x - terrainMin.x) / 5);
+        float y = terrainMin.y + 80;
+        g_Trees.emplace_back(DinoVec2{x, y}, i);
+    }
+
 }
 
 void Dino_GameFrame(double timeSinceStart)
@@ -99,26 +129,191 @@ void Dino_GameFrame(double timeSinceStart)
     float deltaTime = static_cast<float>(timeSinceStart - g_lastTime);
     g_lastTime = timeSinceStart;
 
+    XDino_SetRenderSize(RENDER_SIZE);
+
+    DinoVec2 terrainMin = g_Terrain.GetTopLeft();
+    DinoVec2 terrainMax = g_Terrain.GetBottomRight();
+
+    bool bPressedStart = false;
+
+    // Pointeur de DinoEntity peut pointer vers DinoPlayer/DinoAnimal
+    // car il y a un lien d'héritage.
+    std::vector<DinoEntity*> entities;
+    for (PlayerState& player : g_Players)
+        entities.emplace_back(&player.dino);
+    for (DinoAnimal& animal : g_Animals)
+        entities.emplace_back(&animal);
+
     // Gestion des entrées et mise à jour de la logique de jeu.
 
-    for (DinoGamepadIdx gamepadIdx : DinoGamepadIdx_ALL) {
-        DinoGamepad gamepad{};
-        bool bSuccess = XDino_GetGamepad(gamepadIdx, gamepad);
-        if (!bSuccess)
-            continue;
+    constexpr DinoColor PLAYER_COLORS[4] = {
+        DinoColor_BLUE,
+        DinoColor_RED,
+        DinoColor_YELLOW,
+        DinoColor_GREEN,
+    };
 
-        if (gamepad.btn_down && !gamepad.btn_up)
-            g_scale /= 1.01;
-        if (gamepad.btn_up && !gamepad.btn_down)
-            g_scale *= 1.01;
-        if (gamepad.btn_left && !gamepad.btn_right)
-            g_rotation += 90.0 * deltaTime;
-        if (gamepad.btn_right && !gamepad.btn_left)
-            g_rotation -= 90.0 * deltaTime;
+    // Lecture des inputs des joueurs
 
-        g_circlePos.x += gamepad.stick_left_x * CIRCLE_SPEED * deltaTime;
-        g_circlePos.y += gamepad.stick_left_y * CIRCLE_SPEED * deltaTime;
+    for (PlayerState& player : g_Players) {
+        DinoGamepad gamepad;
+        if (XDino_GetGamepad(player.gamepadIdx, gamepad)) {
+            player.gamepad = gamepad;
+            bPressedStart = bPressedStart || gamepad.start;
+        }
     }
+
+    switch (g_state) {
+    case lobby: {
+
+        for (DinoTree& tree : g_Trees)
+            entities.emplace_back(&tree);
+
+        for (int i = 0; i < g_UnassignedGamepads.size(); i++) {
+            DinoGamepadIdx idx = g_UnassignedGamepads[i];
+            DinoGamepad gamepad;
+            if (XDino_GetGamepad(idx, gamepad)) {
+                if (gamepad.start) {
+                    int idxPlayer = g_Players.size();
+                    if (idxPlayer < 4) {
+                        g_Players.emplace_back(idx, gamepad, idxPlayer, PLAYER_COLORS[idxPlayer]);
+                        g_UnassignedGamepads.erase(g_UnassignedGamepads.begin() + i);
+                    }
+                    break;
+                }
+            }
+        }
+        for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+            for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+                DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+
+        for (DinoEntity* pEntity : entities)
+            pEntity->ApplyLimit(terrainMin, terrainMax);
+
+        for (PlayerState& player : g_Players)
+            player.lasso.Update(player.dino.GetPos());
+
+        for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+            for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
+                DinoLasso::ResolveCollision(g_Players[idxA].lasso, g_Players[idxB].lasso);
+
+        for (PlayerState& player : g_Players)
+            for (DinoEntity* pEntity : entities)
+                if (player.lasso.WasInLoop(pEntity->GetPos()))
+                    pEntity->ReactLoop(timeSinceStart);
+
+        for (DinoTree& tree : g_Trees)
+            if (tree.WasLooped()) {
+                // Lobby -> Gameplay
+                g_state = inGame;
+                g_Terrain.Shut();
+                g_Terrain.Init(RENDER_SIZE, tree.GetIdxSeason());
+                g_Trees.clear();
+                break;
+            }
+        std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
+
+        for (PlayerState& player : g_Players)
+            player.dino.Update(timeSinceStart, deltaTime, player.gamepad);
+
+        break;
+
+    }
+
+    case gamePaused: {
+        // sortir de pause le jeu
+        if (bPressedStart && !g_bWasStartPressed)
+            g_state = inGame;
+        g_bWasStartPressed = bPressedStart;
+
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, "-- PAUSE --", DinoColor_WHITE, DinoColor_BLACK);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
+        float tx = (RENDER_SIZE.x - textSize.x * 6) / 2;
+        float ty = (RENDER_SIZE.y - textSize.y * 6) / 2;
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 6);
+
+        break;
+
+    }
+
+    case inGame: {
+        // Purger les animaux qui sont morts.
+        // /!\ std::remove ne supprime pas /!\ il déplace à la fin du tableau
+        // Il faut ensuite appeler .erase() pour enlever les éléments.
+        auto it = std::remove_if(g_Animals.begin(), g_Animals.end(), DinoAnimal::IsDead);
+        for (auto it2 = it; it2 < g_Animals.end(); ++it2)
+            it2->Shut();
+        g_Animals.erase(it, g_Animals.end());
+
+        // Spawner un animal si besoin.
+        if (timeSinceStart > g_timeSpawnAnimal) {
+            auto kind = static_cast<EAnimalKind>(XDino_RandomInt32(0, 7));
+
+            float x = XDino_RandomFloat(terrainMin.x, terrainMax.x);
+            float y = XDino_RandomFloat(terrainMin.y, terrainMax.y);
+
+            DinoAnimal& animal = g_Animals.emplace_back(timeSinceStart, kind, DinoVec2{x, y});
+
+            entities.clear();
+            for (PlayerState& player : g_Players)
+                entities.emplace_back(&player.dino);
+            for (DinoAnimal& animal : g_Animals)
+                entities.emplace_back(&animal);
+            
+            double spawnTime = SPAWNTIME_END + ((SPAWNTIME_BEGIN - SPAWNTIME_END) / CHRONO_INIT) * g_chrono + 2;
+            g_timeSpawnAnimal = timeSinceStart + spawnTime;
+            }
+        }
+
+        // Update les animaux.
+        for (DinoAnimal& animal : g_Animals)
+            animal.Update(timeSinceStart, deltaTime);
+
+        // Mettre en pause le jeu
+
+        if (bPressedStart && !g_bWasStartPressed)
+            g_state = gamePaused;
+        g_bWasStartPressed = bPressedStart;
+
+        for (PlayerState& player : g_Players)
+            player.dino.Update(timeSinceStart, deltaTime, player.gamepad);
+
+        for (size_t idxA = 0; idxA < entities.size(); ++idxA)
+            for (size_t idxB = idxA + 1; idxB < entities.size(); ++idxB)
+                DinoEntity::ResolveCollision(*entities[idxA], *entities[idxB]);
+
+        for (DinoEntity* pEntity : entities)
+            pEntity->ApplyLimit(terrainMin, terrainMax);
+
+        for (PlayerState& player : g_Players)
+            player.lasso.Update(player.dino.GetPos());
+
+        for (size_t idxA = 0; idxA < g_Players.size(); ++idxA)
+            for (size_t idxB = idxA + 1; idxB < g_Players.size(); ++idxB)
+                DinoLasso::ResolveCollision(g_Players[idxA].lasso, g_Players[idxB].lasso);
+
+        for (PlayerState& player : g_Players)
+            for (DinoEntity* pEntity : entities)
+                if (player.lasso.WasInLoop(pEntity->GetPos())) {
+                    pEntity->ReactLoop(timeSinceStart);
+                    if (dynamic_cast<DinoAnimal*>(pEntity)) player.score ++;
+                }
+
+        // Décrémenter le chronomètre.
+        g_chrono -= deltaTime;
+
+        //  detecter lma fin de la partie
+        if (g_chrono <= 0.0) {
+            Dino_ResetToLobby();
+            return;
+        }
+        
+        std::sort(entities.begin(), entities.end(), DinoEntity::CompareVerticalPos);
+
+        break;
+    }
+    
 
     // Affichage
 
@@ -126,34 +321,72 @@ void Dino_GameFrame(double timeSinceStart)
 
     XDino_SetClearColor(CLEAR_COLOR);
 
-    // Dessin de la "polyligne"
-    XDino_Draw(vbufID_polyline, XDino_TEXID_WHITE);
+    g_Terrain.Draw();
 
-    // Si on veut une correspondance 1:1 entre pixels logiques et pixels à l'écran.
-    // DinoVec2 windowSize = XDino_GetWindowSize();
-    // XDino_SetRenderSize(windowSize);
-    DinoVec2 renderSize = XDino_GetRenderSize();
+    for (PlayerState& player : g_Players)
+        player.lasso.Draw();
 
-    // Dessin de la texture centrale qu'on peut bouger.
-    DinoVec2 translation = {renderSize.x / 2, renderSize.y / 2};
-    double scale = g_scale * std::min(renderSize.x, renderSize.y) / 4;
-    XDino_Draw(vbufID_imageMilieu, texID_imageMilieu, translation, scale, g_rotation);
-
-    // Dessin du cercle que l'on peut bouger.
-    XDino_Draw(vbufID_circle, XDino_TEXID_FONT, g_circlePos);
+    for (DinoEntity* pEntity : entities) {
+        DinoVec2 test = pEntity->m_pos;
+        pEntity->Draw(timeSinceStart);
+    }
 
     // Nombre de millisecondes qu'il a fallu pour afficher la frame précédente.
     {
         std::string text = std::format("dTime={:04.1f}ms", deltaTime * 1000.0);
+
+        // vs : Stocke une allocation mémoire sur le CPU
         std::vector<DinoVertex> vs;
         Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_GREY);
-        uint64_t vbufID = XDino_CreateVertexBuffer(vs.data(), vs.size(), "dTime");
-        XDino_Draw(vbufID, XDino_TEXID_FONT, {}, 2);
-        XDino_DestroyVertexBuffer(vbufID);
+
+        // vbufID : Représente une allocation mémoire sur la carte graphique
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "dTime");
+
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {}, 2);
+
+        // Destructeur de 'vbuf' appelé implicitement par le compilateur
+        // Destructeur de 'vs' appelé implicitement par le compilateur
+    }
+
+    // afficher le chrono
+    {
+        std::string text = std::format("{:.2f}", g_chrono);
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_WHITE, DinoColor_TRANSPARENT);
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Chrono");
+        float tx = (RENDER_SIZE.x - textSize.x * 2) / 2;
+        float ty = 0;
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {tx, ty}, 2);
+    }
+
+    //afficher les scores
+    float y = 20;
+
+    for (size_t i = 0; i < g_Players.size(); ++i) {
+        PlayerState& player = g_Players[i];
+
+        std::string text = std::format("P{} : {}", i + 1, player.score); // i+1 pour éviter le player0 qui serait bizarre
+
+        std::vector<DinoVertex> vs;
+        DinoVec2 textSize = Dino_GenVertices_Text(vs, text, DinoColor_BLACK, PLAYER_COLORS[i]);
+
+        DinoVertexBuffer vbuf(vs.data(), vs.size(), "Score");
+
+        float x = 10; // à gauche
+        float ty = y + i * (textSize.y * 2 + 5);
+
+        XDino_Draw(vbuf.Get(), XDino_TEXID_FONT, {x, ty}, 2);
+    }
+
+    // Affiche le prénom.
+    {
+        float tx = (RENDER_SIZE.x - textSize_prenom.x * 2);
+        float ty = (RENDER_SIZE.y - textSize_prenom.y * 2);
+        XDino_Draw(g_vbufID_prenom->Get(), XDino_TEXID_FONT, {tx, ty}, 2);
     }
 
 #if !XDINO_RELEASE
-    // Affichage des statistiques si on appuie sur SHIFT.
+    // Affichage des statistiques si on appuie sur CTRL.
     DinoGamepad keyboard;
     bool bKeyboardOk = XDino_GetGamepad(DinoGamepadIdx::Keyboard, keyboard);
     if (bKeyboardOk && keyboard.shoulder_left) {
@@ -169,8 +402,17 @@ void Dino_GameFrame(double timeSinceStart)
 
 void Dino_GameShut()
 {
-    XDino_DestroyVertexBuffer(vbufID_circle);
-    XDino_DestroyVertexBuffer(vbufID_imageMilieu);
-    XDino_DestroyVertexBuffer(vbufID_polyline);
-    XDino_DestroyGpuTexture(texID_imageMilieu);
+    // For-range loop
+
+    for (PlayerState& player : g_Players)
+        player.dino.Shut();
+    for (DinoAnimal& animal : g_Animals)
+        animal.Shut();
+    g_Terrain.Shut();
+
+    DinoTree::ShutStatic();
+    DinoPlayer::ShutStatic();
+    DinoAnimal::ShutStatic();
+
+    g_vbufID_prenom.reset();
 }
