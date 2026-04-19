@@ -28,4 +28,7 @@ public:
     static bool IsDead(DinoAnimal& animal);
     static void InitStatic();
     static void ShutStatic();
+
+
+    EAnimalKind GetKind() { return m_kind; }
 };

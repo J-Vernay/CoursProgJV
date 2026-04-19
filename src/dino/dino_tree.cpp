@@ -8,6 +8,8 @@ void DinoTree::ReactLimit()
 
 void DinoTree::ReactLoop(double timeSinceStart)
 {
+    if (timer > 0)return;
+    
     m_bWasLooped = true;
 }
 
@@ -20,6 +22,7 @@ DinoTree::DinoTree(DinoVec2 pos, int idxSeason)
 
 void DinoTree::Update(double timeSinceStart, float deltaTime)
 {
+    UnselectableTime(deltaTime);
 }
 
 void DinoTree::Draw(double timeSinceStart)
@@ -30,6 +33,8 @@ void DinoTree::Draw(double timeSinceStart)
     uint16_t umax = 80 + m_idxSeason * 80;
     uint16_t vmin = 16;
     uint16_t vmax = 64;
+
+    
 
     vs.resize(6);
     vs[0].pos = {0, 0};
@@ -50,6 +55,11 @@ void DinoTree::Draw(double timeSinceStart)
     vs[5].pos = {32, 48};
     vs[5].u = umax;
     vs[5].v = vmax;
+
+    for (auto& v : vs) {
+        
+        v.color = timer <= 0 ? DinoColor{255,255,255,255} : DinoColor{255,255,255,155}; 
+    }
 
     DinoVertexBuffer vbuf(vs.data(), vs.size(), "Tree");
     XDino_Draw(vbuf.Get(), s_texID, {m_pos.x - 16, m_pos.y - 40});
@@ -73,4 +83,16 @@ void DinoTree::InitStatic()
 void DinoTree::ShutStatic()
 {
     XDino_DestroyGpuTexture(s_texID);
+}
+
+void DinoTree::UnselectableTime(float delta)
+{
+    if(timer >= 0) {
+        
+        timer -= delta;
+        
+    }
+
+    
+    
 }

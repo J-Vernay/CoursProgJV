@@ -23,4 +23,7 @@ public:
 
     static void InitStatic();
     static void ShutStatic();
+
+    void UnselectableTime(float delta);
+    float timer;
 };
